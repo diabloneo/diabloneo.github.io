@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Coffee, Coke and Code</title>
+    <link>http://diabloneo.github.io/</link>
+    <description>Recent content on Coffee, Coke and Code</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 14 May 2016 23:33:55 +0800</lastBuildDate>
+    <atom:link href="http://diabloneo.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>test</title>
+      <link>http://diabloneo.github.io/blog/2016/05/14/test</link>
+      <pubDate>Sat, 14 May 2016 23:33:55 +0800</pubDate>
+      
+      <guid>http://diabloneo.github.io/blog/2016/05/14/test</guid>
+      <description>
+
+&lt;h1 id=&#34;chapter-1:b128b7694e4de962e0088bcb1bcb254f&#34;&gt;Chapter 1&lt;/h1&gt;
+
+&lt;p&gt;This is a test post.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
