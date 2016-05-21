@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 
-  <title>test &middot; diabloneo</title>
+  <title>tmux中的choose-buffer和delete-buffer &middot; diabloneo</title>
 
   
   <link rel="stylesheet" href="http://diabloneo.github.io/css/poole.css">
@@ -97,17 +97,19 @@
 
 <div class="content container">
   <div class="post">
-    <h1 class="post-title">test</h1>
-    <span class="post-date">May 14, 2016 &middot; 1 minute read
+    <h1 class="post-title">tmux中的choose-buffer和delete-buffer</h1>
+    <span class="post-date">Jan 17, 2015 &middot; 1 minute read
     
     <br/>
-    
+    <a class="label" href="http://diabloneo.github.io/categories/tmux">Tmux</a>
     </span>
-    
+    <p><strong>Tmux</strong>的buffer是一个非常使用的功能，我们可以通过<strong>bind-key [</strong>进入copy-mode来选择要保存到buffer中的数据，随后再通过<strong>bind-key ]</strong>来粘贴一个buffer。</p>
 
-<h1 id="chapter-1:b128b7694e4de962e0088bcb1bcb254f">Chapter 1</h1>
+<p>除了上面两个常用的功能之外，还有一个非常使用的功能：<strong>choose-buffer</strong>，快捷键是<strong>bind-key =</strong>，该命令的作用是显示出之前保存的buffers，并且可以通过序号选择本地要粘贴的哪个buffer中的内容。样子如下：</p>
 
-<p>This is a test post.</p>
+<p><img src="/images/post/0002/choose-buffer.png" alt="choose-buffer" /></p>
+
+<p>另外，我们还可以通过<strong>delete-buffer</strong>来选择删除掉一个之前保存的buffer，不加参数的情况是删除index为0的buffer，可以通过-b参数指定要删除的buffer，例如<code>delete-buffer -b a</code>。不过，遗憾的是，目前还没有命令可以删除所有的buffer（至少我没找到，有知道的同学麻烦告诉我一声，灰常感谢）。</p>
 
   </div>
   

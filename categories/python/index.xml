@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on Coffee, Coke and Code</title>
-    <link>http://diabloneo.github.io/post/</link>
-    <description>Recent content in Posts on Coffee, Coke and Code</description>
+    <title>Python on Coffee, Coke and Code</title>
+    <link>http://diabloneo.github.io/categories/python/</link>
+    <description>Recent content in Python on Coffee, Coke and Code</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 14 Jun 2015 23:43:51 +0800</lastBuildDate>
-    <atom:link href="http://diabloneo.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://diabloneo.github.io/categories/python/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>通过demon学习OpenStack开发所需的基础知识--软件包管理</title>
@@ -498,22 +498,6 @@ AUTHORS  ChangeLog  dist  LICENSE  README.md  requirement.txt  setup.cfg  setup.
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;验证成功，在*dist/*目录下生成了一个0.0.1版本的源码归档，同时生成了如下的文件和目录：*AUTHORS, ChangeLog, webdemo.egg-info*。&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>tmux中的choose-buffer和delete-buffer</title>
-      <link>http://diabloneo.github.io/blog/2015/01/17/tmux%E4%B8%AD%E7%9A%84choose-buffer%E5%92%8Cdelete-buffer</link>
-      <pubDate>Sat, 17 Jan 2015 11:48:39 +0800</pubDate>
-      
-      <guid>http://diabloneo.github.io/blog/2015/01/17/tmux%E4%B8%AD%E7%9A%84choose-buffer%E5%92%8Cdelete-buffer</guid>
-      <description>&lt;p&gt;&lt;strong&gt;Tmux&lt;/strong&gt;的buffer是一个非常使用的功能，我们可以通过&lt;strong&gt;bind-key [&lt;/strong&gt;进入copy-mode来选择要保存到buffer中的数据，随后再通过&lt;strong&gt;bind-key ]&lt;/strong&gt;来粘贴一个buffer。&lt;/p&gt;
-
-&lt;p&gt;除了上面两个常用的功能之外，还有一个非常使用的功能：&lt;strong&gt;choose-buffer&lt;/strong&gt;，快捷键是&lt;strong&gt;bind-key =&lt;/strong&gt;，该命令的作用是显示出之前保存的buffers，并且可以通过序号选择本地要粘贴的哪个buffer中的内容。样子如下：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://diabloneo.github.io/images/post/0002/choose-buffer.png&#34; alt=&#34;choose-buffer&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;另外，我们还可以通过&lt;strong&gt;delete-buffer&lt;/strong&gt;来选择删除掉一个之前保存的buffer，不加参数的情况是删除index为0的buffer，可以通过-b参数指定要删除的buffer，例如&lt;code&gt;delete-buffer -b a&lt;/code&gt;。不过，遗憾的是，目前还没有命令可以删除所有的buffer（至少我没找到，有知道的同学麻烦告诉我一声，灰常感谢）。&lt;/p&gt;
 </description>
     </item>
     
