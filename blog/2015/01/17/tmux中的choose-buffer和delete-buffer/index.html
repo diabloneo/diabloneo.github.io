@@ -98,11 +98,6 @@
 <div class="content container">
   <div class="post">
     <h1 class="post-title">tmux中的choose-buffer和delete-buffer</h1>
-    <span class="post-date">Jan 17, 2015 &middot; 1 minute read
-    
-    <br/>
-    <a class="label" href="http://diabloneo.github.io/categories/tmux">Tmux</a>
-    </span>
     <p><strong>Tmux</strong>的buffer是一个非常使用的功能，我们可以通过<strong>bind-key [</strong>进入copy-mode来选择要保存到buffer中的数据，随后再通过<strong>bind-key ]</strong>来粘贴一个buffer。</p>
 
 <p>除了上面两个常用的功能之外，还有一个非常使用的功能：<strong>choose-buffer</strong>，快捷键是<strong>bind-key =</strong>，该命令的作用是显示出之前保存的buffers，并且可以通过序号选择本地要粘贴的哪个buffer中的内容。样子如下：</p>
@@ -112,12 +107,11 @@
 <p>另外，我们还可以通过<strong>delete-buffer</strong>来选择删除掉一个之前保存的buffer，不加参数的情况是删除index为0的buffer，可以通过-b参数指定要删除的buffer，例如<code>delete-buffer -b a</code>。不过，遗憾的是，目前还没有命令可以删除所有的buffer（至少我没找到，有知道的同学麻烦告诉我一声，灰常感谢）。</p>
 
   </div>
-  
+  <div class="license container">
+    <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" /></a>本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可。
+    <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" /></a>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License</a>.
+  </div>
 </div>
-
-
-
-
 <script src="http://diabloneo.github.io/js/highlight.pack.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 </body>
