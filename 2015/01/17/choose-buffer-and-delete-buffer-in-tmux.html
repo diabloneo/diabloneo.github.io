@@ -6,12 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Coffee, Coke and Code</title>
-  <meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
-">
+  <title>tmux中的choose-buffer和delete-buffer</title>
+  <meta name="description" content="Tmux的buffer是一个非常使用的功能，我们可以通过bind-key [进入copy-mode来选择要保存到buffer中的数据，随后再通过bind-key ]来粘贴一个buffer。">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="/">
+  <link rel="canonical" href="/2015/01/17/choose-buffer-and-delete-buffer-in-tmux.html">
   <link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="/feed.xml">
 </head>
 
@@ -55,97 +54,29 @@
 
     <div class="page-content">
       <div class="wrapper">
-        <div class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
-  <h1 class="page-heading">Posts</h1>
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">tmux中的choose-buffer和delete-buffer</h1>
+    <p class="post-meta"><time datetime="2015-01-17T00:00:00+08:00" itemprop="datePublished">Jan 17, 2015</time></p>
+  </header>
 
-  <ul class="post-list">
-    
-      <li>
-        <span class="post-meta">Nov 1, 2016</span>
+  <div class="post-content" itemprop="articleBody">
+    <p><strong>Tmux</strong>的buffer是一个非常使用的功能，我们可以通过<strong>bind-key [</strong>进入copy-mode来选择要保存到buffer中的数据，随后再通过<strong>bind-key ]</strong>来粘贴一个buffer。<!--more--></p>
 
-        <h2>
-          <a class="post-link" href="/2016/11/01/understanding-golang-internals-1.html">理解Golang程序(1) -- 基础</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Mar 13, 2016</span>
+<p>除了上面两个常用的功能之外，还有一个非常使用的功能：<strong>choose-buffer</strong>，快捷键是<strong>bind-key =</strong>，该命令的作用是显示出之前保存的buffers，并且可以通过序号选择本地要粘贴的哪个buffer中的内容。样子如下：</p>
 
-        <h2>
-          <a class="post-link" href="/2016/03/13/learn-openstack-dev-skill-by-demo-08.html">通过demo学习OpenStack开发所需的基础知识 -- 单元测试</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Feb 21, 2016</span>
+<p><img src="/assets/imgs/00001-tmux-choose-buffer.png" alt="choose-buffer" /></p>
 
-        <h2>
-          <a class="post-link" href="/2016/02/21/learn-openstack-dev-skill-by-demo-07.html">通过demo学习OpenStack开发所需的基础知识 -- 数据库(2)</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Jan 6, 2016</span>
+<p>另外，我们还可以通过<strong>delete-buffer</strong>来选择删除掉一个之前保存的buffer，不加参数的情况是删除index为0的buffer，可以通过-b参数指定要删除的buffer，例如<code class="highlighter-rouge">delete-buffer -b a</code>。不过，遗憾的是，目前还没有命令可以删除所有的buffer（至少我没找到，有知道的同学麻烦告诉我一声，灰常感谢）。</p>
 
-        <h2>
-          <a class="post-link" href="/2016/01/06/learn-openstack-dev-skill-by-demo-06.html">通过demo学习OpenStack开发所需的基础知识 -- 数据库(1)</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Nov 17, 2015</span>
 
-        <h2>
-          <a class="post-link" href="/2015/11/17/learn-openstack-dev-skill-by-demo-05.html">通过demo学习OpenStack开发所需的基础知识 -- API服务(4)</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Sep 30, 2015</span>
+    <div>
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" /></a>本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可。<br />
+    </div>
+  </div>
 
-        <h2>
-          <a class="post-link" href="/2015/09/30/learn-openstack-dev-skill-by-demo-04.html">通过demo学习OpenStack开发所需的基础知识 -- API服务(3)</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Sep 8, 2015</span>
-
-        <h2>
-          <a class="post-link" href="/2015/09/08/learn-openstack-dev-skill-by-demo-03.html">通过demo学习OpenStack开发所需的基础知识 -- API服务(2)</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Sep 8, 2015</span>
-
-        <h2>
-          <a class="post-link" href="/2015/09/08/learn-openstack-dev-skill-by-demo-02.html">通过demo学习OpenStack开发所需的基础知识 -- API服务(1)</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Jun 14, 2015</span>
-
-        <h2>
-          <a class="post-link" href="/2015/06/14/learn-openstack-dev-skill-by-demo-01.html">通过demo学习OpenStack开发所需的基础知识 -- 软件包管理</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Jan 17, 2015</span>
-
-        <h2>
-          <a class="post-link" href="/2015/01/17/choose-buffer-and-delete-buffer-in-tmux.html">tmux中的choose-buffer和delete-buffer</a>
-        </h2>
-      </li>
-    
-  </ul>
-
-  <p class="rss-subscribe">subscribe <a href="/feed.xml">via RSS</a></p>
-
-</div>
+</article>
 
       </div>
     </div>
