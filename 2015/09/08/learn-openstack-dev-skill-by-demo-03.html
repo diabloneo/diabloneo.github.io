@@ -68,15 +68,15 @@
 
 <p>我们在<strong>API服务(1)</strong>中已经提到了，这个框架只在早期开始的项目中使用，新的项目都已经转到Pecan框架了。但是，早期的项目都是比较核心的项目，因此我们还是要学会如何使用这个框架。我们会以Keystone项目为例，来说明如何阅读使用这个框架的开发的API代码。</p>
 
-<h2 id="url">重点在于确定URL路由</h2>
+<h2 id="重点在于确定url路由">重点在于确定URL路由</h2>
 
 <p>RESTful API程序的主要特点就是URL path会和功能对应起来。这点从API文档就可以看得出来，比如用户管理的功能一般都放在<em>/user</em>这个路径下。因此，看一个RESTful API程序，一般都是看它实现了哪些URL path，以及每个path对应了什么功能，这个一般都是由框架的URL路由功能负责的。所以，熟悉一个RESTful API程序的<strong>重点在于确定URL路由</strong>。本章所说的这个框架对于初学者的难点也是如何确定URL路由。</p>
 
-<h2 id="wsgi">WSGI入口和中间件</h2>
+<h2 id="wsgi入口和中间件">WSGI入口和中间件</h2>
 
 <p>作为基础知识，你需要先了解一下WSGI的相关概念，可以参考这篇文章<a href="http://segmentfault.com/a/1190000003069785">WSGI简介</a>。</p>
 
-<h3 id="wsgi-1">WSGI入口</h3>
+<h3 id="wsgi入口">WSGI入口</h3>
 
 <p>在<strong>API服务(1)</strong>中提到了WSGI可以使用Apache进行部署，也可以使用eventlet进行部署。Keystone项目同时提供了这两种方案的代码，也就是我们要找的WSGI的入口。</p>
 
@@ -108,7 +108,7 @@ console_scripts =
 
 <p><code class="highlighter-rouge">main()</code>函数的主要作用就是启动一个eventlet_server，配置文件从<code class="highlighter-rouge">possible_topdir</code>中查找。因为eventlet的部署方式涉及到eventlet库的使用方法，本文不再展开说明。读者可以在学会确定URL路由后再回来看这个代码。下面，继续以<em>httpd/keystone.py</em>文件作为入口来说明如何阅读代码。</p>
 
-<h3 id="pastepastedeploy">Paste和PasteDeploy</h3>
+<h3 id="paste和pastedeploy">Paste和PasteDeploy</h3>
 
 <p><em>httpd/keystone.py</em>中调用的<code class="highlighter-rouge">initialize_application(name)</code>函数载入了整个WSGI应用，这里主要用到了Paste和PasteDeploy库。</p>
 
@@ -124,7 +124,7 @@ console_scripts =
 
 <p>上面是删掉无关代码后的<code class="highlighter-rouge">initialize_application()</code>函数。<code class="highlighter-rouge">config.find_paste_config()</code>用来查找PasteDeploy需要用到的WSGI配置文件，这个文件在源码中是<em>etc/keystone-paste.ini</em>文件，如果在线上环境中，一般是<em>/etc/keystone-paste.init</em>。<code class="highlighter-rouge">keystone_service.loadapp()</code>函数内部则调用了<code class="highlighter-rouge">paste.deploy.loadapp()</code>函数来加载WSGI应用，如何加载则使用了刚才提到的<em>keystone-paste.ini</em>文件，这个文件也是看懂整个程序的关键。</p>
 
-<h4 id="name">name很关键</h4>
+<h4 id="name很关键">name很关键</h4>
 
 <p>在上面的代码中我们可以看到，<code class="highlighter-rouge">name</code>这个变量从<em>httpd/keystone.py</em>文件传递到<code class="highlighter-rouge">initialize_application()</code>函数，又被传递到<code class="highlighter-rouge">keystone_service.loadapp()</code>函数，最终被传递到<code class="highlighter-rouge">paste.deploy.loadapp()</code>函数。那么，<strong>这个<code class="highlighter-rouge">name</code>变量到底起什么作用呢</strong>？先把这个问题放在一边，我们后面再来解决它。</p>
 
@@ -263,7 +263,7 @@ paste.app_factory = keystone.service:v3_app_factory
 
 <p>到此为止，paste.ini中的配置的所有工作都已经做完了。下面请求就要转移到最终的app内部去处理了。前面已经说过了，我们的重点是确定URL路由，那么现在还有一部分的path的路由还没确定，/auth/tokens，这个还需要下一步的工作。</p>
 
-<h2 id="section">中间件的实现</h2>
+<h2 id="中间件的实现">中间件的实现</h2>
 
 <p>上面我们提到paste.ini中用到了许多的WSGI中间件，那么这些中间件是如何实现的呢？我们来看一个例子就知道了。</p>
 
@@ -309,7 +309,7 @@ paste.filter_factory = keystone.middleware:AuthContextMiddleware.factory
 
 <p>这个函数会根据功能设计创建<code class="highlighter-rouge">auth_context</code>，然后赋值给<code class="highlighter-rouge">request.environ['KEYSTONE_AUTH_CONTEXT</code>]`，这样就能通过WSGI application方法的environ传递到下一个WSGI application中去了。</p>
 
-<h2 id="application">最后的Application</h2>
+<h2 id="最后的application">最后的Application</h2>
 
 <p>上面我们已经看到了，对于/v3开头的请求，在paste.ini中会被路由到[app:service_v3]这个section，会交给<code class="highlighter-rouge">keystone.service:v3_app_factory</code>这个函数生成的application处理。最后这个application需要根据URL path中剩下的部分，<strong>/auth/tokens</strong>，来实现URL路由。从这里开始，就需要用到<strong>Routes</strong>模块了。</p>
 
@@ -351,13 +351,13 @@ paste.filter_factory = keystone.middleware:AuthContextMiddleware.factory
 
 <p>这个函数其实很简单，就是调用mapper对象的<em>connect</em>方法指定一个path的某些method的处理函数。</p>
 
-<h3 id="keystone">Keystone项目的代码结构</h3>
+<h3 id="keystone项目的代码结构">Keystone项目的代码结构</h3>
 
 <p>Keystone项目把每个功能都分到单独的目录下，比如token相关的功能是放在<em>keystone/token/</em>目录下，assignment相关的功能是放在<em>keystone/assignment/</em>目录下。目录下都一般会有三个文件：<em>routers.py</em>, <em>controllers.py</em>, <em>core.py</em>。<em>routers.py</em>中实现了URL路由，把URL和<em>controllers.py</em>中的action对应起来；<em>controllers.py</em>中的action调用<em>core.py</em>中的底层接口实现RESTful API承诺的功能。所以，我们要进一步确定URL路由是如何做的，就要看<em>routers.py</em>文件。</p>
 
 <p>注意，这个只是Keystone项目的结构，其他项目即使用了同样的框架，也不一定是这么做的。</p>
 
-<h3 id="keystone-1">Keystone中的路由汇总</h3>
+<h3 id="keystone中的路由汇总">Keystone中的路由汇总</h3>
 
 <p>每个模块都定义了自己的路由，但是这些路由最终要还是要通过一个WSGI application来调用的。上面已经提到了，在Keystone中，/v3开头的请求最终都会交给<code class="highlighter-rouge">keystone.service.v3_app_factory</code>这个函数生成的application来处理。这个函数里也包含了路由最后分发的秘密，我们来看代码：</p>
 
@@ -408,11 +408,11 @@ paste.filter_factory = keystone.middleware:AuthContextMiddleware.factory
 
 <p>但是这里只讲到了，routes模块把path映射到了一个controller，但是如何把对path的处理映射到controller的方法呢？这个可以从controller的父类<em>keystone.common.wsgi.Application</em>的实现看出来。这个Application类中使用了<code class="highlighter-rouge">environ['wsgiorg.routing_args']</code>中的数据来确定调用controller的哪个方法，这些数据是由上面提到的<em>routes.middleware.RoutesMiddleware</em>设置的。</p>
 
-<h2 id="section-1">总结</h2>
+<h2 id="总结">总结</h2>
 
 <p>到这里我们大概把<strong>Paste + PasteDeploy + Routes + WebOb</strong>这个框架的流程讲了一遍，从本文的长度你就可以看出这个框架有多啰嗦，用起来有多麻烦。下一篇文章我们会讲Pecan框架，我们的demo也将会使用Pecan框架来开发。</p>
 
-<h2 id="section-2">参考资源</h2>
+<h2 id="参考资源">参考资源</h2>
 
 <p>本文主要提到了Python Paste中的各种库，这些库的相关文档都可以在项目官网找到:<a href="http://pythonpaste.org/">http://pythonpaste.org/</a>。</p>
 

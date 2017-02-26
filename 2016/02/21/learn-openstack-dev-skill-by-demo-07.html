@@ -64,11 +64,11 @@
   <div class="post-content" itemprop="articleBody">
     <p>在上一篇文章，我们介绍了SQLAlchemy的基本概念，也介绍了基本的使用流程。本文我们结合webdemo这个项目来介绍如何在项目中使用SQLAlchemy。另外，我们还会介绍数据库版本管理的概念和实践，这也是OpenStack每个项目都需要做的事情。</p>
 
-<h1 id="webdemo">Webdemo中的数据模型的定义和实现</h1>
+<h1 id="webdemo中的数据模型的定义和实现">Webdemo中的数据模型的定义和实现</h1>
 
 <p>我们之前在<a href="https://github.com/diabloneo/webdemo">webdemo</a>项目中已经开发了一个user管理的API，可以在<a href="https://segmentfault.com/a/1190000004004179">这里</a>回顾。当时只是接收了API请求并且打印信息，并没有实际的进行数据存储。现在我们就要引入数据库操作，来完成user管理的API。</p>
 
-<h2 id="user">User数据模型</h2>
+<h2 id="user数据模型">User数据模型</h2>
 
 <p>在开发数据库应用前，需要先定义好数据模型。因为本文只是要演示SQLAlchemy的应用，所以我们定义个最简单的数据模型。user表的定义如下：</p>
 
@@ -79,7 +79,7 @@
   <li><strong>email</strong>: user的email，允许修改，可以为空。</li>
 </ul>
 
-<h2 id="section">搭建数据库层的代码框架</h2>
+<h2 id="搭建数据库层的代码框架">搭建数据库层的代码框架</h2>
 
 <p>OpenStack项目中我见过两种数据库的代码框架分隔，一种是Keystone的风格，它把一组API的API代码和数据库代码都放在同一个目录下，如下所示：</p>
 
@@ -100,7 +100,7 @@
   <li>在<em>db/api.py</em>中实现一个<code class="highlighter-rouge">Connection</code>类，这个类封装了所有的数据库操作接口。我们会在这个类中实现对user表的CRUD等操作。</li>
 </ol>
 
-<h3 id="user-1">定义User数据模型映射类</h3>
+<h3 id="定义user数据模型映射类">定义User数据模型映射类</h3>
 
 <p><em>db/models.py</em>中的代码如下：</p>
 
@@ -126,9 +126,9 @@
 
 <p>我们按照我们之前定义的数据模型，实现了映射类。</p>
 
-<h3 id="db-api">实现DB API</h3>
+<h3 id="实现db-api">实现DB API</h3>
 
-<h4 id="db">DB通用函数</h4>
+<h4 id="db通用函数">DB通用函数</h4>
 
 <p>在<em>db/api.py</em>中，我们先定义了一些通用函数，代码如下：</p>
 
@@ -186,7 +186,7 @@
 
 <p>我们使用了sqlite内存数据库，并且立刻创建了所有的表。这么做只是为了演示方便。在实际的项目中，<code class="highlighter-rouge">create_engine()</code>的数据库URL参数应该是从配置文件中读取的，而且也不能在创建engine后就创建所有的表（这样数据库的数据都丢了）。要解决在数据库中建表的问题，就要先了解数据库版本管理的知识，也就是<strong>database migration</strong>，我们在下文中会说明。</p>
 
-<h4 id="connection">Connection实现</h4>
+<h4 id="connection实现">Connection实现</h4>
 
 <p><code class="highlighter-rouge">Connection</code>的实现就简单得多了，直接看代码。这里只实现了<code class="highlighter-rouge">get_user()</code>和<code class="highlighter-rouge">list_users()</code>方法。</p>
 
@@ -218,7 +218,7 @@
     <span class="k">def</span> <span class="nf">delete_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
         <span class="k">pass</span></code></pre></figure>
 
-<h3 id="api-controllerdb-api">在API Controller中使用DB API</h3>
+<h3 id="在api-controller中使用db-api">在API Controller中使用DB API</h3>
 
 <p>现在我们有了DB API，接下来就是要在Controller中使用它。对于使用Pecan框架的应用来说，我们定义一个Pecan hook，这个hook在每个请求进来的时候实例化一个db的<code class="highlighter-rouge">Connection</code>对象，然后在controller代码中我们可以直接使用这个<code class="highlighter-rouge">Connection</code>实例。关于Pecan hook的相关信息，请查看<a href="http://pecan.readthedocs.org/en/latest/hooks.html">Pecan官方文档</a>。</p>
 
@@ -290,13 +290,13 @@
 
 <p>现在，我们就已经完整的实现了这个API，客户端访问API时是从数据库拿数据，而不是返回一个模拟的数据。读者可以使用<a href="https://segmentfault.com/a/1190000004004179">API服务(4)</a>中的方法运行测试服务器来测试这个API。注意：由于数据库操作依赖于SQLAlchemy库，所以需要把它添加到<em>requirement.txt</em>中：<strong>SQLAlchemy&lt;1.1.0,&gt;=0.9.9</strong>。</p>
 
-<h2 id="section-1">小结</h2>
+<h2 id="小结">小结</h2>
 
 <p>现在我们已经完成了数据库层的代码框架搭建，读者可以大概了解到一个OpenStack项目中是如何进行数据库操作的。上面的代码可以到<a href="https://github.com/diabloneo/webdemo">https://github.com/diabloneo/webdemo</a>下载。</p>
 
-<h1 id="section-2">数据库版本管理</h1>
+<h1 id="数据库版本管理">数据库版本管理</h1>
 
-<h2 id="section-3">数据库版本管理的概念</h2>
+<h2 id="数据库版本管理的概念">数据库版本管理的概念</h2>
 
 <p>上面我们在<code class="highlighter-rouge">get_engine()</code>函数中使用了内存数据库，并且创建了所有的表。在实际项目中，这么做肯定是不行的：</p>
 
@@ -341,11 +341,11 @@
 
 <p>看起来步骤很复杂，其实搭建好环境后，新增数据库版本只需要执行最后两个步骤。</p>
 
-<h3 id="alembic-1">安装Alembic</h3>
+<h3 id="安装alembic">安装Alembic</h3>
 
 <p>在<em>webdemo/requirements.txt</em>中加入：<strong>alembic&gt;=0.8.0</strong>。然后在virtualenv中安装即可。</p>
 
-<h3 id="alembicmigration">在项目中创建Alembic的migration环境</h3>
+<h3 id="在项目中创建alembic的migration环境">在项目中创建Alembic的migration环境</h3>
 
 <p>一般OpenStack项目中，Alembic的环境都是放在<em>db/sqlalchemy/</em>目录下，因此，我们先建立目录<em>webdemo/db/sqlalchemy/</em>，然后在这个目录下初始化Alembic环境：</p>
 
@@ -371,7 +371,7 @@ api.py  api.pyc  __init__.py  __init__.pyc  models.py  models.pyc  sqlalchemy
 
 <p><img src="/assets/imgs/00007_alembic_migration_environment.png" alt="Alembic Migration Environment" /></p>
 
-<h3 id="alembic-2">修改Alembic配置文件</h3>
+<h3 id="修改alembic配置文件">修改Alembic配置文件</h3>
 
 <p><em>webdemo/db/sqlalchemy/alembic.ini</em>文件是Alembic的配置文件，我们现在需要修改文件中的<strong>sqlalchemy.url</strong>这个配置项，用来指向我们的数据库。这里，我们使用SQLite数据库，数据库文件存放在webdemo项目的根目录下，名称是<strong>webdemo.db</strong>：</p>
 
@@ -382,7 +382,7 @@ sqlalchemy.url = sqlite:///../../../webdemo.db
 
 <p>注意：实际项目中，数据库的URL信息是从项目配置文件中读取，然后通过动态的方式传递给Alembic的。具体的做法，读者可以参考Magnum项目的实现：<a href="https://github.com/openstack/magnum/blob/master/magnum/db/sqlalchemy/migration.py">https://github.com/openstack/magnum/blob/master/magnum/db/sqlalchemy/migration.py</a>。</p>
 
-<h3 id="migration">创建migration脚本</h3>
+<h3 id="创建migration脚本">创建migration脚本</h3>
 
 <p>现在，我们可以创建第一个迁移脚本了，我们的第一个数据库版本就是创建我们的user表：</p>
 
@@ -426,7 +426,7 @@ Create Date: 2016-02-21 12:24:46.640894
 
 <p>其实就是把<code class="highlighter-rouge">User</code>类的定义再写了一遍，使用了Alembic提供的接口来方便的创建和删除表。</p>
 
-<h3 id="section-4">执行迁移操作</h3>
+<h3 id="执行迁移操作">执行迁移操作</h3>
 
 <p>我们需要在<em>webdemo/db/sqlalchemy/</em>目录下执行迁移操作，可能需要手动指定PYTHONPATH：</p>
 
@@ -466,7 +466,7 @@ version_num
 </code></pre>
 </div>
 
-<h3 id="section-5">测试新的数据库</h3>
+<h3 id="测试新的数据库">测试新的数据库</h3>
 
 <p>现在我们可以把之前使用的内存数据库换掉，使用我们的文件数据库，修改<code class="highlighter-rouge">get_engine()</code>函数：</p>
 
@@ -505,7 +505,7 @@ sqlite&gt; .q
 </code></pre>
 </div>
 
-<h3 id="section-6">小结</h3>
+<h3 id="小结-1">小结</h3>
 
 <p>现在，我们就已经完成了database migration代码框架的搭建，可以成功执行了第一个版本的数据库迁移。OpenStack项目中也是这么来做数据库迁移的。后续，一旦修改了项目，需要修改数据模型时，只要新增migration脚本即可。这部分代码也可以在<a href="https://github.com/diabloneo/webdemo">https://github.com/diabloneo/webdemo</a>中看到。</p>
 
@@ -513,7 +513,7 @@ sqlite&gt; .q
 
 <p>关于Alembic的更多使用方法，请阅读官方文档<a href="https://alembic.readthedocs.org/en/latest/">Alembic</a>。</p>
 
-<h1 id="section-7">总结</h1>
+<h1 id="总结">总结</h1>
 
 <p>本文到这边就结束了，这两篇文章我们了解OpenStack中数据库应用开发的基础知识。接下来，我们将会了解OpenStack中单元测试的相关知识。</p>
 

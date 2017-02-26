@@ -64,7 +64,7 @@
   <div class="post-content" itemprop="articleBody">
     <p>上一篇文章说到，我们将以实例的形式来继续讲述这个API服务的开发知识，这里会使用Pecan和WSME两个库。</p>
 
-<h1 id="rest-api">设计REST API</h1>
+<h1 id="设计rest-api">设计REST API</h1>
 
 <p>要开发REST API服务，我们首先需要设计一下这个服务。设计包括要实现的功能，以及接口的具体规范。我们这里要实现的是一个简单的用户管理接口，包括增删改查等功能。如果读者对REST API不熟悉，可以先从<a href="https://en.wikipedia.org/wiki/Representational_state_transfer">Wiki页面</a>了解一下。</p>
 
@@ -102,11 +102,11 @@ In [7]: print uuid.uuid4().hex
 
 <p>因为是个demo，所以我们设置一个用户包含的信息会比较简单，只包含name和age。</p>
 
-<h1 id="pecanapi">使用Pecan搭建API服务的框架</h1>
+<h1 id="使用pecan搭建api服务的框架">使用Pecan搭建API服务的框架</h1>
 
 <p>接下来就要开始编码工作了。首先要把整个服务的框架搭建起来。我们会在<a href="http://segmentfault.com/a/1190000002940724">软件包管理</a>这篇文件中的代码基础上继续我们的demo（所有这些代码在github的仓库里都能看到）。</p>
 
-<h2 id="section">代码目录结构</h2>
+<h2 id="代码目录结构">代码目录结构</h2>
 
 <p>一般来说，OpenStack项目中，使用Pecan来开发API服务时，都会在代码目录下有一个专门的API目录，用来保存API相关的代码。比如Magnum项目的<em>magnum/api</em>，或者Ceilometer项目的<em>ceilometer/api</em>等。我们的代码也遵守这个规范，让我们直接来看下我们的代码目录结构（#后面的表示注释）：</p>
 
@@ -122,11 +122,11 @@ In [7]: print uuid.uuid4().hex
 
 <p>这个在<a href="http://segmentfault.com/a/1190000003810294">API服务(3)</a>这篇文章中已经说明过了。</p>
 
-<h2 id="section-1">先让我们的服务跑起来</h2>
+<h2 id="先让我们的服务跑起来">先让我们的服务跑起来</h2>
 
 <p>为了后面更好的开发，我们需要先让我们的服务在本地跑起来，这样可以方便自己做测试，看到代码的效果。不过要做到这点，还是有些复杂的。</p>
 
-<h3 id="section-2">必要的代码</h3>
+<h3 id="必要的代码">必要的代码</h3>
 
 <p>首先，先创建config.py文件的内容：</p>
 
@@ -173,7 +173,7 @@ In [7]: print uuid.uuid4().hex
     <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s">"webdemo"</span></code></pre></figure>
 
-<h3 id="section-3">本地测试服务器</h3>
+<h3 id="本地测试服务器">本地测试服务器</h3>
 
 <p>为了继续开放的方便，我们要先创建一个Python脚本，可以启动一个单进程的API服务。这个脚本会放在<em>webdemo/cmd/</em>目录下，名称是<strong>api.py</strong>（这目录和脚本名称也是惯例），来看看我们的api.py吧：</p>
 
@@ -195,7 +195,7 @@ In [7]: print uuid.uuid4().hex
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
     <span class="n">main</span><span class="p">()</span></code></pre></figure>
 
-<h3 id="section-4">运行测试服务器的环境</h3>
+<h3 id="运行测试服务器的环境">运行测试服务器的环境</h3>
 
 <p>要运行这个测试服务器，首先需要安装必要的包，并且设置正确的路径。在后面的文章中，我们将会知道，这个可以通过<strong>tox</strong>这个工具来实现。现在，我们先做个简单版本的，就是手动创建这个运行环境。</p>
 
@@ -219,7 +219,7 @@ Successfully installed Mako-1.0.3 MarkupSafe-0.23 WSME-0.8.0 WebOb-1.5.1 WebTest
 </code></pre>
 </div>
 
-<h3 id="section-5">启动我们的服务</h3>
+<h3 id="启动我们的服务">启动我们的服务</h3>
 
 <p>启动服务需要技巧，因为我们的webdemo还没有安装到系统的Python路径中，也不在上面创建virtualenv环境中，所以我们需要通过指定<strong>PYTHONPATH</strong>这个环境变量来为Python程序增加库的查找路径：</p>
 
@@ -231,11 +231,11 @@ Successfully installed Mako-1.0.3 MarkupSafe-0.23 WSME-0.8.0 WebOb-1.5.1 WebTest
 
 <p>到这里，我们的REST API服务的框架已经搭建完成，并且测试服务器也跑起来了。</p>
 
-<h1 id="api">用户管理API的实现</h1>
+<h1 id="用户管理api的实现">用户管理API的实现</h1>
 
 <p>现在我们来实现我们在第一章设计的API。这里先说明一下：<strong>我们会直接使用Pecan的RestController来实现REST API，这样可以不用为每个接口指定接受的method</strong>。</p>
 
-<h2 id="apijson">让API返回JSON格式的数据</h2>
+<h2 id="让api返回json格式的数据">让API返回JSON格式的数据</h2>
 
 <p>现在，所有的OpenStack项目的REST API的返回格式都是使用JSON标准，所以我们也要这么做。那么有什么办法能够让WSME框架返回JSON数据呢？可以通过设置<code class="highlighter-rouge">wsmeext.pecan.wsexpose()</code>的<em>rest_content_types</em>参数来是先。这里，我们借鉴一段Magnum项目中的代码，把这段代码存放在文件<em>webdemo/api/expose.py</em>中：</p>
 
@@ -265,7 +265,7 @@ Successfully installed Mako-1.0.3 MarkupSafe-0.23 WSME-0.8.0 WebOb-1.5.1 WebTest
 
 <p>再次运行我们的测试服务器，就可以返现返回值为JSON格式了。</p>
 
-<h2 id="get-v1">实现 GET /v1</h2>
+<h2 id="实现-get-v1">实现 GET /v1</h2>
 
 <p>这个其实就是实现v1这个版本的API的路径前缀。在Pecan的帮助下，我们很容易实现这个，只要按照如下两步做即可：</p>
 
@@ -304,13 +304,13 @@ Successfully installed Mako-1.0.3 MarkupSafe-0.23 WSME-0.8.0 WebOb-1.5.1 WebTest
 
 <p>此时，你访问http://localhost:8080/v1就可以看到结果了。</p>
 
-<h2 id="get-v1users">实现 GET /v1/users</h2>
+<h2 id="实现-get-v1users">实现 GET /v1/users</h2>
 
-<h3 id="users-controller">添加users controller</h3>
+<h3 id="添加users-controller">添加users controller</h3>
 
 <p>这个API就是返回所有的用户信息，功能很简单。首先要添加users controller到上面的v1 controller中。为了不影响阅读体验，这里就不贴代码了，请看github上的示例代码。</p>
 
-<h3 id="wsmeapi">使用WSME来规范API的响应值</h3>
+<h3 id="使用wsme来规范api的响应值">使用WSME来规范API的响应值</h3>
 
 <p>上篇文章中，我们已经提到了WSME可以用来规范API的请求和响应的值，这里我们就要用上它。首先，我们要参考OpenStack的惯例来设计这个API的返回值：</p>
 
@@ -331,7 +331,7 @@ Successfully installed Mako-1.0.3 MarkupSafe-0.23 WSME-0.8.0 WebOb-1.5.1 WebTest
 
 <p>其中<em>users</em>是一个列表，列表中的每个元素都是一个user。那么，我们要如何使用WSME来规范我们的响应值呢？<strong>答案就是使用WSME的自定义类型</strong>。我们可以利用WSME的类型功能定义出一个user类型，然后再定义一个user的列表类型。最后，我们就可以使用上面的expose方法来规定这个API返回的是一个user的列表类型。</p>
 
-<h4 id="useruser">定义user类型和user列表类型</h4>
+<h4 id="定义user类型和user列表类型">定义user类型和user列表类型</h4>
 
 <p>这里我们需要用到WSME的Complex types的功能，请先看一下文档<a href="http://wsme.readthedocs.org/en/latest/types.html">Types</a>。简单说，就是我们可以把WSME的基本类型组合成一个复杂的类型。我们的类型需要继承自<em>wsme.types.Base</em>这个类。因为我们在本文只会实现一个user相关的API，所以这里我们把所有的代码都放在<em>webdemo/api/controllers/v1/users.py</em>文件中。来看下和user类型定义相关的部分：</p>
 
@@ -357,7 +357,7 @@ Successfully installed Mako-1.0.3 MarkupSafe-0.23 WSME-0.8.0 WebOb-1.5.1 WebTest
 
 <p>这样就完成了API的返回值检查了。</p>
 
-<h2 id="api-1">实现API逻辑</h2>
+<h2 id="实现api逻辑">实现API逻辑</h2>
 
 <p>我们现在来完成API的逻辑部分。不过为了方便大家理解，我们直接返回一个写好的数据，就是上面贴出来的那个。</p>
 
@@ -380,7 +380,7 @@ Successfully installed Mako-1.0.3 MarkupSafe-0.23 WSME-0.8.0 WebOb-1.5.1 WebTest
 
 <p>代码中，会先根据user信息生成User实例的列表<code class="highlighter-rouge">users_list</code>，然后再生成Users实例。此时，重启测试服务器后，你就可以从浏览器访问http://localhost:8080/v1/users，就能看到结果了。</p>
 
-<h2 id="post-v1users">实现 POST /v1/users</h2>
+<h2 id="实现-post-v1users">实现 POST /v1/users</h2>
 
 <p>这个API会接收用户上传的一个JSON格式的数据，然后打印出来（实际中一般是存到数据库之类的），要求用户上传的数据符合User类型的规范，并且返回的状态码为201。代码如下：</p>
 
@@ -429,7 +429,7 @@ Successfully installed Mako-1.0.3 MarkupSafe-0.23 WSME-0.8.0 WebOb-1.5.1 WebTest
 
 <p>最后，你接收到一个创建用户请求时，一般会为这个用户分配一个id。本文前面已经提到了OpenStack项目中一般使用UUID。你可以修改一下上面的逻辑，为每个用户分配一个UUID。</p>
 
-<h2 id="get-v1usersuuid">实现 GET /v1/users/<UUID></UUID></h2>
+<h2 id="实现-get-v1users-1">实现 GET /v1/users/<UUID></UUID></h2>
 
 <p>要实现这个API，需要两个步骤：</p>
 
@@ -438,7 +438,7 @@ Successfully installed Mako-1.0.3 MarkupSafe-0.23 WSME-0.8.0 WebOb-1.5.1 WebTest
   <li>在UserController中实现<code class="highlighter-rouge">get()</code>方法。</li>
 </ol>
 
-<h3 id="lookup">使用_lookup()方法</h3>
+<h3 id="使用_lookup方法">使用_lookup()方法</h3>
 
 <p>Pecan的<code class="highlighter-rouge">_lookup()</code>方法是controller中的一个特殊方法，Pecan会在特定的时候调用这个方法来实现更灵活的URL路由。Pecan还支持用户实现<code class="highlighter-rouge">_default()</code>和<code class="highlighter-rouge">_route()</code>方法。这些方法的具体说明，请阅读Pecan的文档：<a href="https://pecan.readthedocs.org/en/latest/routing.html">routing</a>。</p>
 
@@ -462,7 +462,7 @@ Successfully installed Mako-1.0.3 MarkupSafe-0.23 WSME-0.8.0 WebOb-1.5.1 WebTest
 
 <p><code class="highlighter-rouge">_lookup()</code>方法的形式为<code class="highlighter-rouge">_lookup(self, user_id, *remainder)</code>，意思就是会把/v1/users/<UUID>中的<UUID>部分作为user_id这个参数，剩余的按照**"/"**分割为一个数组参数（这里remainder为空）。然后，`_lookup()`方法里会初始化一个UserController实例，使用user_id作为初始化参数。这么做之后，这个初始化的控制器就能知道是要查找哪个用户了。然后这个控制器会被返回，作为下一个控制被调用。请求的处理流程就这么转移到UserController中了。</UUID></UUID></p>
 
-<h3 id="api-2">实现API逻辑</h3>
+<h3 id="实现api逻辑-1">实现API逻辑</h3>
 
 <p>实现前，我们要先修改一下我们返回的数据，里面需要增加一个id字段。对应的User定义如下：</p>
 
@@ -494,7 +494,7 @@ Successfully installed Mako-1.0.3 MarkupSafe-0.23 WSME-0.8.0 WebOb-1.5.1 WebTest
 </code></pre>
 </div>
 
-<h3 id="wsme">定义WSME类型的技巧</h3>
+<h3 id="定义wsme类型的技巧">定义WSME类型的技巧</h3>
 
 <p>你可能会有疑问：这里我们修改了User类型，增加了一个id字段，那么前面实现的<em>POST /v1/users</em>会不会失效呢？你可以自己测试一下。（答案是不会，因为这个类型里的字段都是可选的）。这里顺便讲两个技巧。</p>
 
@@ -511,7 +511,7 @@ Successfully installed Mako-1.0.3 MarkupSafe-0.23 WSME-0.8.0 WebOb-1.5.1 WebTest
 
 <p>检查这个值是否为None是肯定不行的，需要检查这个值是否为<strong>wsme.Unset</strong>。</p>
 
-<h2 id="put-v1usersuuid">实现 PUT /v1/users/<UUID></UUID></h2>
+<h2 id="实现-put-v1users">实现 PUT /v1/users/<UUID></UUID></h2>
 
 <p>这个和上一个API一样，不过<code class="highlighter-rouge">_lookup()</code>方法已经实现过了，直接添加方法到UserController中即可：</p>
 
@@ -533,7 +533,7 @@ Successfully installed Mako-1.0.3 MarkupSafe-0.23 WSME-0.8.0 WebOb-1.5.1 WebTest
 </code></pre>
 </div>
 
-<h2 id="delete-v1usersuuid">实现 DELETE /v1/users/<UUID></UUID></h2>
+<h2 id="实现-delete-v1users">实现 DELETE /v1/users/<UUID></UUID></h2>
 
 <p>同上，没有什么新的内容：</p>
 
@@ -543,7 +543,7 @@ Successfully installed Mako-1.0.3 MarkupSafe-0.23 WSME-0.8.0 WebOb-1.5.1 WebTest
     <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">print</span> <span class="s">'Delete user_id: </span><span class="si">%</span><span class="s">s'</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_id</span></code></pre></figure>
 
-<h1 id="section-6">总结</h1>
+<h1 id="总结">总结</h1>
 
 <p>到此为止，我们已经完成了我们的API服务了，虽然没有实际的逻辑，但是本文搭建起来的框架也是OpenStack中API服务的一个常用框架，很多大项目的API服务代码都和我们的webdemo长得差不多。最后再说一下，本文的代码在github上托管着：<a href="https://github.com/diabloneo/webdemo">diabloneo/webdemo</a>。</p>
 

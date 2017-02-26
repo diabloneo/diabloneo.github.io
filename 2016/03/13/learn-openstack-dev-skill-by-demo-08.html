@@ -64,7 +64,7 @@
   <div class="post-content" itemprop="articleBody">
     <p>本文将进入单元测试的部分，这也是基础知识中最后一个大块。本文将重点讲述Python和OpenStack中的单元测试的生态环境。</p>
 
-<h1 id="section">单元测试的重要性</h1>
+<h1 id="单元测试的重要性">单元测试的重要性</h1>
 
 <p>github上有个人画了一些不同语言的学习曲线图：<a href="https://github.com/dobiasd/articles/blob/master/programming_language_learning_curves.md">Learning Curves (for different programming languages)</a>，虽然有些恶搞的倾向，不过确实说明了问题。这里贴一下Python的部分：</p>
 
@@ -72,7 +72,7 @@
 
 <p>这个图说明了，会单元测试对于提高Python生产力的重要性，这主要是因为Python是个动态语言，很多问题都无法通过静态编译检查来发现，因此单元测试就成了一个重要的确保质量的手段。OpenStack的核心项目都对单元测试有极高的要求，以保证项目的高质量。</p>
 
-<h1 id="section-1">单元测试工具</h1>
+<h1 id="单元测试工具">单元测试工具</h1>
 
 <p>Python的单元测试工具很多，为单元测试提供不同方面的功能。OpenStack的项目也基本把现在流行的单元测试工具都用全了。单元测试可以说是入门OpenStack开发的最难的部分，也是最后一公里。本章，我们就介绍一下在OpenStack中会用到的单元测试的工具。由于数量很多，不可能详细介绍，因此主要做一些概念和用途上的介绍。</p>
 
@@ -132,7 +132,7 @@
 
 <p>tox是用来管理和构建虚拟环境(virtualenv)的。对于一个项目，我们需要运行Python 2.7的单元测试，也需要运行Python 3.4的单元测试，还需要运行PEP8的代码检查。这些不同的任务需要依赖不同的库，所以需要使用不同的虚拟环境。使用tox的时候，我们会在tox的配置文件<strong>tox.ini</strong>中指定不同任务的虚拟环境名称，该任务在虚拟环境中需要安装哪些包，以及该任务执行的时候需要运行哪些命令。更多信息，请查看官方文档：<a href="https://testrun.org/tox/latest/">https://testrun.org/tox/latest/</a></p>
 
-<h2 id="section-2">单元测试工具小结</h2>
+<h2 id="单元测试工具小结">单元测试工具小结</h2>
 
 <p>本章介绍了OpenStack中常用的单元测试工具的基本用途，希望大家对这些工具有个大概的认识。这里我们可以按照类别总结一下这些工具：</p>
 
@@ -147,11 +147,11 @@ testrepository调用subunit来执行测试用例，对测试结果进行聚合�
 
 <p>在<em>The Hacker’s Guide to Python</em>（《Python高手之路》）一书中，也有专门的一章介绍了各种单元测试工具及其用法，读者也可以参考一下。下一章，我们来分析Keystone项目的单元测试框架，可以让你看到在OpenStack的实际项目中，这些工具是如何被使用的。</p>
 
-<h1 id="keystone">Keystone的单元测试框架</h1>
+<h1 id="keystone的单元测试框架">Keystone的单元测试框架</h1>
 
 <p>现在，我们以Keystone项目为例，来看下真实项目中的单元测试是如何架构的。我们采用自顶向下的方式，先从最上层的部分介绍起。</p>
 
-<h2 id="tox-1">使用tox进行测试环境管理</h2>
+<h2 id="使用tox进行测试环境管理">使用tox进行测试环境管理</h2>
 
 <p>大部分情况下，我们都是通过<strong>tox</strong>命令来执行单元测试的，并且传递环境名称给tox命令：</p>
 
@@ -220,7 +220,7 @@ bandit =
 </code></pre>
 </div>
 
-<h2 id="testrepository-1">使用testrepository管理测试的运行</h2>
+<h2 id="使用testrepository管理测试的运行">使用testrepository管理测试的运行</h2>
 
 <p>上面我们看到<em>tox.ini</em>文件中的<code class="highlighter-rouge">commands</code>参数中执行的是<em>tools/pretty_tox.sh</em>命令。这个脚本的内容如下：</p>
 
@@ -275,7 +275,7 @@ test_run_concurrency=echo ${TEST_RUN_CONCURRENCY:-0}
 
 <p>每个OpenStack项目基本上也都是这样。如果你自己在开发一个Python项目，你也可以参考这个架构。</p>
 
-<h2 id="section-3">单元测试用例的代码架构</h2>
+<h2 id="单元测试用例的代码架构">单元测试用例的代码架构</h2>
 
 <p>下面我们来看一下Keystone的单元测试代码是如何写的，主要是看一下其层次结构。每个OpenStack项目的单元测试代码结构可能都不一样，不过你了解完Keystone的结构之后，看其他项目的就会比较快了。</p>
 
@@ -300,11 +300,11 @@ unit.test_v3_assignment.RoleAssignmentBaseTestCase
 
 <p>从上面的层次结构可以看出，OpenStack中的大项目，由于单元测试用例很多（Keystone现在有超过6200个单元测试用例），所以其单元测试架构也会比较复杂。要写好单元测试，需要先了解一下整个测试代码的架构。</p>
 
-<h1 id="section-4">总结</h1>
+<h1 id="总结">总结</h1>
 
 <p>本文我们了解了Python中的单元测试的概念和工具，并且通过Keystone项目了解了实际项目中的单元测试的架构，希望有助于各位读者更好的掌握OpenStack项目的单元测试基础。<a href="https://github.com/diabloneo/webdemo">webdemo项目</a>目前没有单元测试的代码，有兴趣的读者可以自己fork然后参考Keystone的架构为其增加完整的单元测试架构。</p>
 
-<h1 id="section-5">系列后记</h1>
+<h1 id="系列后记">系列后记</h1>
 
 <p>这个系列我打算就此结束，到目前为止一共写了8篇文章，写写停停，前后写了9个月。这里也做个小结。</p>
 

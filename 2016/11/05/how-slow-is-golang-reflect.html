@@ -64,7 +64,7 @@
   <div class="post-content" itemprop="articleBody">
     <p>由于Golang不支持泛型，所以我们会使用Golang的<code class="highlighter-rouge">interface{]</code>和<code class="highlighter-rouge">reflect</code>来实现语言的动态特性。但是，这个也会带来很严重的性能下降问题。但是，到底有多慢呢？我们可以通过Golang的<code class="highlighter-rouge">testing</code>库的<code class="highlighter-rouge">Benchmark</code>来测试一下。</p>
 
-<h1 id="section">测试程序</h1>
+<h1 id="测试程序">测试程序</h1>
 
 <p><em>bench.go</em>的代码如下：</p>
 
@@ -268,7 +268,7 @@
 </span><span class="p">}</span><span class="w">
 </span></pre></td></tr></tbody></table></code></pre></figure>
 
-<h1 id="section-1">测试结果</h1>
+<h1 id="测试结果">测试结果</h1>
 
 <p>执行<code class="highlighter-rouge">go test -bench-.</code>来运行测试：</p>
 

@@ -62,7 +62,7 @@
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <h1 id="openstack">使用OpenStack服务的方式</h1>
+    <h1 id="使用openstack服务的方式">使用OpenStack服务的方式</h1>
 
 <p>OpenStack项目作为一个IaaS平台，提供了三种使用方式：</p>
 
@@ -80,7 +80,7 @@
 
 <p>通过API使用OpenStack的方式是由各个服务自己实现的，比如负责计算的nova项目实现了计算相关的API，负责认证的keystone项目实现了认证和授权相关的API。这些API都是有统一的形式的，<strong>都是采用了HTTP协议实现的符合REST规范的API</strong>。OpenStack中如何实现这些API就是本文重点要将的内容。</p>
 
-<h1 id="httprestful-api">基于HTTP协议的RESTful API</h1>
+<h1 id="基于http协议的restful-api">基于HTTP协议的RESTful API</h1>
 
 <p>REST的全称是<strong>Representational State Transfer</strong>，中文翻译过来是<strong>表征状态转移</strong>，是<em>Roy Fielding</em>在他的博士论文<a href="https://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm"><strong>Architectural Styles and the Design of Network-based Software Architectures</strong></a>提出的一种软件架构风格。可以先到<a href="https://zh.wikipedia.org/zh/REST">wikipedia</a>页面了解一下这个风格的特点。一般会把满足这种设计风格的API成为<strong>RESTful API</strong>。由于这种软件设计风格非常适合采用HTTP协议来实现，因此HTTP协议是目前实现RESTful API的主要方案。</p>
 
@@ -92,7 +92,7 @@
 
 <p>当然，你可以点开<strong>detail</strong>看到详细的说明。从上面这个API的文档来看，你会觉得这个和开发网站时使用的GET方法和POST方法差不多，实际上也是差不多的，只不过对HTTP协议的使用方法做了满足REST风格的规定而已。</p>
 
-<h1 id="pythonrestful-api">Python如何实现RESTful API</h1>
+<h1 id="python如何实现restful-api">Python如何实现RESTful API</h1>
 
 <p>因为Python能够进行Web开发，所以用来开发RESTful API也就不成问题，这两者的技术基础是一样。在Python下开发RESTful API应用，无非是解决两个问题：</p>
 
@@ -101,7 +101,7 @@
   <li>用什么框架开发？</li>
 </ol>
 
-<h2 id="section">服务如何部署？</h2>
+<h2 id="服务如何部署">服务如何部署？</h2>
 
 <p>说到Python的Web服务部署这个问题，就不得不提到WSGI。目前Python有两种方式来开发和部署一个Web应用：<strong>用WSGI</strong>和<strong>不用WSGI</strong>。如果你不了解WSGI，那么你需要先看下另外这篇关于WSGI的文章：<a href="http://segmentfault.com/a/1190000003069785">WSGI简介</a>。</p>
 
@@ -109,13 +109,13 @@
 
 <p>当然，也可以不用WSGI。在Python中，如果不使用WSGI的化，一般开发者会选择一些专门的服务器和框架，比如<a href="http://www.tornadoweb.org/en/stable/">Tornado</a>，或者最新最潮的<a href="http://aiohttp.readthedocs.org/en/stable/">aiohttp</a>。不过在OpenStack的项目中我还没见过不使用WSGI的。</p>
 
-<h2 id="section-1">用什么框架开发</h2>
+<h2 id="用什么框架开发">用什么框架开发</h2>
 
 <p>Python的Web开发框架很多，最出名自然是Django了。基本上，还活跃的框架都支持RESTful API的开发，有些框架还专门为RESTful API的开发提供了便利的功能（比如Pecan），有些框架则通过第三方模块来提供这种便利，比如Django和Flask都有不少和REST相关的第三方库。</p>
 
 <p>对于框架选择，也没有什么特别好的标准，一般都是比较性能、文档、社区是否活跃等。在我看来，选择流行的一般就不会错。</p>
 
-<h1 id="openstackrestful-api">OpenStack中的RESTful API开发</h1>
+<h1 id="openstack中的restful-api开发">OpenStack中的RESTful API开发</h1>
 
 <p>上面已经谈到了OpenStack都是使用WSGI，也提到了部署方式。这一章来说一下OpenStack中使用的框架。</p>
 
