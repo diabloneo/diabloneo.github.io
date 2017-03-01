@@ -134,6 +134,7 @@
 <ul>
   <li><strong>path</strong>，package的ImportPath，可能是local import的。</li>
   <li><strong>srcDir</strong>，是执行命令时的当前路径，用于当arg是local import path的情况下，查找package用的。</li>
+  <li><strong>parent</strong>，是<code class="highlighter-rouge">path</code>的父package，也就是把<code class="highlighter-rouge">path</code> import进来的package。</li>
   <li><strong>stk</strong>，记录package import路径的栈。</li>
   <li><strong>importPos</strong>，记录import语句的位置用的，以便出错时可以显示出位置信息。</li>
   <li><strong>mode</strong>，目前只有一个mode，<strong>useVendor</strong>，表示是否需要进行vendor展开。useVendor为真，表示一个文件中的import path还没有被转换为一个vendor中的path，需要被进行vendor展开处理。当我们从<code class="highlighter-rouge">loadPackage</code>中调用<code class="highlighter-rouge">loadImport</code>时，传递的<code class="highlighter-rouge">mode</code>为0，因为我们要构建的package显然不会在vendor目录中。</li>
@@ -154,6 +155,9 @@
 
 <ol>
   <li>
+    <p><code class="highlighter-rouge">reusePackage</code>函数，这个函数的主要作用是判断是否存在循环应用的情况。在后面的文章会讲解判断方法。</p>
+  </li>
+  <li>
     <p><code class="highlighter-rouge">buildContext</code></p>
 
     <p><em>cmd/go/build.go</em>文件中的<code class="highlighter-rouge">buildContext</code>变量是用来保存构建上下文的全局变量，默认指向<code class="highlighter-rouge">go/build.Default</code>。</p>
@@ -173,7 +177,7 @@
 
 <h1 id="总结">总结</h1>
 
-<p>我们现在知道了<code class="highlighter-rouge">go build</code>命令的入口，并且当你要构建一个package的时候，要先载入这个package的信息。这个主要是在<code class="highlighter-rouge">loadPackage</code>这个函数中完成的，载入的是通过调用<code class="highlighter-rouge">loadImport</code>函数进行的，要分别载入这个package自己的信息，然后再载入它的依赖信息。这个过程说明了，载入一个命令行指定的package和载入一个<code class="highlighter-rouge">import</code>语句指定的package是差不多的。</p>
+<p>我们现在知道了<code class="highlighter-rouge">go build</code>命令的入口，并且知道当要构建一个package的时候，要先载入这个package的信息。这个主要是在<code class="highlighter-rouge">loadPackage</code>这个函数中完成的，载入的是通过调用<code class="highlighter-rouge">loadImport</code>函数进行的，要分别载入这个package自己的信息，然后再载入它的依赖信息。这个过程说明了，载入一个命令行指定的package和载入一个<code class="highlighter-rouge">import</code>语句指定的package是差不多的。</p>
 
 <p>下一篇文章会说明<code class="highlighter-rouge">buildConext.Import</code>内部的逻辑。</p>
 
