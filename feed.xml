@@ -6,9 +6,222 @@
 </description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 02 Mar 2017 22:33:53 +0800</pubDate>
-    <lastBuildDate>Thu, 02 Mar 2017 22:33:53 +0800</lastBuildDate>
+    <pubDate>Tue, 22 Aug 2017 23:50:40 +0800</pubDate>
+    <lastBuildDate>Tue, 22 Aug 2017 23:50:40 +0800</lastBuildDate>
     <generator>Jekyll v3.4.0</generator>
+    
+      <item>
+        <title>OpenStack Summit 2017 Boston观后感</title>
+        <description>&lt;p&gt;这次summit已经不强调OpenStack本身的技术了，所有的核心项目都已经很成熟，各大厂商也把高可用和在线升级做得很成熟了。而且，OpenStack已经是私有云事实上的标准，除非你选VMWare产品，否则只能选择OpenStack。&lt;/p&gt;
+
+&lt;p&gt;在我看来，OpenStack summit这次强调的重点有两个，一个是open，另一个是和容器的结合。&lt;/p&gt;
+
+&lt;h1 id=&quot;open&quot;&gt;Open&lt;/h1&gt;
+
+&lt;p&gt;Open，在OpenStack的解释里有两个，一个是open source，另一个是open community。&lt;/p&gt;
+
+&lt;p&gt;Open source代表着透明、用户可控，也代表着运维困难等，是一些被大家广泛接受的观点。OpenStack基金会这次还在现场连线采访了斯诺登，就是为了向用户传递open source方面的价值。不过，我觉得这些观点并不能很好的吸引用户。&lt;/p&gt;
+
+&lt;p&gt;Open community是我觉得更有意思的一个方面。基金会COO Mark Collier在第二天的keynote Home of Open {Composable} Infrastructure 花了很大的篇幅来讲这个问题。OpenStack是一个很活跃的社区，Kubernetes是另一个很活跃的社区，两个社区之间是否能有合作呢？合作又会涉及到哪些方面呢？比如在运营方面，Mark觉得很多开源社区的运营都和OpenStack社区类似，其他社区可以学习OpenStack这七年来积累的社区运营经验。在技术方面，是否可以直接利用其他社区的产品，避免重复造轮子？&lt;/p&gt;
+
+&lt;p&gt;在技术方面，Mark举了个很好的例子，像Kubernetes这样的应用是需要解决存储问题的，而OpenStack已经花了7年的时间来解决存储问题，Cinder项目可以对接80种不同的后端，Kubernetes可以通过对接Cinder来解决存储问题，这样就不用重复对接不同存储后端这个工作了。目前Kubernetes也确实这么做了。&lt;/p&gt;
+
+&lt;p&gt;我觉得上面这个例子说明了OpenStack现在的地位，以及基金会对它的期望。现在的OpenStack就像是当年的Linux，已经开始成为一种标准，一种数据中心管理的标准：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;当年，你要管理一个服务器上的资源，你就给它装上Linux。Linux负责管理一个服务器上的计算、网络和存储资源。&lt;/li&gt;
+  &lt;li&gt;现在，你要管理一个数据中心的资源，你就给它装上OpenStack。OpenStack负责管理一个数据中心里的计算、网络和存储资源。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;预计，OpenStack会强化自己作为数据中心OS的路线。&lt;/p&gt;
+
+&lt;h1 id=&quot;容器&quot;&gt;容器&lt;/h1&gt;
+
+&lt;p&gt;这两年来，容器技术的发展绝对是对OpenStack发展的一大威胁。不论是用户，还是OpenStack社区，都对容器技术如何与OpenStack结合感到困惑。但是，今年，这个问题似乎得到了解决，不过并不是通过技术方案来解决，而是通过策略。&lt;/p&gt;
+
+&lt;p&gt;这次的summit上，社区和主要厂商都把kubernetes、mesos、swarm等看成是应用管理平台，这个平台通过容器技术可以实现应用在混合云上的编排需求。OpenStack则作为私有云的管理平台，向K8s提供资源，但是不参与应用的管理。类似下图这样的架构。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/imgs/00009_hybrid_cloud_architecture.jpg&quot; alt=&quot;Hybrid Cloud Architecture&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;也就是说，OpenStack打算脱离应用管理平台，各大厂商目前也在这么做，比如Red Hat和Ubuntu。&lt;/p&gt;
+
+&lt;p&gt;另外，既然把容器管理平台作为连接私有云和公有云的重要工具，那么这个平台就得解决计算、网络和存储这三种资源在私有云和公有云之间迁移的问题。计算很简单，计算是无状态的，私有云的CPU和公有云的CPU可以做同样的事情，只需要一定的启停时间。网络，可以通过修改DNS或者IP地址达到目的，流量还是可以到达你服务所在的位置。存储，只有存储是最难的。
+混合云的存储问题，主要还是在于数据的存储位置是很难改变的，成本太高。存储决定了应用的状态，所以存储有一致性等各种要求。要想在混合云的场景里解决这个问题，要么是把数据复制一份，这就存在数据一致性和存储成本的问题；要么是忍受跨WAN的数据访问带来的延迟和吞吐的降低。这个问题应该来说，还没有好的解决方案。但是，从另一方面来说，这个问题应该不是一个太大的问题，公有云一直是推行多region数据不相通的运作方式，大家也都用得好好的。所以，使用容器管理平台来连接私有云和公有云时，还是需要考虑数据的存储位置。&lt;/p&gt;
+
+&lt;p&gt;虽然数据存储不可能那么灵活，Red Hat和AWS还是做了一个尝试。在Red Hat summit上，发布了AWS broker类容器。这类容器是AWS公有云服务的代理容器，创建一个这样的容器，就等于在AWS创建了一个对应的服务，应用连接到这个容器就可以直接访问AWS服务。所以应用不用关心自己在哪里运行，访问的数据始终是在AWS上。这是一个很好的尝试。&lt;/p&gt;
+
+&lt;p&gt;总的来说，使用容器来调度应用也是个事实上的标准了，OpenStack已经没有办法在这个领域中占到地盘了（所以我对Magnum项目的前途感到十分担忧啊）。如何和容器更好的结合，肯定是未来一两年内OpenStack要做的主要事情。&lt;/p&gt;
+</description>
+        <pubDate>Fri, 26 May 2017 00:00:00 +0800</pubDate>
+        <link>/2017/05/26/openstack-summit-2017-boston-review.html</link>
+        <guid isPermaLink="true">/2017/05/26/openstack-summit-2017-boston-review.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Golang源码阅读笔记 -- 目录</title>
+        <description>&lt;ol&gt;
+  &lt;li&gt;&lt;a href=&quot;/2017/02/26/golang-code-reading-notes-1.html&quot;&gt;go build(1)&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;/2017/02/27/golang-code-reading-notes-2.html&quot;&gt;go build(2)&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;/2017/02/28/golang-code-reading-notes-3.html&quot;&gt;go build(3)&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;/2017/03/04/golang-code-reading-notes-4.html&quot;&gt;go build(4)&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        <pubDate>Sat, 04 Mar 2017 00:00:00 +0800</pubDate>
+        <link>/2017/03/04/golang-code-reading-notes-index.html</link>
+        <guid isPermaLink="true">/2017/03/04/golang-code-reading-notes-index.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Golang源码阅读笔记 -- go build(4)</title>
+        <description>&lt;h1 id=&quot;runbuild函数&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;runBuild&lt;/code&gt;函数&lt;/h1&gt;
+
+&lt;p&gt;在之前的三篇文章中，我们从&lt;code class=&quot;highlighter-rouge&quot;&gt;runBuild&lt;/code&gt;函数开始，阅读了获取package信息的过程，然后又回到了&lt;code class=&quot;highlighter-rouge&quot;&gt;runBuild&lt;/code&gt;函数中。现在，我们继续来看&lt;code class=&quot;highlighter-rouge&quot;&gt;runBuild&lt;/code&gt;函数剩余的代码。先回顾下&lt;code class=&quot;highlighter-rouge&quot;&gt;runBuild&lt;/code&gt;的代码：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;func runBuild(cmd *Command, args []string) {
+	instrumentInit()
+	buildModeInit()
+	var b builder
+	b.init()
+
+	pkgs := packagesForBuild(args)
+
+  // 剩余部分
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;现在，我们来看下剩余部分的代码的主要流程：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;创建一个&lt;code class=&quot;highlighter-rouge&quot;&gt;builder&lt;/code&gt;对象&lt;code class=&quot;highlighter-rouge&quot;&gt;b&lt;/code&gt;，这个对象是用来保存build过程的状态的。&lt;/li&gt;
+  &lt;li&gt;为要构建的package，生成一个&lt;code class=&quot;highlighter-rouge&quot;&gt;action&lt;/code&gt;对象&lt;code class=&quot;highlighter-rouge&quot;&gt;a&lt;/code&gt;，用来表示构建过程要执行的动作。&lt;/li&gt;
+  &lt;li&gt;调用&lt;code class=&quot;highlighter-rouge&quot;&gt;b.do(a)&lt;/code&gt;执行这些构建的动作。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;下面我们会仔细的来看&lt;code class=&quot;highlighter-rouge&quot;&gt;builder&lt;/code&gt;对象和&lt;code class=&quot;highlighter-rouge&quot;&gt;action&lt;/code&gt;对象的内容。这里总结一下&lt;code class=&quot;highlighter-rouge&quot;&gt;go build&lt;/code&gt;命令的逻辑：&lt;strong&gt;获取package信息之后，生成需要执行的动作，并且为这些动作排序，然后执行这些动作&lt;/strong&gt;。这些动作其实就是编译、打包、连接等编译过程的基础动作。&lt;/p&gt;
+
+&lt;h1 id=&quot;action对象&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;action&lt;/code&gt;对象&lt;/h1&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;action&lt;/code&gt;对象位于文件&lt;em&gt;cmd/go/build.go&lt;/em&gt;中，表示build的动作序列中的一个动作。&lt;code class=&quot;highlighter-rouge&quot;&gt;action&lt;/code&gt;对象本身没有方法，只保存一个动作所需的信息。其中几个主要的成员如下：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;p *Package&lt;/code&gt; 该action要作用到那个package上&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;f func(*builder *action) error&lt;/code&gt; 这个是该action要执行的处理&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;deps []*action&lt;/code&gt; 该action依赖于哪些action，要等这些action完成后才能执行本action&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;triggers []*action&lt;/code&gt; 哪些action依赖本action&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;pending int&lt;/code&gt; 还有多少依赖的action没有执行&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;builder对象&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;builder&lt;/code&gt;对象&lt;/h1&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;builder&lt;/code&gt;对象保存一次build过程的全部状态，负责构建action序列以及执行action序列，该对象位于&lt;em&gt;cmd/go/build.go&lt;/em&gt;文件中。使用&lt;code class=&quot;highlighter-rouge&quot;&gt;builder&lt;/code&gt;对象主要是使用它的几个方法，下面我们来一一介绍。&lt;/p&gt;
+
+&lt;h2 id=&quot;b-builder-init方法&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;(b *builder) init&lt;/code&gt;方法&lt;/h2&gt;
+
+&lt;p&gt;该方法在&lt;code class=&quot;highlighter-rouge&quot;&gt;runBuilde&lt;/code&gt;中被调用，负责初始化&lt;code class=&quot;highlighter-rouge&quot;&gt;builder&lt;/code&gt;对象，以及创建一个临时工作目录用于保存构建过程的中间结果。该临时目录一般是&lt;em&gt;/tmp/go-build&lt;/em&gt;开头的，其值保存在&lt;code class=&quot;highlighter-rouge&quot;&gt;b.work&lt;/code&gt;中。&lt;/p&gt;
+
+&lt;h2 id=&quot;b-builder-action方法&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;(b *builder) action&lt;/code&gt;方法&lt;/h2&gt;
+
+&lt;p&gt;该方法直接调用&lt;code class=&quot;highlighter-rouge&quot;&gt;(b *builder) action1(mode buildMode, depMode buildMode, p *Package, lookshared bool, forShlib string) *action&lt;/code&gt;方法。&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;action1&lt;/code&gt;这个方法会构建一个package对应的action及其依赖的action，来看一下它的逻辑你就会明白。&lt;/p&gt;
+
+&lt;p&gt;这里要说明一下参数：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;lookshared&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;forShlib&lt;/code&gt;可以认为是&lt;code class=&quot;highlighter-rouge&quot;&gt;false&lt;/code&gt;和空字符串，这个在常用的构建过程不起作用。&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;mode&lt;/code&gt;表示要构建的package的方式，值是&lt;code class=&quot;highlighter-rouge&quot;&gt;modeBuild&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;depMode&lt;/code&gt;表示依赖的package的模式，默认是&lt;code class=&quot;highlighter-rouge&quot;&gt;modeBuild&lt;/code&gt;，如果从命令行指定了&lt;strong&gt;-i&lt;/strong&gt;选项，则这个值为&lt;code class=&quot;highlighter-rouge&quot;&gt;modeInstall&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;p&lt;/code&gt;就是该动作要处理的package&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;下面来看一下&lt;code class=&quot;highlighter-rouge&quot;&gt;action1&lt;/code&gt;的主要逻辑：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;先遍历&lt;code class=&quot;highlighter-rouge&quot;&gt;p&lt;/code&gt;的所有&lt;code class=&quot;highlighter-rouge&quot;&gt;imports&lt;/code&gt;，也就是&lt;code class=&quot;highlighter-rouge&quot;&gt;p&lt;/code&gt;的所有依赖，然后为每个依赖调用&lt;code class=&quot;highlighter-rouge&quot;&gt;action1&lt;/code&gt;方法，并将结果添加到&lt;code class=&quot;highlighter-rouge&quot;&gt;a.deps&lt;/code&gt;列表中。这里使用递归调用，可以直接生成构建一个package所需要的所有action。&lt;/li&gt;
+  &lt;li&gt;当依赖处理完后，就会开始生成当前的action
+    &lt;ol&gt;
+      &lt;li&gt;确定&lt;code class=&quot;highlighter-rouge&quot;&gt;a.objdir&lt;/code&gt;，长这样&lt;em&gt;$WORK/goexample/hello/_obj/&lt;/em&gt;，这个是一个package编译出来的&lt;strong&gt;.o&lt;/strong&gt;文件的存放位置。&lt;/li&gt;
+      &lt;li&gt;确定&lt;code class=&quot;highlighter-rouge&quot;&gt;a.objpkg&lt;/code&gt;，长这样&lt;em&gt;$WORK/goexample/hello.a&lt;/em&gt;，这个是一个package编译出来的&lt;strong&gt;.o&lt;/strong&gt;文件打包后的位置。&lt;/li&gt;
+      &lt;li&gt;确定&lt;code class=&quot;highlighter-rouge&quot;&gt;a.link&lt;/code&gt;，如果要构建的package名称是&lt;strong&gt;main&lt;/strong&gt;，那么该值为&lt;code class=&quot;highlighter-rouge&quot;&gt;true&lt;/code&gt;，表示最后需要进行连接，生成可执行文件。&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;接下来，根据&lt;code class=&quot;highlighter-rouge&quot;&gt;mode&lt;/code&gt;参数确定要action的其他内容。
+    &lt;ol&gt;
+      &lt;li&gt;如果是&lt;code class=&quot;highlighter-rouge&quot;&gt;modeBuild&lt;/code&gt;：
+        &lt;ol&gt;
+          &lt;li&gt;设置&lt;code class=&quot;highlighter-rouge&quot;&gt;a.f&lt;/code&gt;的值为&lt;code class=&quot;highlighter-rouge&quot;&gt;(*builder).build&lt;/code&gt;，也就是&lt;code class=&quot;highlighter-rouge&quot;&gt;builder&lt;/code&gt;对象的&lt;code class=&quot;highlighter-rouge&quot;&gt;build&lt;/code&gt;方法。&lt;/li&gt;
+          &lt;li&gt;设置&lt;code class=&quot;highlighter-rouge&quot;&gt;a.target = a.objpkg&lt;/code&gt;&lt;/li&gt;
+          &lt;li&gt;如果&lt;code class=&quot;highlighter-rouge&quot;&gt;a.link&lt;/code&gt;为&lt;code class=&quot;highlighter-rouge&quot;&gt;true&lt;/code&gt;，那么会修改&lt;code class=&quot;highlighter-rouge&quot;&gt;a.target&lt;/code&gt;，长这样&lt;em&gt;$WORK/goexample/hello/_obj/exe/a.out&lt;/em&gt;&lt;/li&gt;
+        &lt;/ol&gt;
+      &lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;经过上面的处理后，就得到了要构建一个package的action序列，这个序列其实是一棵树，上层节点依赖于下层节点。这里的重点是&lt;code class=&quot;highlighter-rouge&quot;&gt;(*builder)build&lt;/code&gt;这个方法，它完成了构建的动作。&lt;/p&gt;
+
+&lt;h2 id=&quot;b-builder-build方法&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;(b *builder) build&lt;/code&gt;方法&lt;/h2&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;(b *builder) build(a *action) (err error)&lt;/code&gt;方法负责编译和打包一个package，编译和打包的动作从它这里发起，但是并不在这里实现。我们来看这个方法的逻辑：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;创建&lt;code class=&quot;highlighter-rouge&quot;&gt;a.objdir&lt;/code&gt;这个目录以及&lt;code class=&quot;highlighter-rouge&quot;&gt;a.target&lt;/code&gt;的目录部分。&lt;/li&gt;
+  &lt;li&gt;接下来会做一些和cgo以及swig相关的工作，我们先跳过。&lt;/li&gt;
+  &lt;li&gt;接下来，如果&lt;code class=&quot;highlighter-rouge&quot;&gt;a.p.coverMode&lt;/code&gt;不为空，那么表示这个是需要进行代码覆盖率计算的处理，我们也跳过。&lt;/li&gt;
+  &lt;li&gt;调用&lt;code class=&quot;highlighter-rouge&quot;&gt;buildToolchain.gc&lt;/code&gt;。这里&lt;code class=&quot;highlighter-rouge&quot;&gt;buildToolchain&lt;/code&gt;是一个interface的全局变量，因为Golang的构建可以使用Google的编译器，也可以使用gccgo，所以这里就用一个interface来屏蔽具体的工具链的差异。我们在下面再看&lt;code class=&quot;highlighter-rouge&quot;&gt;buildToolchain&lt;/code&gt;的实现。这里先看一下这个调用的结果：
+ &lt;code class=&quot;highlighter-rouge&quot;&gt;ofile, out, err := buildToolchain.gc(b, a.p, a.objpkg, obj, len(sfiles) &amp;gt; 0, inc, gofiles)&lt;/code&gt;，这个调用会把这个package下的所有go文件编译成为一个目标文件&lt;code class=&quot;highlighter-rouge&quot;&gt;ofile&lt;/code&gt;。编译得到的文件可能是&lt;strong&gt;.o&lt;/strong&gt;文件，也可能是&lt;strong&gt;.a&lt;/strong&gt;文件。如果是&lt;strong&gt;.a&lt;/strong&gt;文件，说明已经打包过了。&lt;/li&gt;
+  &lt;li&gt;接下来，会处理&lt;em&gt;.h&lt;/em&gt;, &lt;em&gt;.c&lt;/em&gt;, &lt;em&gt;.s&lt;/em&gt;等文件，这里也略过不讲。&lt;/li&gt;
+  &lt;li&gt;如果刚才编译得到的是&lt;strong&gt;.o&lt;/strong&gt;文件，那么会调用&lt;code class=&quot;highlighter-rouge&quot;&gt;buildToolchain.pack&lt;/code&gt;方法把刚才的&lt;strong&gt;.o&lt;/strong&gt;文件打包成一个&lt;strong&gt;.a&lt;/strong&gt;文件。&lt;/li&gt;
+  &lt;li&gt;最后，如果&lt;code class=&quot;highlighter-rouge&quot;&gt;a.link&lt;/code&gt;为true，那么会调用&lt;code class=&quot;highlighter-rouge&quot;&gt;buildToolchain.ld&lt;/code&gt;来进行连接。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;现在，我们大概了解了&lt;code class=&quot;highlighter-rouge&quot;&gt;build&lt;/code&gt;方法的逻辑，下面我们先来看下toolchain相关的逻辑，然后再回到&lt;code class=&quot;highlighter-rouge&quot;&gt;builder&lt;/code&gt;对象。&lt;/p&gt;
+
+&lt;h1 id=&quot;gctoolchain&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;gcToolchain&lt;/code&gt;&lt;/h1&gt;
+
+&lt;p&gt;上面我们提到了&lt;code class=&quot;highlighter-rouge&quot;&gt;buildToolchain&lt;/code&gt;这个全局变量，它的定义是&lt;code class=&quot;highlighter-rouge&quot;&gt;var buildToolchain toolchain = noToolchiain{}&lt;/code&gt;，其中&lt;code class=&quot;highlighter-rouge&quot;&gt;toolchain&lt;/code&gt;是一个interface，也在文件&lt;em&gt;cmd/go/build.go&lt;/em&gt;文件中定义，主要定义了我们前面提到过的&lt;code class=&quot;highlighter-rouge&quot;&gt;gc&lt;/code&gt;等借口。在&lt;em&gt;cmd/go/build.go&lt;/em&gt;的&lt;code class=&quot;highlighter-rouge&quot;&gt;init&lt;/code&gt;函数中，&lt;code class=&quot;highlighter-rouge&quot;&gt;buildToolchain&lt;/code&gt;变量会根据&lt;code class=&quot;highlighter-rouge&quot;&gt;go/build.Default.Compiler&lt;/code&gt;的值来设置。&lt;em&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;go/build&lt;/code&gt;这个package我们之前已经接触过不少了，在&lt;a href=&quot;/2017/02/26/golang-code-reading-notes-1.html&quot;&gt;go build(1)&lt;/a&gt;中我们已经知道，&lt;code class=&quot;highlighter-rouge&quot;&gt;buildContext&lt;/code&gt;就是指向&lt;code class=&quot;highlighter-rouge&quot;&gt;go/build.Default&lt;/code&gt;&lt;/em&gt;。&lt;code class=&quot;highlighter-rouge&quot;&gt;go/build.Default.Compiler&lt;/code&gt;的值是指向&lt;code class=&quot;highlighter-rouge&quot;&gt;runtime/compiler.go&lt;/code&gt;文件中的&lt;code class=&quot;highlighter-rouge&quot;&gt;Compiler&lt;/code&gt;常量，值是&lt;strong&gt;gc&lt;/strong&gt;。所以，默认的编译是使用Google的编译器，也就是这里的&lt;strong&gt;gc&lt;/strong&gt;。不过，编译器是可以使用&lt;strong&gt;-compiler&lt;/strong&gt;选项修改的。大部分情况下，我们是使用&lt;strong&gt;gc&lt;/strong&gt;编译器，所以这里只讲解&lt;strong&gt;gc&lt;/strong&gt;编译器的逻辑。&lt;/p&gt;
+
+&lt;p&gt;使用&lt;strong&gt;gc&lt;/strong&gt;编译器时，&lt;code class=&quot;highlighter-rouge&quot;&gt;buildToolchain&lt;/code&gt;变量会被赋值为&lt;code class=&quot;highlighter-rouge&quot;&gt;gcToolchain{}&lt;/code&gt;，所以在&lt;em&gt;go build&lt;/em&gt;中使用&lt;strong&gt;gc&lt;/strong&gt;编译器都是通过&lt;code class=&quot;highlighter-rouge&quot;&gt;gcToolchain{}&lt;/code&gt;的方法来实现的。这里我们来看两个主要的方法：&lt;code class=&quot;highlighter-rouge&quot;&gt;gc&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;ld&lt;/code&gt;。&lt;/p&gt;
+
+&lt;h2 id=&quot;gctoolchain-gc方法&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;(gcToolchain) gc&lt;/code&gt;方法&lt;/h2&gt;
+
+&lt;p&gt;这个方法做的主要工作就是以合适的参数调用&lt;strong&gt;go tool compile&lt;/strong&gt;，也就是Golang的编译器。假设我们现在在&lt;em&gt;${GOPATH}/goexamples/hello/&lt;/em&gt;目录下执行&lt;code class=&quot;highlighter-rouge&quot;&gt;go build -v -x -work hello.go&lt;/code&gt;，那么就可以看到执行了&lt;strong&gt;compile&lt;/strong&gt;命令：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;WORK=/tmp/go-build862488510
+command-line-arguments
+mkdir -p $WORK/command-line-arguments/_obj/
+mkdir -p $WORK/command-line-arguments/_obj/exe/
+cd /home/diabloneo/go/src/goexamples/hello
+/opt/go/pkg/tool/linux_amd64/compile -o $WORK/command-line-arguments.a -trimpath $WORK -p main -complete -buildid b9c10ab5f09ab93c4d4e4dda286cebc203c4d23e -D _/home/diabloneo/go/src/goexamples/hello -I $WORK -pack ./hello.go
+...
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;最后的这行&lt;strong&gt;compile&lt;/strong&gt;命令的生成和调用，就是在&lt;code class=&quot;highlighter-rouge&quot;&gt;(gcToolchain) gc&lt;/code&gt;方法中实现的，可以看到编译得到的结果是 &lt;code class=&quot;highlighter-rouge&quot;&gt;$WORK/command-line-arguments.a&lt;/code&gt;这个文件。&lt;/p&gt;
+
+&lt;h2 id=&quot;gctoolchain-ld方法&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;(gcToolchain) ld&lt;/code&gt;方法&lt;/h2&gt;
+
+&lt;p&gt;这个方法则是调用&lt;strong&gt;go tool link&lt;/strong&gt;，也就是Golang的连接器（代码的构建过程一般都分为编译和连接两个部分）。接着上面的例子，我们可以看到，&lt;code class=&quot;highlighter-rouge&quot;&gt;go build -v -x -work hello.go&lt;/code&gt;的输出中也执行了&lt;strong&gt;link&lt;/strong&gt;命令：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/opt/go/pkg/tool/linux_amd64/link -o $WORK/command-line-arguments/_obj/exe/a.out -L $WORK -extld=gcc -buildmode=exe -buildid=b9c10ab5f09ab93c4d4e4dda286cebc203c4d23e $WORK/command-line-arguments.a
+mv $WORK/command-line-arguments/_obj/exe/a.out hello
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;link&lt;/strong&gt;程序把编译生成的&lt;code class=&quot;highlighter-rouge&quot;&gt;command-line-arguments.a&lt;/code&gt;和标准库连接起来，得到了&lt;code class=&quot;highlighter-rouge&quot;&gt;$WORK/command-line-arguments/_obj/exe/a.out&lt;/code&gt;这个文件，然后这个文件被重命名为&lt;code class=&quot;highlighter-rouge&quot;&gt;hello&lt;/code&gt;。&lt;/p&gt;
+
+&lt;h1 id=&quot;再访builder对象&quot;&gt;再访&lt;code class=&quot;highlighter-rouge&quot;&gt;builder&lt;/code&gt;对象&lt;/h1&gt;
+</description>
+        <pubDate>Sat, 04 Mar 2017 00:00:00 +0800</pubDate>
+        <link>/2017/03/04/golang-code-reading-notes-4.html</link>
+        <guid isPermaLink="true">/2017/03/04/golang-code-reading-notes-4.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>Golang源码阅读笔记 -- go build(3)</title>
@@ -1742,1373 +1955,6 @@ sqlite&amp;gt; .q
         <pubDate>Sun, 21 Feb 2016 00:00:00 +0800</pubDate>
         <link>/2016/02/21/learn-openstack-dev-skill-by-demo-07.html</link>
         <guid isPermaLink="true">/2016/02/21/learn-openstack-dev-skill-by-demo-07.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>通过demo学习OpenStack开发所需的基础知识 -- 数据库(1)</title>
-        <description>&lt;h1 id=&quot;openstack中的关系型数据库应用&quot;&gt;OpenStack中的关系型数据库应用&lt;/h1&gt;
-
-&lt;p&gt;OpenStack中的数据库应用主要是关系型数据库，主要使用的是MySQL数据库。当然也有一些NoSQL的应用，比如Ceilometer项目。就SQL数据库本身的应用而言，OpenStack的项目和其他项目并没有什么区别，也是采用ORM技术对数据进行增删改查而已。&lt;/p&gt;
-
-&lt;p&gt;本文的重点是讲解OpenStack项目中对关系型数据库的应用的基础知识，更多的是涉及ORM库的使用。对于数据库的安装和配置，需要读者自己查找一下MySQL的教程，如果只是为了验证ORM的相关知识，也可以使用sqlite数据库。&lt;/p&gt;
-
-&lt;h2 id=&quot;数据库的选择&quot;&gt;数据库的选择&lt;/h2&gt;
-
-&lt;p&gt;OpenStack官方推荐的保存生产数据的是MySQL数据库，在devstack项目（这个项目用于快速搭建OpenStack开发环境）中也是安装了MySQL数据库。不过，因为OpenStack的项目中没有使用特定的只有在MySQL上才能用的功能，而且所采用的ORM库SQLAlchemy也支持多种数据库，所以理论上选择PostgreSQL之类的数据库来替代MySQL也是可行的。&lt;/p&gt;
-
-&lt;p&gt;另外，OpenStack项目在单元测试中使用的是sqlite的内存数据库，这样开发者运行单元测试的时候不需要安装和配置复杂的MySQL数据库，只要安装好sqlite3就可以了。而且，数据库是保存在内存中的，会提高单元测试的速度。&lt;/p&gt;
-
-&lt;h2 id=&quot;orm的选择&quot;&gt;ORM的选择&lt;/h2&gt;
-
-&lt;h3 id=&quot;什么是orm&quot;&gt;什么是ORM&lt;/h3&gt;
-
-&lt;p&gt;ORM的全称是&lt;strong&gt;Object-Relational Mapping&lt;/strong&gt;，即&lt;strong&gt;对象关系映射&lt;/strong&gt;，是一种利用编程语言的对象来表示关系数据库中的数据的技术，其更形式化的定义可以参考&lt;a href=&quot;https://en.wikipedia.org/wiki/Object-relational_mapping&quot;&gt;Wiki页面Orject-relational mapping&lt;/a&gt;。简单的说，ORM就是把数据库的一张表和编程语言中的一个对象对应起来，这样我们在编程语言中操作一个对象的时候，实际上就是在操作这张表，ORM（一般是一个库）负责把我们对一个对象的操作转换成对数据库的操作。&lt;/p&gt;
-
-&lt;h3 id=&quot;python中的orm实现&quot;&gt;Python中的ORM实现&lt;/h3&gt;
-
-&lt;p&gt;一般来说，各种主流语言都有自己的ORM实现，一般来说也不只一种，比较出名的有Java的Hibernate，Ruby on Rails的ORM，C++的ODB等。&lt;strong&gt;在Python中也存在多种ORM的实现，最著名的两种是Django的Model层的ORM实现，以及SQLAlchemy库&lt;/strong&gt;。这两种ORM实现基本上是Python中ORM的事实上的标准，如果你写Django应用，那么你就用Django自带的实现；不然，你就可以选择SQLAlchemy库。&lt;/p&gt;
-
-&lt;p&gt;OpenStack基本上都是Python项目，所以在OpenStack中，ORM主要是使用了SQLAlchemy库（Keystone, Nova, Neutron等）；不过使用了Django的Horizon项目（面板）还是使用了Django自带的ORM实现。本文主要是讲解OpenStack中如何使用SQLAlchemy库，这个也是开发OpenStack项目的最基本知识。&lt;/p&gt;
-
-&lt;h1 id=&quot;sqlalchemy&quot;&gt;SQLAlchemy&lt;/h1&gt;
-
-&lt;h2 id=&quot;sqlalchemy简介&quot;&gt;SQLAlchemy简介&lt;/h2&gt;
-
-&lt;p&gt;SQLAlchemy项目是Python中最著名的ORM实现，不仅在Python项目中也得到了广泛的应用，而且对其他语言的ORM有很大的影响。OpenStack一开始选择这个库，也是看中了它足够稳定、足够强大的特点。&lt;/p&gt;
-
-&lt;p&gt;SQLAlchemy项目的官网是&lt;a href=&quot;http://www.sqlalchemy.org/&quot;&gt;http://www.sqlalchemy.org/&lt;/a&gt;，目前该项目最新的版本是&lt;strong&gt;1.0.11&lt;/strong&gt;，&lt;strong&gt;1.0&lt;/strong&gt;系列是今年刚发的，&lt;strong&gt;0.9&lt;/strong&gt;系列应该还是应用最广泛的版本。对于一般的应用来说，0.9系列和1.0系列差别不大。&lt;/p&gt;
-
-&lt;h2 id=&quot;关于sqlalchemy的学习&quot;&gt;关于SQLAlchemy的学习&lt;/h2&gt;
-
-&lt;p&gt;我个人觉得SQLAlchemy的学习难度会比Django的Model层难一些，因为一个最简单的例子也会有一些不太直观的地方，对于没用过的人来说，会比较难以理解。不过SQLAlchemy官网整理了一些比较不错的入门教程，是一个比较好的学习起点：&lt;a href=&quot;http://www.sqlalchemy.org/library.html#tutorials&quot;&gt;Tutorials&lt;/a&gt;。另外，官方的Reference其实是一个很好的教程，讲了很多基本的概念，有助于理解SQLAlchemy的库的使用。Reference的地址是：&lt;a href=&quot;http://docs.sqlalchemy.org/en/rel_1_0/&quot;&gt;http://docs.sqlalchemy.org/en/rel_1_0/&lt;/a&gt;，还可以直接下载PDF版本。我个人建议大家直接阅读Reference即可，阅读顺序就按照PDF文件的章节编排顺序进行。虽然这个文档很长，但是我最后发现这么做是最节约时间的。&lt;/p&gt;
-
-&lt;h2 id=&quot;sqlalchemy的架构&quot;&gt;SQLAlchemy的架构&lt;/h2&gt;
-
-&lt;p&gt;先让我们来看一下SQLAlchemy这个库的总体架构，如下图（图来自官网）所示：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/imgs/00002_sql_alchemy_architecture.png&quot; alt=&quot;sqla_arch_small.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;SQLAlchemy这个库分为两层：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;上面这层是ORM层，为用户提供ORM接口，即通过操作Python对象来实现数据库操作的接口。&lt;/li&gt;
-  &lt;li&gt;下面这层是Core层，这层包含了&lt;em&gt;Schema/Types&lt;/em&gt;, &lt;em&gt;SQL Expression Language&lt;/em&gt;, &lt;em&gt;Engine&lt;/em&gt;这三个部分：
-    &lt;ul&gt;
-      &lt;li&gt;&lt;em&gt;SQL Expression Language&lt;/em&gt;是SQLAlchemy中实现的一套SQL表达系统，主要是实现了对SQL的DML(Data Manipulation Language)的封装。这里实现了对数据库的SELECT、DELETE、UPDATE等语句的封装。SQL Expression Language是实现ORM层的基础。&lt;/li&gt;
-      &lt;li&gt;&lt;em&gt;Schema/Types&lt;/em&gt;这部分主要是实现了对SQL的DDL(Data Definition Language)的封装。实现了Table类用来表示一个表，Column类用来表示一个列，也是实现了将数据库的数据类型映射到Python的数据类型。上面的&lt;em&gt;SQL Expression Language&lt;/em&gt;的操作对象就是这里定义的Table。&lt;/li&gt;
-      &lt;li&gt;&lt;em&gt;Engine&lt;/em&gt;实现了对各种不同的数据库客户端的封装和调度，是所有SQLAlchemy应用程序的入口点，要使用SQLAlchemy库来操作一个数据库，首先就要有一个Engine对象，后续的所有对数据库的操作都要通过这个Engine对象来进行。下图是官方文档中的Engine位置的描述图：
-&lt;img src=&quot;/assets/imgs/00003_sql_alchemy_engine_position.png&quot; alt=&quot;sqla_engine_arch.png&quot; /&gt;
-        &lt;ul&gt;
-          &lt;li&gt;Pool是Engine下面的一个模块，用来管理应用程序到数据库的连接。&lt;/li&gt;
-          &lt;li&gt;Dialect是Engine下的另一个模块，用来对接不同的数据库驱动（即DBMS客户端），这些驱动要实现DBAPI接口。&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;最后，SQLAlchemy还要依赖各个数据库驱动的DBAPI接口来实现对数据库服务的调用。DBAPI是Python定义的数据库API的实现规范，具体见&lt;a href=&quot;https://www.python.org/dev/peps/pep-0249/&quot;&gt;&lt;strong&gt;PEP0249&lt;/strong&gt;&lt;/a&gt;。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;上面简单的总结了SQLAlchemy的架构，希望大家能够大概了解一下SQLAlchemy，在后面介绍一些相关概念时，能够知道这个概念是属于整个架构的哪个部分。&lt;/p&gt;
-
-&lt;h3 id=&quot;dialect和数据库客户端&quot;&gt;Dialect和数据库客户端&lt;/h3&gt;
-
-&lt;p&gt;上面提到了Dialect是用来对接不同的数据库驱动的，它主要负责将SQLAlchemy最后生成的数据库操作转换成对数据库驱动的调用，其中会处理一些不同数据库和不同DBAPI实现的差别。这个部分一般是SQLAlchemy的开发者关心的内容，如果你只是使用SQLAlchemy来操作数据库，那么可以不用关心这个部分。不过我们还是要来了解一下SQLAlchemy支持的和OpenStack相关的数据库驱动。&lt;/p&gt;
-
-&lt;h4 id=&quot;mysql&quot;&gt;MySQL&lt;/h4&gt;
-
-&lt;p&gt;OpenStack项目主要是使用MySQL，之前一直都在使用&lt;a href=&quot;https://pypi.python.org/pypi/MySQL-python/&quot;&gt;&lt;strong&gt;MySQL-Python&lt;/strong&gt;&lt;/a&gt;驱动，因为这个驱动足够成熟和稳定。不过这个情况正在转变，有如下两个原因：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;&lt;strong&gt;MySQL-Python&lt;/strong&gt;不支持Python3，而OpenStack正在转换到Python3的过程中，所以这个驱动最终是要放弃的。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;MySQL-Python&lt;/strong&gt;是用C语言写的，不支持eventlet库的monkey-patch操作，无法被eventlet库转换成异步操作，所以使用了eventlet库的到OpenStack项目在使用MySQL数据库时，都是进行同步的串行操作，有性能损失。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;为了解决这个问题，社区发起了一次对新驱动的评估，主要是评估&lt;a href=&quot;https://pypi.python.org/pypi/PyMySQL/&quot;&gt;&lt;strong&gt;PyMySQL&lt;/strong&gt;&lt;/a&gt;驱动：&lt;a href=&quot;https://wiki.openstack.org/wiki/PyMySQL_evaluation&quot;&gt;PyMySQL Evaluation&lt;/a&gt;。这个评估还在社区的邮件列表发起了好几次讨论，到目前为止的结果是：&lt;strong&gt;如果使用Python 2.7，那么继续使用MySQL-Python这个驱动，否则就使用PyMySQL这个驱动&lt;/strong&gt;。&lt;strong&gt;PyMySQL&lt;/strong&gt;驱动是使用纯Python写的，不仅支持Python3而且可以支持eventlet的异步。&lt;/p&gt;
-
-&lt;h4 id=&quot;sqlite3&quot;&gt;SQLite3&lt;/h4&gt;
-
-&lt;p&gt;OpenStack项目一般会使用SQLite3数据库来运行单元测试。OpenStack在Python2.7下会使用&lt;a href=&quot;https://pypi.python.org/pypi/pysqlite/&quot;&gt;&lt;strong&gt;pysqlite&lt;/strong&gt;&lt;/a&gt;驱动，不过这个驱动和标准库中的&lt;strong&gt;sqlite3&lt;/strong&gt;模块是一样的，也就是Python内置了SQLite3的驱动，你无需选择其他的驱动。&lt;/p&gt;
-
-&lt;h2 id=&quot;sqlalchemy的基本概念和使用&quot;&gt;SQLAlchemy的基本概念和使用&lt;/h2&gt;
-
-&lt;p&gt;使用SQLAlchemy大体上分为三个步骤：连接到数据库，定义数据模型，执行数据操作。&lt;/p&gt;
-
-&lt;h3 id=&quot;连接到数据库&quot;&gt;连接到数据库&lt;/h3&gt;
-
-&lt;p&gt;在你的应用可以使用数据库前，你要先定义好数据库的连接，包括数据库在哪里，用什么账号访问等。所有的这些工作都是通过Engine对象来进行的（记得上面提到的Engine了么？）。&lt;/p&gt;
-
-&lt;h4 id=&quot;数据库url&quot;&gt;数据库URL&lt;/h4&gt;
-
-&lt;p&gt;SQLAlchemy使用URL的方式来指定要访问的数据库，整个URL的具体格式如下：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dialect+driver://username:password@host:port/database
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;其中，&lt;strong&gt;dialect&lt;/strong&gt;就是指DBMS的名称，一般可选的值有：&lt;em&gt;postgresql&lt;/em&gt;, &lt;em&gt;mysql&lt;/em&gt;, &lt;em&gt;sqlite&lt;/em&gt;等。&lt;strong&gt;driver&lt;/strong&gt;就是指驱动的名称，如果不指定，SQLAlchemy会使用默认值。&lt;em&gt;database&lt;/em&gt;就是指DBMS中的一个数据库，一般是指通过&lt;em&gt;CREATE DATABASE&lt;/em&gt;语句创建的数据库。其他的参数就不言而喻了。dialect和driver参数有很多选择，具体的可以参考官方文档：&lt;a href=&quot;http://docs.sqlalchemy.org/en/rel_1_0/core/engines.html#database-urls&quot;&gt;Database URLs&lt;/a&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;创建engine对象&quot;&gt;创建Engine对象&lt;/h4&gt;
-
-&lt;p&gt;确定了要连接的数据库信息后，就可以通过&lt;code class=&quot;highlighter-rouge&quot;&gt;create_engine&lt;/code&gt;函数来创建一个&lt;strong&gt;Engine&lt;/strong&gt;对象了。&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sqlalchemy&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;create_engine&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;engine&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;create_engine&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'sqlite://:memory:'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;create_engine&lt;/code&gt;函数还支持以下几个参数：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;em&gt;connect_args&lt;/em&gt;：一个字典，用来自定义数据库连接的参数，比如指定客户端使用的字符编码。&lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;pool_size&lt;/em&gt;和&lt;em&gt;max_overflow&lt;/em&gt;：指定连接池的大小。&lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;poolclass&lt;/em&gt;：指定连接池的实现&lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;echo&lt;/em&gt;：一个布尔值，用来指定是否打印执行的SQL语句到日志中。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;还有很多其他的参数，可以参考官方文档：&lt;a href=&quot;http://docs.sqlalchemy.org/en/rel_1_0/core/engines.html&quot;&gt;Engine Configuration&lt;/a&gt;。&lt;/p&gt;
-
-&lt;p&gt;一般来说，Engine对象会默认启用连接池，会根据不同的dialect来选择不同的默认值。一般来说，你是不用考虑连接池的配置的，默认情况都配置好了。想了解关于连接池的更多内容，请查看官方文档：&lt;a href=&quot;http://docs.sqlalchemy.org/en/rel_1_0/core/pooling.html&quot;&gt;Connection Pooling&lt;/a&gt;。&lt;/p&gt;
-
-&lt;h4 id=&quot;使用engine对象&quot;&gt;使用Engine对象&lt;/h4&gt;
-
-&lt;p&gt;一般来说，应用程序的代码是不直接使用Engine对象的，而是把Engine对象交给ORM去使用，或者创建session对象来使用。不过，我们还是来简单看一下Engine对象能做什么事情。&lt;/p&gt;
-
-&lt;p&gt;应用程序可以调用Engine对象的&lt;code class=&quot;highlighter-rouge&quot;&gt;connect()&lt;/code&gt;方法来获得一个到数据库的连接对象；然后可以在这个连接对象上调用&lt;code class=&quot;highlighter-rouge&quot;&gt;execute()&lt;/code&gt;来执行SQL语句，调用&lt;code class=&quot;highlighter-rouge&quot;&gt;begin()&lt;/code&gt;、&lt;code class=&quot;highlighter-rouge&quot;&gt;commit()&lt;/code&gt;、&lt;code class=&quot;highlighter-rouge&quot;&gt;rollback()&lt;/code&gt;来执行事务操作；调用&lt;code class=&quot;highlighter-rouge&quot;&gt;close()&lt;/code&gt;来关闭连接。Engine对象也有一些快捷方法来直接执行上述操作，避免了每次都要调用&lt;code class=&quot;highlighter-rouge&quot;&gt;connect()&lt;/code&gt;来获取连接这种繁琐的代码，比如&lt;code class=&quot;highlighter-rouge&quot;&gt;engine.execute()&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;with engine.begin()&lt;/code&gt;等。&lt;/p&gt;
-
-&lt;h3 id=&quot;定义数据模型&quot;&gt;定义数据模型&lt;/h3&gt;
-
-&lt;p&gt;有了数据库连接后，我们就可以来定义数据模型了，也就是定义映射数据库表的Python类。在SQLAlchemy中，这是通过&lt;strong&gt;Declarative&lt;/strong&gt;的系统来完成的。&lt;/p&gt;
-
-&lt;h4 id=&quot;declarative系统&quot;&gt;Declarative系统&lt;/h4&gt;
-
-&lt;p&gt;根据官方文档的描述，SQLAlchemy一开始是采用下面这种方式来定义ORM的：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;首先定义一个映射类，这个类是数据库表在代码中的对象表示，这类的类属性是很多Column类的实例。&lt;/li&gt;
-  &lt;li&gt;然后定义一个Table对象，这里的Table就是上面提到的在&lt;strong&gt;Schema/Types&lt;/strong&gt;模块中的一个类，用来表示一个数据库中的表。&lt;/li&gt;
-  &lt;li&gt;调用&lt;code class=&quot;highlighter-rouge&quot;&gt;sqlalchemy.orm.mapper&lt;/code&gt;函数把步骤1中定义的类映射到步骤2中定义的Table。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;上面这种方式称为&lt;em&gt;Classical Mappings&lt;/em&gt;，看起来好麻烦啊。所以就有了&lt;strong&gt;Declarative&lt;/strong&gt;系统。这个系统就是一次完成这三个步骤，你只需要定义步骤1中的类即可。这也是现在在SQLAlchemy中使用ORM的方式，无需在使用过去这种麻烦的方法。&lt;/p&gt;
-
-&lt;p&gt;要使用Declarative系统，你需要为所有映射类创建一个基类，这个基类用来维护所有映射类的元信息。&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sqlalchemy.ext.declarative&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;declarative_base&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;Base&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;declarative_base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;h4 id=&quot;定义映射类&quot;&gt;定义映射类&lt;/h4&gt;
-
-&lt;p&gt;现在我们可以开始创建映射类了。假设我们在数据库中有一个表Person，这个表有两个列，分别是id和name，那么我们创建的映射类如下：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sqlalchemy&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Column&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Integer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# 这里的基类Base是上面我们通过declarative_base函数生成的&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Person&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;__tablename__&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'person'&lt;/span&gt;
-
-    &lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Column&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Interger&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;primary_key&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Column&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;250&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nullable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;False&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;这样我们就定义了一个映射类&lt;strong&gt;Person&lt;/strong&gt;，后续我们可以通过操作这个类的实例来实现对数据库表&lt;strong&gt;person&lt;/strong&gt;的操作。在我们的映射类中，我们使用&lt;code class=&quot;highlighter-rouge&quot;&gt;__tablename__&lt;/code&gt;属性来指定该映射类所对应的数据库表，通过&lt;code class=&quot;highlighter-rouge&quot;&gt;Column&lt;/code&gt;类实例的方式来指定数据库的字段。这里，读者可能会问：&lt;strong&gt;我如何能知道&lt;code class=&quot;highlighter-rouge&quot;&gt;Column&lt;/code&gt;都能支持哪些类型呢？&lt;/strong&gt;这个查看官方文档获得：&lt;a href=&quot;http://docs.sqlalchemy.org/en/rel_1_0/core/type_basics.html&quot;&gt;Column And Data Types&lt;/a&gt;。&lt;/p&gt;
-
-&lt;p&gt;因为我们使用了Declarative系统，所以虽然我们自己没有定义Table对象，但是Declarative系统帮我们做了，并且帮我们调用了&lt;code class=&quot;highlighter-rouge&quot;&gt;mapper&lt;/code&gt;函数。因此，当我们定义好一个表的映射类后，这个类的&lt;code class=&quot;highlighter-rouge&quot;&gt;__table__&lt;/code&gt;属性就保存了该映射类所映射的&lt;em&gt;Table&lt;/em&gt;对象：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;In [6]: Person.__table__
-Out[6]: Table('person', MetaData(bind=None),
-    Column('id', Integer(), table=&amp;lt;person&amp;gt;, primary_key=True, nullable=False),
-    Column('name', String(length=250), table=&amp;lt;person&amp;gt;, nullable=False), schema=None)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;定义映射类是我们使用ORM的最主要的功能之一，不仅可以指定单表的映射，还能够指定表之间的关系。由于篇幅限制，我们在本文就不展开讲了。&lt;/p&gt;
-
-&lt;h3 id=&quot;schema和metadata&quot;&gt;Schema和Metadata&lt;/h3&gt;
-
-&lt;p&gt;关于Table对象，我们上面也提到了，它属于SQLAlchemy的core层的&lt;strong&gt;Schema/Types&lt;/strong&gt;这个部分。SQLAlchemy中的Schema可以理解为和DDL相关的一套体系，它告诉SQLAlchemy的其他部分，数据库中的表是如何定义的。这个相当于我们在MySQL中使用&lt;code class=&quot;highlighter-rouge&quot;&gt;describe&lt;/code&gt;命令，或者在PostgreSQL中使用&lt;code class=&quot;highlighter-rouge&quot;&gt;\d&lt;/code&gt;命令。&lt;/p&gt;
-
-&lt;p&gt;SQLAlchemy中通过&lt;strong&gt;schema metadata&lt;/strong&gt;来实现上面说的Schema。&lt;strong&gt;Schema metadata&lt;/strong&gt;，官方文档中也称为&lt;strong&gt;database metadata&lt;/strong&gt;，简称为metadata，是一个容器，其中包含了和DDL相关的所有信息，包括Table, Column等对象。当SQLAlchemy要根据映射类生成SQL语句时，它会查询metadata中的信息，根据信息来生成SQL语句。&lt;/p&gt;
-
-&lt;p&gt;为了要让metadata可以工作，我们需要把DDL的相关信息放到metadata中。如果你注意看上面&lt;code class=&quot;highlighter-rouge&quot;&gt;Person.__table__&lt;/code&gt;的输出，就会发现&lt;code class=&quot;highlighter-rouge&quot;&gt;Table&lt;/code&gt;类的第二个参数就是一个Metadata实例，也就是说，我们需要在定义Table的时候就把DDL信息放到metadata中。如果是是用classical mapping的方式，我们需要先创建一个metadata实例，然后每次创建一个Table对象的时候就把metadata传递进去。从写代码的角度来说，这个方式没有什么问题，也不算麻烦；问题是我们在使用ORM的过程中，几乎不会用到metadata，metadata基本上是给SQLAlchemy用的，对于用户来说metadata提供的接口只能用来创建表和删除表，这种操作的频率远低于查询操作。&lt;/p&gt;
-
-&lt;p&gt;好在Declarative系统则帮我们把这些都做好了。当我们通过&lt;code class=&quot;highlighter-rouge&quot;&gt;declarative_base()&lt;/code&gt;生成一个基类Base的时候，这个基类就已经包含了一个metadata实例，后面基于Base定义映射类都会被自动加入到这个metadata中。我们可以通过&lt;code class=&quot;highlighter-rouge&quot;&gt;Base.metadata&lt;/code&gt;来访问这个metadata实例。&lt;/p&gt;
-
-&lt;p&gt;说了这么多关于metadata的内容，简单总结一下：metadata是schema在SQLAlchemy中的实现，包含了DDL的信息，SQLAlchemy中的其他部分需要依赖于metadata中的信息，一般用户很少使用metadata。&lt;/p&gt;
-
-&lt;p&gt;很少用？那说这么多是做啥？主要是让读者可以理解下面这个语句的原理：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;n&quot;&gt;Base&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;declarative_base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# 基于Base定义映射类&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;Base&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;metadata&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;create_all&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;engine&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;最后这行代码是我们最常用到metadata的地方：&lt;strong&gt;创建所有的表&lt;/strong&gt;。我们告诉&lt;code class=&quot;highlighter-rouge&quot;&gt;create_all&lt;/code&gt;使用哪个engine，它就会生成所有的&lt;code class=&quot;highlighter-rouge&quot;&gt;CREATE TABLE&lt;/code&gt;语句，并且通过engine发送到数据库上执行。这个在单元测试的时候很有用。你可以执行一下下面的代码来观察输出：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sqlalchemy&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Column&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Integer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sqlalchemy.ext.declarative&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;declarative_base&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sqlalchemy&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;create_engine&lt;/span&gt;
-
-
-&lt;span class=&quot;n&quot;&gt;Base&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;declarative_base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-
-
-&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Person&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;__tablename__&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'person'&lt;/span&gt;
-
-    &lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Column&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Integer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;primary_key&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Column&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;250&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nullable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;False&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-
-&lt;span class=&quot;n&quot;&gt;engine&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;create_engine&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'sqlite:///:memory:'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;echo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-
-&lt;span class=&quot;n&quot;&gt;Base&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;metadata&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;create_all&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;engine&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;输出结果如下：&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-...
-2016-01-06 09:56:03,600 INFO sqlalchemy.engine.base.Engine PRAGMA table_info&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;person&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-2016-01-06 09:56:03,601 INFO sqlalchemy.engine.base.Engine &lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
-2016-01-06 09:56:03,602 INFO sqlalchemy.engine.base.Engine
-CREATE TABLE person &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
-        id INTEGER NOT NULL,
-        name VARCHAR&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;250&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; NOT NULL,
-        PRIMARY KEY &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;id&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-
-2016-01-06 09:56:03,603 INFO sqlalchemy.engine.base.Engine &lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
-2016-01-06 09:56:03,603 INFO sqlalchemy.engine.base.Engine COMMIT
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;关于Metadata的更多信息，请查看官方文档：&lt;a href=&quot;http://docs.sqlalchemy.org/en/rel_1_0/core/schema.html&quot;&gt;Schema Definition Language&lt;/a&gt;。&lt;/p&gt;
-
-&lt;h3 id=&quot;会话&quot;&gt;会话&lt;/h3&gt;
-
-&lt;p&gt;会话(&lt;strong&gt;session&lt;/strong&gt;)是我们通过SQLAlchemy来操作数据库的入口。我们前面有介绍过SQLAlchemy的架构，session是属于ORM层的。Session的功能是管理我们的程序和数据库之间的会话，它利用Engine的连接管理功能来实现会话。我们在上文有提到，我们创建了Engine对象，但是一般不直接使用它，而是把它交给ORM去使用。其中，通过session来使用Engine就是一个常用的方式。&lt;/p&gt;
-
-&lt;p&gt;要是用session，我们需要先通过&lt;code class=&quot;highlighter-rouge&quot;&gt;sessionmaker&lt;/code&gt;函数创建一个session类，然后通过这个类的实例来使用会话，如下所示：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sqlalchemy.orm&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sessionmaker&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;DBSession&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sessionmaker&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bind&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;engine&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;session&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DBSession&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;我们通过&lt;code class=&quot;highlighter-rouge&quot;&gt;sessionmaker&lt;/code&gt;的&lt;em&gt;bind&lt;/em&gt;参数把Engine对象传递给&lt;code class=&quot;highlighter-rouge&quot;&gt;DBSession&lt;/code&gt;去管理。然后，&lt;code class=&quot;highlighter-rouge&quot;&gt;DBSession&lt;/code&gt;实例化的对象&lt;code class=&quot;highlighter-rouge&quot;&gt;session&lt;/code&gt;就能被我们使用了。&lt;/p&gt;
-
-&lt;h3 id=&quot;crud&quot;&gt;CRUD&lt;/h3&gt;
-
-&lt;p&gt;&lt;strong&gt;CRUD&lt;/strong&gt;就是CREATE, READ, UPDATE, DELETE，增删改查。这个也是SQLAlchemy中最常用的功能，而且都是通过上一小节中的&lt;code class=&quot;highlighter-rouge&quot;&gt;session&lt;/code&gt;对象来使用的。我们这简单的介绍一下这四个操作，后面会给出官方文档的位置。&lt;/p&gt;
-
-&lt;h4 id=&quot;create&quot;&gt;Create&lt;/h4&gt;
-
-&lt;p&gt;在数据库中插入一条记录，是通过session的&lt;code class=&quot;highlighter-rouge&quot;&gt;add()&lt;/code&gt;方法来实现的，你需要先创建一个映射类的实例，然后调用&lt;code class=&quot;highlighter-rouge&quot;&gt;session.add()&lt;/code&gt;方法，然后调用&lt;code class=&quot;highlighter-rouge&quot;&gt;session.commit()&lt;/code&gt;方法提交你的事务（关于事务，我们下面会专门讲解）：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;n&quot;&gt;new_person&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Person&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'new person'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;session&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new_person&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;session&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;commit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;h4 id=&quot;delete&quot;&gt;Delete&lt;/h4&gt;
-
-&lt;p&gt;删除操作和创建操作差不多，是把一个映射类实例传递给&lt;code class=&quot;highlighter-rouge&quot;&gt;session.delete()&lt;/code&gt;方法。&lt;/p&gt;
-
-&lt;h4 id=&quot;update&quot;&gt;Update&lt;/h4&gt;
-
-&lt;p&gt;更新一条记录需要先使用查询操作获得一条记录对应的对象，然后修改对象的属性，再通过&lt;code class=&quot;highlighter-rouge&quot;&gt;session.add()&lt;/code&gt;方法来完成更新操作。&lt;/p&gt;
-
-&lt;h4 id=&quot;read&quot;&gt;Read&lt;/h4&gt;
-
-&lt;p&gt;查询操作，一般称为query，在SQLAlchemy中一般是通过&lt;strong&gt;Query&lt;/strong&gt;对象来完成的。我们可以通过&lt;code class=&quot;highlighter-rouge&quot;&gt;session.query()&lt;/code&gt;方法来创建一个Query对象，然后调用Query对象的众多方法来完成查询操作。&lt;/p&gt;
-
-&lt;h3 id=&quot;事务&quot;&gt;事务&lt;/h3&gt;
-
-&lt;p&gt;使用session，就会涉及到事务，我们的应用程序也会有很多事务操作的要求。当你调用一个session的方法，导致session执行一条SQL语句时，它会自动开始一个事务，直到你下次调用&lt;code class=&quot;highlighter-rouge&quot;&gt;session.commit()&lt;/code&gt;或者&lt;code class=&quot;highlighter-rouge&quot;&gt;session.rollback()&lt;/code&gt;，它就会结束这个事务。你也可以显示的调用&lt;code class=&quot;highlighter-rouge&quot;&gt;session.begin()&lt;/code&gt;来开始一个事务，并且&lt;code class=&quot;highlighter-rouge&quot;&gt;session.begin()&lt;/code&gt;还可以配合Python的with来使用。&lt;/p&gt;
-
-&lt;h3 id=&quot;会话-crud-事务的小结&quot;&gt;会话, CRUD, 事务的小结&lt;/h3&gt;
-
-&lt;p&gt;上面关于session, CRUD和事务的内容写的比较少，因为这些功能的内容很多，而且官方文档也写得很全面，本文就不做一些重复说明了。我们会在下一篇文章中通过webdemo的代码来看看如何使用这些功能。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;http://docs.sqlalchemy.org/en/rel_1_0/orm/session.html&quot;&gt;Session的文档&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://docs.sqlalchemy.org/en/rel_1_0/orm/tutorial.html#adding-new-objects&quot;&gt;官方文档中关于CRUD操作的教程&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://docs.sqlalchemy.org/en/rel_1_0/orm/session_transaction.html&quot;&gt;Session中的事务管理&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;总结&quot;&gt;总结&lt;/h1&gt;
-
-&lt;p&gt;本文介绍了OpenStack中和数据库相关的一些知识，重点讲解了SQLAlchemy这个库的基本概念和架构。下一篇文章，我们会通过demo来实际项目中如何使用SQLAlchemy。&lt;/p&gt;
-
-</description>
-        <pubDate>Wed, 06 Jan 2016 00:00:00 +0800</pubDate>
-        <link>/2016/01/06/learn-openstack-dev-skill-by-demo-06.html</link>
-        <guid isPermaLink="true">/2016/01/06/learn-openstack-dev-skill-by-demo-06.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>通过demo学习OpenStack开发所需的基础知识 -- API服务(4)</title>
-        <description>&lt;p&gt;上一篇文章说到，我们将以实例的形式来继续讲述这个API服务的开发知识，这里会使用Pecan和WSME两个库。&lt;/p&gt;
-
-&lt;h1 id=&quot;设计rest-api&quot;&gt;设计REST API&lt;/h1&gt;
-
-&lt;p&gt;要开发REST API服务，我们首先需要设计一下这个服务。设计包括要实现的功能，以及接口的具体规范。我们这里要实现的是一个简单的用户管理接口，包括增删改查等功能。如果读者对REST API不熟悉，可以先从&lt;a href=&quot;https://en.wikipedia.org/wiki/Representational_state_transfer&quot;&gt;Wiki页面&lt;/a&gt;了解一下。&lt;/p&gt;
-
-&lt;p&gt;另外，为了方便大家阅读和理解，本系列的代码会放在github上，&lt;a href=&quot;https://github.com/diabloneo/webdemo&quot;&gt;diabloneo/webdemo&lt;/a&gt;。&lt;/p&gt;
-
-&lt;h2 id=&quot;version-of-rest-api&quot;&gt;Version of REST API&lt;/h2&gt;
-
-&lt;p&gt;在OpenStack的项目中，都是在URL中表明这个API的版本号的，比如Keystone的API会有&lt;strong&gt;/v2.0&lt;/strong&gt;和&lt;strong&gt;/v3&lt;/strong&gt;的前缀，表明两个不同版本的API；Magnum项目目前的API则为&lt;strong&gt;v1&lt;/strong&gt;版本。因为我们的webdemo项目才刚刚开始，所以我们也把我们的API版本设置为&lt;strong&gt;v1&lt;/strong&gt;，下文会说明怎么实现这个version号的设置。&lt;/p&gt;
-
-&lt;h2 id=&quot;rest-api-of-users&quot;&gt;REST API of Users&lt;/h2&gt;
-
-&lt;p&gt;我们将要设计一个管理用户的API，这个和Keystone的用户管理的API差不多，这里先列出每个API的形式，以及简要的内容说明。这里我们会把上面提到的version号也加入到URL path中，让读者能更容易联系起来。&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;&lt;strong&gt;GET /v1/users&lt;/strong&gt; 获取所有用户的列表。&lt;/p&gt;
-
-  &lt;p&gt;&lt;strong&gt;POST /v1/users&lt;/strong&gt; 创建一个用户&lt;/p&gt;
-
-  &lt;p&gt;&lt;strong&gt;GET /v1/users/&amp;lt;UUID&amp;gt;&lt;/strong&gt; 获取一个特定用户的详细信息。&lt;/p&gt;
-
-  &lt;p&gt;&lt;strong&gt;PUT /v1/users/&amp;lt;UUID&amp;gt;&lt;/strong&gt; 修改一个用户的详细信息。&lt;/p&gt;
-
-  &lt;p&gt;&lt;strong&gt;DELETE /v1/users/&amp;lt;UUID&amp;gt;&lt;/strong&gt; 删除一个用户。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;这些就是我们要实现的用户管理的API了。其中， &lt;strong&gt;&amp;lt;UUID&amp;gt;&lt;/strong&gt;表示使用一个UUID字符串，这个是OpenStack中最经常被用来作为各种资源ID的形式，如下所示：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;In [5]: import uuid
-In [6]: print uuid.uuid4()
-adb92482-baab-4832-84bc-f842f3eabd66
-In [7]: print uuid.uuid4().hex
-29520c88de6b4c76ae8deb48db0a71e7
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;因为是个demo，所以我们设置一个用户包含的信息会比较简单，只包含name和age。&lt;/p&gt;
-
-&lt;h1 id=&quot;使用pecan搭建api服务的框架&quot;&gt;使用Pecan搭建API服务的框架&lt;/h1&gt;
-
-&lt;p&gt;接下来就要开始编码工作了。首先要把整个服务的框架搭建起来。我们会在&lt;a href=&quot;http://segmentfault.com/a/1190000002940724&quot;&gt;软件包管理&lt;/a&gt;这篇文件中的代码基础上继续我们的demo（所有这些代码在github的仓库里都能看到）。&lt;/p&gt;
-
-&lt;h2 id=&quot;代码目录结构&quot;&gt;代码目录结构&lt;/h2&gt;
-
-&lt;p&gt;一般来说，OpenStack项目中，使用Pecan来开发API服务时，都会在代码目录下有一个专门的API目录，用来保存API相关的代码。比如Magnum项目的&lt;em&gt;magnum/api&lt;/em&gt;，或者Ceilometer项目的&lt;em&gt;ceilometer/api&lt;/em&gt;等。我们的代码也遵守这个规范，让我们直接来看下我们的代码目录结构（#后面的表示注释）：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;➜ ~/programming/python/webdemo/webdemo/api git:(master) ✗ $ tree .
-.
-├── app.py           # 这个文件存放WSGI application的入口
-├── config.py        # 这个文件存放Pecan的配置
-├── controllers/     # 这个目录用来存放Pecan控制器的代码
-├── hooks.py         # 这个文件存放Pecan的hooks代码（本文中用不到）
-└── __init__.py
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;这个在&lt;a href=&quot;http://segmentfault.com/a/1190000003810294&quot;&gt;API服务(3)&lt;/a&gt;这篇文章中已经说明过了。&lt;/p&gt;
-
-&lt;h2 id=&quot;先让我们的服务跑起来&quot;&gt;先让我们的服务跑起来&lt;/h2&gt;
-
-&lt;p&gt;为了后面更好的开发，我们需要先让我们的服务在本地跑起来，这样可以方便自己做测试，看到代码的效果。不过要做到这点，还是有些复杂的。&lt;/p&gt;
-
-&lt;h3 id=&quot;必要的代码&quot;&gt;必要的代码&lt;/h3&gt;
-
-&lt;p&gt;首先，先创建config.py文件的内容：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;n&quot;&gt;app&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;'root'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'webdemo.api.controllers.root.RootController'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;'modules'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'webdemo.api'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;'debug'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;False&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;就是包含了Pecan的最基本配置，其中指定了root controller的位置。然后看下app.py文件的内容，主要就是读取config.py中的配置，然后创建一个WSGI application：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;pecan&lt;/span&gt;
-
-&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;webdemo.api&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;config&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;api_config&lt;/span&gt;
-
-
-&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;get_pecan_config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;filename&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;api_config&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__file__&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;replace&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'.pyc'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'.py'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pecan&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;configuration&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;conf_from_file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;filename&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-
-&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;setup_app&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;config&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;get_pecan_config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-
-    &lt;span class=&quot;n&quot;&gt;app_conf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;dict&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;app&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pecan&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;make_app&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;app_conf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'root'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;logging&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;getattr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'logging'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{}),&lt;/span&gt;
-        &lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;app_conf&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;app&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;然后，我们至少还需要实现一下root controller，也就是&lt;em&gt;webdemo/api/controllers/root.py&lt;/em&gt;这个文件中的&lt;code class=&quot;highlighter-rouge&quot;&gt;RootController&lt;/code&gt;类：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;pecan&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rest&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;wsme&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;types&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;wtypes&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;wsmeext.pecan&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;wsme_pecan&lt;/span&gt;
-
-
-&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;RootController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;RestController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@wsme_pecan.wsexpose&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;wtypes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;webdemo&quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;h3 id=&quot;本地测试服务器&quot;&gt;本地测试服务器&lt;/h3&gt;
-
-&lt;p&gt;为了继续开放的方便，我们要先创建一个Python脚本，可以启动一个单进程的API服务。这个脚本会放在&lt;em&gt;webdemo/cmd/&lt;/em&gt;目录下，名称是&lt;strong&gt;api.py&lt;/strong&gt;（这目录和脚本名称也是惯例），来看看我们的api.py吧：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;wsgiref&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;simple_server&lt;/span&gt;
-
-&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;webdemo.api&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;app&lt;/span&gt;
-
-
-&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;host&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'0.0.0.0'&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;port&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8080&lt;/span&gt;
-
-    &lt;span class=&quot;n&quot;&gt;application&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;setup_app&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;srv&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;simple_server&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;make_server&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;host&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;port&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;application&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-    &lt;span class=&quot;n&quot;&gt;srv&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;serve_forever&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-
-
-&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;__name__&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'__main__'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;h3 id=&quot;运行测试服务器的环境&quot;&gt;运行测试服务器的环境&lt;/h3&gt;
-
-&lt;p&gt;要运行这个测试服务器，首先需要安装必要的包，并且设置正确的路径。在后面的文章中，我们将会知道，这个可以通过&lt;strong&gt;tox&lt;/strong&gt;这个工具来实现。现在，我们先做个简单版本的，就是手动创建这个运行环境。&lt;/p&gt;
-
-&lt;p&gt;首先，完善一下&lt;strong&gt;requirements.txt&lt;/strong&gt;这个文件，包含我们需要的包：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pbr&amp;lt;2.0,&amp;gt;=0.11
-pecan
-WSME
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;然后，我们手动创建一个virtualenv环境，并且安装requirements.txt中要求的包：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;➜ ~/programming/python/webdemo git:(master) ✗ $ virtualenv .venv
-New python executable in .venv/bin/python
-Installing setuptools, pip, wheel...done.
-➜ ~/programming/python/webdemo git:(master) ✗ $ source .venv/bin/activate
-(.venv)➜ ~/programming/python/webdemo git:(master) ✗ $ pip install -r requirement.txt
-...
-Successfully installed Mako-1.0.3 MarkupSafe-0.23 WSME-0.8.0 WebOb-1.5.1 WebTest-2.0.20 beautifulsoup4-4.4.1 logutils-0.3.3 netaddr-0.7.18 pbr-1.8.1 pecan-1.0.3 pytz-2015.7 simplegeneric-0.8.1 singledispatch-3.4.0.3 six-1.10.0 waitress-0.8.10
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;启动我们的服务&quot;&gt;启动我们的服务&lt;/h3&gt;
-
-&lt;p&gt;启动服务需要技巧，因为我们的webdemo还没有安装到系统的Python路径中，也不在上面创建virtualenv环境中，所以我们需要通过指定&lt;strong&gt;PYTHONPATH&lt;/strong&gt;这个环境变量来为Python程序增加库的查找路径：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;(.venv)➜ ~/programming/python/webdemo git:(master) ✗ $ PYTHONPATH=. python webdemo/cmd/api.py
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;现在测试服务器已经起来了，可以通过浏览器访问&lt;em&gt;http://localhost:8080/&lt;/em&gt; 这个地址来查看结果。（你可能会发现，返回的是XML格式的结果，而我们想要的是JSON格式的。这个是WSME的问题，我们后面再来处理）。&lt;/p&gt;
-
-&lt;p&gt;到这里，我们的REST API服务的框架已经搭建完成，并且测试服务器也跑起来了。&lt;/p&gt;
-
-&lt;h1 id=&quot;用户管理api的实现&quot;&gt;用户管理API的实现&lt;/h1&gt;
-
-&lt;p&gt;现在我们来实现我们在第一章设计的API。这里先说明一下：&lt;strong&gt;我们会直接使用Pecan的RestController来实现REST API，这样可以不用为每个接口指定接受的method&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;h2 id=&quot;让api返回json格式的数据&quot;&gt;让API返回JSON格式的数据&lt;/h2&gt;
-
-&lt;p&gt;现在，所有的OpenStack项目的REST API的返回格式都是使用JSON标准，所以我们也要这么做。那么有什么办法能够让WSME框架返回JSON数据呢？可以通过设置&lt;code class=&quot;highlighter-rouge&quot;&gt;wsmeext.pecan.wsexpose()&lt;/code&gt;的&lt;em&gt;rest_content_types&lt;/em&gt;参数来是先。这里，我们借鉴一段Magnum项目中的代码，把这段代码存放在文件&lt;em&gt;webdemo/api/expose.py&lt;/em&gt;中：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;wsmeext.pecan&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;wsme_pecan&lt;/span&gt;
-
-
-&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;expose&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;kwargs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&quot;&quot;&quot;Ensure that only JSON, and not XML, is supported.&quot;&quot;&quot;&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'rest_content_types'&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;kwargs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;kwargs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'rest_content_types'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'json'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,)&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;wsme_pecan&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;wsexpose&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;kwargs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;这样我们就封装了自己的&lt;code class=&quot;highlighter-rouge&quot;&gt;expose&lt;/code&gt;装饰器，每次都会设置响应的content-type为JSON。上面的root controller代码也就可以修改为：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;pecan&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rest&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;wsme&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;types&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;wtypes&lt;/span&gt;
-
-&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;webdemo.api&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;expose&lt;/span&gt;
-
-
-&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;RootController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;RestController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@expose.expose&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;wtypes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;webdemo&quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;再次运行我们的测试服务器，就可以返现返回值为JSON格式了。&lt;/p&gt;
-
-&lt;h2 id=&quot;实现-get-v1&quot;&gt;实现 GET /v1&lt;/h2&gt;
-
-&lt;p&gt;这个其实就是实现v1这个版本的API的路径前缀。在Pecan的帮助下，我们很容易实现这个，只要按照如下两步做即可：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;先实现v1这个controller&lt;/li&gt;
-  &lt;li&gt;把v1 controller加入到root controller中&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;按照OpenStack项目的规范，我们会先建立一个&lt;em&gt;webdemo/api/controllers/v1/&lt;/em&gt;目录，然后将v1 controller放在这个目录下的一个文件中，假设我们就放在&lt;em&gt;v1/controller.py&lt;/em&gt;文件中，效果如下:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;pecan&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rest&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;wsme&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;types&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;wtypes&lt;/span&gt;
-
-&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;webdemo.api&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;expose&lt;/span&gt;
-
-
-&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;V1Controller&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;RestController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@expose.expose&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;wtypes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'webdemo v1controller'&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;然后把这个controller加入到root controller中：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;webdemo.api.controllers.v1&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;controller&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;v1_controller&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;webdemo.api&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;expose&lt;/span&gt;
-
-
-&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;RootController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;RestController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;v1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;v1_controller&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;V1Controller&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@expose.expose&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;wtypes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;webdemo&quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;此时，你访问http://localhost:8080/v1就可以看到结果了。&lt;/p&gt;
-
-&lt;h2 id=&quot;实现-get-v1users&quot;&gt;实现 GET /v1/users&lt;/h2&gt;
-
-&lt;h3 id=&quot;添加users-controller&quot;&gt;添加users controller&lt;/h3&gt;
-
-&lt;p&gt;这个API就是返回所有的用户信息，功能很简单。首先要添加users controller到上面的v1 controller中。为了不影响阅读体验，这里就不贴代码了，请看github上的示例代码。&lt;/p&gt;
-
-&lt;h3 id=&quot;使用wsme来规范api的响应值&quot;&gt;使用WSME来规范API的响应值&lt;/h3&gt;
-
-&lt;p&gt;上篇文章中，我们已经提到了WSME可以用来规范API的请求和响应的值，这里我们就要用上它。首先，我们要参考OpenStack的惯例来设计这个API的返回值：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-  &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;users&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-      &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Alice&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-      &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;age&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;30&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-      &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Bob&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-      &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;age&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;40&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-  &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;其中&lt;em&gt;users&lt;/em&gt;是一个列表，列表中的每个元素都是一个user。那么，我们要如何使用WSME来规范我们的响应值呢？&lt;strong&gt;答案就是使用WSME的自定义类型&lt;/strong&gt;。我们可以利用WSME的类型功能定义出一个user类型，然后再定义一个user的列表类型。最后，我们就可以使用上面的expose方法来规定这个API返回的是一个user的列表类型。&lt;/p&gt;
-
-&lt;h4 id=&quot;定义user类型和user列表类型&quot;&gt;定义user类型和user列表类型&lt;/h4&gt;
-
-&lt;p&gt;这里我们需要用到WSME的Complex types的功能，请先看一下文档&lt;a href=&quot;http://wsme.readthedocs.org/en/latest/types.html&quot;&gt;Types&lt;/a&gt;。简单说，就是我们可以把WSME的基本类型组合成一个复杂的类型。我们的类型需要继承自&lt;em&gt;wsme.types.Base&lt;/em&gt;这个类。因为我们在本文只会实现一个user相关的API，所以这里我们把所有的代码都放在&lt;em&gt;webdemo/api/controllers/v1/users.py&lt;/em&gt;文件中。来看下和user类型定义相关的部分：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;wsme&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;types&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;wtypes&lt;/span&gt;
-
-
-&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;wtypes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;wtypes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;age&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;int&lt;/span&gt;
-
-
-&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Users&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;wtypes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;users&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;这里我们定义了&lt;code class=&quot;highlighter-rouge&quot;&gt;class User&lt;/code&gt;，表示一个用户信息，包含两个字段，name是一个文本，age是一个整型。&lt;code class=&quot;highlighter-rouge&quot;&gt;class Users&lt;/code&gt;表示一组用户信息，包含一个字段users，是一个列表，列表的元素是上面定义的&lt;code class=&quot;highlighter-rouge&quot;&gt;class User&lt;/code&gt;。完成这些定义后，我们就使用WSME来检查我们的API是否返回了合格的值；另一方面，只要我们的API返回了这些类型，那么就能通过WSME的检查。我们先来完成利用WSME来检查API返回值的代码：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;UsersController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;RestController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-
-    &lt;span class=&quot;c&quot;&gt;# expose方法的第一个参数表示返回值的类型&lt;/span&gt;
-    &lt;span class=&quot;nd&quot;&gt;@expose.expose&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Users&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;pass&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;这样就完成了API的返回值检查了。&lt;/p&gt;
-
-&lt;h2 id=&quot;实现api逻辑&quot;&gt;实现API逻辑&lt;/h2&gt;
-
-&lt;p&gt;我们现在来完成API的逻辑部分。不过为了方便大家理解，我们直接返回一个写好的数据，就是上面贴出来的那个。&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;UsersController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;RestController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@expose.expose&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Users&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;user_info_list&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
-            &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-                &lt;span class=&quot;s&quot;&gt;'name'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'Alice'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-                &lt;span class=&quot;s&quot;&gt;'age'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;30&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-            &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
-            &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-                &lt;span class=&quot;s&quot;&gt;'name'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'Bob'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-                &lt;span class=&quot;s&quot;&gt;'age'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;40&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;users_list&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user_info&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;user_info&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;user_info_list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Users&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;users&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;users_list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;代码中，会先根据user信息生成User实例的列表&lt;code class=&quot;highlighter-rouge&quot;&gt;users_list&lt;/code&gt;，然后再生成Users实例。此时，重启测试服务器后，你就可以从浏览器访问http://localhost:8080/v1/users，就能看到结果了。&lt;/p&gt;
-
-&lt;h2 id=&quot;实现-post-v1users&quot;&gt;实现 POST /v1/users&lt;/h2&gt;
-
-&lt;p&gt;这个API会接收用户上传的一个JSON格式的数据，然后打印出来（实际中一般是存到数据库之类的），要求用户上传的数据符合User类型的规范，并且返回的状态码为201。代码如下：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;UsersController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;RestController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@expose.expose&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;None&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;body&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;status_code&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;201&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;post&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;可以使用curl程序来测试：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; ~/programming/python/webdemo git:(master) ✗ $ curl -X POST http://localhost:8080/v1/users -H &quot;Content-Type: application/json&quot; -d '{&quot;name&quot;: &quot;Cook&quot;, &quot;age&quot;: 50}' -v
-*   Trying 127.0.0.1...
-* Connected to localhost (127.0.0.1) port 8080 (#0)
-&amp;gt; POST /v1/users HTTP/1.1
-&amp;gt; Host: localhost:8080
-&amp;gt; User-Agent: curl/7.43.0
-&amp;gt; Accept: */*
-&amp;gt; Content-Type: application/json
-&amp;gt; Content-Length: 27
-&amp;gt;
-* upload completely sent off: 27 out of 27 bytes
-* HTTP 1.0, assume close after body
-&amp;lt; HTTP/1.0 201 Created
-&amp;lt; Date: Mon, 16 Nov 2015 15:18:24 GMT
-&amp;lt; Server: WSGIServer/0.1 Python/2.7.10
-&amp;lt; Content-Length: 0
-&amp;lt;
-* Closing connection 0
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;同时，服务器上也会打印出：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;127.0.0.1 - - [16/Nov/2015 23:16:28] &quot;POST /v1/users HTTP/1.1&quot; 201 0
-&amp;lt;webdemo.api.controllers.v1.users.User object at 0x7f65e058d550&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;我们用3行代码就实现了这个POST的逻辑。现在来说明一下这里的秘密。&lt;code class=&quot;highlighter-rouge&quot;&gt;expose&lt;/code&gt;装饰器的第一个参数表示这个方法没有返回值；第三个参数表示这个API的响应状态码是201，如果不加这个参数，在没有返回值的情况下，默认会返回204。第二个参数要说明一下，这里用的是&lt;code class=&quot;highlighter-rouge&quot;&gt;body=User&lt;/code&gt;，你也可以直接写&lt;code class=&quot;highlighter-rouge&quot;&gt;User&lt;/code&gt;。使用&lt;code class=&quot;highlighter-rouge&quot;&gt;body=User&lt;/code&gt;这种形式，你可以直接发送符合User规范的JSON字符串；如果是用&lt;code class=&quot;highlighter-rouge&quot;&gt;expose(None, User, status_code=201)&lt;/code&gt;那么你需要发送下面这样的数据：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;user&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Cook&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;age&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;50&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;你可以自己测试一下区别。要更多的了解本节提到的expose参数，请参考WSM文档&lt;a href=&quot;http://wsme.readthedocs.org/en/latest/functions.html&quot;&gt;Functions&lt;/a&gt;。&lt;/p&gt;
-
-&lt;p&gt;最后，你接收到一个创建用户请求时，一般会为这个用户分配一个id。本文前面已经提到了OpenStack项目中一般使用UUID。你可以修改一下上面的逻辑，为每个用户分配一个UUID。&lt;/p&gt;
-
-&lt;h2 id=&quot;实现-get-v1users-1&quot;&gt;实现 GET /v1/users/&lt;UUID&gt;&lt;/UUID&gt;&lt;/h2&gt;
-
-&lt;p&gt;要实现这个API，需要两个步骤：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;在UsersController中解析出&lt;UUID&gt;的部分，然后把请求传递给这个一个新的UserController。从命名可以看出，UsersController是针对多个用户的，UserController是针对一个用户的。&lt;/UUID&gt;&lt;/li&gt;
-  &lt;li&gt;在UserController中实现&lt;code class=&quot;highlighter-rouge&quot;&gt;get()&lt;/code&gt;方法。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;使用_lookup方法&quot;&gt;使用_lookup()方法&lt;/h3&gt;
-
-&lt;p&gt;Pecan的&lt;code class=&quot;highlighter-rouge&quot;&gt;_lookup()&lt;/code&gt;方法是controller中的一个特殊方法，Pecan会在特定的时候调用这个方法来实现更灵活的URL路由。Pecan还支持用户实现&lt;code class=&quot;highlighter-rouge&quot;&gt;_default()&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;_route()&lt;/code&gt;方法。这些方法的具体说明，请阅读Pecan的文档：&lt;a href=&quot;https://pecan.readthedocs.org/en/latest/routing.html&quot;&gt;routing&lt;/a&gt;。&lt;/p&gt;
-
-&lt;p&gt;我们这里只用到&lt;code class=&quot;highlighter-rouge&quot;&gt;_lookup()&lt;/code&gt;方法，这个方法会在controller中没有其他方法可以执行且没有&lt;code class=&quot;highlighter-rouge&quot;&gt;_default()&lt;/code&gt;方法的时候执行。比如上面的UsersController中，没有定义*/v1/users/&lt;UUID&gt;*如何处理，它只能返回404；如果你定义了`_lookup()`方法，那么它就会调用该方法。&lt;/UUID&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;_lookup()&lt;/code&gt;方法需要返回一个元组，元组的第一个元素是下一个controller的实例，第二个元素是URL path中剩余的部分。&lt;/p&gt;
-
-&lt;p&gt;在这里，我们就需要在&lt;code class=&quot;highlighter-rouge&quot;&gt;_lookup()&lt;/code&gt;方法中解析出UUID的部分并传递给新的controller作为新的参数，并且返回剩余的URL path。来看下代码：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;UserController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;RestController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;__init__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;user_id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-        &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user_id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;user_id&lt;/span&gt;
-
-
-&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;UsersController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;RestController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@pecan.expose&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;_lookup&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;user_id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;remainder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;UserController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user_id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;remainder&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;_lookup()&lt;/code&gt;方法的形式为&lt;code class=&quot;highlighter-rouge&quot;&gt;_lookup(self, user_id, *remainder)&lt;/code&gt;，意思就是会把/v1/users/&lt;UUID&gt;中的&lt;UUID&gt;部分作为user_id这个参数，剩余的按照**&quot;/&quot;**分割为一个数组参数（这里remainder为空）。然后，`_lookup()`方法里会初始化一个UserController实例，使用user_id作为初始化参数。这么做之后，这个初始化的控制器就能知道是要查找哪个用户了。然后这个控制器会被返回，作为下一个控制被调用。请求的处理流程就这么转移到UserController中了。&lt;/UUID&gt;&lt;/UUID&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;实现api逻辑-1&quot;&gt;实现API逻辑&lt;/h3&gt;
-
-&lt;p&gt;实现前，我们要先修改一下我们返回的数据，里面需要增加一个id字段。对应的User定义如下：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;wtypes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-    &lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;wtypes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;wtypes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;age&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;int&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;现在，完整的UserController代码如下：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;UserController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;RestController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;__init__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;user_id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-        &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user_id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;user_id&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@expose.expose&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;user_info&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;s&quot;&gt;'id'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user_id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-            &lt;span class=&quot;s&quot;&gt;'name'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'Alice'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-            &lt;span class=&quot;s&quot;&gt;'age'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;30&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user_info&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;使用curl来检查一下效果：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;➜ ~/programming/python/webdemo git:(master) ✗ $ curl http://localhost:8080/v1/users/29520c88de6b4c76ae8deb48db0a71e7
-{&quot;age&quot;: 30, &quot;id&quot;: &quot;29520c88de6b4c76ae8deb48db0a71e7&quot;, &quot;name&quot;: &quot;Alice&quot;}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;定义wsme类型的技巧&quot;&gt;定义WSME类型的技巧&lt;/h3&gt;
-
-&lt;p&gt;你可能会有疑问：这里我们修改了User类型，增加了一个id字段，那么前面实现的&lt;em&gt;POST /v1/users&lt;/em&gt;会不会失效呢？你可以自己测试一下。（答案是不会，因为这个类型里的字段都是可选的）。这里顺便讲两个技巧。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;如何设置一个字段为强制字段&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;像下面这样做就可以了（你可以测试一下，改成这样后，不传递id的&lt;em&gt;POST /v1/users&lt;/em&gt;会失败）：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;wtypes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-    &lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;wtypes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;wsattr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;wtypes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mandatory&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;wtypes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;age&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;int&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;&lt;strong&gt;如何检查一个可选字段的值是否存在&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;检查这个值是否为None是肯定不行的，需要检查这个值是否为&lt;strong&gt;wsme.Unset&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;h2 id=&quot;实现-put-v1users&quot;&gt;实现 PUT /v1/users/&lt;UUID&gt;&lt;/UUID&gt;&lt;/h2&gt;
-
-&lt;p&gt;这个和上一个API一样，不过&lt;code class=&quot;highlighter-rouge&quot;&gt;_lookup()&lt;/code&gt;方法已经实现过了，直接添加方法到UserController中即可：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;UserController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;RestController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@expose.expose&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;body&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;user_info&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;s&quot;&gt;'id'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user_id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-            &lt;span class=&quot;s&quot;&gt;'name'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-            &lt;span class=&quot;s&quot;&gt;'age'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;age&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user_info&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;通过curl来测试：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;➜ ~/programming/python/webdemo git:(master) ✗ $ curl -X PUT http://localhost:8080/v1/users/29520c88de6b4c76ae8deb48db0a71e7 -H &quot;Content-Type: application/json&quot; -d '{&quot;name&quot;: &quot;Cook&quot;, &quot;age&quot;: 50}'
-{&quot;age&quot;: 51, &quot;id&quot;: &quot;29520c88de6b4c76ae8deb48db0a71e7&quot;, &quot;name&quot;: &quot;Cook&quot;}% 
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;实现-delete-v1users&quot;&gt;实现 DELETE /v1/users/&lt;UUID&gt;&lt;/UUID&gt;&lt;/h2&gt;
-
-&lt;p&gt;同上，没有什么新的内容：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;UserController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;RestController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@expose.expose&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;delete&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'Delete user_id: &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;s'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user_id&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;h1 id=&quot;总结&quot;&gt;总结&lt;/h1&gt;
-
-&lt;p&gt;到此为止，我们已经完成了我们的API服务了，虽然没有实际的逻辑，但是本文搭建起来的框架也是OpenStack中API服务的一个常用框架，很多大项目的API服务代码都和我们的webdemo长得差不多。最后再说一下，本文的代码在github上托管着：&lt;a href=&quot;https://github.com/diabloneo/webdemo&quot;&gt;diabloneo/webdemo&lt;/a&gt;。&lt;/p&gt;
-
-&lt;p&gt;现在我们已经了解了包管理和API服务了，那么接下来就要开始数据库相关的操作了。大部分OpenStack的项目都是使用非常著名的sqlalchemy库来实现数据库操作的，本系列接下来的文章就是要来说明数据库的相关知识和应用。&lt;/p&gt;
-
-</description>
-        <pubDate>Tue, 17 Nov 2015 00:00:00 +0800</pubDate>
-        <link>/2015/11/17/learn-openstack-dev-skill-by-demo-05.html</link>
-        <guid isPermaLink="true">/2015/11/17/learn-openstack-dev-skill-by-demo-05.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>通过demo学习OpenStack开发所需的基础知识 -- API服务(3)</title>
-        <description>&lt;p&gt;上一篇文章我们了解了一个巨啰嗦的框架：Paste + PasteDeploy + Routes + WebOb。后来OpenStack社区的人受不了这么啰嗦的代码了，决定换一个框架，他们最终选中了&lt;strong&gt;Pecan&lt;/strong&gt;。Pecan框架相比上一篇文章的啰嗦框架有如下好处：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;不用自己写WSGI application了&lt;/li&gt;
-  &lt;li&gt;请求路由很容易就可以实现了&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;总的来说，用上Pecan框架以后，很多重复的代码不用写了，开发人员可以专注于业务，也就是实现每个API的功能。&lt;/p&gt;
-
-&lt;h1 id=&quot;pecan&quot;&gt;Pecan&lt;/h1&gt;
-
-&lt;p&gt;Pecan框架的目标是实现一个采用对象分发方式进行URL路由的轻量级Web框架。它非常专注于自己的目标，它的大部分功能都和URL路由以及请求和响应的处理相关，而不去实现模板、安全以及数据库层，这些东西都可以通过其他的库来实现。关于Pecan的更多信息，可以查看文档：&lt;a href=&quot;https://pecan.readthedocs.org/en/latest/index.html&quot;&gt;https://pecan.readthedocs.org/en/latest/index.html&lt;/a&gt;。本文以OpenStack的magnum项目为例来说明Pecan项目在实际中的应用，但是本文不会详细讲解Pecan的各个方面，一些细节请读者阅读Pecan的文档。&lt;/p&gt;
-
-&lt;h2 id=&quot;项目中的代码结构&quot;&gt;项目中的代码结构&lt;/h2&gt;
-
-&lt;p&gt;使用Pecan框架时，OpenStack项目一般会把API服务的实现都放在一个&lt;strong&gt;api&lt;/strong&gt;目录下，比如magnum项目是这样的：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;➜ ~/openstack/env/p/magnum git:(master) $ tree magnum/api
-magnum/api
-├── app.py
-├── auth.py
-├── config.py
-├── controllers
-│   ├── base.py
-│   ├── __init__.py
-│   ├── link.py
-│   ├── root.py
-│   └── v1
-│       ├── base.py
-│       ├── baymodel.py
-│       ├── bay.py
-│       ├── certificate.py
-│       ├── collection.py
-│       ├── container.py
-│       ├── __init__.py
-│       ├── magnum_services.py
-│       ├── node.py
-│       ├── pod.py
-│       ├── replicationcontroller.py
-│       ├── service.py
-│       ├── types.py
-│       ├── utils.py
-│       └── x509keypair.py
-├── expose.py
-├── hooks.py
-├── __init__.py
-├── middleware
-│   ├── auth_token.py
-│   ├── __init__.py
-│   └── parsable_error.py
-├── servicegroup.py
-└── validation.py
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;你也可以在Ceilometer项目中看到类似的结构。介绍一下几个主要的文件，这样你以后看到一个使用Pecan的OpenStack项目时就会比较容易找到入口。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;app.py  一般包含了Pecan应用的入口，包含应用初始化代码&lt;/li&gt;
-  &lt;li&gt;config.py  包含Pecan的应用配置，会被app.py使用&lt;/li&gt;
-  &lt;li&gt;controllers/  这个目录会包含所有的控制器，也就是API具体逻辑的地方&lt;/li&gt;
-  &lt;li&gt;controllers/root.py  这个包含根路径对应的控制器&lt;/li&gt;
-  &lt;li&gt;controllers/v1/   这个目录对应v1版本的API的控制器。如果有多个版本的API，你一般能看到v2等目录。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;代码变少了application的配置&quot;&gt;代码变少了：application的配置&lt;/h2&gt;
-
-&lt;p&gt;Pecan的配置很容易，通过一个Python源码式的配置文件就可以完成基本的配置。这个配置的主要目的是指定应用程序的root，然后用于生成WSGI application。我们来看Magnum项目的例子。Magnum项目有个API服务是用Pecan实现的，在&lt;em&gt;magnum/api/config.py&lt;/em&gt;文件中可以找到这个文件，主要内容如下：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;n&quot;&gt;app&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;'root'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'magnum.api.controllers.root.RootController'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;'modules'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'magnum.api'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;'debug'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;False&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;'hooks'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;hooks&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ContextHook&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;hooks&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;RPCHook&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;hooks&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NoExceptionTracebackHook&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;'acl_public_routes'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
-        &lt;span class=&quot;s&quot;&gt;'/'&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;上面这个&lt;strong&gt;app&lt;/strong&gt;对象就是Pecan的配置，每个Pecan应用都需要有这么一个名为app的配置。app配置中最主要的就是&lt;strong&gt;root&lt;/strong&gt;的值，这个值表示了应用程序的入口，也就是从哪个地方开始解析HTTP的根path：&lt;strong&gt;/&lt;/strong&gt;。&lt;strong&gt;hooks&lt;/strong&gt;对应的配置是一些Pecan的hook，作用类似于WSGI Middleware。&lt;/p&gt;
-
-&lt;p&gt;有了app配置后，就可以让Pecan生成一个WSGI application。在Magnum项目中，&lt;em&gt;magnum/api/app.py&lt;/em&gt;文件就是生成WSGI application的地方，我们来看一下这个的主要内容：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;get_pecan_config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
-    &lt;span class=&quot;c&quot;&gt;# Set up the pecan configuration&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;filename&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;api_config&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__file__&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;replace&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'.pyc'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'.py'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pecan&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;configuration&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;conf_from_file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;filename&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-
-&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;setup_app&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;None&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;config&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;get_pecan_config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-
-    &lt;span class=&quot;n&quot;&gt;app_conf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;dict&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-    &lt;span class=&quot;n&quot;&gt;app&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pecan&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;make_app&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;app_conf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'root'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;logging&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;getattr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'logging'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{}),&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;wrap_app&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;middleware&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ParsableErrorMiddleware&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-        &lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;app_conf&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;auth&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;install&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CONF&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;acl_public_routes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;get_pecan_config()&lt;/code&gt;方法读取我们上面提到的config.py文件，然后返回一个&lt;strong&gt;pecan.configuration.Config&lt;/strong&gt;对象。&lt;code class=&quot;highlighter-rouge&quot;&gt;setup_app()&lt;/code&gt;函数首先调用&lt;code class=&quot;highlighter-rouge&quot;&gt;get_pecan_config()&lt;/code&gt;函数获取application的配置，然后调用&lt;code class=&quot;highlighter-rouge&quot;&gt;pecan.make_app()&lt;/code&gt;函数创建了一个WSGI application，最后调用了 &lt;code class=&quot;highlighter-rouge&quot;&gt;auth.install()&lt;/code&gt;函数（也就是magnum.api.auth.install()函数）为刚刚生成的WSGI application加上Keystone的认证中间件（确保所有的请求都会通过Keystone认证）。&lt;/p&gt;
-
-&lt;p&gt;到这边为止，一个Pecan的WSGI application就已经准备好了，只要调用这个&lt;code class=&quot;highlighter-rouge&quot;&gt;setup_app()&lt;/code&gt;函数就能获得。至于如何部署这个WSGI application，请参考&lt;a href=&quot;http://segmentfault.com/a/1190000003069785&quot;&gt;WSGI简介&lt;/a&gt;这篇文章。&lt;/p&gt;
-
-&lt;p&gt;从Magnum这个实际的例子可以看出，使用了Pecan之后，我们不再需要自己写那些冗余的WSGI application代码了，直接调用Pecan的&lt;code class=&quot;highlighter-rouge&quot;&gt;make_app()&lt;/code&gt;函数就能完成这些工作。另外，对于之前使用PasteDeploy时用到的很多WSGI中间件，可以选择使用Pecan的hooks机制来实现，也选择使用WSGI中间件的方式来实现。在Magnum的API服务就同时使用了这两种方式。其实，Pecan还可以和PasteDeploy一起使用，Ceilometer项目就是这么做的，大家可以看看。&lt;/p&gt;
-
-&lt;h2 id=&quot;确定路由变得容易了对象分发式的路由&quot;&gt;确定路由变得容易了：对象分发式的路由&lt;/h2&gt;
-
-&lt;p&gt;Pecan不仅缩减了生成WSGI application的代码，而且也让开发人员更容易的指定一个application的路由。Pecan采用了一种对象分发风格（&lt;strong&gt;object-dispatch style&lt;/strong&gt;）的路由模式。我们直接通过例子来解释这种路由模式，还是以Magnum项目为例。&lt;/p&gt;
-
-&lt;p&gt;上面提到了，Magnum的API服务的root是&lt;strong&gt;magnum.api.controllers.root.RootController&lt;/strong&gt;。这里的RootController的是一个类，我们来看它的代码：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;RootController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;RestController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-
-    &lt;span class=&quot;n&quot;&gt;_versions&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'v1'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&quot;&quot;&quot;All supported API versions&quot;&quot;&quot;&lt;/span&gt;
-
-    &lt;span class=&quot;n&quot;&gt;_default_version&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'v1'&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&quot;&quot;&quot;The default API version&quot;&quot;&quot;&lt;/span&gt;
-
-    &lt;span class=&quot;n&quot;&gt;v1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;v1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Controller&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@expose.expose&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Root&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-        &lt;span class=&quot;c&quot;&gt;# NOTE: The reason why convert() it's being called for every&lt;/span&gt;
-        &lt;span class=&quot;c&quot;&gt;#       request is because we need to get the host url from&lt;/span&gt;
-        &lt;span class=&quot;c&quot;&gt;#       the request object to make the links.&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Root&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;convert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@pecan.expose&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;_route&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-        &lt;span class=&quot;s&quot;&gt;&quot;&quot;&quot;Overrides the default routing behavior.
-
-        It redirects the request to the default version of the magnum API
-        if the version number is not specified in the url.
-        &quot;&quot;&quot;&lt;/span&gt;
-
-        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_versions&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_default_version&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;super&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;RootController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_route&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;别看这个类这么长，我来解释一下你就懂了。首先，你可以先忽略掉&lt;code class=&quot;highlighter-rouge&quot;&gt;_route()&lt;/code&gt;函数，这个函数是用来覆盖Pecan的默认路由实现的，在这里去掉它不妨碍我们理解Pecan（这里的&lt;code class=&quot;highlighter-rouge&quot;&gt;_route()&lt;/code&gt;函数的作用把所有请求重定向到默认的API版本去）。去掉&lt;code class=&quot;highlighter-rouge&quot;&gt;_route()&lt;/code&gt;和其他的东西后，整个类就变成这么短：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;RootController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;RestController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;v1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;v1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Controller&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@expose.expose&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Root&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Root&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;convert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;首先，你要记住，这个&lt;em&gt;RootController&lt;/em&gt;对应的是URL中根路径，也就是path中最左边的&lt;strong&gt;/&lt;/strong&gt;。&lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;RootController&lt;/em&gt;继承自&lt;em&gt;rest.RestController&lt;/em&gt;，是Pecan实现的RESTful控制器。这里的&lt;code class=&quot;highlighter-rouge&quot;&gt;get()&lt;/code&gt;函数表示，当访问的是&lt;em&gt;GET /&lt;/em&gt;时，由该函数处理。&lt;code class=&quot;highlighter-rouge&quot;&gt;get()&lt;/code&gt;函数会返回一个WSME对象，表示一个形式化的HTTP Response，这个下面再讲。&lt;code class=&quot;highlighter-rouge&quot;&gt;get()&lt;/code&gt;函数上面的&lt;code class=&quot;highlighter-rouge&quot;&gt;expose&lt;/code&gt;装饰器是Pecan实现路由控制的一个方式，被expose的函数才会被路由处理。&lt;/li&gt;
-  &lt;li&gt;这里的&lt;code class=&quot;highlighter-rouge&quot;&gt;v1 = v1.Controller()&lt;/code&gt;表示，当访问的是&lt;em&gt;GET /v1&lt;/em&gt;或者&lt;em&gt;GET /v1/…&lt;/em&gt;时，请求由一个&lt;code class=&quot;highlighter-rouge&quot;&gt;v1.Controller&lt;/code&gt;实例来处理。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;为了加深大家的理解，我们再来看下&lt;code class=&quot;highlighter-rouge&quot;&gt;v1.Controller&lt;/code&gt;的实现：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Controller&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;RestController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&quot;&quot;&quot;Version 1 API controller root.&quot;&quot;&quot;&lt;/span&gt;
-
-    &lt;span class=&quot;n&quot;&gt;bays&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bay&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;BaysController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;baymodels&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;baymodel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;BayModelsController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;containers&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;container&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ContainersController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;nodes&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NodesController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;pods&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pod&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;PodsController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;rcs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ReplicationControllersController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;services&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;service&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ServicesController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;x509keypairs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x509keypair&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;X509KeyPairController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;certificates&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;certificate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;CertificateController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@expose.expose&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;V1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;V1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;convert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-
-    &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;上面这个Controller也是继承自&lt;em&gt;rest.RestController&lt;/em&gt;。所以它的&lt;em&gt;get&lt;/em&gt;函数表示，当访问的是&lt;em&gt;GET /v1&lt;/em&gt;的时候，要做的处理。然后，它还有很多类属性，这些属性分别表示不同URL路径的控制器：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;/v1/bays 由bays处理&lt;/li&gt;
-  &lt;li&gt;/v1/baymodels 由baymodels处理&lt;/li&gt;
-  &lt;li&gt;/v1/containers 由containers处理&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;其他的都是类似的。我们再继续看&lt;code class=&quot;highlighter-rouge&quot;&gt;bay.BaysController&lt;/code&gt;的代码：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;BaysController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;RestController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&quot;&quot;&quot;REST controller for Bays.&quot;&quot;&quot;&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;__init__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-        &lt;span class=&quot;nb&quot;&gt;super&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;BaysController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__init__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-
-    &lt;span class=&quot;n&quot;&gt;_custom_actions&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;s&quot;&gt;'detail'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'GET'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;get_all&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-    
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;detail&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-    
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;get_one&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-    
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;post&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-    
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;patch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;delete&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;这个controller中只有函数，没有任何类属性，而且没有实现任何特殊方法，所以&lt;em&gt;/v1/bays&lt;/em&gt;开头的URL处理都在这个controller中终结。这个类会处理如下请求：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;GET /v1/bays&lt;/li&gt;
-  &lt;li&gt;GET /v1/bays/{UUID}&lt;/li&gt;
-  &lt;li&gt;POST /v1/bays&lt;/li&gt;
-  &lt;li&gt;PATCH /v1/bays/{UUID}&lt;/li&gt;
-  &lt;li&gt;DELETE /v1/bays/{UUID}&lt;/li&gt;
-  &lt;li&gt;GET /v1/bays/detail/{UUID}&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;看了上面的3个controller之后，你应该能大概明白Pecan是如何对URL进行路由的。这种路由方式就是对象分发：&lt;strong&gt;根据类属性，包括数据属性和方法属性来决定如何路由一个HTTP请求&lt;/strong&gt;。Pecan的文档中对请求的路由有专门的描述，要想掌握Pecan的路由还是要完整的看一下官方文档。&lt;/p&gt;
-
-&lt;h2 id=&quot;内置restful支持&quot;&gt;内置RESTful支持&lt;/h2&gt;
-
-&lt;p&gt;我们上面举例的controller都是继承自&lt;code class=&quot;highlighter-rouge&quot;&gt;pecan.rest.RestController&lt;/code&gt;，这种controller称为&lt;strong&gt;RESTful controller&lt;/strong&gt;，专门用于实现RESTful API的，因此在OpenStack中使用特别多。Pecan还支持普通的controller，称为&lt;strong&gt;Generic controller&lt;/strong&gt;。Generic controller继承自object对象，默认没有实现对RESTful请求的方法。简单的说，RESTful controller帮我们规定好了&lt;code class=&quot;highlighter-rouge&quot;&gt;get_one()&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;get_all()&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;get()&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;post()&lt;/code&gt;等方法对应的HTTP请求，而Generic controller则没有。关于这两种controller的区别，可以看官方文档&lt;a href=&quot;https://pecan.readthedocs.org/en/latest/rest.html&quot;&gt;Writing RESTful Web Services with Generic Controllers&lt;/a&gt;，有很清楚的示例。&lt;/p&gt;
-
-&lt;p&gt;对于RestController中没有预先定义好的方法，我们可以通过控制器的&lt;code class=&quot;highlighter-rouge&quot;&gt;_custom_actions&lt;/code&gt;属性来指定其能处理的方法。&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;RootController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;RestController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;_custom_actions&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;s&quot;&gt;'test'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'GET'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@expose&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'hello'&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;上面这个控制器是一个根控制器，指定了/test路径支持GET方法，效果如下：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ curl http://localhost:8080/test
-hello% 
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;那么http请求和http响应呢&quot;&gt;那么HTTP请求和HTTP响应呢？&lt;/h2&gt;
-
-&lt;p&gt;上面讲了这么多，我们都没有说明在Pecan中如何处理请求和如何返回响应。这个将在下一章中说明，同时我们会引入一个新的库&lt;strong&gt;WSME&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;h1 id=&quot;wsme&quot;&gt;WSME&lt;/h1&gt;
-
-&lt;h2 id=&quot;pecan对请求和响应的处理&quot;&gt;Pecan对请求和响应的处理&lt;/h2&gt;
-
-&lt;p&gt;在开始提到WSME之前，我们先来看下Pecan自己对HTTP请求和响应的处理。这样你能更好的理解为什么会再引入一个WSME库。&lt;/p&gt;
-
-&lt;p&gt;Pecan框架为每个线程维护了单独的请求和响应对象，你可以直接在请求处理函数中访问。&lt;strong&gt;pecan.request&lt;/strong&gt;和&lt;strong&gt;pecan.response&lt;/strong&gt;分别代表当前需要处理的请求和响应对象。你可以直接操作这两个对象，比如指定响应的状态码，就像下面这个例子一样（例子来自官方文档）：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;nd&quot;&gt;@pecan.expose&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;login&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;assert&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pecan&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;path&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'/login'&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;username&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pecan&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;POST&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'username'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;password&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pecan&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;POST&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'password'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-    &lt;span class=&quot;n&quot;&gt;pecan&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;status&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;403&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;pecan&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'Bad Login!'&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;这个例子演示了访问POST请求的参数以及返回403。你也可以重新构造一个&lt;code class=&quot;highlighter-rouge&quot;&gt;pecan.Response&lt;/code&gt;对象作为返回值（例子来自官方文档）：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;pecan&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;expose&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Response&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;RootController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;object&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@expose&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;hello&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Hello, World!'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;202&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;另外，HTTP请求的参数也会可以作为控制器方法的参数，还是来看几个官方文档的例子：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;RootController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;object&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-    &lt;span class=&quot;nd&quot;&gt;@expose&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;arg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;arg&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@expose&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;kwargs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;kwargs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;kwargs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;这个控制器中的方法直接返回了参数，演示了对GET请求参数的处理，效果是这样的：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ curl http://localhost:8080/?arg=foo
-foo
-$ curl http://localhost:8080/kwargs?a=1&amp;amp;b=2&amp;amp;c=3
-{u'a': u'1', u'c': u'3', u'b': u'2'}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;有时候，参数也可能是URL的一部分，比如最后的一段path作为参数，就像下面这样：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;RootController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;object&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-    &lt;span class=&quot;nd&quot;&gt;@expose&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;','&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;效果是这样的：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ curl http://localhost:8080/args/one/two/three
-one,two,three
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;另外，我们还要看一下POST方法的参数如何处理（例子来自官方文档）：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;RootController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;object&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-    &lt;span class=&quot;nd&quot;&gt;@expose&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;arg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;arg&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;效果如下，就是把HTTP body解析成了控制器方法的参数：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ curl -X POST &quot;http://localhost:8080/&quot; -H &quot;Content-Type: application/x-www-form-urlencoded&quot; -d &quot;arg=foo&quot;
-foo
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;返回json还是html&quot;&gt;返回JSON还是HTML？&lt;/h2&gt;
-
-&lt;p&gt;如果你不是明确的返回一个Response对象，那么Pecan中方法的返回内容类型就是由&lt;code class=&quot;highlighter-rouge&quot;&gt;expose()&lt;/code&gt;装饰器决定的。默认情况下，控制器的方法返回的content-type是HTML。&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;RootController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;RestController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;_custom_actions&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;s&quot;&gt;'test'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'GET'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@expose&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'hello'&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;效果如下：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ curl -v http://localhost:8080/test
-* Hostname was NOT found in DNS cache
-*   Trying 127.0.0.1...
-* Connected to localhost (127.0.0.1) port 8080 (#0)
-&amp;gt; GET /test HTTP/1.1
-&amp;gt; User-Agent: curl/7.38.0
-&amp;gt; Host: localhost:8080
-&amp;gt; Accept: */*
-&amp;gt;
-* HTTP 1.0, assume close after body
-&amp;lt; HTTP/1.0 200 OK
-&amp;lt; Date: Tue, 15 Sep 2015 14:31:28 GMT
-&amp;lt; Server: WSGIServer/0.1 Python/2.7.9
-&amp;lt; Content-Length: 5
-&amp;lt; Content-Type: text/html; charset=UTF-8
-&amp;lt;
-* Closing connection 0
-hello% 
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;也可以让它返回JSON：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;RootController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;RestController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;_custom_actions&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;s&quot;&gt;'test'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'GET'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@expose&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'json'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'hello'&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;效果如下：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; curl -v http://localhost:8080/test
-* Hostname was NOT found in DNS cache
-*   Trying 127.0.0.1...
-* Connected to localhost (127.0.0.1) port 8080 (#0)
-&amp;gt; GET /test HTTP/1.1
-&amp;gt; User-Agent: curl/7.38.0
-&amp;gt; Host: localhost:8080
-&amp;gt; Accept: */*
-&amp;gt;
-* HTTP 1.0, assume close after body
-&amp;lt; HTTP/1.0 200 OK
-&amp;lt; Date: Tue, 15 Sep 2015 14:33:27 GMT
-&amp;lt; Server: WSGIServer/0.1 Python/2.7.9
-&amp;lt; Content-Length: 18
-&amp;lt; Content-Type: application/json; charset=UTF-8
-&amp;lt;
-* Closing connection 0
-{&quot;hello&quot;: &quot;world&quot;}% 
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;甚至，你还可以让一个控制器方法根据URL path的来决定是返回HTML还是JSON：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;RootController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;RestController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;_custom_actions&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;s&quot;&gt;'test'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'GET'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@expose&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-    &lt;span class=&quot;nd&quot;&gt;@expose&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'json'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;json&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dumps&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'hello'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'world'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;返回JSON：&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ curl -v http://localhost:8080/test.json
-* Hostname was NOT found in DNS cache
-*   Trying 127.0.0.1...
-* Connected to localhost (127.0.0.1) port 8080 (#0)
-&amp;gt; GET /test.json HTTP/1.1
-&amp;gt; User-Agent: curl/7.38.0
-&amp;gt; Host: localhost:8080
-&amp;gt; Accept: */*
-&amp;gt;
-* HTTP 1.0, assume close after body
-&amp;lt; HTTP/1.0 200 OK
-&amp;lt; Date: Wed, 16 Sep 2015 14:26:27 GMT
-&amp;lt; Server: WSGIServer/0.1 Python/2.7.9
-&amp;lt; Content-Length: 24
-&amp;lt; Content-Type: application/json; charset=UTF-8
-&amp;lt;
-* Closing connection 0
-&quot;{\&quot;hello\&quot;: \&quot;world\&quot;}&quot;% 
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;返回HTML：&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ curl -v http://localhost:8080/test.html
-* Hostname was NOT found in DNS cache
-*   Trying 127.0.0.1...
-* Connected to localhost (127.0.0.1) port 8080 (#0)
-&amp;gt; GET /test.html HTTP/1.1
-&amp;gt; User-Agent: curl/7.38.0
-&amp;gt; Host: localhost:8080
-&amp;gt; Accept: */*
-&amp;gt;
-* HTTP 1.0, assume close after body
-&amp;lt; HTTP/1.0 200 OK
-&amp;lt; Date: Wed, 16 Sep 2015 14:26:24 GMT
-&amp;lt; Server: WSGIServer/0.1 Python/2.7.9
-&amp;lt; Content-Length: 18
-&amp;lt; Content-Type: text/html; charset=UTF-8
-&amp;lt;
-* Closing connection 0
-{&quot;hello&quot;: &quot;world&quot;}% 
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;这里要注意一下：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;同一个字符串作为JSON返回和作为HTML返回是不一样的，仔细看一下HTTP响应的内容。&lt;/li&gt;
-  &lt;li&gt;我们的例子中在URL的最后加上了&lt;strong&gt;.html&lt;/strong&gt;后缀或者&lt;strong&gt;.json&lt;/strong&gt;后缀，请尝试一下不加后缀的化是返回什么？然后，调换一下两个&lt;code class=&quot;highlighter-rouge&quot;&gt;expose()&lt;/code&gt;的顺序再试一下。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;从上面的例子可以看出，决定响应类型的主要是传递给&lt;code class=&quot;highlighter-rouge&quot;&gt;expose()&lt;/code&gt;函数的参数，我们看下&lt;code class=&quot;highlighter-rouge&quot;&gt;expose()&lt;/code&gt;函数的完整声明：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;n&quot;&gt;pecan&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;decorators&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;expose&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;template&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;None&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-                        &lt;span class=&quot;n&quot;&gt;content_type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'text/html'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-                        &lt;span class=&quot;n&quot;&gt;generic&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;False&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;template&lt;/strong&gt;参数用来指定返回值的模板，如果是’json’就会返回JSON内容，这里可以指定一个HTML文件，或者指定一个mako模板。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;content_type&lt;/strong&gt;指定响应的content-type，默认值是’text/html’。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;generic&lt;/strong&gt;参数表明该方法是一个“泛型”方法，可以指定多个不同的函数对应同一个路径的不同的HTTP方法。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;看过参数的解释后，你应该能大概了解&lt;code class=&quot;highlighter-rouge&quot;&gt;expose()&lt;/code&gt;函数是如何控制HTTP响应的内容和类型的。&lt;/p&gt;
-
-&lt;h2 id=&quot;用wsme来做什么&quot;&gt;用WSME来做什么？&lt;/h2&gt;
-
-&lt;p&gt;上面两节已经说明了Pecan可以比较好的处理HTTP请求中的参数以及控制HTTP返回值。那么为什么我们还需要WSME呢？因为Pecan在做下面这个事情的时候比较麻烦：&lt;strong&gt;请求参数和响应内容的类型检查&lt;/strong&gt;（英文简称就是&lt;strong&gt;typing&lt;/strong&gt;）。当然，做是可以做的，不过你需要自己访问pecan.request和pecan.response，然后检查指定的值的类型。WSME就是为解决这个问题而生的，而且适用场景就是RESTful API。&lt;/p&gt;
-
-&lt;h2 id=&quot;wsme简介&quot;&gt;WSME简介&lt;/h2&gt;
-
-&lt;p&gt;WSME的全称是&lt;strong&gt;Web Service Made Easy&lt;/strong&gt;，是专门用于实现REST服务的typing库，让你不需要直接操作请求和响应，而且刚好和Pecan结合得非常好，所以OpenStack的很多项目都使用了Pecan + WSME的组合来实现API（好吧，我看过的项目，用了Pecan的都用了WSME）。WSME的理念是：在大部分情况下，Web服务的输入和输出对数据类型的要求都是严格的。所以它就专门解决了这个事情，然后把其他事情都交给其他框架去实现。因此，一般WSME都是和其他框架配合使用的，支持Pecan、Flask等。WSME的文档地址是&lt;a href=&quot;http://wsme.readthedocs.org/en/latest/index.html&quot;&gt;http://wsme.readthedocs.org/en/latest/index.html&lt;/a&gt;。&lt;/p&gt;
-
-&lt;h2 id=&quot;wsme的使用&quot;&gt;WSME的使用&lt;/h2&gt;
-
-&lt;p&gt;用了WSME后的好处是什么呢？WSME会自动帮你检查HTTP请求和响应中的数据是否符合预先设定好的要求。WSME的主要方式是通过装饰器来控制controller方法的输入和输出。WSME中主要使用两个控制器：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;@signature&lt;/strong&gt;: 这个装饰器用来描述一个函数的输入和输出。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;@wsexpose&lt;/strong&gt;: 这个装饰器包含@signature的功能，同时会把函数的路由信息暴露给Web框架，效果就像Pecan的expose装饰器。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;这里我们结合Pecan来讲解WSME的使用。先来看一个原始类型的例子：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;wsmeext.pecan&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;wsexpose&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;RootController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;RestController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;_custom_actions&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;s&quot;&gt;'test'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'GET'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@wsexpose&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;number&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;number&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;如果不提供参数，访问会失败：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ curl http://localhost:8080/test
-{&quot;debuginfo&quot;: null, &quot;faultcode&quot;: &quot;Client&quot;, &quot;faultstring&quot;: &quot;Missing argument: \&quot;number\&quot;&quot;}% 
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;如果提供的参数不是整型，访问也会失败：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ curl http://localhost:8080/test\?number\=a
-{&quot;debuginfo&quot;: null, &quot;faultcode&quot;: &quot;Client&quot;, &quot;faultstring&quot;: &quot;Invalid input for field/attribute number. Value: 'a'. unable to convert to int&quot;}% 
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;上面这些错误信息都是由WSME框架直接返回的，还没有执行到你写的方法。如果请求正确，那么会是这样的：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ curl -v http://localhost:8080/test\?number\=1
-* Hostname was NOT found in DNS cache
-*   Trying 127.0.0.1...
-* Connected to localhost (127.0.0.1) port 8080 (#0)
-&amp;gt; GET /test?number=1 HTTP/1.1
-&amp;gt; User-Agent: curl/7.38.0
-&amp;gt; Host: localhost:8080
-&amp;gt; Accept: */*
-&amp;gt;
-* HTTP 1.0, assume close after body
-&amp;lt; HTTP/1.0 200 OK
-&amp;lt; Date: Wed, 16 Sep 2015 15:06:35 GMT
-&amp;lt; Server: WSGIServer/0.1 Python/2.7.9
-&amp;lt; Content-Length: 1
-&amp;lt; Content-Type: application/json; charset=UTF-8
-&amp;lt;
-* Closing connection 0
-1% 
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;请注意返回的content-type,这里返回JSON是因为我们使用的&lt;code class=&quot;highlighter-rouge&quot;&gt;wsexpose&lt;/code&gt;设置的返回类型是XML和JSON，并且JSON是默认值。上面这个例子就是WSME最简单的应用了。&lt;/p&gt;
-
-&lt;p&gt;那么现在有下面这些问题需要思考一下：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;如果想用POST的方式来传递参数，要怎么做呢？提示：要阅读WSME中@signature装饰器的文档。&lt;/li&gt;
-  &lt;li&gt;如果我希望使用&lt;em&gt;/test/1&lt;/em&gt;这种方式来传递参数要怎么做呢？提示：要阅读Pecan文档中关于路由的部分。&lt;/li&gt;
-  &lt;li&gt;WSME中支持对哪些类型的检查呢？WSME支持整型、浮点型、字符串、布尔型、日期时间等，甚至还支持用户自定义类型。提示：要阅读WSME文档中关于类型的部分。&lt;/li&gt;
-  &lt;li&gt;WSME支持数组类型么？支持。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;上面的问题其实也是很多人使用WSME的时候经常问的问题。我们将在下一篇文章中使用Pecan + WSME来继续开发我们的demo，并且用代码来回答上面所有的问题。&lt;/p&gt;
-
-</description>
-        <pubDate>Wed, 30 Sep 2015 00:00:00 +0800</pubDate>
-        <link>/2015/09/30/learn-openstack-dev-skill-by-demo-04.html</link>
-        <guid isPermaLink="true">/2015/09/30/learn-openstack-dev-skill-by-demo-04.html</guid>
         
         
       </item>

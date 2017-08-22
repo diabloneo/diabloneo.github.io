@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Shell替换上一条命令中的字符串</title>
-  <meta name="description" content="今天学到了一个shell技巧：替换上一条执行过的命令中的字符串。">
+  <title>Golang源码阅读笔记 -- 目录</title>
+  <meta name="description" content="  go build(1)  go build(2)  go build(3)  go build(4)">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="/2014/09/18/replace-strings-in-last-shell-command.html">
+  <link rel="canonical" href="/2017/03/04/golang-code-reading-notes-">
   <link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="/feed.xml">
 </head>
 
@@ -56,35 +56,17 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Shell替换上一条命令中的字符串</h1>
-    <p class="post-meta"><time datetime="2014-09-18T00:00:00+08:00" itemprop="datePublished">Sep 18, 2014</time></p>
+    <h1 class="post-title" itemprop="name headline">Golang源码阅读笔记 -- 目录</h1>
+    <p class="post-meta"><time datetime="2017-03-04T00:00:00+08:00" itemprop="datePublished">Mar 4, 2017</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>今天学到了一个shell技巧：<strong>替换上一条执行过的命令中的字符串</strong>。</p>
-
-<p>示例如下</p>
-
-<figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="gp">~/tmp$ </span>ls d.cpio
-d.cpio
-<span class="gp">~/tmp$ </span>^cpio^tar
-ls d.tar
-d.tar</code></pre></figure>
-
-<p>解释一下：</p>
-
-<ul>
-  <li>首先执行<code class="highlighter-rouge">ls d.cpio</code></li>
-  <li>然后输入<code class="highlighter-rouge">^cpio^tar</code>把<code class="highlighter-rouge">ls d.cpio</code>中的<em>cpio</em>替换成<em>tar</em>，然后执行替换后的命令。</li>
-</ul>
-
-<p>上面的命令只能替换第一次出现的字符串，如果想替换所有的字符串，则需要使用如下命令：</p>
-
-<figure class="highlight"><pre><code class="language-shell" data-lang="shell">➜ ~  <span class="nv">$ </span>ls d.cpio c.cpio
-➜ ~  <span class="nv">$ </span>!!:gs/cpio/tar
-➜ ~  <span class="nv">$ </span>ls d.tar c.tar
-➜ ~  <span class="err">$</span></code></pre></figure>
-
+    <ol>
+  <li><a href="/2017/02/26/golang-code-reading-notes-1.html">go build(1)</a></li>
+  <li><a href="/2017/02/27/golang-code-reading-notes-2.html">go build(2)</a></li>
+  <li><a href="/2017/02/28/golang-code-reading-notes-3.html">go build(3)</a></li>
+  <li><a href="/2017/03/04/golang-code-reading-notes-4.html">go build(4)</a></li>
+</ol>
 
     <br />
     <div>

@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Shell替换上一条命令中的字符串</title>
-  <meta name="description" content="今天学到了一个shell技巧：替换上一条执行过的命令中的字符串。">
+  <title>OpenStack Summit 2017 Boston观后感</title>
+  <meta name="description" content="这次summit已经不强调OpenStack本身的技术了，所有的核心项目都已经很成熟，各大厂商也把高可用和在线升级做得很成熟了。而且，OpenStack已经是私有云事实上的标准，除非你选VMWare产品，否则只能选择OpenStack。">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="/2014/09/18/replace-strings-in-last-shell-command.html">
+  <link rel="canonical" href="/2017/05/26/openstack-summit-2017-boston-review.html">
   <link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="/feed.xml">
 </head>
 
@@ -56,35 +56,50 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Shell替换上一条命令中的字符串</h1>
-    <p class="post-meta"><time datetime="2014-09-18T00:00:00+08:00" itemprop="datePublished">Sep 18, 2014</time></p>
+    <h1 class="post-title" itemprop="name headline">OpenStack Summit 2017 Boston观后感</h1>
+    <p class="post-meta"><time datetime="2017-05-26T00:00:00+08:00" itemprop="datePublished">May 26, 2017</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>今天学到了一个shell技巧：<strong>替换上一条执行过的命令中的字符串</strong>。</p>
+    <p>这次summit已经不强调OpenStack本身的技术了，所有的核心项目都已经很成熟，各大厂商也把高可用和在线升级做得很成熟了。而且，OpenStack已经是私有云事实上的标准，除非你选VMWare产品，否则只能选择OpenStack。</p>
 
-<p>示例如下</p>
+<p>在我看来，OpenStack summit这次强调的重点有两个，一个是open，另一个是和容器的结合。</p>
 
-<figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="gp">~/tmp$ </span>ls d.cpio
-d.cpio
-<span class="gp">~/tmp$ </span>^cpio^tar
-ls d.tar
-d.tar</code></pre></figure>
+<h1 id="open">Open</h1>
 
-<p>解释一下：</p>
+<p>Open，在OpenStack的解释里有两个，一个是open source，另一个是open community。</p>
+
+<p>Open source代表着透明、用户可控，也代表着运维困难等，是一些被大家广泛接受的观点。OpenStack基金会这次还在现场连线采访了斯诺登，就是为了向用户传递open source方面的价值。不过，我觉得这些观点并不能很好的吸引用户。</p>
+
+<p>Open community是我觉得更有意思的一个方面。基金会COO Mark Collier在第二天的keynote Home of Open {Composable} Infrastructure 花了很大的篇幅来讲这个问题。OpenStack是一个很活跃的社区，Kubernetes是另一个很活跃的社区，两个社区之间是否能有合作呢？合作又会涉及到哪些方面呢？比如在运营方面，Mark觉得很多开源社区的运营都和OpenStack社区类似，其他社区可以学习OpenStack这七年来积累的社区运营经验。在技术方面，是否可以直接利用其他社区的产品，避免重复造轮子？</p>
+
+<p>在技术方面，Mark举了个很好的例子，像Kubernetes这样的应用是需要解决存储问题的，而OpenStack已经花了7年的时间来解决存储问题，Cinder项目可以对接80种不同的后端，Kubernetes可以通过对接Cinder来解决存储问题，这样就不用重复对接不同存储后端这个工作了。目前Kubernetes也确实这么做了。</p>
+
+<p>我觉得上面这个例子说明了OpenStack现在的地位，以及基金会对它的期望。现在的OpenStack就像是当年的Linux，已经开始成为一种标准，一种数据中心管理的标准：</p>
 
 <ul>
-  <li>首先执行<code class="highlighter-rouge">ls d.cpio</code></li>
-  <li>然后输入<code class="highlighter-rouge">^cpio^tar</code>把<code class="highlighter-rouge">ls d.cpio</code>中的<em>cpio</em>替换成<em>tar</em>，然后执行替换后的命令。</li>
+  <li>当年，你要管理一个服务器上的资源，你就给它装上Linux。Linux负责管理一个服务器上的计算、网络和存储资源。</li>
+  <li>现在，你要管理一个数据中心的资源，你就给它装上OpenStack。OpenStack负责管理一个数据中心里的计算、网络和存储资源。</li>
 </ul>
 
-<p>上面的命令只能替换第一次出现的字符串，如果想替换所有的字符串，则需要使用如下命令：</p>
+<p>预计，OpenStack会强化自己作为数据中心OS的路线。</p>
 
-<figure class="highlight"><pre><code class="language-shell" data-lang="shell">➜ ~  <span class="nv">$ </span>ls d.cpio c.cpio
-➜ ~  <span class="nv">$ </span>!!:gs/cpio/tar
-➜ ~  <span class="nv">$ </span>ls d.tar c.tar
-➜ ~  <span class="err">$</span></code></pre></figure>
+<h1 id="容器">容器</h1>
 
+<p>这两年来，容器技术的发展绝对是对OpenStack发展的一大威胁。不论是用户，还是OpenStack社区，都对容器技术如何与OpenStack结合感到困惑。但是，今年，这个问题似乎得到了解决，不过并不是通过技术方案来解决，而是通过策略。</p>
+
+<p>这次的summit上，社区和主要厂商都把kubernetes、mesos、swarm等看成是应用管理平台，这个平台通过容器技术可以实现应用在混合云上的编排需求。OpenStack则作为私有云的管理平台，向K8s提供资源，但是不参与应用的管理。类似下图这样的架构。</p>
+
+<p><img src="/assets/imgs/00009_hybrid_cloud_architecture.jpg" alt="Hybrid Cloud Architecture" /></p>
+
+<p>也就是说，OpenStack打算脱离应用管理平台，各大厂商目前也在这么做，比如Red Hat和Ubuntu。</p>
+
+<p>另外，既然把容器管理平台作为连接私有云和公有云的重要工具，那么这个平台就得解决计算、网络和存储这三种资源在私有云和公有云之间迁移的问题。计算很简单，计算是无状态的，私有云的CPU和公有云的CPU可以做同样的事情，只需要一定的启停时间。网络，可以通过修改DNS或者IP地址达到目的，流量还是可以到达你服务所在的位置。存储，只有存储是最难的。
+混合云的存储问题，主要还是在于数据的存储位置是很难改变的，成本太高。存储决定了应用的状态，所以存储有一致性等各种要求。要想在混合云的场景里解决这个问题，要么是把数据复制一份，这就存在数据一致性和存储成本的问题；要么是忍受跨WAN的数据访问带来的延迟和吞吐的降低。这个问题应该来说，还没有好的解决方案。但是，从另一方面来说，这个问题应该不是一个太大的问题，公有云一直是推行多region数据不相通的运作方式，大家也都用得好好的。所以，使用容器管理平台来连接私有云和公有云时，还是需要考虑数据的存储位置。</p>
+
+<p>虽然数据存储不可能那么灵活，Red Hat和AWS还是做了一个尝试。在Red Hat summit上，发布了AWS broker类容器。这类容器是AWS公有云服务的代理容器，创建一个这样的容器，就等于在AWS创建了一个对应的服务，应用连接到这个容器就可以直接访问AWS服务。所以应用不用关心自己在哪里运行，访问的数据始终是在AWS上。这是一个很好的尝试。</p>
+
+<p>总的来说，使用容器来调度应用也是个事实上的标准了，OpenStack已经没有办法在这个领域中占到地盘了（所以我对Magnum项目的前途感到十分担忧啊）。如何和容器更好的结合，肯定是未来一两年内OpenStack要做的主要事情。</p>
 
     <br />
     <div>
