@@ -6,9 +6,34 @@
 </description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 22 Aug 2017 23:51:02 +0800</pubDate>
-    <lastBuildDate>Tue, 22 Aug 2017 23:51:02 +0800</lastBuildDate>
+    <pubDate>Wed, 23 Aug 2017 10:53:44 +0800</pubDate>
+    <lastBuildDate>Wed, 23 Aug 2017 10:53:44 +0800</lastBuildDate>
     <generator>Jekyll v3.4.0</generator>
+    
+      <item>
+        <title>2017 OpenStack Days China Day 1</title>
+        <description>&lt;p&gt;&lt;img src=&quot;/assets/imgs/00010_2017_openstack_days_china_gate.jpg&quot; alt=&quot;Gate&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;2017 OpenStack Days China于7月24日和7月25日在北京国家会议中心举行。会议的目标依旧是推广OpenStack在中国的普及。人数大约2000，但是根据去年有来的人说，人数没有去年多。&lt;/p&gt;
+
+&lt;p&gt;第一天的Keynote分为两个类型，基金会的演讲和5月份Boston summit上的差不多，只是略做修改（比如人工智能提到了百度等）。而赞助商的演讲基本就是广告了。第一天的keynote听下来，你会发现本土厂商的keynote，不论在幻灯片的制作还是演讲上，都和国外厂商有差距，感觉不是很重视。唯一的例外是腾讯，腾讯利用keynote发布了TStack，幻灯片水平和演讲水平确实不错。&lt;/p&gt;
+
+&lt;p&gt;宣传方面，来进行宣传的基本都是本土厂商，包括我所在的XSKY，看到的外国厂商貌似只有Intel, RedHat, NetApp。本土厂商中最让我感到意外的是腾讯。腾讯在本次会议上推出了TStack产品，也就是腾讯定制的OpenStack产品以及相关的服务。搜索了一下，发现腾讯在发布TStack的同时，还向基金会提交了superuser的采访稿（http://superuser.openstack.org/articles/tencent-openstack/），准备参加11月份悉尼summit的superuser评选，说明腾讯对这次TStack发布做了充分的准备。TStack一开始是作为腾讯的内部私有云服务来建设的，目前的版本是基于K版，其内部集群运行了4年多，可用性达到99.99%，运行了5000个物理机和10000+个虚拟机，是国内最大的私有云平台之一（这应该也是他们参加superuser评选的资本）。除了自己用以外，腾讯还发展了一些TStack的用户，比如著名的0元中标的厦门政务云。根据产品介绍页，腾讯这次是产品和服务一起推出，虽然版本看起来有点旧，但是毕竟是个超级大厂，想必会极大的冲击国内的OpenStack市场。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/imgs/00011_tstack_page1.jpg&quot; alt=&quot;TStack1&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/imgs/00012_tstack_page2.jpg&quot; alt=&quot;TStack2&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;我也听了几场技术分享，其中最热门的是EasyStack的一个分享：OpenStack对vCenter存量虚拟机的纳管和迁移实践。来这场分享的听众很多，说明大家对VMWare和OpenStack共存是有很大需求的。从分享中也可以发现EasyStack做了很多这方面的工作。&lt;/p&gt;
+
+&lt;p&gt;我第二天没去，所以没有第二天相关的内容。&lt;/p&gt;
+</description>
+        <pubDate>Wed, 26 Jul 2017 00:00:00 +0800</pubDate>
+        <link>/2017/07/26/2017-openstack-days-china-day1.html</link>
+        <guid isPermaLink="true">/2017/07/26/2017-openstack-days-china-day1.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>OpenStack Summit 2017 Boston观后感</title>
@@ -55,170 +80,6 @@
         <pubDate>Fri, 26 May 2017 00:00:00 +0800</pubDate>
         <link>/2017/05/26/openstack-summit-2017-boston-review.html</link>
         <guid isPermaLink="true">/2017/05/26/openstack-summit-2017-boston-review.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Golang源码阅读笔记 -- 目录</title>
-        <description>&lt;ol&gt;
-  &lt;li&gt;&lt;a href=&quot;/2017/02/26/golang-code-reading-notes-1.html&quot;&gt;go build(1)&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;/2017/02/27/golang-code-reading-notes-2.html&quot;&gt;go build(2)&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;/2017/02/28/golang-code-reading-notes-3.html&quot;&gt;go build(3)&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;/2017/03/04/golang-code-reading-notes-4.html&quot;&gt;go build(4)&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;
-</description>
-        <pubDate>Sat, 04 Mar 2017 00:00:00 +0800</pubDate>
-        <link>/2017/03/04/golang-code-reading-notes-index.html</link>
-        <guid isPermaLink="true">/2017/03/04/golang-code-reading-notes-index.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Golang源码阅读笔记 -- go build(4)</title>
-        <description>&lt;h1 id=&quot;runbuild函数&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;runBuild&lt;/code&gt;函数&lt;/h1&gt;
-
-&lt;p&gt;在之前的三篇文章中，我们从&lt;code class=&quot;highlighter-rouge&quot;&gt;runBuild&lt;/code&gt;函数开始，阅读了获取package信息的过程，然后又回到了&lt;code class=&quot;highlighter-rouge&quot;&gt;runBuild&lt;/code&gt;函数中。现在，我们继续来看&lt;code class=&quot;highlighter-rouge&quot;&gt;runBuild&lt;/code&gt;函数剩余的代码。先回顾下&lt;code class=&quot;highlighter-rouge&quot;&gt;runBuild&lt;/code&gt;的代码：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;func runBuild(cmd *Command, args []string) {
-	instrumentInit()
-	buildModeInit()
-	var b builder
-	b.init()
-
-	pkgs := packagesForBuild(args)
-
-  // 剩余部分
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;现在，我们来看下剩余部分的代码的主要流程：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;创建一个&lt;code class=&quot;highlighter-rouge&quot;&gt;builder&lt;/code&gt;对象&lt;code class=&quot;highlighter-rouge&quot;&gt;b&lt;/code&gt;，这个对象是用来保存build过程的状态的。&lt;/li&gt;
-  &lt;li&gt;为要构建的package，生成一个&lt;code class=&quot;highlighter-rouge&quot;&gt;action&lt;/code&gt;对象&lt;code class=&quot;highlighter-rouge&quot;&gt;a&lt;/code&gt;，用来表示构建过程要执行的动作。&lt;/li&gt;
-  &lt;li&gt;调用&lt;code class=&quot;highlighter-rouge&quot;&gt;b.do(a)&lt;/code&gt;执行这些构建的动作。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;下面我们会仔细的来看&lt;code class=&quot;highlighter-rouge&quot;&gt;builder&lt;/code&gt;对象和&lt;code class=&quot;highlighter-rouge&quot;&gt;action&lt;/code&gt;对象的内容。这里总结一下&lt;code class=&quot;highlighter-rouge&quot;&gt;go build&lt;/code&gt;命令的逻辑：&lt;strong&gt;获取package信息之后，生成需要执行的动作，并且为这些动作排序，然后执行这些动作&lt;/strong&gt;。这些动作其实就是编译、打包、连接等编译过程的基础动作。&lt;/p&gt;
-
-&lt;h1 id=&quot;action对象&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;action&lt;/code&gt;对象&lt;/h1&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;action&lt;/code&gt;对象位于文件&lt;em&gt;cmd/go/build.go&lt;/em&gt;中，表示build的动作序列中的一个动作。&lt;code class=&quot;highlighter-rouge&quot;&gt;action&lt;/code&gt;对象本身没有方法，只保存一个动作所需的信息。其中几个主要的成员如下：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;p *Package&lt;/code&gt; 该action要作用到那个package上&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;f func(*builder *action) error&lt;/code&gt; 这个是该action要执行的处理&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;deps []*action&lt;/code&gt; 该action依赖于哪些action，要等这些action完成后才能执行本action&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;triggers []*action&lt;/code&gt; 哪些action依赖本action&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;pending int&lt;/code&gt; 还有多少依赖的action没有执行&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;builder对象&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;builder&lt;/code&gt;对象&lt;/h1&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;builder&lt;/code&gt;对象保存一次build过程的全部状态，负责构建action序列以及执行action序列，该对象位于&lt;em&gt;cmd/go/build.go&lt;/em&gt;文件中。使用&lt;code class=&quot;highlighter-rouge&quot;&gt;builder&lt;/code&gt;对象主要是使用它的几个方法，下面我们来一一介绍。&lt;/p&gt;
-
-&lt;h2 id=&quot;b-builder-init方法&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;(b *builder) init&lt;/code&gt;方法&lt;/h2&gt;
-
-&lt;p&gt;该方法在&lt;code class=&quot;highlighter-rouge&quot;&gt;runBuilde&lt;/code&gt;中被调用，负责初始化&lt;code class=&quot;highlighter-rouge&quot;&gt;builder&lt;/code&gt;对象，以及创建一个临时工作目录用于保存构建过程的中间结果。该临时目录一般是&lt;em&gt;/tmp/go-build&lt;/em&gt;开头的，其值保存在&lt;code class=&quot;highlighter-rouge&quot;&gt;b.work&lt;/code&gt;中。&lt;/p&gt;
-
-&lt;h2 id=&quot;b-builder-action方法&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;(b *builder) action&lt;/code&gt;方法&lt;/h2&gt;
-
-&lt;p&gt;该方法直接调用&lt;code class=&quot;highlighter-rouge&quot;&gt;(b *builder) action1(mode buildMode, depMode buildMode, p *Package, lookshared bool, forShlib string) *action&lt;/code&gt;方法。&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;action1&lt;/code&gt;这个方法会构建一个package对应的action及其依赖的action，来看一下它的逻辑你就会明白。&lt;/p&gt;
-
-&lt;p&gt;这里要说明一下参数：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;lookshared&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;forShlib&lt;/code&gt;可以认为是&lt;code class=&quot;highlighter-rouge&quot;&gt;false&lt;/code&gt;和空字符串，这个在常用的构建过程不起作用。&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;mode&lt;/code&gt;表示要构建的package的方式，值是&lt;code class=&quot;highlighter-rouge&quot;&gt;modeBuild&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;depMode&lt;/code&gt;表示依赖的package的模式，默认是&lt;code class=&quot;highlighter-rouge&quot;&gt;modeBuild&lt;/code&gt;，如果从命令行指定了&lt;strong&gt;-i&lt;/strong&gt;选项，则这个值为&lt;code class=&quot;highlighter-rouge&quot;&gt;modeInstall&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;p&lt;/code&gt;就是该动作要处理的package&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;下面来看一下&lt;code class=&quot;highlighter-rouge&quot;&gt;action1&lt;/code&gt;的主要逻辑：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;先遍历&lt;code class=&quot;highlighter-rouge&quot;&gt;p&lt;/code&gt;的所有&lt;code class=&quot;highlighter-rouge&quot;&gt;imports&lt;/code&gt;，也就是&lt;code class=&quot;highlighter-rouge&quot;&gt;p&lt;/code&gt;的所有依赖，然后为每个依赖调用&lt;code class=&quot;highlighter-rouge&quot;&gt;action1&lt;/code&gt;方法，并将结果添加到&lt;code class=&quot;highlighter-rouge&quot;&gt;a.deps&lt;/code&gt;列表中。这里使用递归调用，可以直接生成构建一个package所需要的所有action。&lt;/li&gt;
-  &lt;li&gt;当依赖处理完后，就会开始生成当前的action
-    &lt;ol&gt;
-      &lt;li&gt;确定&lt;code class=&quot;highlighter-rouge&quot;&gt;a.objdir&lt;/code&gt;，长这样&lt;em&gt;$WORK/goexample/hello/_obj/&lt;/em&gt;，这个是一个package编译出来的&lt;strong&gt;.o&lt;/strong&gt;文件的存放位置。&lt;/li&gt;
-      &lt;li&gt;确定&lt;code class=&quot;highlighter-rouge&quot;&gt;a.objpkg&lt;/code&gt;，长这样&lt;em&gt;$WORK/goexample/hello.a&lt;/em&gt;，这个是一个package编译出来的&lt;strong&gt;.o&lt;/strong&gt;文件打包后的位置。&lt;/li&gt;
-      &lt;li&gt;确定&lt;code class=&quot;highlighter-rouge&quot;&gt;a.link&lt;/code&gt;，如果要构建的package名称是&lt;strong&gt;main&lt;/strong&gt;，那么该值为&lt;code class=&quot;highlighter-rouge&quot;&gt;true&lt;/code&gt;，表示最后需要进行连接，生成可执行文件。&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-  &lt;li&gt;接下来，根据&lt;code class=&quot;highlighter-rouge&quot;&gt;mode&lt;/code&gt;参数确定要action的其他内容。
-    &lt;ol&gt;
-      &lt;li&gt;如果是&lt;code class=&quot;highlighter-rouge&quot;&gt;modeBuild&lt;/code&gt;：
-        &lt;ol&gt;
-          &lt;li&gt;设置&lt;code class=&quot;highlighter-rouge&quot;&gt;a.f&lt;/code&gt;的值为&lt;code class=&quot;highlighter-rouge&quot;&gt;(*builder).build&lt;/code&gt;，也就是&lt;code class=&quot;highlighter-rouge&quot;&gt;builder&lt;/code&gt;对象的&lt;code class=&quot;highlighter-rouge&quot;&gt;build&lt;/code&gt;方法。&lt;/li&gt;
-          &lt;li&gt;设置&lt;code class=&quot;highlighter-rouge&quot;&gt;a.target = a.objpkg&lt;/code&gt;&lt;/li&gt;
-          &lt;li&gt;如果&lt;code class=&quot;highlighter-rouge&quot;&gt;a.link&lt;/code&gt;为&lt;code class=&quot;highlighter-rouge&quot;&gt;true&lt;/code&gt;，那么会修改&lt;code class=&quot;highlighter-rouge&quot;&gt;a.target&lt;/code&gt;，长这样&lt;em&gt;$WORK/goexample/hello/_obj/exe/a.out&lt;/em&gt;&lt;/li&gt;
-        &lt;/ol&gt;
-      &lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;经过上面的处理后，就得到了要构建一个package的action序列，这个序列其实是一棵树，上层节点依赖于下层节点。这里的重点是&lt;code class=&quot;highlighter-rouge&quot;&gt;(*builder)build&lt;/code&gt;这个方法，它完成了构建的动作。&lt;/p&gt;
-
-&lt;h2 id=&quot;b-builder-build方法&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;(b *builder) build&lt;/code&gt;方法&lt;/h2&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;(b *builder) build(a *action) (err error)&lt;/code&gt;方法负责编译和打包一个package，编译和打包的动作从它这里发起，但是并不在这里实现。我们来看这个方法的逻辑：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;创建&lt;code class=&quot;highlighter-rouge&quot;&gt;a.objdir&lt;/code&gt;这个目录以及&lt;code class=&quot;highlighter-rouge&quot;&gt;a.target&lt;/code&gt;的目录部分。&lt;/li&gt;
-  &lt;li&gt;接下来会做一些和cgo以及swig相关的工作，我们先跳过。&lt;/li&gt;
-  &lt;li&gt;接下来，如果&lt;code class=&quot;highlighter-rouge&quot;&gt;a.p.coverMode&lt;/code&gt;不为空，那么表示这个是需要进行代码覆盖率计算的处理，我们也跳过。&lt;/li&gt;
-  &lt;li&gt;调用&lt;code class=&quot;highlighter-rouge&quot;&gt;buildToolchain.gc&lt;/code&gt;。这里&lt;code class=&quot;highlighter-rouge&quot;&gt;buildToolchain&lt;/code&gt;是一个interface的全局变量，因为Golang的构建可以使用Google的编译器，也可以使用gccgo，所以这里就用一个interface来屏蔽具体的工具链的差异。我们在下面再看&lt;code class=&quot;highlighter-rouge&quot;&gt;buildToolchain&lt;/code&gt;的实现。这里先看一下这个调用的结果：
- &lt;code class=&quot;highlighter-rouge&quot;&gt;ofile, out, err := buildToolchain.gc(b, a.p, a.objpkg, obj, len(sfiles) &amp;gt; 0, inc, gofiles)&lt;/code&gt;，这个调用会把这个package下的所有go文件编译成为一个目标文件&lt;code class=&quot;highlighter-rouge&quot;&gt;ofile&lt;/code&gt;。编译得到的文件可能是&lt;strong&gt;.o&lt;/strong&gt;文件，也可能是&lt;strong&gt;.a&lt;/strong&gt;文件。如果是&lt;strong&gt;.a&lt;/strong&gt;文件，说明已经打包过了。&lt;/li&gt;
-  &lt;li&gt;接下来，会处理&lt;em&gt;.h&lt;/em&gt;, &lt;em&gt;.c&lt;/em&gt;, &lt;em&gt;.s&lt;/em&gt;等文件，这里也略过不讲。&lt;/li&gt;
-  &lt;li&gt;如果刚才编译得到的是&lt;strong&gt;.o&lt;/strong&gt;文件，那么会调用&lt;code class=&quot;highlighter-rouge&quot;&gt;buildToolchain.pack&lt;/code&gt;方法把刚才的&lt;strong&gt;.o&lt;/strong&gt;文件打包成一个&lt;strong&gt;.a&lt;/strong&gt;文件。&lt;/li&gt;
-  &lt;li&gt;最后，如果&lt;code class=&quot;highlighter-rouge&quot;&gt;a.link&lt;/code&gt;为true，那么会调用&lt;code class=&quot;highlighter-rouge&quot;&gt;buildToolchain.ld&lt;/code&gt;来进行连接。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;现在，我们大概了解了&lt;code class=&quot;highlighter-rouge&quot;&gt;build&lt;/code&gt;方法的逻辑，下面我们先来看下toolchain相关的逻辑，然后再回到&lt;code class=&quot;highlighter-rouge&quot;&gt;builder&lt;/code&gt;对象。&lt;/p&gt;
-
-&lt;h1 id=&quot;gctoolchain&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;gcToolchain&lt;/code&gt;&lt;/h1&gt;
-
-&lt;p&gt;上面我们提到了&lt;code class=&quot;highlighter-rouge&quot;&gt;buildToolchain&lt;/code&gt;这个全局变量，它的定义是&lt;code class=&quot;highlighter-rouge&quot;&gt;var buildToolchain toolchain = noToolchiain{}&lt;/code&gt;，其中&lt;code class=&quot;highlighter-rouge&quot;&gt;toolchain&lt;/code&gt;是一个interface，也在文件&lt;em&gt;cmd/go/build.go&lt;/em&gt;文件中定义，主要定义了我们前面提到过的&lt;code class=&quot;highlighter-rouge&quot;&gt;gc&lt;/code&gt;等借口。在&lt;em&gt;cmd/go/build.go&lt;/em&gt;的&lt;code class=&quot;highlighter-rouge&quot;&gt;init&lt;/code&gt;函数中，&lt;code class=&quot;highlighter-rouge&quot;&gt;buildToolchain&lt;/code&gt;变量会根据&lt;code class=&quot;highlighter-rouge&quot;&gt;go/build.Default.Compiler&lt;/code&gt;的值来设置。&lt;em&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;go/build&lt;/code&gt;这个package我们之前已经接触过不少了，在&lt;a href=&quot;/2017/02/26/golang-code-reading-notes-1.html&quot;&gt;go build(1)&lt;/a&gt;中我们已经知道，&lt;code class=&quot;highlighter-rouge&quot;&gt;buildContext&lt;/code&gt;就是指向&lt;code class=&quot;highlighter-rouge&quot;&gt;go/build.Default&lt;/code&gt;&lt;/em&gt;。&lt;code class=&quot;highlighter-rouge&quot;&gt;go/build.Default.Compiler&lt;/code&gt;的值是指向&lt;code class=&quot;highlighter-rouge&quot;&gt;runtime/compiler.go&lt;/code&gt;文件中的&lt;code class=&quot;highlighter-rouge&quot;&gt;Compiler&lt;/code&gt;常量，值是&lt;strong&gt;gc&lt;/strong&gt;。所以，默认的编译是使用Google的编译器，也就是这里的&lt;strong&gt;gc&lt;/strong&gt;。不过，编译器是可以使用&lt;strong&gt;-compiler&lt;/strong&gt;选项修改的。大部分情况下，我们是使用&lt;strong&gt;gc&lt;/strong&gt;编译器，所以这里只讲解&lt;strong&gt;gc&lt;/strong&gt;编译器的逻辑。&lt;/p&gt;
-
-&lt;p&gt;使用&lt;strong&gt;gc&lt;/strong&gt;编译器时，&lt;code class=&quot;highlighter-rouge&quot;&gt;buildToolchain&lt;/code&gt;变量会被赋值为&lt;code class=&quot;highlighter-rouge&quot;&gt;gcToolchain{}&lt;/code&gt;，所以在&lt;em&gt;go build&lt;/em&gt;中使用&lt;strong&gt;gc&lt;/strong&gt;编译器都是通过&lt;code class=&quot;highlighter-rouge&quot;&gt;gcToolchain{}&lt;/code&gt;的方法来实现的。这里我们来看两个主要的方法：&lt;code class=&quot;highlighter-rouge&quot;&gt;gc&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;ld&lt;/code&gt;。&lt;/p&gt;
-
-&lt;h2 id=&quot;gctoolchain-gc方法&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;(gcToolchain) gc&lt;/code&gt;方法&lt;/h2&gt;
-
-&lt;p&gt;这个方法做的主要工作就是以合适的参数调用&lt;strong&gt;go tool compile&lt;/strong&gt;，也就是Golang的编译器。假设我们现在在&lt;em&gt;${GOPATH}/goexamples/hello/&lt;/em&gt;目录下执行&lt;code class=&quot;highlighter-rouge&quot;&gt;go build -v -x -work hello.go&lt;/code&gt;，那么就可以看到执行了&lt;strong&gt;compile&lt;/strong&gt;命令：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;WORK=/tmp/go-build862488510
-command-line-arguments
-mkdir -p $WORK/command-line-arguments/_obj/
-mkdir -p $WORK/command-line-arguments/_obj/exe/
-cd /home/diabloneo/go/src/goexamples/hello
-/opt/go/pkg/tool/linux_amd64/compile -o $WORK/command-line-arguments.a -trimpath $WORK -p main -complete -buildid b9c10ab5f09ab93c4d4e4dda286cebc203c4d23e -D _/home/diabloneo/go/src/goexamples/hello -I $WORK -pack ./hello.go
-...
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;最后的这行&lt;strong&gt;compile&lt;/strong&gt;命令的生成和调用，就是在&lt;code class=&quot;highlighter-rouge&quot;&gt;(gcToolchain) gc&lt;/code&gt;方法中实现的，可以看到编译得到的结果是 &lt;code class=&quot;highlighter-rouge&quot;&gt;$WORK/command-line-arguments.a&lt;/code&gt;这个文件。&lt;/p&gt;
-
-&lt;h2 id=&quot;gctoolchain-ld方法&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;(gcToolchain) ld&lt;/code&gt;方法&lt;/h2&gt;
-
-&lt;p&gt;这个方法则是调用&lt;strong&gt;go tool link&lt;/strong&gt;，也就是Golang的连接器（代码的构建过程一般都分为编译和连接两个部分）。接着上面的例子，我们可以看到，&lt;code class=&quot;highlighter-rouge&quot;&gt;go build -v -x -work hello.go&lt;/code&gt;的输出中也执行了&lt;strong&gt;link&lt;/strong&gt;命令：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/opt/go/pkg/tool/linux_amd64/link -o $WORK/command-line-arguments/_obj/exe/a.out -L $WORK -extld=gcc -buildmode=exe -buildid=b9c10ab5f09ab93c4d4e4dda286cebc203c4d23e $WORK/command-line-arguments.a
-mv $WORK/command-line-arguments/_obj/exe/a.out hello
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;link&lt;/strong&gt;程序把编译生成的&lt;code class=&quot;highlighter-rouge&quot;&gt;command-line-arguments.a&lt;/code&gt;和标准库连接起来，得到了&lt;code class=&quot;highlighter-rouge&quot;&gt;$WORK/command-line-arguments/_obj/exe/a.out&lt;/code&gt;这个文件，然后这个文件被重命名为&lt;code class=&quot;highlighter-rouge&quot;&gt;hello&lt;/code&gt;。&lt;/p&gt;
-
-&lt;h1 id=&quot;再访builder对象&quot;&gt;再访&lt;code class=&quot;highlighter-rouge&quot;&gt;builder&lt;/code&gt;对象&lt;/h1&gt;
-</description>
-        <pubDate>Sat, 04 Mar 2017 00:00:00 +0800</pubDate>
-        <link>/2017/03/04/golang-code-reading-notes-4.html</link>
-        <guid isPermaLink="true">/2017/03/04/golang-code-reading-notes-4.html</guid>
         
         
       </item>
@@ -1955,6 +1816,309 @@ sqlite&amp;gt; .q
         <pubDate>Sun, 21 Feb 2016 00:00:00 +0800</pubDate>
         <link>/2016/02/21/learn-openstack-dev-skill-by-demo-07.html</link>
         <guid isPermaLink="true">/2016/02/21/learn-openstack-dev-skill-by-demo-07.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>通过demo学习OpenStack开发所需的基础知识 -- 数据库(1)</title>
+        <description>&lt;h1 id=&quot;openstack中的关系型数据库应用&quot;&gt;OpenStack中的关系型数据库应用&lt;/h1&gt;
+
+&lt;p&gt;OpenStack中的数据库应用主要是关系型数据库，主要使用的是MySQL数据库。当然也有一些NoSQL的应用，比如Ceilometer项目。就SQL数据库本身的应用而言，OpenStack的项目和其他项目并没有什么区别，也是采用ORM技术对数据进行增删改查而已。&lt;/p&gt;
+
+&lt;p&gt;本文的重点是讲解OpenStack项目中对关系型数据库的应用的基础知识，更多的是涉及ORM库的使用。对于数据库的安装和配置，需要读者自己查找一下MySQL的教程，如果只是为了验证ORM的相关知识，也可以使用sqlite数据库。&lt;/p&gt;
+
+&lt;h2 id=&quot;数据库的选择&quot;&gt;数据库的选择&lt;/h2&gt;
+
+&lt;p&gt;OpenStack官方推荐的保存生产数据的是MySQL数据库，在devstack项目（这个项目用于快速搭建OpenStack开发环境）中也是安装了MySQL数据库。不过，因为OpenStack的项目中没有使用特定的只有在MySQL上才能用的功能，而且所采用的ORM库SQLAlchemy也支持多种数据库，所以理论上选择PostgreSQL之类的数据库来替代MySQL也是可行的。&lt;/p&gt;
+
+&lt;p&gt;另外，OpenStack项目在单元测试中使用的是sqlite的内存数据库，这样开发者运行单元测试的时候不需要安装和配置复杂的MySQL数据库，只要安装好sqlite3就可以了。而且，数据库是保存在内存中的，会提高单元测试的速度。&lt;/p&gt;
+
+&lt;h2 id=&quot;orm的选择&quot;&gt;ORM的选择&lt;/h2&gt;
+
+&lt;h3 id=&quot;什么是orm&quot;&gt;什么是ORM&lt;/h3&gt;
+
+&lt;p&gt;ORM的全称是&lt;strong&gt;Object-Relational Mapping&lt;/strong&gt;，即&lt;strong&gt;对象关系映射&lt;/strong&gt;，是一种利用编程语言的对象来表示关系数据库中的数据的技术，其更形式化的定义可以参考&lt;a href=&quot;https://en.wikipedia.org/wiki/Object-relational_mapping&quot;&gt;Wiki页面Orject-relational mapping&lt;/a&gt;。简单的说，ORM就是把数据库的一张表和编程语言中的一个对象对应起来，这样我们在编程语言中操作一个对象的时候，实际上就是在操作这张表，ORM（一般是一个库）负责把我们对一个对象的操作转换成对数据库的操作。&lt;/p&gt;
+
+&lt;h3 id=&quot;python中的orm实现&quot;&gt;Python中的ORM实现&lt;/h3&gt;
+
+&lt;p&gt;一般来说，各种主流语言都有自己的ORM实现，一般来说也不只一种，比较出名的有Java的Hibernate，Ruby on Rails的ORM，C++的ODB等。&lt;strong&gt;在Python中也存在多种ORM的实现，最著名的两种是Django的Model层的ORM实现，以及SQLAlchemy库&lt;/strong&gt;。这两种ORM实现基本上是Python中ORM的事实上的标准，如果你写Django应用，那么你就用Django自带的实现；不然，你就可以选择SQLAlchemy库。&lt;/p&gt;
+
+&lt;p&gt;OpenStack基本上都是Python项目，所以在OpenStack中，ORM主要是使用了SQLAlchemy库（Keystone, Nova, Neutron等）；不过使用了Django的Horizon项目（面板）还是使用了Django自带的ORM实现。本文主要是讲解OpenStack中如何使用SQLAlchemy库，这个也是开发OpenStack项目的最基本知识。&lt;/p&gt;
+
+&lt;h1 id=&quot;sqlalchemy&quot;&gt;SQLAlchemy&lt;/h1&gt;
+
+&lt;h2 id=&quot;sqlalchemy简介&quot;&gt;SQLAlchemy简介&lt;/h2&gt;
+
+&lt;p&gt;SQLAlchemy项目是Python中最著名的ORM实现，不仅在Python项目中也得到了广泛的应用，而且对其他语言的ORM有很大的影响。OpenStack一开始选择这个库，也是看中了它足够稳定、足够强大的特点。&lt;/p&gt;
+
+&lt;p&gt;SQLAlchemy项目的官网是&lt;a href=&quot;http://www.sqlalchemy.org/&quot;&gt;http://www.sqlalchemy.org/&lt;/a&gt;，目前该项目最新的版本是&lt;strong&gt;1.0.11&lt;/strong&gt;，&lt;strong&gt;1.0&lt;/strong&gt;系列是今年刚发的，&lt;strong&gt;0.9&lt;/strong&gt;系列应该还是应用最广泛的版本。对于一般的应用来说，0.9系列和1.0系列差别不大。&lt;/p&gt;
+
+&lt;h2 id=&quot;关于sqlalchemy的学习&quot;&gt;关于SQLAlchemy的学习&lt;/h2&gt;
+
+&lt;p&gt;我个人觉得SQLAlchemy的学习难度会比Django的Model层难一些，因为一个最简单的例子也会有一些不太直观的地方，对于没用过的人来说，会比较难以理解。不过SQLAlchemy官网整理了一些比较不错的入门教程，是一个比较好的学习起点：&lt;a href=&quot;http://www.sqlalchemy.org/library.html#tutorials&quot;&gt;Tutorials&lt;/a&gt;。另外，官方的Reference其实是一个很好的教程，讲了很多基本的概念，有助于理解SQLAlchemy的库的使用。Reference的地址是：&lt;a href=&quot;http://docs.sqlalchemy.org/en/rel_1_0/&quot;&gt;http://docs.sqlalchemy.org/en/rel_1_0/&lt;/a&gt;，还可以直接下载PDF版本。我个人建议大家直接阅读Reference即可，阅读顺序就按照PDF文件的章节编排顺序进行。虽然这个文档很长，但是我最后发现这么做是最节约时间的。&lt;/p&gt;
+
+&lt;h2 id=&quot;sqlalchemy的架构&quot;&gt;SQLAlchemy的架构&lt;/h2&gt;
+
+&lt;p&gt;先让我们来看一下SQLAlchemy这个库的总体架构，如下图（图来自官网）所示：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/imgs/00002_sql_alchemy_architecture.png&quot; alt=&quot;sqla_arch_small.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;SQLAlchemy这个库分为两层：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;上面这层是ORM层，为用户提供ORM接口，即通过操作Python对象来实现数据库操作的接口。&lt;/li&gt;
+  &lt;li&gt;下面这层是Core层，这层包含了&lt;em&gt;Schema/Types&lt;/em&gt;, &lt;em&gt;SQL Expression Language&lt;/em&gt;, &lt;em&gt;Engine&lt;/em&gt;这三个部分：
+    &lt;ul&gt;
+      &lt;li&gt;&lt;em&gt;SQL Expression Language&lt;/em&gt;是SQLAlchemy中实现的一套SQL表达系统，主要是实现了对SQL的DML(Data Manipulation Language)的封装。这里实现了对数据库的SELECT、DELETE、UPDATE等语句的封装。SQL Expression Language是实现ORM层的基础。&lt;/li&gt;
+      &lt;li&gt;&lt;em&gt;Schema/Types&lt;/em&gt;这部分主要是实现了对SQL的DDL(Data Definition Language)的封装。实现了Table类用来表示一个表，Column类用来表示一个列，也是实现了将数据库的数据类型映射到Python的数据类型。上面的&lt;em&gt;SQL Expression Language&lt;/em&gt;的操作对象就是这里定义的Table。&lt;/li&gt;
+      &lt;li&gt;&lt;em&gt;Engine&lt;/em&gt;实现了对各种不同的数据库客户端的封装和调度，是所有SQLAlchemy应用程序的入口点，要使用SQLAlchemy库来操作一个数据库，首先就要有一个Engine对象，后续的所有对数据库的操作都要通过这个Engine对象来进行。下图是官方文档中的Engine位置的描述图：
+&lt;img src=&quot;/assets/imgs/00003_sql_alchemy_engine_position.png&quot; alt=&quot;sqla_engine_arch.png&quot; /&gt;
+        &lt;ul&gt;
+          &lt;li&gt;Pool是Engine下面的一个模块，用来管理应用程序到数据库的连接。&lt;/li&gt;
+          &lt;li&gt;Dialect是Engine下的另一个模块，用来对接不同的数据库驱动（即DBMS客户端），这些驱动要实现DBAPI接口。&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;最后，SQLAlchemy还要依赖各个数据库驱动的DBAPI接口来实现对数据库服务的调用。DBAPI是Python定义的数据库API的实现规范，具体见&lt;a href=&quot;https://www.python.org/dev/peps/pep-0249/&quot;&gt;&lt;strong&gt;PEP0249&lt;/strong&gt;&lt;/a&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;上面简单的总结了SQLAlchemy的架构，希望大家能够大概了解一下SQLAlchemy，在后面介绍一些相关概念时，能够知道这个概念是属于整个架构的哪个部分。&lt;/p&gt;
+
+&lt;h3 id=&quot;dialect和数据库客户端&quot;&gt;Dialect和数据库客户端&lt;/h3&gt;
+
+&lt;p&gt;上面提到了Dialect是用来对接不同的数据库驱动的，它主要负责将SQLAlchemy最后生成的数据库操作转换成对数据库驱动的调用，其中会处理一些不同数据库和不同DBAPI实现的差别。这个部分一般是SQLAlchemy的开发者关心的内容，如果你只是使用SQLAlchemy来操作数据库，那么可以不用关心这个部分。不过我们还是要来了解一下SQLAlchemy支持的和OpenStack相关的数据库驱动。&lt;/p&gt;
+
+&lt;h4 id=&quot;mysql&quot;&gt;MySQL&lt;/h4&gt;
+
+&lt;p&gt;OpenStack项目主要是使用MySQL，之前一直都在使用&lt;a href=&quot;https://pypi.python.org/pypi/MySQL-python/&quot;&gt;&lt;strong&gt;MySQL-Python&lt;/strong&gt;&lt;/a&gt;驱动，因为这个驱动足够成熟和稳定。不过这个情况正在转变，有如下两个原因：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;strong&gt;MySQL-Python&lt;/strong&gt;不支持Python3，而OpenStack正在转换到Python3的过程中，所以这个驱动最终是要放弃的。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;MySQL-Python&lt;/strong&gt;是用C语言写的，不支持eventlet库的monkey-patch操作，无法被eventlet库转换成异步操作，所以使用了eventlet库的到OpenStack项目在使用MySQL数据库时，都是进行同步的串行操作，有性能损失。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;为了解决这个问题，社区发起了一次对新驱动的评估，主要是评估&lt;a href=&quot;https://pypi.python.org/pypi/PyMySQL/&quot;&gt;&lt;strong&gt;PyMySQL&lt;/strong&gt;&lt;/a&gt;驱动：&lt;a href=&quot;https://wiki.openstack.org/wiki/PyMySQL_evaluation&quot;&gt;PyMySQL Evaluation&lt;/a&gt;。这个评估还在社区的邮件列表发起了好几次讨论，到目前为止的结果是：&lt;strong&gt;如果使用Python 2.7，那么继续使用MySQL-Python这个驱动，否则就使用PyMySQL这个驱动&lt;/strong&gt;。&lt;strong&gt;PyMySQL&lt;/strong&gt;驱动是使用纯Python写的，不仅支持Python3而且可以支持eventlet的异步。&lt;/p&gt;
+
+&lt;h4 id=&quot;sqlite3&quot;&gt;SQLite3&lt;/h4&gt;
+
+&lt;p&gt;OpenStack项目一般会使用SQLite3数据库来运行单元测试。OpenStack在Python2.7下会使用&lt;a href=&quot;https://pypi.python.org/pypi/pysqlite/&quot;&gt;&lt;strong&gt;pysqlite&lt;/strong&gt;&lt;/a&gt;驱动，不过这个驱动和标准库中的&lt;strong&gt;sqlite3&lt;/strong&gt;模块是一样的，也就是Python内置了SQLite3的驱动，你无需选择其他的驱动。&lt;/p&gt;
+
+&lt;h2 id=&quot;sqlalchemy的基本概念和使用&quot;&gt;SQLAlchemy的基本概念和使用&lt;/h2&gt;
+
+&lt;p&gt;使用SQLAlchemy大体上分为三个步骤：连接到数据库，定义数据模型，执行数据操作。&lt;/p&gt;
+
+&lt;h3 id=&quot;连接到数据库&quot;&gt;连接到数据库&lt;/h3&gt;
+
+&lt;p&gt;在你的应用可以使用数据库前，你要先定义好数据库的连接，包括数据库在哪里，用什么账号访问等。所有的这些工作都是通过Engine对象来进行的（记得上面提到的Engine了么？）。&lt;/p&gt;
+
+&lt;h4 id=&quot;数据库url&quot;&gt;数据库URL&lt;/h4&gt;
+
+&lt;p&gt;SQLAlchemy使用URL的方式来指定要访问的数据库，整个URL的具体格式如下：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dialect+driver://username:password@host:port/database
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;其中，&lt;strong&gt;dialect&lt;/strong&gt;就是指DBMS的名称，一般可选的值有：&lt;em&gt;postgresql&lt;/em&gt;, &lt;em&gt;mysql&lt;/em&gt;, &lt;em&gt;sqlite&lt;/em&gt;等。&lt;strong&gt;driver&lt;/strong&gt;就是指驱动的名称，如果不指定，SQLAlchemy会使用默认值。&lt;em&gt;database&lt;/em&gt;就是指DBMS中的一个数据库，一般是指通过&lt;em&gt;CREATE DATABASE&lt;/em&gt;语句创建的数据库。其他的参数就不言而喻了。dialect和driver参数有很多选择，具体的可以参考官方文档：&lt;a href=&quot;http://docs.sqlalchemy.org/en/rel_1_0/core/engines.html#database-urls&quot;&gt;Database URLs&lt;/a&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;创建engine对象&quot;&gt;创建Engine对象&lt;/h4&gt;
+
+&lt;p&gt;确定了要连接的数据库信息后，就可以通过&lt;code class=&quot;highlighter-rouge&quot;&gt;create_engine&lt;/code&gt;函数来创建一个&lt;strong&gt;Engine&lt;/strong&gt;对象了。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sqlalchemy&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;create_engine&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;engine&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;create_engine&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'sqlite://:memory:'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;create_engine&lt;/code&gt;函数还支持以下几个参数：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;em&gt;connect_args&lt;/em&gt;：一个字典，用来自定义数据库连接的参数，比如指定客户端使用的字符编码。&lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;pool_size&lt;/em&gt;和&lt;em&gt;max_overflow&lt;/em&gt;：指定连接池的大小。&lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;poolclass&lt;/em&gt;：指定连接池的实现&lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;echo&lt;/em&gt;：一个布尔值，用来指定是否打印执行的SQL语句到日志中。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;还有很多其他的参数，可以参考官方文档：&lt;a href=&quot;http://docs.sqlalchemy.org/en/rel_1_0/core/engines.html&quot;&gt;Engine Configuration&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;一般来说，Engine对象会默认启用连接池，会根据不同的dialect来选择不同的默认值。一般来说，你是不用考虑连接池的配置的，默认情况都配置好了。想了解关于连接池的更多内容，请查看官方文档：&lt;a href=&quot;http://docs.sqlalchemy.org/en/rel_1_0/core/pooling.html&quot;&gt;Connection Pooling&lt;/a&gt;。&lt;/p&gt;
+
+&lt;h4 id=&quot;使用engine对象&quot;&gt;使用Engine对象&lt;/h4&gt;
+
+&lt;p&gt;一般来说，应用程序的代码是不直接使用Engine对象的，而是把Engine对象交给ORM去使用，或者创建session对象来使用。不过，我们还是来简单看一下Engine对象能做什么事情。&lt;/p&gt;
+
+&lt;p&gt;应用程序可以调用Engine对象的&lt;code class=&quot;highlighter-rouge&quot;&gt;connect()&lt;/code&gt;方法来获得一个到数据库的连接对象；然后可以在这个连接对象上调用&lt;code class=&quot;highlighter-rouge&quot;&gt;execute()&lt;/code&gt;来执行SQL语句，调用&lt;code class=&quot;highlighter-rouge&quot;&gt;begin()&lt;/code&gt;、&lt;code class=&quot;highlighter-rouge&quot;&gt;commit()&lt;/code&gt;、&lt;code class=&quot;highlighter-rouge&quot;&gt;rollback()&lt;/code&gt;来执行事务操作；调用&lt;code class=&quot;highlighter-rouge&quot;&gt;close()&lt;/code&gt;来关闭连接。Engine对象也有一些快捷方法来直接执行上述操作，避免了每次都要调用&lt;code class=&quot;highlighter-rouge&quot;&gt;connect()&lt;/code&gt;来获取连接这种繁琐的代码，比如&lt;code class=&quot;highlighter-rouge&quot;&gt;engine.execute()&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;with engine.begin()&lt;/code&gt;等。&lt;/p&gt;
+
+&lt;h3 id=&quot;定义数据模型&quot;&gt;定义数据模型&lt;/h3&gt;
+
+&lt;p&gt;有了数据库连接后，我们就可以来定义数据模型了，也就是定义映射数据库表的Python类。在SQLAlchemy中，这是通过&lt;strong&gt;Declarative&lt;/strong&gt;的系统来完成的。&lt;/p&gt;
+
+&lt;h4 id=&quot;declarative系统&quot;&gt;Declarative系统&lt;/h4&gt;
+
+&lt;p&gt;根据官方文档的描述，SQLAlchemy一开始是采用下面这种方式来定义ORM的：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;首先定义一个映射类，这个类是数据库表在代码中的对象表示，这类的类属性是很多Column类的实例。&lt;/li&gt;
+  &lt;li&gt;然后定义一个Table对象，这里的Table就是上面提到的在&lt;strong&gt;Schema/Types&lt;/strong&gt;模块中的一个类，用来表示一个数据库中的表。&lt;/li&gt;
+  &lt;li&gt;调用&lt;code class=&quot;highlighter-rouge&quot;&gt;sqlalchemy.orm.mapper&lt;/code&gt;函数把步骤1中定义的类映射到步骤2中定义的Table。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;上面这种方式称为&lt;em&gt;Classical Mappings&lt;/em&gt;，看起来好麻烦啊。所以就有了&lt;strong&gt;Declarative&lt;/strong&gt;系统。这个系统就是一次完成这三个步骤，你只需要定义步骤1中的类即可。这也是现在在SQLAlchemy中使用ORM的方式，无需在使用过去这种麻烦的方法。&lt;/p&gt;
+
+&lt;p&gt;要使用Declarative系统，你需要为所有映射类创建一个基类，这个基类用来维护所有映射类的元信息。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sqlalchemy.ext.declarative&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;declarative_base&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;Base&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;declarative_base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h4 id=&quot;定义映射类&quot;&gt;定义映射类&lt;/h4&gt;
+
+&lt;p&gt;现在我们可以开始创建映射类了。假设我们在数据库中有一个表Person，这个表有两个列，分别是id和name，那么我们创建的映射类如下：&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sqlalchemy&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Column&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Integer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 这里的基类Base是上面我们通过declarative_base函数生成的&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Person&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;__tablename__&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'person'&lt;/span&gt;
+
+    &lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Column&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Interger&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;primary_key&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Column&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;250&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nullable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;False&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;这样我们就定义了一个映射类&lt;strong&gt;Person&lt;/strong&gt;，后续我们可以通过操作这个类的实例来实现对数据库表&lt;strong&gt;person&lt;/strong&gt;的操作。在我们的映射类中，我们使用&lt;code class=&quot;highlighter-rouge&quot;&gt;__tablename__&lt;/code&gt;属性来指定该映射类所对应的数据库表，通过&lt;code class=&quot;highlighter-rouge&quot;&gt;Column&lt;/code&gt;类实例的方式来指定数据库的字段。这里，读者可能会问：&lt;strong&gt;我如何能知道&lt;code class=&quot;highlighter-rouge&quot;&gt;Column&lt;/code&gt;都能支持哪些类型呢？&lt;/strong&gt;这个查看官方文档获得：&lt;a href=&quot;http://docs.sqlalchemy.org/en/rel_1_0/core/type_basics.html&quot;&gt;Column And Data Types&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;因为我们使用了Declarative系统，所以虽然我们自己没有定义Table对象，但是Declarative系统帮我们做了，并且帮我们调用了&lt;code class=&quot;highlighter-rouge&quot;&gt;mapper&lt;/code&gt;函数。因此，当我们定义好一个表的映射类后，这个类的&lt;code class=&quot;highlighter-rouge&quot;&gt;__table__&lt;/code&gt;属性就保存了该映射类所映射的&lt;em&gt;Table&lt;/em&gt;对象：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;In [6]: Person.__table__
+Out[6]: Table('person', MetaData(bind=None),
+    Column('id', Integer(), table=&amp;lt;person&amp;gt;, primary_key=True, nullable=False),
+    Column('name', String(length=250), table=&amp;lt;person&amp;gt;, nullable=False), schema=None)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;定义映射类是我们使用ORM的最主要的功能之一，不仅可以指定单表的映射，还能够指定表之间的关系。由于篇幅限制，我们在本文就不展开讲了。&lt;/p&gt;
+
+&lt;h3 id=&quot;schema和metadata&quot;&gt;Schema和Metadata&lt;/h3&gt;
+
+&lt;p&gt;关于Table对象，我们上面也提到了，它属于SQLAlchemy的core层的&lt;strong&gt;Schema/Types&lt;/strong&gt;这个部分。SQLAlchemy中的Schema可以理解为和DDL相关的一套体系，它告诉SQLAlchemy的其他部分，数据库中的表是如何定义的。这个相当于我们在MySQL中使用&lt;code class=&quot;highlighter-rouge&quot;&gt;describe&lt;/code&gt;命令，或者在PostgreSQL中使用&lt;code class=&quot;highlighter-rouge&quot;&gt;\d&lt;/code&gt;命令。&lt;/p&gt;
+
+&lt;p&gt;SQLAlchemy中通过&lt;strong&gt;schema metadata&lt;/strong&gt;来实现上面说的Schema。&lt;strong&gt;Schema metadata&lt;/strong&gt;，官方文档中也称为&lt;strong&gt;database metadata&lt;/strong&gt;，简称为metadata，是一个容器，其中包含了和DDL相关的所有信息，包括Table, Column等对象。当SQLAlchemy要根据映射类生成SQL语句时，它会查询metadata中的信息，根据信息来生成SQL语句。&lt;/p&gt;
+
+&lt;p&gt;为了要让metadata可以工作，我们需要把DDL的相关信息放到metadata中。如果你注意看上面&lt;code class=&quot;highlighter-rouge&quot;&gt;Person.__table__&lt;/code&gt;的输出，就会发现&lt;code class=&quot;highlighter-rouge&quot;&gt;Table&lt;/code&gt;类的第二个参数就是一个Metadata实例，也就是说，我们需要在定义Table的时候就把DDL信息放到metadata中。如果是是用classical mapping的方式，我们需要先创建一个metadata实例，然后每次创建一个Table对象的时候就把metadata传递进去。从写代码的角度来说，这个方式没有什么问题，也不算麻烦；问题是我们在使用ORM的过程中，几乎不会用到metadata，metadata基本上是给SQLAlchemy用的，对于用户来说metadata提供的接口只能用来创建表和删除表，这种操作的频率远低于查询操作。&lt;/p&gt;
+
+&lt;p&gt;好在Declarative系统则帮我们把这些都做好了。当我们通过&lt;code class=&quot;highlighter-rouge&quot;&gt;declarative_base()&lt;/code&gt;生成一个基类Base的时候，这个基类就已经包含了一个metadata实例，后面基于Base定义映射类都会被自动加入到这个metadata中。我们可以通过&lt;code class=&quot;highlighter-rouge&quot;&gt;Base.metadata&lt;/code&gt;来访问这个metadata实例。&lt;/p&gt;
+
+&lt;p&gt;说了这么多关于metadata的内容，简单总结一下：metadata是schema在SQLAlchemy中的实现，包含了DDL的信息，SQLAlchemy中的其他部分需要依赖于metadata中的信息，一般用户很少使用metadata。&lt;/p&gt;
+
+&lt;p&gt;很少用？那说这么多是做啥？主要是让读者可以理解下面这个语句的原理：&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;n&quot;&gt;Base&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;declarative_base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 基于Base定义映射类&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;Base&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;metadata&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;create_all&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;engine&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;最后这行代码是我们最常用到metadata的地方：&lt;strong&gt;创建所有的表&lt;/strong&gt;。我们告诉&lt;code class=&quot;highlighter-rouge&quot;&gt;create_all&lt;/code&gt;使用哪个engine，它就会生成所有的&lt;code class=&quot;highlighter-rouge&quot;&gt;CREATE TABLE&lt;/code&gt;语句，并且通过engine发送到数据库上执行。这个在单元测试的时候很有用。你可以执行一下下面的代码来观察输出：&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sqlalchemy&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Column&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Integer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sqlalchemy.ext.declarative&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;declarative_base&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sqlalchemy&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;create_engine&lt;/span&gt;
+
+
+&lt;span class=&quot;n&quot;&gt;Base&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;declarative_base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+
+
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Person&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;__tablename__&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'person'&lt;/span&gt;
+
+    &lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Column&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Integer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;primary_key&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Column&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;250&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nullable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;False&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+
+&lt;span class=&quot;n&quot;&gt;engine&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;create_engine&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'sqlite:///:memory:'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;echo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+
+&lt;span class=&quot;n&quot;&gt;Base&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;metadata&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;create_all&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;engine&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;输出结果如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+...
+2016-01-06 09:56:03,600 INFO sqlalchemy.engine.base.Engine PRAGMA table_info&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;person&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+2016-01-06 09:56:03,601 INFO sqlalchemy.engine.base.Engine &lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+2016-01-06 09:56:03,602 INFO sqlalchemy.engine.base.Engine
+CREATE TABLE person &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
+        id INTEGER NOT NULL,
+        name VARCHAR&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;250&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; NOT NULL,
+        PRIMARY KEY &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;id&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+
+2016-01-06 09:56:03,603 INFO sqlalchemy.engine.base.Engine &lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+2016-01-06 09:56:03,603 INFO sqlalchemy.engine.base.Engine COMMIT
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;关于Metadata的更多信息，请查看官方文档：&lt;a href=&quot;http://docs.sqlalchemy.org/en/rel_1_0/core/schema.html&quot;&gt;Schema Definition Language&lt;/a&gt;。&lt;/p&gt;
+
+&lt;h3 id=&quot;会话&quot;&gt;会话&lt;/h3&gt;
+
+&lt;p&gt;会话(&lt;strong&gt;session&lt;/strong&gt;)是我们通过SQLAlchemy来操作数据库的入口。我们前面有介绍过SQLAlchemy的架构，session是属于ORM层的。Session的功能是管理我们的程序和数据库之间的会话，它利用Engine的连接管理功能来实现会话。我们在上文有提到，我们创建了Engine对象，但是一般不直接使用它，而是把它交给ORM去使用。其中，通过session来使用Engine就是一个常用的方式。&lt;/p&gt;
+
+&lt;p&gt;要是用session，我们需要先通过&lt;code class=&quot;highlighter-rouge&quot;&gt;sessionmaker&lt;/code&gt;函数创建一个session类，然后通过这个类的实例来使用会话，如下所示：&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sqlalchemy.orm&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sessionmaker&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;DBSession&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sessionmaker&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bind&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;engine&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;session&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DBSession&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;我们通过&lt;code class=&quot;highlighter-rouge&quot;&gt;sessionmaker&lt;/code&gt;的&lt;em&gt;bind&lt;/em&gt;参数把Engine对象传递给&lt;code class=&quot;highlighter-rouge&quot;&gt;DBSession&lt;/code&gt;去管理。然后，&lt;code class=&quot;highlighter-rouge&quot;&gt;DBSession&lt;/code&gt;实例化的对象&lt;code class=&quot;highlighter-rouge&quot;&gt;session&lt;/code&gt;就能被我们使用了。&lt;/p&gt;
+
+&lt;h3 id=&quot;crud&quot;&gt;CRUD&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;CRUD&lt;/strong&gt;就是CREATE, READ, UPDATE, DELETE，增删改查。这个也是SQLAlchemy中最常用的功能，而且都是通过上一小节中的&lt;code class=&quot;highlighter-rouge&quot;&gt;session&lt;/code&gt;对象来使用的。我们这简单的介绍一下这四个操作，后面会给出官方文档的位置。&lt;/p&gt;
+
+&lt;h4 id=&quot;create&quot;&gt;Create&lt;/h4&gt;
+
+&lt;p&gt;在数据库中插入一条记录，是通过session的&lt;code class=&quot;highlighter-rouge&quot;&gt;add()&lt;/code&gt;方法来实现的，你需要先创建一个映射类的实例，然后调用&lt;code class=&quot;highlighter-rouge&quot;&gt;session.add()&lt;/code&gt;方法，然后调用&lt;code class=&quot;highlighter-rouge&quot;&gt;session.commit()&lt;/code&gt;方法提交你的事务（关于事务，我们下面会专门讲解）：&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;n&quot;&gt;new_person&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Person&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'new person'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;session&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new_person&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;session&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;commit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h4 id=&quot;delete&quot;&gt;Delete&lt;/h4&gt;
+
+&lt;p&gt;删除操作和创建操作差不多，是把一个映射类实例传递给&lt;code class=&quot;highlighter-rouge&quot;&gt;session.delete()&lt;/code&gt;方法。&lt;/p&gt;
+
+&lt;h4 id=&quot;update&quot;&gt;Update&lt;/h4&gt;
+
+&lt;p&gt;更新一条记录需要先使用查询操作获得一条记录对应的对象，然后修改对象的属性，再通过&lt;code class=&quot;highlighter-rouge&quot;&gt;session.add()&lt;/code&gt;方法来完成更新操作。&lt;/p&gt;
+
+&lt;h4 id=&quot;read&quot;&gt;Read&lt;/h4&gt;
+
+&lt;p&gt;查询操作，一般称为query，在SQLAlchemy中一般是通过&lt;strong&gt;Query&lt;/strong&gt;对象来完成的。我们可以通过&lt;code class=&quot;highlighter-rouge&quot;&gt;session.query()&lt;/code&gt;方法来创建一个Query对象，然后调用Query对象的众多方法来完成查询操作。&lt;/p&gt;
+
+&lt;h3 id=&quot;事务&quot;&gt;事务&lt;/h3&gt;
+
+&lt;p&gt;使用session，就会涉及到事务，我们的应用程序也会有很多事务操作的要求。当你调用一个session的方法，导致session执行一条SQL语句时，它会自动开始一个事务，直到你下次调用&lt;code class=&quot;highlighter-rouge&quot;&gt;session.commit()&lt;/code&gt;或者&lt;code class=&quot;highlighter-rouge&quot;&gt;session.rollback()&lt;/code&gt;，它就会结束这个事务。你也可以显示的调用&lt;code class=&quot;highlighter-rouge&quot;&gt;session.begin()&lt;/code&gt;来开始一个事务，并且&lt;code class=&quot;highlighter-rouge&quot;&gt;session.begin()&lt;/code&gt;还可以配合Python的with来使用。&lt;/p&gt;
+
+&lt;h3 id=&quot;会话-crud-事务的小结&quot;&gt;会话, CRUD, 事务的小结&lt;/h3&gt;
+
+&lt;p&gt;上面关于session, CRUD和事务的内容写的比较少，因为这些功能的内容很多，而且官方文档也写得很全面，本文就不做一些重复说明了。我们会在下一篇文章中通过webdemo的代码来看看如何使用这些功能。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://docs.sqlalchemy.org/en/rel_1_0/orm/session.html&quot;&gt;Session的文档&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://docs.sqlalchemy.org/en/rel_1_0/orm/tutorial.html#adding-new-objects&quot;&gt;官方文档中关于CRUD操作的教程&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://docs.sqlalchemy.org/en/rel_1_0/orm/session_transaction.html&quot;&gt;Session中的事务管理&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;总结&quot;&gt;总结&lt;/h1&gt;
+
+&lt;p&gt;本文介绍了OpenStack中和数据库相关的一些知识，重点讲解了SQLAlchemy这个库的基本概念和架构。下一篇文章，我们会通过demo来实际项目中如何使用SQLAlchemy。&lt;/p&gt;
+
+</description>
+        <pubDate>Wed, 06 Jan 2016 00:00:00 +0800</pubDate>
+        <link>/2016/01/06/learn-openstack-dev-skill-by-demo-06.html</link>
+        <guid isPermaLink="true">/2016/01/06/learn-openstack-dev-skill-by-demo-06.html</guid>
         
         
       </item>
