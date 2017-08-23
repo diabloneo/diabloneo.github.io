@@ -6,9 +6,109 @@
 </description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 23 Aug 2017 10:53:44 +0800</pubDate>
-    <lastBuildDate>Wed, 23 Aug 2017 10:53:44 +0800</lastBuildDate>
+    <pubDate>Wed, 23 Aug 2017 23:02:33 +0800</pubDate>
+    <lastBuildDate>Wed, 23 Aug 2017 23:02:33 +0800</lastBuildDate>
     <generator>Jekyll v3.4.0</generator>
+    
+      <item>
+        <title>GopherCon 2017 观后感(2)</title>
+        <description>&lt;p&gt;GopherConf 2017于7月13日到15日在美国丹佛举行，我在youtube上看了一些视频，本文是一些视频的观后感。&lt;/p&gt;
+
+&lt;h1 id=&quot;ian-schenck---operability-in-go&quot;&gt;Ian Schenck - Operability in Go&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=SIl3wi1iWPE&quot;&gt;https://www.youtube.com/watch?v=SIl3wi1iWPE&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;介绍使用 stuct log（github.com/Sirupsen/logrus）和 expvar库来增强互操作性，其实和互操作性没什么关系，就是讲增强导出log的可读性，并且通过expvar来暴露程序运行时的内部状态。不推荐看。&lt;/p&gt;
+
+&lt;h1 id=&quot;jon-bodner---runtime-generated-typesafe-and-declarative-pick-any-three&quot;&gt;Jon Bodner - Runtime Generated, Typesafe, and Declarative: Pick Any Three&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=hz6d7rzqJ6Q&quot;&gt;https://www.youtube.com/watch?v=hz6d7rzqJ6Q&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;介绍了https://github.com/jonbodner/proteus 项目。这个项目通过使用sturct tag, function generation, reflect和template来实现了一个DAO层。这个DAO层可以用来实现把一种DSL转换成对存储系统的访问。演讲中描述了如何使用这个方法来实现SQL的访问。另外，大家都认为大量使用reflect会很慢，但是作者还现场跑了benchmark，说明对于存储访问这种重IO的操作，reflect带来的影响可以接受，速度是足够快的。&lt;/p&gt;
+
+&lt;h1 id=&quot;david-crawshaw---go-build-modes&quot;&gt;David Crawshaw - Go Build Modes&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=x-LhC-J2Vbk&quot;&gt;https://www.youtube.com/watch?v=x-LhC-J2Vbk&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;介绍了go的8种build mode：&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;exe(static)&lt;/li&gt;
+  &lt;li&gt;exe(with libc)&lt;/li&gt;
+  &lt;li&gt;exe(with libc and non-Go code)&lt;/li&gt;
+  &lt;li&gt;pie&lt;/li&gt;
+  &lt;li&gt;c-archive&lt;/li&gt;
+  &lt;li&gt;c-shared&lt;/li&gt;
+  &lt;li&gt;shared&lt;/li&gt;
+  &lt;li&gt;plugin
+最后介绍了go plugin的一种应用场景。Plugin的模式正在被慢慢改进，不过短期内还不会进入生产ready。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h1 id=&quot;edward-muller---go-anti-patterns&quot;&gt;Edward Muller - Go Anti-Patterns&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=ltqV6pDKZD8&quot;&gt;https://www.youtube.com/watch?v=ltqV6pDKZD8&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;介绍了go的一些反模式，也就是非常规编码模式。不过，这种事情见仁见智，可以参考，不一定全部接受。&lt;/p&gt;
+
+&lt;h1 id=&quot;mitchell-hashimoto---advanced-testing-with-go&quot;&gt;Mitchell Hashimoto - Advanced Testing with Go&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=8hQG7QlcLBk&quot;&gt;https://www.youtube.com/watch?v=8hQG7QlcLBk&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;讲了golang单元测试的一些基本需求以及HashiCorp在这方面对应的技术实现。&lt;/p&gt;
+</description>
+        <pubDate>Wed, 16 Aug 2017 00:00:00 +0800</pubDate>
+        <link>/2017/08/16/gophercon-2017-2.html</link>
+        <guid isPermaLink="true">/2017/08/16/gophercon-2017-2.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>GopherCon 2017 观后感(1)</title>
+        <description>&lt;p&gt;GopherConf 2017于7月13日到15日在美国丹佛举行，我在youtube上看了一些视频，本文是一些视频的观后感。&lt;/p&gt;
+
+&lt;h1 id=&quot;russ-cox---the-future-of-go&quot;&gt;Russ Cox - The Future of Go&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=0Zbh_vmAKvk&quot;&gt;https://www.youtube.com/watch?v=0Zbh_vmAKvk&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;开始为Go2进行宣传。Go2的开发启动还早，但是社区已经开始考虑这个问题。Russ Cox分享了社区这几年来是如何改进语言的。我总结了几点如下：&lt;/p&gt;
+
+&lt;p&gt;首选需要清晰的描述出问题，以便社区进行讨论。
+一个问题是否要解决取决于该问题的重要性和影响范围。社区引入一个不确定的feature的方式是等，等到这个feature足够重要了引入。。他举了Go 1.9中新增的type alias和monotonic clock的例子。这两个问题的解决都是在1.9版本中引入的，虽然问题的提出和解决方案在很早之前就完成了，但直到今年才决定要放到Go中。
+解决问题的方式不一定是增加变成语言特性，也可能是增加工具（race detection），或者是增加标准库。&lt;/p&gt;
+
+&lt;p&gt;最后，他呼吁大家参与ExperienceReport（golang.org/wiki/ExperienceReports），为社区提供更多的问题积累，以便社区更好的决定哪些特性要引入到语言中。&lt;/p&gt;
+
+&lt;h1 id=&quot;keith-randall---generating-better-machine-code-with-ssa&quot;&gt;Keith Randall - Generating Better Machine Code with SSA&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=uTMvKVma5ms&quot;&gt;https://www.youtube.com/watch?v=uTMvKVma5ms&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;讲述了Golang为什么要引入SSA（Static Single Assignemnt）。从1.5版本之后开始引入，1.7版本合入主干发布。SSA能够让Go代码更快更小，也能够让编译器更方便的对代码进行优化。从结果来看，引入SSA
+后，AMD64平台，代码性能提升12%，缩小13%；ARM平台，性能提升20%，缩小18%。&lt;/p&gt;
+
+&lt;h1 id=&quot;kavya-joshi---understanding-channels&quot;&gt;Kavya Joshi - Understanding Channels&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=KBZlN0izeiY&quot;&gt;https://www.youtube.com/watch?v=KBZlN0izeiY&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;介绍了channel的内部实现，以及channel导致的goroutine的阻塞和唤醒在runtime中是如何实现的。&lt;/p&gt;
+
+&lt;h1 id=&quot;rhys-hiltner---an-introduction-to-go-tool-trace&quot;&gt;Rhys Hiltner - An Introduction to “go tool trace”&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=V74JnrGTwKA&quot;&gt;https://www.youtube.com/watch?v=V74JnrGTwKA&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;介绍了 go tool trace，内容一般，听得也不太清楚，不推荐。&lt;/p&gt;
+
+&lt;h1 id=&quot;sam-boyer---the-new-era-of-go-package&quot;&gt;Sam Boyer - The New Era of Go Package&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=5LtMb090AZI&quot;&gt;https://www.youtube.com/watch?v=5LtMb090AZI&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;介绍了社区的实验项目 github.com/golang/dep ，这是一个用来实现包依赖管理的工具，用来解决现在广为诟病的包依赖问题。如果合适，将来会进入go tool chain。该项目已经production ready，大家可以开始使用了。&lt;/p&gt;
+</description>
+        <pubDate>Sat, 05 Aug 2017 00:00:00 +0800</pubDate>
+        <link>/2017/08/05/gophercon-2017-1.html</link>
+        <guid isPermaLink="true">/2017/08/05/gophercon-2017-1.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>2017 OpenStack Days China Day 1</title>
@@ -1351,774 +1451,6 @@ unit.test_v3_assignment.RoleAssignmentBaseTestCase
         <pubDate>Sun, 13 Mar 2016 00:00:00 +0800</pubDate>
         <link>/2016/03/13/learn-openstack-dev-skill-by-demo-08.html</link>
         <guid isPermaLink="true">/2016/03/13/learn-openstack-dev-skill-by-demo-08.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>通过demo学习OpenStack开发所需的基础知识 -- 数据库(2)</title>
-        <description>&lt;p&gt;在上一篇文章，我们介绍了SQLAlchemy的基本概念，也介绍了基本的使用流程。本文我们结合webdemo这个项目来介绍如何在项目中使用SQLAlchemy。另外，我们还会介绍数据库版本管理的概念和实践，这也是OpenStack每个项目都需要做的事情。&lt;/p&gt;
-
-&lt;h1 id=&quot;webdemo中的数据模型的定义和实现&quot;&gt;Webdemo中的数据模型的定义和实现&lt;/h1&gt;
-
-&lt;p&gt;我们之前在&lt;a href=&quot;https://github.com/diabloneo/webdemo&quot;&gt;webdemo&lt;/a&gt;项目中已经开发了一个user管理的API，可以在&lt;a href=&quot;https://segmentfault.com/a/1190000004004179&quot;&gt;这里&lt;/a&gt;回顾。当时只是接收了API请求并且打印信息，并没有实际的进行数据存储。现在我们就要引入数据库操作，来完成user管理的API。&lt;/p&gt;
-
-&lt;h2 id=&quot;user数据模型&quot;&gt;User数据模型&lt;/h2&gt;
-
-&lt;p&gt;在开发数据库应用前，需要先定义好数据模型。因为本文只是要演示SQLAlchemy的应用，所以我们定义个最简单的数据模型。user表的定义如下：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;id&lt;/strong&gt;: 主键，一般由数据库的自增类型实现。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;user_id&lt;/strong&gt;: user id，是一个UUID字符串，是OpenStack中最常用来标记资源的方式，全局唯一，并且为该字段建立索引。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;name&lt;/strong&gt;: user的名称，允许修改，全局唯一，不能为空。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;email&lt;/strong&gt;: user的email，允许修改，可以为空。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;搭建数据库层的代码框架&quot;&gt;搭建数据库层的代码框架&lt;/h2&gt;
-
-&lt;p&gt;OpenStack项目中我见过两种数据库的代码框架分隔，一种是Keystone的风格，它把一组API的API代码和数据库代码都放在同一个目录下，如下所示：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/imgs/00004_keystone_db_code.png&quot; alt=&quot;Keystone的数据库代码&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;采用Pecan框架的项目则大多把数据库相关代码都放在db目录下，比如Magnum项目，如下所示：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/imgs/00005_magnum_db_code.png&quot; alt=&quot;Magnum的数据库代码&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;由于webdemo采用的是Pecan框架，而且把数据库操作的代码放到同一个目录下也会比较清晰，所以我们采用和Magnum项目相同的方式来编写数据库相关的代码，创建&lt;strong&gt;webdemo/db&lt;/strong&gt;目录，然后把数据库操作的相关代码都放在这个目录下，如下所示：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/imgs/00006_webdemo_db_code.png&quot; alt=&quot;webdemo的数据库代码&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;由于webdemo项目还没有使用&lt;strong&gt;oslo_db&lt;/strong&gt;库，所以代码看起来比较直观，没有Magnum项目复杂。接下来，我们就要开始写数据库操作的相关代码，分为两个步骤：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;在&lt;em&gt;db/models.py&lt;/em&gt;中定义&lt;code class=&quot;highlighter-rouge&quot;&gt;User&lt;/code&gt;类，对应数据库的user表。&lt;/li&gt;
-  &lt;li&gt;在&lt;em&gt;db/api.py&lt;/em&gt;中实现一个&lt;code class=&quot;highlighter-rouge&quot;&gt;Connection&lt;/code&gt;类，这个类封装了所有的数据库操作接口。我们会在这个类中实现对user表的CRUD等操作。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;定义user数据模型映射类&quot;&gt;定义User数据模型映射类&lt;/h3&gt;
-
-&lt;p&gt;&lt;em&gt;db/models.py&lt;/em&gt;中的代码如下：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sqlalchemy&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Column&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Integer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sqlalchemy.ext&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;declarative&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sqlalchemy&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Index&lt;/span&gt;
-
-
-&lt;span class=&quot;n&quot;&gt;Base&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;declarative&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;declarative_base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-
-
-&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&quot;&quot;&quot;User table&quot;&quot;&quot;&lt;/span&gt;
-
-    &lt;span class=&quot;n&quot;&gt;__tablename__&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'user'&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;__table_args__&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;Index&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'ix_user_user_id'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'user_id'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Column&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Integer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;primary_key&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;user_id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Column&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;255&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nullable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;False&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Column&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;64&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nullable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;False&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;unique&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;email&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Column&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;255&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;我们按照我们之前定义的数据模型，实现了映射类。&lt;/p&gt;
-
-&lt;h3 id=&quot;实现db-api&quot;&gt;实现DB API&lt;/h3&gt;
-
-&lt;h4 id=&quot;db通用函数&quot;&gt;DB通用函数&lt;/h4&gt;
-
-&lt;p&gt;在&lt;em&gt;db/api.py&lt;/em&gt;中，我们先定义了一些通用函数，代码如下：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sqlalchemy&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;create_engine&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sqlalchemy.orm&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sqlalchemy.orm&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;exc&lt;/span&gt;
-
-&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;webdemo.db&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;models&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;db_models&lt;/span&gt;
-
-
-&lt;span class=&quot;n&quot;&gt;_ENGINE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;None&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;_SESSION_MAKER&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;None&lt;/span&gt;
-
-
-&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;get_engine&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;global&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_ENGINE&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_ENGINE&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;None&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_ENGINE&lt;/span&gt;
-
-    &lt;span class=&quot;n&quot;&gt;_ENGINE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;create_engine&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'sqlite://'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;db_models&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Base&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;metadata&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;create_all&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_ENGINE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_ENGINE&lt;/span&gt;
-
-
-&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;get_session_maker&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;engine&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;global&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_SESSION_MAKER&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_SESSION_MAKER&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;None&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_SESSION_MAKER&lt;/span&gt;
-
-    &lt;span class=&quot;n&quot;&gt;_SESSION_MAKER&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sqlalchemy&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;orm&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sessionmaker&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bind&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;engine&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_SESSION_MAKER&lt;/span&gt;
-
-
-&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;get_session&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;engine&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;get_engine&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;maker&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;get_session_maker&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;engine&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;session&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;maker&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;session&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;上面的代码中，我们定义了三个函数：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;get_engine&lt;/code&gt;：返回全局唯一的engine，不需要重复分配。&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;get_session_maker&lt;/code&gt;：返回全局唯一的session maker，不需要重复分配。&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;get_session&lt;/code&gt;：每次返回一个新的session，因为一个session不能同时被两个数据库客户端使用。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;这三个函数是使用SQLAlchemy中经常会封装的，所以OpenStack的&lt;strong&gt;oslo_db&lt;/strong&gt;项目就封装了这些函数，供所有的OpenStack项目使用。&lt;/p&gt;
-
-&lt;p&gt;这里需要注意一个地方，在&lt;code class=&quot;highlighter-rouge&quot;&gt;get_engine()&lt;/code&gt;中：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;    &lt;span class=&quot;n&quot;&gt;_ENGINE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;create_engine&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'sqlite://'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;db_models&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Base&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;metadata&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;create_all&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_ENGINE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;我们使用了sqlite内存数据库，并且立刻创建了所有的表。这么做只是为了演示方便。在实际的项目中，&lt;code class=&quot;highlighter-rouge&quot;&gt;create_engine()&lt;/code&gt;的数据库URL参数应该是从配置文件中读取的，而且也不能在创建engine后就创建所有的表（这样数据库的数据都丢了）。要解决在数据库中建表的问题，就要先了解数据库版本管理的知识，也就是&lt;strong&gt;database migration&lt;/strong&gt;，我们在下文中会说明。&lt;/p&gt;
-
-&lt;h4 id=&quot;connection实现&quot;&gt;Connection实现&lt;/h4&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Connection&lt;/code&gt;的实现就简单得多了，直接看代码。这里只实现了&lt;code class=&quot;highlighter-rouge&quot;&gt;get_user()&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;list_users()&lt;/code&gt;方法。&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Connection&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;object&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;__init__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;pass&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;get_user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;user_id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;query&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;get_session&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;query&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;db_models&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;filter_by&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user_id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user_id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;try&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;user&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;query&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;one&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;except&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;exc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NoResultFound&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-            &lt;span class=&quot;c&quot;&gt;# TODO(developer): process this situation&lt;/span&gt;
-            &lt;span class=&quot;k&quot;&gt;pass&lt;/span&gt;
-
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;list_users&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;session&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;get_session&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;query&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;session&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;query&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;db_models&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;users&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;query&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;all&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;users&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;update_user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;pass&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;delete_user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;pass&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;h3 id=&quot;在api-controller中使用db-api&quot;&gt;在API Controller中使用DB API&lt;/h3&gt;
-
-&lt;p&gt;现在我们有了DB API，接下来就是要在Controller中使用它。对于使用Pecan框架的应用来说，我们定义一个Pecan hook，这个hook在每个请求进来的时候实例化一个db的&lt;code class=&quot;highlighter-rouge&quot;&gt;Connection&lt;/code&gt;对象，然后在controller代码中我们可以直接使用这个&lt;code class=&quot;highlighter-rouge&quot;&gt;Connection&lt;/code&gt;实例。关于Pecan hook的相关信息，请查看&lt;a href=&quot;http://pecan.readthedocs.org/en/latest/hooks.html&quot;&gt;Pecan官方文档&lt;/a&gt;。&lt;/p&gt;
-
-&lt;p&gt;首先，我们要实现这个hook，并且加入到app中。hook的实现代码在&lt;em&gt;webdemo/api/hooks.py&lt;/em&gt;中：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;pecan&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hooks&lt;/span&gt;
-
-&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;webdemo.db&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;api&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;db_api&lt;/span&gt;
-
-
-&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;DBHook&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hooks&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;PecanHook&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&quot;&quot;&quot;Create a db connection instance.&quot;&quot;&quot;&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;before&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;state&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;state&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;db_conn&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;db_api&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Connection&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;然后，修改&lt;em&gt;webdemo/api/app.py&lt;/em&gt;中的&lt;code class=&quot;highlighter-rouge&quot;&gt;setup_app()&lt;/code&gt;方法：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;setup_app&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;config&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;get_pecan_config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-
-    &lt;span class=&quot;n&quot;&gt;app_hooks&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hooks&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DBHook&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()]&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;app_conf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;dict&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;app&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pecan&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;make_app&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;app_conf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'root'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;logging&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;getattr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'logging'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{}),&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;hooks&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;app_hooks&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-        &lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;app_conf&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;app&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;现在，我们就可以在controller使用DB API了。我们这里要重新实现&lt;a href=&quot;https://segmentfault.com/a/1190000004004179&quot;&gt;API服务(4)&lt;/a&gt;实现的&lt;em&gt;GET /v1/users&lt;/em&gt;这个接口：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;wtypes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-    &lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;int&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;user_id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;wtypes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;wtypes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;email&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;wtypes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;
-
-
-&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Users&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;wtypes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;users&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;UsersController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;RestController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@pecan.expose&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;_lookup&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;user_id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;remainder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;UserController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user_id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;remainder&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@expose.expose&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Users&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;db_conn&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;db_conn&lt;/span&gt;     &lt;span class=&quot;c&quot;&gt;# 获取DBHook中创建的Connection实例&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;users&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;db_conn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;list_users&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;  &lt;span class=&quot;c&quot;&gt;# 调用所需的DB API&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;users_list&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;user&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;users&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;u&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;u&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user_id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user_id&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;u&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;u&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;email&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;email&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;users_list&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;append&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;u&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Users&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;users&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;users_list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@expose.expose&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;None&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;body&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;status_code&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;201&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;post&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;现在，我们就已经完整的实现了这个API，客户端访问API时是从数据库拿数据，而不是返回一个模拟的数据。读者可以使用&lt;a href=&quot;https://segmentfault.com/a/1190000004004179&quot;&gt;API服务(4)&lt;/a&gt;中的方法运行测试服务器来测试这个API。注意：由于数据库操作依赖于SQLAlchemy库，所以需要把它添加到&lt;em&gt;requirement.txt&lt;/em&gt;中：&lt;strong&gt;SQLAlchemy&amp;lt;1.1.0,&amp;gt;=0.9.9&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;h2 id=&quot;小结&quot;&gt;小结&lt;/h2&gt;
-
-&lt;p&gt;现在我们已经完成了数据库层的代码框架搭建，读者可以大概了解到一个OpenStack项目中是如何进行数据库操作的。上面的代码可以到&lt;a href=&quot;https://github.com/diabloneo/webdemo&quot;&gt;https://github.com/diabloneo/webdemo&lt;/a&gt;下载。&lt;/p&gt;
-
-&lt;h1 id=&quot;数据库版本管理&quot;&gt;数据库版本管理&lt;/h1&gt;
-
-&lt;h2 id=&quot;数据库版本管理的概念&quot;&gt;数据库版本管理的概念&lt;/h2&gt;
-
-&lt;p&gt;上面我们在&lt;code class=&quot;highlighter-rouge&quot;&gt;get_engine()&lt;/code&gt;函数中使用了内存数据库，并且创建了所有的表。在实际项目中，这么做肯定是不行的：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;实际项目中不会使用内存数据库，这种数据库一般只是在单元测试中使用。&lt;/li&gt;
-  &lt;li&gt;如果每次&lt;code class=&quot;highlighter-rouge&quot;&gt;create_engine&lt;/code&gt;都把数据库的表重新创建一次，那么数据库中的数据就丢失了，绝对不可容忍。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;解决这个问题的办法也很简单：&lt;strong&gt;不使用内存数据库，并且在运行项目代码前先把数据库中的表都建好&lt;/strong&gt;。这么做确实是解决了问题，但是看起来有点麻烦：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;如果每次都手动写SQL语句来创建数据库中的表，会很容易出错，而且很麻烦。&lt;/li&gt;
-  &lt;li&gt;如果项目修改了数据模型，那么不能简单的修改建表的SQL语句，因为重新建表会让数据丢失。我们只能增加新的SQL语句来修改现有的数据库。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;最关键的是&lt;/strong&gt;：我们怎么知道一个正在生产运行的数据库是要执行那些SQL语句？如果数据库第一次使用，那么执行全部的语句是正确的；如果数据库已经在使用，里面有数据，那么我们只能执行那些修改表定义的SQL语句，而不能执行那些重新建表的SQL语句。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;为了解决这种问题，就有人发明了数据库版本管理的概念，也称为&lt;strong&gt;Database Migration&lt;/strong&gt;。基本原理是：&lt;strong&gt;在我们要使用的数据库中建立一张表，里面保存了数据库的当前版本，然后我们在代码中为每个数据库版本写好所需的SQL语句。当对一个数据库执行migration操作时，会执行从当前版本到目标版本之间的所有SQL语句&lt;/strong&gt;。举个例子：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;在&lt;em&gt;Version 1&lt;/em&gt;时，我们在数据库中建立一个user表。&lt;/li&gt;
-  &lt;li&gt;在&lt;em&gt;Version 2&lt;/em&gt;时，我们在数据库中建立一个project表。&lt;/li&gt;
-  &lt;li&gt;在&lt;em&gt;Version 3&lt;/em&gt;时，我们修改user表，增加一个age列。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;那么在我们对一个数据库执行migration操作，数据库的当前版本&lt;em&gt;Version 1&lt;/em&gt;，我们设定的目标版本是&lt;em&gt;Version 3&lt;/em&gt;，那么操作就是：建立一个project表，修改user表，增加一个age列，并且把数据库当前版本设置为&lt;em&gt;Version 3&lt;/em&gt;。&lt;/p&gt;
-
-&lt;p&gt;数据库的版本管理是所有大型数据库项目的需求，每种语言都有自己的解决方案。OpenStack中主要使用SQLAlchemy的两种解决方案：&lt;a href=&quot;https://github.com/openstack/sqlalchemy-migrate&quot;&gt;sqlalchemy-migrate&lt;/a&gt;和&lt;a href=&quot;https://alembic.readthedocs.org/en/latest/&quot;&gt;Alembic&lt;/a&gt;。早期的OpenStack项目使用了sqlalchemy-migrate，后来换成了Alembic。做出这个切换的主要原因是Alembic对数据库版本的设计和管理更灵活，可以支持分支，而sqlalchemy-migrate只能支持直线的版本管理，具体可以看OpenStack的WiKi文档&lt;a href=&quot;https://wiki.openstack.org/wiki/Obsolete:Alembic&quot;&gt;Alembic&lt;/a&gt;。&lt;/p&gt;
-
-&lt;p&gt;接下来，我们就在我们的webdemo项目中引入Alembic来进行版本管理。&lt;/p&gt;
-
-&lt;h2 id=&quot;alembic&quot;&gt;Alembic&lt;/h2&gt;
-
-&lt;p&gt;要使用Alembic，大概需要以下步骤：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;安装Alembic&lt;/li&gt;
-  &lt;li&gt;在项目中创建Alembic的migration环境&lt;/li&gt;
-  &lt;li&gt;修改Alembic配置文件&lt;/li&gt;
-  &lt;li&gt;创建migration脚本&lt;/li&gt;
-  &lt;li&gt;执行迁移动作&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;看起来步骤很复杂，其实搭建好环境后，新增数据库版本只需要执行最后两个步骤。&lt;/p&gt;
-
-&lt;h3 id=&quot;安装alembic&quot;&gt;安装Alembic&lt;/h3&gt;
-
-&lt;p&gt;在&lt;em&gt;webdemo/requirements.txt&lt;/em&gt;中加入：&lt;strong&gt;alembic&amp;gt;=0.8.0&lt;/strong&gt;。然后在virtualenv中安装即可。&lt;/p&gt;
-
-&lt;h3 id=&quot;在项目中创建alembic的migration环境&quot;&gt;在项目中创建Alembic的migration环境&lt;/h3&gt;
-
-&lt;p&gt;一般OpenStack项目中，Alembic的环境都是放在&lt;em&gt;db/sqlalchemy/&lt;/em&gt;目录下，因此，我们先建立目录&lt;em&gt;webdemo/db/sqlalchemy/&lt;/em&gt;，然后在这个目录下初始化Alembic环境：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;(.venv)➜ ~/programming/python/webdemo git:(master) ✗ $ cd webdemo/db
-(.venv)➜ ~/programming/python/webdemo/webdemo/db git:(master) ✗ $ ls
-api.py  api.pyc  __init__.py  __init__.pyc  models.py  models.pyc  sqlalchemy
-(.venv)➜ ~/programming/python/webdemo/webdemo/db git:(master) ✗ $ cd sqlalchemy
-(.venv)➜ ~/programming/python/webdemo/webdemo/db/sqlalchemy git:(master) ✗ $ ls
-(.venv)➜ ~/programming/python/webdemo/webdemo/db/sqlalchemy git:(master) ✗ $ alembic init alembic
-  Creating directory /home/diabloneo/programming/python/webdemo/webdemo/db/sqlalchemy/alembic ... done
-  Creating directory /home/diabloneo/programming/python/webdemo/webdemo/db/sqlalchemy/alembic/versions ... done
-  Generating /home/diabloneo/programming/python/webdemo/webdemo/db/sqlalchemy/alembic/script.py.mako ... done
-  Generating /home/diabloneo/programming/python/webdemo/webdemo/db/sqlalchemy/alembic.ini ... done
-  Generating /home/diabloneo/programming/python/webdemo/webdemo/db/sqlalchemy/alembic/README ... done
-  Generating /home/diabloneo/programming/python/webdemo/webdemo/db/sqlalchemy/alembic/env.pyc ... done
-  Generating /home/diabloneo/programming/python/webdemo/webdemo/db/sqlalchemy/alembic/env.py ... done
-  Please edit configuration/connection/logging settings in '/home/diabloneo/programming/python/webdemo/webdemo/db/sqlalchemy/alembic.ini' before proceeding.
-(.venv)➜ ~/programming/python/webdemo/webdemo/db/sqlalchemy git:(master) ✗ $
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;现在，我们就在&lt;em&gt;webdemo/db/sqlalchemy/alembic/&lt;/em&gt;目录下建立了一个Alembic migration环境：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/imgs/00007_alembic_migration_environment.png&quot; alt=&quot;Alembic Migration Environment&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;修改alembic配置文件&quot;&gt;修改Alembic配置文件&lt;/h3&gt;
-
-&lt;p&gt;&lt;em&gt;webdemo/db/sqlalchemy/alembic.ini&lt;/em&gt;文件是Alembic的配置文件，我们现在需要修改文件中的&lt;strong&gt;sqlalchemy.url&lt;/strong&gt;这个配置项，用来指向我们的数据库。这里，我们使用SQLite数据库，数据库文件存放在webdemo项目的根目录下，名称是&lt;strong&gt;webdemo.db&lt;/strong&gt;：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# sqlalchemy.url = driver://user:pass@localhost/dbname
-sqlalchemy.url = sqlite:///../../../webdemo.db
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;注意：实际项目中，数据库的URL信息是从项目配置文件中读取，然后通过动态的方式传递给Alembic的。具体的做法，读者可以参考Magnum项目的实现：&lt;a href=&quot;https://github.com/openstack/magnum/blob/master/magnum/db/sqlalchemy/migration.py&quot;&gt;https://github.com/openstack/magnum/blob/master/magnum/db/sqlalchemy/migration.py&lt;/a&gt;。&lt;/p&gt;
-
-&lt;h3 id=&quot;创建migration脚本&quot;&gt;创建migration脚本&lt;/h3&gt;
-
-&lt;p&gt;现在，我们可以创建第一个迁移脚本了，我们的第一个数据库版本就是创建我们的user表：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;(.venv)➜ ~/programming/python/webdemo/webdemo/db/sqlalchemy git:(master) ✗ $ alembic revision -m &quot;Create user table&quot;
-  Generating /home/diabloneo/programming/python/webdemo/webdemo/db/sqlalchemy/alembic/versions/4bafdb464737_create_user_table.py ... done
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;现在脚本已经帮我们生成好了，不过这个只是一个空的脚本，我们需要自己实现里面的具体操作，补充完整后的脚本如下：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;s&quot;&gt;&quot;&quot;&quot;Create user table
-
-Revision ID: 4bafdb464737
-Revises:
-Create Date: 2016-02-21 12:24:46.640894
-
-&quot;&quot;&quot;&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# revision identifiers, used by Alembic.&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;revision&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'4bafdb464737'&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;down_revision&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;None&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;branch_labels&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;None&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;depends_on&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;None&lt;/span&gt;
-
-&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;alembic&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;op&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sqlalchemy&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sa&lt;/span&gt;
-
-
-&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;upgrade&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;op&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;create_table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-        &lt;span class=&quot;s&quot;&gt;'user'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;sa&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Column&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'id'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sa&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Integer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;primary_key&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;sa&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Column&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'user_id'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sa&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;255&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nullable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;False&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;sa&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Column&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'name'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sa&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;64&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nullable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;False&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;unique&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;sa&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Column&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'email'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sa&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;255&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-
-&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;downgrade&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;op&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;drop_table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'user'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;其实就是把&lt;code class=&quot;highlighter-rouge&quot;&gt;User&lt;/code&gt;类的定义再写了一遍，使用了Alembic提供的接口来方便的创建和删除表。&lt;/p&gt;
-
-&lt;h3 id=&quot;执行迁移操作&quot;&gt;执行迁移操作&lt;/h3&gt;
-
-&lt;p&gt;我们需要在&lt;em&gt;webdemo/db/sqlalchemy/&lt;/em&gt;目录下执行迁移操作，可能需要手动指定PYTHONPATH：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;(.venv)➜ ~/programming/python/webdemo/webdemo/db/sqlalchemy git:(master) ✗ $ PYTHONPATH=../../../ alembic upgrade head
-INFO  [alembic.migration] Context impl SQLiteImpl.
-INFO  [alembic.migration] Will assume non-transactional DDL.
-INFO  [alembic.migration] Running upgrade  -&amp;gt; 4bafdb464737, Create user table
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;alembic upgrade head&lt;/code&gt;会把数据库升级到最新的版本。这个时候，在webdemo的根目录下会出现&lt;strong&gt;webdemo.db&lt;/strong&gt;这个文件，可以使用sqlite3命令查看内容：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;(.venv)➜ ~/programming/python/webdemo git:(master) ✗ $ ls
-AUTHORS  build  ChangeLog  dist  LICENSE  README.md  requirements.txt  Session.vim  setup.cfg  setup.py  webdemo  webdemo.db  webdemo.egg-info
-(.venv)➜ ~/programming/python/webdemo git:(master) ✗ $ sqlite3 webdemo.db
-SQLite version 3.8.11.1 2015-07-29 20:00:57
-Enter &quot;.help&quot; for usage hints.
-sqlite&amp;gt; .tables
-alembic_version  user
-sqlite&amp;gt; .schema alembic_version
-CREATE TABLE alembic_version (
-        version_num VARCHAR(32) NOT NULL
-);
-sqlite&amp;gt; .schema user
-CREATE TABLE user (
-        id INTEGER NOT NULL,
-        user_id VARCHAR(255) NOT NULL,
-        name VARCHAR(64) NOT NULL,
-        email VARCHAR(255),
-        PRIMARY KEY (id),
-        UNIQUE (name)
-);
-sqlite&amp;gt; .header on
-sqlite&amp;gt; select * from alembic_version;
-version_num
-4bafdb464737
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;测试新的数据库&quot;&gt;测试新的数据库&lt;/h3&gt;
-
-&lt;p&gt;现在我们可以把之前使用的内存数据库换掉，使用我们的文件数据库，修改&lt;code class=&quot;highlighter-rouge&quot;&gt;get_engine()&lt;/code&gt;函数：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;get_engine&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;global&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_ENGINE&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_ENGINE&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;None&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_ENGINE&lt;/span&gt;
-
-    &lt;span class=&quot;n&quot;&gt;_ENGINE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;create_engine&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'sqlite:///webdemo.db'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_ENGINE&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;现在你可以手动往webdemo.db中添加数据，然后测试下API：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;➜ ~/programming/python/webdemo git:(master) ✗ $ sqlite3 webdemo.db
-SQLite version 3.8.11.1 2015-07-29 20:00:57
-Enter &quot;.help&quot; for usage hints.
-sqlite&amp;gt; .header on
-sqlite&amp;gt; select * from user;
-sqlite&amp;gt; .schema user
-CREATE TABLE user (
-        id INTEGER NOT NULL,
-        user_id VARCHAR(255) NOT NULL,
-        name VARCHAR(64) NOT NULL,
-        email VARCHAR(255),
-        PRIMARY KEY (id),
-        UNIQUE (name)
-);
-sqlite&amp;gt; insert into user values(1, &quot;user_id&quot;, &quot;Alice&quot;, &quot;alice@example.com&quot;);
-sqlite&amp;gt; select * from user;
-id|user_id|name|email
-1|user_id|Alice|alice@example.com
-sqlite&amp;gt; .q
-➜ ~/programming/python/webdemo git:(master) ✗ $
-➜ ~/programming/python/webdemo git:(master) ✗ $ curl http://localhost:8080/v1/users
-{&quot;users&quot;: [{&quot;email&quot;: &quot;alice@example.com&quot;, &quot;user_id&quot;: &quot;user_id&quot;, &quot;id&quot;: 1, &quot;name&quot;: &quot;Alice&quot;}]}% 
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;小结-1&quot;&gt;小结&lt;/h3&gt;
-
-&lt;p&gt;现在，我们就已经完成了database migration代码框架的搭建，可以成功执行了第一个版本的数据库迁移。OpenStack项目中也是这么来做数据库迁移的。后续，一旦修改了项目，需要修改数据模型时，只要新增migration脚本即可。这部分代码也可以在&lt;a href=&quot;https://github.com/diabloneo/webdemo&quot;&gt;https://github.com/diabloneo/webdemo&lt;/a&gt;中看到。&lt;/p&gt;
-
-&lt;p&gt;在实际生产环境中，当我们发布了一个项目的新版本后，在上线的时候，都会自动执行数据库迁移操作，升级数据库版本到最新的版本。如果线上的数据库版本已经是最新的，那么这个操作没有任何影响；如果不是最新的，那么会把数据库升级到最新的版本。&lt;/p&gt;
-
-&lt;p&gt;关于Alembic的更多使用方法，请阅读官方文档&lt;a href=&quot;https://alembic.readthedocs.org/en/latest/&quot;&gt;Alembic&lt;/a&gt;。&lt;/p&gt;
-
-&lt;h1 id=&quot;总结&quot;&gt;总结&lt;/h1&gt;
-
-&lt;p&gt;本文到这边就结束了，这两篇文章我们了解OpenStack中数据库应用开发的基础知识。接下来，我们将会了解OpenStack中单元测试的相关知识。&lt;/p&gt;
-
-</description>
-        <pubDate>Sun, 21 Feb 2016 00:00:00 +0800</pubDate>
-        <link>/2016/02/21/learn-openstack-dev-skill-by-demo-07.html</link>
-        <guid isPermaLink="true">/2016/02/21/learn-openstack-dev-skill-by-demo-07.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>通过demo学习OpenStack开发所需的基础知识 -- 数据库(1)</title>
-        <description>&lt;h1 id=&quot;openstack中的关系型数据库应用&quot;&gt;OpenStack中的关系型数据库应用&lt;/h1&gt;
-
-&lt;p&gt;OpenStack中的数据库应用主要是关系型数据库，主要使用的是MySQL数据库。当然也有一些NoSQL的应用，比如Ceilometer项目。就SQL数据库本身的应用而言，OpenStack的项目和其他项目并没有什么区别，也是采用ORM技术对数据进行增删改查而已。&lt;/p&gt;
-
-&lt;p&gt;本文的重点是讲解OpenStack项目中对关系型数据库的应用的基础知识，更多的是涉及ORM库的使用。对于数据库的安装和配置，需要读者自己查找一下MySQL的教程，如果只是为了验证ORM的相关知识，也可以使用sqlite数据库。&lt;/p&gt;
-
-&lt;h2 id=&quot;数据库的选择&quot;&gt;数据库的选择&lt;/h2&gt;
-
-&lt;p&gt;OpenStack官方推荐的保存生产数据的是MySQL数据库，在devstack项目（这个项目用于快速搭建OpenStack开发环境）中也是安装了MySQL数据库。不过，因为OpenStack的项目中没有使用特定的只有在MySQL上才能用的功能，而且所采用的ORM库SQLAlchemy也支持多种数据库，所以理论上选择PostgreSQL之类的数据库来替代MySQL也是可行的。&lt;/p&gt;
-
-&lt;p&gt;另外，OpenStack项目在单元测试中使用的是sqlite的内存数据库，这样开发者运行单元测试的时候不需要安装和配置复杂的MySQL数据库，只要安装好sqlite3就可以了。而且，数据库是保存在内存中的，会提高单元测试的速度。&lt;/p&gt;
-
-&lt;h2 id=&quot;orm的选择&quot;&gt;ORM的选择&lt;/h2&gt;
-
-&lt;h3 id=&quot;什么是orm&quot;&gt;什么是ORM&lt;/h3&gt;
-
-&lt;p&gt;ORM的全称是&lt;strong&gt;Object-Relational Mapping&lt;/strong&gt;，即&lt;strong&gt;对象关系映射&lt;/strong&gt;，是一种利用编程语言的对象来表示关系数据库中的数据的技术，其更形式化的定义可以参考&lt;a href=&quot;https://en.wikipedia.org/wiki/Object-relational_mapping&quot;&gt;Wiki页面Orject-relational mapping&lt;/a&gt;。简单的说，ORM就是把数据库的一张表和编程语言中的一个对象对应起来，这样我们在编程语言中操作一个对象的时候，实际上就是在操作这张表，ORM（一般是一个库）负责把我们对一个对象的操作转换成对数据库的操作。&lt;/p&gt;
-
-&lt;h3 id=&quot;python中的orm实现&quot;&gt;Python中的ORM实现&lt;/h3&gt;
-
-&lt;p&gt;一般来说，各种主流语言都有自己的ORM实现，一般来说也不只一种，比较出名的有Java的Hibernate，Ruby on Rails的ORM，C++的ODB等。&lt;strong&gt;在Python中也存在多种ORM的实现，最著名的两种是Django的Model层的ORM实现，以及SQLAlchemy库&lt;/strong&gt;。这两种ORM实现基本上是Python中ORM的事实上的标准，如果你写Django应用，那么你就用Django自带的实现；不然，你就可以选择SQLAlchemy库。&lt;/p&gt;
-
-&lt;p&gt;OpenStack基本上都是Python项目，所以在OpenStack中，ORM主要是使用了SQLAlchemy库（Keystone, Nova, Neutron等）；不过使用了Django的Horizon项目（面板）还是使用了Django自带的ORM实现。本文主要是讲解OpenStack中如何使用SQLAlchemy库，这个也是开发OpenStack项目的最基本知识。&lt;/p&gt;
-
-&lt;h1 id=&quot;sqlalchemy&quot;&gt;SQLAlchemy&lt;/h1&gt;
-
-&lt;h2 id=&quot;sqlalchemy简介&quot;&gt;SQLAlchemy简介&lt;/h2&gt;
-
-&lt;p&gt;SQLAlchemy项目是Python中最著名的ORM实现，不仅在Python项目中也得到了广泛的应用，而且对其他语言的ORM有很大的影响。OpenStack一开始选择这个库，也是看中了它足够稳定、足够强大的特点。&lt;/p&gt;
-
-&lt;p&gt;SQLAlchemy项目的官网是&lt;a href=&quot;http://www.sqlalchemy.org/&quot;&gt;http://www.sqlalchemy.org/&lt;/a&gt;，目前该项目最新的版本是&lt;strong&gt;1.0.11&lt;/strong&gt;，&lt;strong&gt;1.0&lt;/strong&gt;系列是今年刚发的，&lt;strong&gt;0.9&lt;/strong&gt;系列应该还是应用最广泛的版本。对于一般的应用来说，0.9系列和1.0系列差别不大。&lt;/p&gt;
-
-&lt;h2 id=&quot;关于sqlalchemy的学习&quot;&gt;关于SQLAlchemy的学习&lt;/h2&gt;
-
-&lt;p&gt;我个人觉得SQLAlchemy的学习难度会比Django的Model层难一些，因为一个最简单的例子也会有一些不太直观的地方，对于没用过的人来说，会比较难以理解。不过SQLAlchemy官网整理了一些比较不错的入门教程，是一个比较好的学习起点：&lt;a href=&quot;http://www.sqlalchemy.org/library.html#tutorials&quot;&gt;Tutorials&lt;/a&gt;。另外，官方的Reference其实是一个很好的教程，讲了很多基本的概念，有助于理解SQLAlchemy的库的使用。Reference的地址是：&lt;a href=&quot;http://docs.sqlalchemy.org/en/rel_1_0/&quot;&gt;http://docs.sqlalchemy.org/en/rel_1_0/&lt;/a&gt;，还可以直接下载PDF版本。我个人建议大家直接阅读Reference即可，阅读顺序就按照PDF文件的章节编排顺序进行。虽然这个文档很长，但是我最后发现这么做是最节约时间的。&lt;/p&gt;
-
-&lt;h2 id=&quot;sqlalchemy的架构&quot;&gt;SQLAlchemy的架构&lt;/h2&gt;
-
-&lt;p&gt;先让我们来看一下SQLAlchemy这个库的总体架构，如下图（图来自官网）所示：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/imgs/00002_sql_alchemy_architecture.png&quot; alt=&quot;sqla_arch_small.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;SQLAlchemy这个库分为两层：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;上面这层是ORM层，为用户提供ORM接口，即通过操作Python对象来实现数据库操作的接口。&lt;/li&gt;
-  &lt;li&gt;下面这层是Core层，这层包含了&lt;em&gt;Schema/Types&lt;/em&gt;, &lt;em&gt;SQL Expression Language&lt;/em&gt;, &lt;em&gt;Engine&lt;/em&gt;这三个部分：
-    &lt;ul&gt;
-      &lt;li&gt;&lt;em&gt;SQL Expression Language&lt;/em&gt;是SQLAlchemy中实现的一套SQL表达系统，主要是实现了对SQL的DML(Data Manipulation Language)的封装。这里实现了对数据库的SELECT、DELETE、UPDATE等语句的封装。SQL Expression Language是实现ORM层的基础。&lt;/li&gt;
-      &lt;li&gt;&lt;em&gt;Schema/Types&lt;/em&gt;这部分主要是实现了对SQL的DDL(Data Definition Language)的封装。实现了Table类用来表示一个表，Column类用来表示一个列，也是实现了将数据库的数据类型映射到Python的数据类型。上面的&lt;em&gt;SQL Expression Language&lt;/em&gt;的操作对象就是这里定义的Table。&lt;/li&gt;
-      &lt;li&gt;&lt;em&gt;Engine&lt;/em&gt;实现了对各种不同的数据库客户端的封装和调度，是所有SQLAlchemy应用程序的入口点，要使用SQLAlchemy库来操作一个数据库，首先就要有一个Engine对象，后续的所有对数据库的操作都要通过这个Engine对象来进行。下图是官方文档中的Engine位置的描述图：
-&lt;img src=&quot;/assets/imgs/00003_sql_alchemy_engine_position.png&quot; alt=&quot;sqla_engine_arch.png&quot; /&gt;
-        &lt;ul&gt;
-          &lt;li&gt;Pool是Engine下面的一个模块，用来管理应用程序到数据库的连接。&lt;/li&gt;
-          &lt;li&gt;Dialect是Engine下的另一个模块，用来对接不同的数据库驱动（即DBMS客户端），这些驱动要实现DBAPI接口。&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;最后，SQLAlchemy还要依赖各个数据库驱动的DBAPI接口来实现对数据库服务的调用。DBAPI是Python定义的数据库API的实现规范，具体见&lt;a href=&quot;https://www.python.org/dev/peps/pep-0249/&quot;&gt;&lt;strong&gt;PEP0249&lt;/strong&gt;&lt;/a&gt;。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;上面简单的总结了SQLAlchemy的架构，希望大家能够大概了解一下SQLAlchemy，在后面介绍一些相关概念时，能够知道这个概念是属于整个架构的哪个部分。&lt;/p&gt;
-
-&lt;h3 id=&quot;dialect和数据库客户端&quot;&gt;Dialect和数据库客户端&lt;/h3&gt;
-
-&lt;p&gt;上面提到了Dialect是用来对接不同的数据库驱动的，它主要负责将SQLAlchemy最后生成的数据库操作转换成对数据库驱动的调用，其中会处理一些不同数据库和不同DBAPI实现的差别。这个部分一般是SQLAlchemy的开发者关心的内容，如果你只是使用SQLAlchemy来操作数据库，那么可以不用关心这个部分。不过我们还是要来了解一下SQLAlchemy支持的和OpenStack相关的数据库驱动。&lt;/p&gt;
-
-&lt;h4 id=&quot;mysql&quot;&gt;MySQL&lt;/h4&gt;
-
-&lt;p&gt;OpenStack项目主要是使用MySQL，之前一直都在使用&lt;a href=&quot;https://pypi.python.org/pypi/MySQL-python/&quot;&gt;&lt;strong&gt;MySQL-Python&lt;/strong&gt;&lt;/a&gt;驱动，因为这个驱动足够成熟和稳定。不过这个情况正在转变，有如下两个原因：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;&lt;strong&gt;MySQL-Python&lt;/strong&gt;不支持Python3，而OpenStack正在转换到Python3的过程中，所以这个驱动最终是要放弃的。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;MySQL-Python&lt;/strong&gt;是用C语言写的，不支持eventlet库的monkey-patch操作，无法被eventlet库转换成异步操作，所以使用了eventlet库的到OpenStack项目在使用MySQL数据库时，都是进行同步的串行操作，有性能损失。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;为了解决这个问题，社区发起了一次对新驱动的评估，主要是评估&lt;a href=&quot;https://pypi.python.org/pypi/PyMySQL/&quot;&gt;&lt;strong&gt;PyMySQL&lt;/strong&gt;&lt;/a&gt;驱动：&lt;a href=&quot;https://wiki.openstack.org/wiki/PyMySQL_evaluation&quot;&gt;PyMySQL Evaluation&lt;/a&gt;。这个评估还在社区的邮件列表发起了好几次讨论，到目前为止的结果是：&lt;strong&gt;如果使用Python 2.7，那么继续使用MySQL-Python这个驱动，否则就使用PyMySQL这个驱动&lt;/strong&gt;。&lt;strong&gt;PyMySQL&lt;/strong&gt;驱动是使用纯Python写的，不仅支持Python3而且可以支持eventlet的异步。&lt;/p&gt;
-
-&lt;h4 id=&quot;sqlite3&quot;&gt;SQLite3&lt;/h4&gt;
-
-&lt;p&gt;OpenStack项目一般会使用SQLite3数据库来运行单元测试。OpenStack在Python2.7下会使用&lt;a href=&quot;https://pypi.python.org/pypi/pysqlite/&quot;&gt;&lt;strong&gt;pysqlite&lt;/strong&gt;&lt;/a&gt;驱动，不过这个驱动和标准库中的&lt;strong&gt;sqlite3&lt;/strong&gt;模块是一样的，也就是Python内置了SQLite3的驱动，你无需选择其他的驱动。&lt;/p&gt;
-
-&lt;h2 id=&quot;sqlalchemy的基本概念和使用&quot;&gt;SQLAlchemy的基本概念和使用&lt;/h2&gt;
-
-&lt;p&gt;使用SQLAlchemy大体上分为三个步骤：连接到数据库，定义数据模型，执行数据操作。&lt;/p&gt;
-
-&lt;h3 id=&quot;连接到数据库&quot;&gt;连接到数据库&lt;/h3&gt;
-
-&lt;p&gt;在你的应用可以使用数据库前，你要先定义好数据库的连接，包括数据库在哪里，用什么账号访问等。所有的这些工作都是通过Engine对象来进行的（记得上面提到的Engine了么？）。&lt;/p&gt;
-
-&lt;h4 id=&quot;数据库url&quot;&gt;数据库URL&lt;/h4&gt;
-
-&lt;p&gt;SQLAlchemy使用URL的方式来指定要访问的数据库，整个URL的具体格式如下：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dialect+driver://username:password@host:port/database
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;其中，&lt;strong&gt;dialect&lt;/strong&gt;就是指DBMS的名称，一般可选的值有：&lt;em&gt;postgresql&lt;/em&gt;, &lt;em&gt;mysql&lt;/em&gt;, &lt;em&gt;sqlite&lt;/em&gt;等。&lt;strong&gt;driver&lt;/strong&gt;就是指驱动的名称，如果不指定，SQLAlchemy会使用默认值。&lt;em&gt;database&lt;/em&gt;就是指DBMS中的一个数据库，一般是指通过&lt;em&gt;CREATE DATABASE&lt;/em&gt;语句创建的数据库。其他的参数就不言而喻了。dialect和driver参数有很多选择，具体的可以参考官方文档：&lt;a href=&quot;http://docs.sqlalchemy.org/en/rel_1_0/core/engines.html#database-urls&quot;&gt;Database URLs&lt;/a&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;创建engine对象&quot;&gt;创建Engine对象&lt;/h4&gt;
-
-&lt;p&gt;确定了要连接的数据库信息后，就可以通过&lt;code class=&quot;highlighter-rouge&quot;&gt;create_engine&lt;/code&gt;函数来创建一个&lt;strong&gt;Engine&lt;/strong&gt;对象了。&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sqlalchemy&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;create_engine&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;engine&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;create_engine&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'sqlite://:memory:'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;create_engine&lt;/code&gt;函数还支持以下几个参数：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;em&gt;connect_args&lt;/em&gt;：一个字典，用来自定义数据库连接的参数，比如指定客户端使用的字符编码。&lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;pool_size&lt;/em&gt;和&lt;em&gt;max_overflow&lt;/em&gt;：指定连接池的大小。&lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;poolclass&lt;/em&gt;：指定连接池的实现&lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;echo&lt;/em&gt;：一个布尔值，用来指定是否打印执行的SQL语句到日志中。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;还有很多其他的参数，可以参考官方文档：&lt;a href=&quot;http://docs.sqlalchemy.org/en/rel_1_0/core/engines.html&quot;&gt;Engine Configuration&lt;/a&gt;。&lt;/p&gt;
-
-&lt;p&gt;一般来说，Engine对象会默认启用连接池，会根据不同的dialect来选择不同的默认值。一般来说，你是不用考虑连接池的配置的，默认情况都配置好了。想了解关于连接池的更多内容，请查看官方文档：&lt;a href=&quot;http://docs.sqlalchemy.org/en/rel_1_0/core/pooling.html&quot;&gt;Connection Pooling&lt;/a&gt;。&lt;/p&gt;
-
-&lt;h4 id=&quot;使用engine对象&quot;&gt;使用Engine对象&lt;/h4&gt;
-
-&lt;p&gt;一般来说，应用程序的代码是不直接使用Engine对象的，而是把Engine对象交给ORM去使用，或者创建session对象来使用。不过，我们还是来简单看一下Engine对象能做什么事情。&lt;/p&gt;
-
-&lt;p&gt;应用程序可以调用Engine对象的&lt;code class=&quot;highlighter-rouge&quot;&gt;connect()&lt;/code&gt;方法来获得一个到数据库的连接对象；然后可以在这个连接对象上调用&lt;code class=&quot;highlighter-rouge&quot;&gt;execute()&lt;/code&gt;来执行SQL语句，调用&lt;code class=&quot;highlighter-rouge&quot;&gt;begin()&lt;/code&gt;、&lt;code class=&quot;highlighter-rouge&quot;&gt;commit()&lt;/code&gt;、&lt;code class=&quot;highlighter-rouge&quot;&gt;rollback()&lt;/code&gt;来执行事务操作；调用&lt;code class=&quot;highlighter-rouge&quot;&gt;close()&lt;/code&gt;来关闭连接。Engine对象也有一些快捷方法来直接执行上述操作，避免了每次都要调用&lt;code class=&quot;highlighter-rouge&quot;&gt;connect()&lt;/code&gt;来获取连接这种繁琐的代码，比如&lt;code class=&quot;highlighter-rouge&quot;&gt;engine.execute()&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;with engine.begin()&lt;/code&gt;等。&lt;/p&gt;
-
-&lt;h3 id=&quot;定义数据模型&quot;&gt;定义数据模型&lt;/h3&gt;
-
-&lt;p&gt;有了数据库连接后，我们就可以来定义数据模型了，也就是定义映射数据库表的Python类。在SQLAlchemy中，这是通过&lt;strong&gt;Declarative&lt;/strong&gt;的系统来完成的。&lt;/p&gt;
-
-&lt;h4 id=&quot;declarative系统&quot;&gt;Declarative系统&lt;/h4&gt;
-
-&lt;p&gt;根据官方文档的描述，SQLAlchemy一开始是采用下面这种方式来定义ORM的：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;首先定义一个映射类，这个类是数据库表在代码中的对象表示，这类的类属性是很多Column类的实例。&lt;/li&gt;
-  &lt;li&gt;然后定义一个Table对象，这里的Table就是上面提到的在&lt;strong&gt;Schema/Types&lt;/strong&gt;模块中的一个类，用来表示一个数据库中的表。&lt;/li&gt;
-  &lt;li&gt;调用&lt;code class=&quot;highlighter-rouge&quot;&gt;sqlalchemy.orm.mapper&lt;/code&gt;函数把步骤1中定义的类映射到步骤2中定义的Table。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;上面这种方式称为&lt;em&gt;Classical Mappings&lt;/em&gt;，看起来好麻烦啊。所以就有了&lt;strong&gt;Declarative&lt;/strong&gt;系统。这个系统就是一次完成这三个步骤，你只需要定义步骤1中的类即可。这也是现在在SQLAlchemy中使用ORM的方式，无需在使用过去这种麻烦的方法。&lt;/p&gt;
-
-&lt;p&gt;要使用Declarative系统，你需要为所有映射类创建一个基类，这个基类用来维护所有映射类的元信息。&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sqlalchemy.ext.declarative&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;declarative_base&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;Base&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;declarative_base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;h4 id=&quot;定义映射类&quot;&gt;定义映射类&lt;/h4&gt;
-
-&lt;p&gt;现在我们可以开始创建映射类了。假设我们在数据库中有一个表Person，这个表有两个列，分别是id和name，那么我们创建的映射类如下：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sqlalchemy&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Column&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Integer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# 这里的基类Base是上面我们通过declarative_base函数生成的&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Person&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;__tablename__&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'person'&lt;/span&gt;
-
-    &lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Column&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Interger&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;primary_key&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Column&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;250&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nullable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;False&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;这样我们就定义了一个映射类&lt;strong&gt;Person&lt;/strong&gt;，后续我们可以通过操作这个类的实例来实现对数据库表&lt;strong&gt;person&lt;/strong&gt;的操作。在我们的映射类中，我们使用&lt;code class=&quot;highlighter-rouge&quot;&gt;__tablename__&lt;/code&gt;属性来指定该映射类所对应的数据库表，通过&lt;code class=&quot;highlighter-rouge&quot;&gt;Column&lt;/code&gt;类实例的方式来指定数据库的字段。这里，读者可能会问：&lt;strong&gt;我如何能知道&lt;code class=&quot;highlighter-rouge&quot;&gt;Column&lt;/code&gt;都能支持哪些类型呢？&lt;/strong&gt;这个查看官方文档获得：&lt;a href=&quot;http://docs.sqlalchemy.org/en/rel_1_0/core/type_basics.html&quot;&gt;Column And Data Types&lt;/a&gt;。&lt;/p&gt;
-
-&lt;p&gt;因为我们使用了Declarative系统，所以虽然我们自己没有定义Table对象，但是Declarative系统帮我们做了，并且帮我们调用了&lt;code class=&quot;highlighter-rouge&quot;&gt;mapper&lt;/code&gt;函数。因此，当我们定义好一个表的映射类后，这个类的&lt;code class=&quot;highlighter-rouge&quot;&gt;__table__&lt;/code&gt;属性就保存了该映射类所映射的&lt;em&gt;Table&lt;/em&gt;对象：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;In [6]: Person.__table__
-Out[6]: Table('person', MetaData(bind=None),
-    Column('id', Integer(), table=&amp;lt;person&amp;gt;, primary_key=True, nullable=False),
-    Column('name', String(length=250), table=&amp;lt;person&amp;gt;, nullable=False), schema=None)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;定义映射类是我们使用ORM的最主要的功能之一，不仅可以指定单表的映射，还能够指定表之间的关系。由于篇幅限制，我们在本文就不展开讲了。&lt;/p&gt;
-
-&lt;h3 id=&quot;schema和metadata&quot;&gt;Schema和Metadata&lt;/h3&gt;
-
-&lt;p&gt;关于Table对象，我们上面也提到了，它属于SQLAlchemy的core层的&lt;strong&gt;Schema/Types&lt;/strong&gt;这个部分。SQLAlchemy中的Schema可以理解为和DDL相关的一套体系，它告诉SQLAlchemy的其他部分，数据库中的表是如何定义的。这个相当于我们在MySQL中使用&lt;code class=&quot;highlighter-rouge&quot;&gt;describe&lt;/code&gt;命令，或者在PostgreSQL中使用&lt;code class=&quot;highlighter-rouge&quot;&gt;\d&lt;/code&gt;命令。&lt;/p&gt;
-
-&lt;p&gt;SQLAlchemy中通过&lt;strong&gt;schema metadata&lt;/strong&gt;来实现上面说的Schema。&lt;strong&gt;Schema metadata&lt;/strong&gt;，官方文档中也称为&lt;strong&gt;database metadata&lt;/strong&gt;，简称为metadata，是一个容器，其中包含了和DDL相关的所有信息，包括Table, Column等对象。当SQLAlchemy要根据映射类生成SQL语句时，它会查询metadata中的信息，根据信息来生成SQL语句。&lt;/p&gt;
-
-&lt;p&gt;为了要让metadata可以工作，我们需要把DDL的相关信息放到metadata中。如果你注意看上面&lt;code class=&quot;highlighter-rouge&quot;&gt;Person.__table__&lt;/code&gt;的输出，就会发现&lt;code class=&quot;highlighter-rouge&quot;&gt;Table&lt;/code&gt;类的第二个参数就是一个Metadata实例，也就是说，我们需要在定义Table的时候就把DDL信息放到metadata中。如果是是用classical mapping的方式，我们需要先创建一个metadata实例，然后每次创建一个Table对象的时候就把metadata传递进去。从写代码的角度来说，这个方式没有什么问题，也不算麻烦；问题是我们在使用ORM的过程中，几乎不会用到metadata，metadata基本上是给SQLAlchemy用的，对于用户来说metadata提供的接口只能用来创建表和删除表，这种操作的频率远低于查询操作。&lt;/p&gt;
-
-&lt;p&gt;好在Declarative系统则帮我们把这些都做好了。当我们通过&lt;code class=&quot;highlighter-rouge&quot;&gt;declarative_base()&lt;/code&gt;生成一个基类Base的时候，这个基类就已经包含了一个metadata实例，后面基于Base定义映射类都会被自动加入到这个metadata中。我们可以通过&lt;code class=&quot;highlighter-rouge&quot;&gt;Base.metadata&lt;/code&gt;来访问这个metadata实例。&lt;/p&gt;
-
-&lt;p&gt;说了这么多关于metadata的内容，简单总结一下：metadata是schema在SQLAlchemy中的实现，包含了DDL的信息，SQLAlchemy中的其他部分需要依赖于metadata中的信息，一般用户很少使用metadata。&lt;/p&gt;
-
-&lt;p&gt;很少用？那说这么多是做啥？主要是让读者可以理解下面这个语句的原理：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;n&quot;&gt;Base&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;declarative_base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# 基于Base定义映射类&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;Base&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;metadata&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;create_all&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;engine&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;最后这行代码是我们最常用到metadata的地方：&lt;strong&gt;创建所有的表&lt;/strong&gt;。我们告诉&lt;code class=&quot;highlighter-rouge&quot;&gt;create_all&lt;/code&gt;使用哪个engine，它就会生成所有的&lt;code class=&quot;highlighter-rouge&quot;&gt;CREATE TABLE&lt;/code&gt;语句，并且通过engine发送到数据库上执行。这个在单元测试的时候很有用。你可以执行一下下面的代码来观察输出：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sqlalchemy&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Column&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Integer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sqlalchemy.ext.declarative&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;declarative_base&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sqlalchemy&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;create_engine&lt;/span&gt;
-
-
-&lt;span class=&quot;n&quot;&gt;Base&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;declarative_base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-
-
-&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Person&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;__tablename__&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'person'&lt;/span&gt;
-
-    &lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Column&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Integer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;primary_key&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Column&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;250&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nullable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;False&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-
-&lt;span class=&quot;n&quot;&gt;engine&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;create_engine&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'sqlite:///:memory:'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;echo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-
-&lt;span class=&quot;n&quot;&gt;Base&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;metadata&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;create_all&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;engine&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;输出结果如下：&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-...
-2016-01-06 09:56:03,600 INFO sqlalchemy.engine.base.Engine PRAGMA table_info&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;person&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-2016-01-06 09:56:03,601 INFO sqlalchemy.engine.base.Engine &lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
-2016-01-06 09:56:03,602 INFO sqlalchemy.engine.base.Engine
-CREATE TABLE person &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
-        id INTEGER NOT NULL,
-        name VARCHAR&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;250&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; NOT NULL,
-        PRIMARY KEY &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;id&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-
-2016-01-06 09:56:03,603 INFO sqlalchemy.engine.base.Engine &lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
-2016-01-06 09:56:03,603 INFO sqlalchemy.engine.base.Engine COMMIT
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;关于Metadata的更多信息，请查看官方文档：&lt;a href=&quot;http://docs.sqlalchemy.org/en/rel_1_0/core/schema.html&quot;&gt;Schema Definition Language&lt;/a&gt;。&lt;/p&gt;
-
-&lt;h3 id=&quot;会话&quot;&gt;会话&lt;/h3&gt;
-
-&lt;p&gt;会话(&lt;strong&gt;session&lt;/strong&gt;)是我们通过SQLAlchemy来操作数据库的入口。我们前面有介绍过SQLAlchemy的架构，session是属于ORM层的。Session的功能是管理我们的程序和数据库之间的会话，它利用Engine的连接管理功能来实现会话。我们在上文有提到，我们创建了Engine对象，但是一般不直接使用它，而是把它交给ORM去使用。其中，通过session来使用Engine就是一个常用的方式。&lt;/p&gt;
-
-&lt;p&gt;要是用session，我们需要先通过&lt;code class=&quot;highlighter-rouge&quot;&gt;sessionmaker&lt;/code&gt;函数创建一个session类，然后通过这个类的实例来使用会话，如下所示：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sqlalchemy.orm&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sessionmaker&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;DBSession&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sessionmaker&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bind&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;engine&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;session&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DBSession&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;我们通过&lt;code class=&quot;highlighter-rouge&quot;&gt;sessionmaker&lt;/code&gt;的&lt;em&gt;bind&lt;/em&gt;参数把Engine对象传递给&lt;code class=&quot;highlighter-rouge&quot;&gt;DBSession&lt;/code&gt;去管理。然后，&lt;code class=&quot;highlighter-rouge&quot;&gt;DBSession&lt;/code&gt;实例化的对象&lt;code class=&quot;highlighter-rouge&quot;&gt;session&lt;/code&gt;就能被我们使用了。&lt;/p&gt;
-
-&lt;h3 id=&quot;crud&quot;&gt;CRUD&lt;/h3&gt;
-
-&lt;p&gt;&lt;strong&gt;CRUD&lt;/strong&gt;就是CREATE, READ, UPDATE, DELETE，增删改查。这个也是SQLAlchemy中最常用的功能，而且都是通过上一小节中的&lt;code class=&quot;highlighter-rouge&quot;&gt;session&lt;/code&gt;对象来使用的。我们这简单的介绍一下这四个操作，后面会给出官方文档的位置。&lt;/p&gt;
-
-&lt;h4 id=&quot;create&quot;&gt;Create&lt;/h4&gt;
-
-&lt;p&gt;在数据库中插入一条记录，是通过session的&lt;code class=&quot;highlighter-rouge&quot;&gt;add()&lt;/code&gt;方法来实现的，你需要先创建一个映射类的实例，然后调用&lt;code class=&quot;highlighter-rouge&quot;&gt;session.add()&lt;/code&gt;方法，然后调用&lt;code class=&quot;highlighter-rouge&quot;&gt;session.commit()&lt;/code&gt;方法提交你的事务（关于事务，我们下面会专门讲解）：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;n&quot;&gt;new_person&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Person&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'new person'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;session&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new_person&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;session&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;commit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;h4 id=&quot;delete&quot;&gt;Delete&lt;/h4&gt;
-
-&lt;p&gt;删除操作和创建操作差不多，是把一个映射类实例传递给&lt;code class=&quot;highlighter-rouge&quot;&gt;session.delete()&lt;/code&gt;方法。&lt;/p&gt;
-
-&lt;h4 id=&quot;update&quot;&gt;Update&lt;/h4&gt;
-
-&lt;p&gt;更新一条记录需要先使用查询操作获得一条记录对应的对象，然后修改对象的属性，再通过&lt;code class=&quot;highlighter-rouge&quot;&gt;session.add()&lt;/code&gt;方法来完成更新操作。&lt;/p&gt;
-
-&lt;h4 id=&quot;read&quot;&gt;Read&lt;/h4&gt;
-
-&lt;p&gt;查询操作，一般称为query，在SQLAlchemy中一般是通过&lt;strong&gt;Query&lt;/strong&gt;对象来完成的。我们可以通过&lt;code class=&quot;highlighter-rouge&quot;&gt;session.query()&lt;/code&gt;方法来创建一个Query对象，然后调用Query对象的众多方法来完成查询操作。&lt;/p&gt;
-
-&lt;h3 id=&quot;事务&quot;&gt;事务&lt;/h3&gt;
-
-&lt;p&gt;使用session，就会涉及到事务，我们的应用程序也会有很多事务操作的要求。当你调用一个session的方法，导致session执行一条SQL语句时，它会自动开始一个事务，直到你下次调用&lt;code class=&quot;highlighter-rouge&quot;&gt;session.commit()&lt;/code&gt;或者&lt;code class=&quot;highlighter-rouge&quot;&gt;session.rollback()&lt;/code&gt;，它就会结束这个事务。你也可以显示的调用&lt;code class=&quot;highlighter-rouge&quot;&gt;session.begin()&lt;/code&gt;来开始一个事务，并且&lt;code class=&quot;highlighter-rouge&quot;&gt;session.begin()&lt;/code&gt;还可以配合Python的with来使用。&lt;/p&gt;
-
-&lt;h3 id=&quot;会话-crud-事务的小结&quot;&gt;会话, CRUD, 事务的小结&lt;/h3&gt;
-
-&lt;p&gt;上面关于session, CRUD和事务的内容写的比较少，因为这些功能的内容很多，而且官方文档也写得很全面，本文就不做一些重复说明了。我们会在下一篇文章中通过webdemo的代码来看看如何使用这些功能。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;http://docs.sqlalchemy.org/en/rel_1_0/orm/session.html&quot;&gt;Session的文档&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://docs.sqlalchemy.org/en/rel_1_0/orm/tutorial.html#adding-new-objects&quot;&gt;官方文档中关于CRUD操作的教程&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://docs.sqlalchemy.org/en/rel_1_0/orm/session_transaction.html&quot;&gt;Session中的事务管理&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;总结&quot;&gt;总结&lt;/h1&gt;
-
-&lt;p&gt;本文介绍了OpenStack中和数据库相关的一些知识，重点讲解了SQLAlchemy这个库的基本概念和架构。下一篇文章，我们会通过demo来实际项目中如何使用SQLAlchemy。&lt;/p&gt;
-
-</description>
-        <pubDate>Wed, 06 Jan 2016 00:00:00 +0800</pubDate>
-        <link>/2016/01/06/learn-openstack-dev-skill-by-demo-06.html</link>
-        <guid isPermaLink="true">/2016/01/06/learn-openstack-dev-skill-by-demo-06.html</guid>
         
         
       </item>
