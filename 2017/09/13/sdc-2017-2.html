@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Golang源码阅读笔记 -- go build(1)</title>
-  <meta name="description" content="go build命令用来构建一个go package，最常用的就是构建一个package得到一个可执行文件。build命令接受很多参数用来控制构建过程。本文使用的Golang源码的版本是1.7.5，这个版本的Go是自举的，也就是说Go构建器本身也是Go写的。">
+  <title>SDC 2017 Day 2 General Session</title>
+  <meta name="description" content="">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="/2017/02/26/golang-code-reading-notes-1.html">
+  <link rel="canonical" href="/2017/09/13/sdc-2017-2.html">
   <link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="/feed.xml">
 </head>
 
@@ -56,129 +56,55 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Golang源码阅读笔记 -- go build(1)</h1>
-    <p class="post-meta"><time datetime="2017-02-26T00:00:00+08:00" itemprop="datePublished">Feb 26, 2017</time></p>
+    <h1 class="post-title" itemprop="name headline">SDC 2017 Day 2 General Session</h1>
+    <p class="post-meta"><time datetime="2017-09-13T00:00:00+08:00" itemprop="datePublished">Sep 13, 2017</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p><strong>go build</strong>命令用来构建一个go package，最常用的就是构建一个package得到一个可执行文件。<strong>build</strong>命令接受很多参数用来控制构建过程。本文使用的<strong>Golang</strong>源码的版本是<strong>1.7.5</strong>，这个版本的Go是自举的，也就是说Go构建器本身也是Go写的。</p>
+    <p><img src="/assets/imgs/00014_sdc2017_day2.jpg" alt="Day2" /></p>
 
-<p><strong>代码路径约定</strong>: <strong>Golang</strong>的仓库中所有的代码在子目录<em>src/</em>下，所以下面提到代码路径时，会把前缀<em>src/</em>去掉，避免表述过于冗长。</p>
+<p>今天会议的第二天，上午是General Session。从现场看，参会人数大约150人。整个General Session包括4个Keynote。</p>
 
-<p><strong>package中的符号</strong>: <code class="highlighter-rouge">go/build.Context</code>表示<code class="highlighter-rouge">go/build</code>这个package中的<code class="highlighter-rouge">Context</code>这个表达式。</p>
+<h1 id="snia-20-years-of-storage-innovation-and-predictions-for-the-next-20-years">SNIA: 20 Years of Storage Innovation and Predictions for the Next 20 Years</h1>
 
-<p>另外，因为<strong>go build</strong>命令的参数很多，支持的操作系统和架构平台也很多，这里只描述最简单的参数的情况下的代码路径。操作系统是<strong>Linux</strong>，架构平台是<strong>x86_64</strong>，在Golang源码里称为<strong>amd64</strong>。</p>
+<p><a href="https://sniasdc17.pathable.com/meetings/549880">https://sniasdc17.pathable.com/meetings/549880</a></p>
 
-<h1 id="go-build命令入口"><strong>go build</strong>命令入口</h1>
+<p>因为今年是SNIA 20周年，这个keynote紧扣20年这个周期，回顾了过去20周年的存储的发展以及SNIA在这期间的工作。</p>
 
-<p>Golang的源码中，<strong>go build</strong>命令的入口在<em>cmd/go/build.go</em>的<code class="highlighter-rouge">runBuild(cmd *Command, args []string)</code>函数。该函数会在<em>cmd/go/main.go</em>的<strong>main()</strong>函数中被调用。调用前，会先解析所有的命令行参数，解析的参数会设置到<em>cmd/go/build.go</em>文件的全局变量中，比如<code class="highlighter-rouge">buildA</code>、<code class="highlighter-rouge">buildN</code>等。其他的非参数部分，就会通过<code class="highlighter-rouge">runBuild()</code>函数的<code class="highlighter-rouge">args</code>参数传递进来。</p>
+<p>Michael Qros特别强调了标准化的重要性，他举了供电系统作为例子。供电系统刚出现的时候没有标准话，而且建设之后很难再推倒重来，所以长期下来，现在供电系统就有2种不同的电压标准以及两种不同的频率标准（4种组合），以及15种不同的接口标准。这种缺失标准化的做法，导致解决供电问题的成本上升。所以SNIA在过去20年在存储方面做了很多标准化工作，将来也会继续推进存储的标准化工作。他也分享了SNIA在接下来的主要方向，包括：storage management, flash, persistent memory, cloud, green, object drives, security。</p>
 
-<ul>
-  <li>当你执行<code class="highlighter-rouge">go build -a a.go b.go</code>时，<code class="highlighter-rouge">args</code>的内容会是<code class="highlighter-rouge"><span class="p">{</span><span class="nt">"a.go"</span><span class="err">,</span><span class="w"> </span><span class="nt">"b.go"</span><span class="err">}</span></code>。</li>
-  <li>当你执行<code class="highlighter-rouge">go build -a goexample/hello goexample/foo</code>时，<code class="highlighter-rouge">args</code>的内容会是<code class="highlighter-rouge"><span class="p">{</span><span class="nt">"goexample/hello"</span><span class="err">,</span><span class="w"> </span><span class="nt">"goexample/foo"</span><span class="err">}</span></code>。</li>
-</ul>
+<h1 id="memories-of-tomorrow">Memories of Tomorrow</h1>
 
-<p>从<code class="highlighter-rouge">runBuild</code>函数进来后，会先执行<code class="highlighter-rouge">instrumentInit()</code>和<code class="highlighter-rouge">buildModeInit()</code>这两个函数。<code class="highlighter-rouge">instrumentInit()</code>函数处理<strong>-race</strong>和<strong>-msan</strong>两个参数，进行一些初始化配置。<code class="highlighter-rouge">buildModeInit()</code>函数根据<code class="highlighter-rouge">-buildmode</code>参数的值来设置一些全局变量。<code class="highlighter-rouge">-buildmode</code>的默认值是<code class="highlighter-rouge">"default"</code>。上面这两个函数我们先不用关心，不影响主线代码的阅读。</p>
+<p><a href="https://sniasdc17.pathable.com/meetings/549938">https://sniasdc17.pathable.com/meetings/549938</a></p>
 
-<p>接下来，<code class="highlighter-rouge">runBuild()</code>函数会调用<code class="highlighter-rouge">packagesForBuild(args)</code>获得需要构建的pkg的信息。</p>
+<p>介绍了非易失性内存，作者称为storage class memory的最新进展。目前内存和存储的主要问题是：内存数据是易失的，存储的时延则太高。persistent memory（非易失存储内存）是目前被看好的解决方案。但是PM的推广和应用属于架构改变，需要这个计算机系统的严禁来配合，从BIOS到CPU到操作系统到应用软件都需要做出修改，才能充分发挥这种新技术的优势。作者认为SSD的推广和普及也是有类似的过程，不断改进的SATA，以及新出现的NVMe都是为了更好的发挥出SSD的能力。因为PM方面还有很多工作需要去做。</p>
 
-<h1 id="packagesforbuild函数"><code class="highlighter-rouge">packagesForBuild</code>函数</h1>
+<h1 id="goodbye-xfs-building-a-new-faster-storage-backend-for-ceph">Goodbye, XFS: Building a new, faster storage backend for Ceph</h1>
 
-<p><code class="highlighter-rouge">packagesForBuild(args []string) []*Package</code>函数位于<em>cmd/go/pkg.go</em>文件中。它的功能是载入参数<code class="highlighter-rouge">args</code>指定的packages以及这些packages的依赖，生成一个<code class="highlighter-rouge">Package</code>对象列表，这个列表随后会被用于构建。</p>
+<p><a href="https://sniasdc17.pathable.com/meetings/550621">https://sniasdc17.pathable.com/meetings/550621</a></p>
 
-<p><code class="highlighter-rouge">packagesForBuild()</code>本身并不执行载入packages的工作，而是调用<code class="highlighter-rouge">packagesAndErrors()</code>函数来载入packages，然后检查载入的packages是否有错误，有错的话就让<code class="highlighter-rouge">go build</code>命令报错并返回。</p>
+<p>Sage Weil回顾了Ceph在store方面的历史。他最开始的直觉是要做一个文件系统，绕过POSIX，这样可以更好的作为存储的底层，所以在2008年之前，Ceph使用的是FakeStore + EBOFS。但是那个时候资源有限，Ceph的其他方面需要更多的投入，自己的文件系统无法做好，所以后来Ceph就转到了大家熟悉的FileStore + XFS + LevelDB的模式，利用已经成熟的解决方案来实现底层的数据存储。FileStore的主要问题是POSIX操作无法实现事务，所以就采用了double write的解决方案，也就有了double write的问题。他还分享了好几个FileStore的问题，都是由于POSIX接口并不适用于OSD的操作需求导致的。所以，Sage觉得实际上一开始自己做文件系统的方向是对的，现在Ceph项目壮大，开始有能力重新回到这个轨道上来，所以从2016年开始，BlueStore的研发就开始了，直到最近L版中正式product ready。最后Sage介绍了BlueStore中解决的几个主要问题，以及和FileStore的性能对比数据，BlueStore相对FileStore来说有很大的性能提升。</p>
 
-<h1 id="packagesanderrors函数"><code class="highlighter-rouge">packagesAndErrors</code>函数</h1>
+<h1 id="recent-developments-in-the-linux-io-stack">Recent Developments in The Linux I/O Stack</h1>
 
-<p><code class="highlighter-rouge">packagesAndErrors(args []string) []*Package</code>函数也是位于<em>cmd/go/pkg.go</em>文件中，它开始执行载入packages的操作。分为两种情况：</p>
+<p><a href="https://sniasdc17.pathable.com/meetings/550618">https://sniasdc17.pathable.com/meetings/550618</a></p>
 
-<ol>
-  <li>如果<code class="highlighter-rouge">args</code>中都是文件名，比如<code class="highlighter-rouge">go build -a a.go b.go</code>，那么会调用<code class="highlighter-rouge">goFilesPackage(args)</code>来执行载入package的操作。</li>
-  <li>否则，就是<code class="highlighter-rouge">go build -a goexample/hello goexample/foo</code>这种情况。</li>
-</ol>
+<p>内核开发者Martin Petersen介绍了Linux从2013年到现在，在I/O栈方面的总体进展。他通过展示不通类型IO类型系统的开发活跃度来介绍Linux的开发重点。简单的总结一下，活跃度较高的是block层、SCSI和NVMe，SATA的活跃度正在慢慢下降，IDE已经基本不动了，新出现的Persistent Memory呈上升趋势。这个活跃度很客观的反应了目前设备的流行程度。</p>
 
-<p>第一种情况我们先跳过，回头再来看。先来看第二种情况，也就是更常见的情况。我们先限制命令行参数只传递了一个package <em>goexample/hello</em>，然后来看下代码：</p>
-
-<ol>
-  <li><code class="highlighter-rouge">args = importPaths(args)</code>，该函数处理命令行传递进来的packages的特殊情况，比如Windows系统、路径中多余的部分、<strong>std/cmd/all</strong>这些保留名称、扩展符<strong>…</strong><em>等，然后返回所有所有需要处理packages。此时返回的每个package都可以认为是一个<strong>ImportPath</strong>。因为我们举的例子</em>goexample/hello*都不在特殊情况里面，所以它会原样返回。</li>
-  <li>针对args中的每个ImportPath，调用<code class="highlighter-rouge">loadPackage(arg, &amp;stk)</code>来载入这个package。其中<code class="highlighter-rouge">stk</code>参数是一个表示依赖深度的栈，后面再仔细说明。在这一步，就得到了所需的<code class="highlighter-rouge">Package</code>对象。</li>
-  <li>最后，调用<code class="highlighter-rouge">computeStale()</code>函数，该函数会判断一个package是否需要重新构建。如果<code class="highlighter-rouge">go build</code>传递了<code class="highlighter-rouge">-a</code>参数，那么所有的packages都要重新构建。</li>
-</ol>
-
-<p>从上面的流程可以看出，载入一个package的主要工作都是在<code class="highlighter-rouge">loadPackage()</code>函数中完成的。</p>
-
-<h1 id="loadpackage函数"><code class="highlighter-rouge">loadPackage</code>函数</h1>
-
-<p><code class="highlighter-rouge">loadPackage(arg string, stk *importStack) *Package</code>位于<em>cmd/go/pkg.go</em>文件中，它载入一个命令行参数指定的package。<code class="highlighter-rouge">stk</code>参数是用于记录import路径的一个栈。</p>
-
-<p>该函数的流程分为4个部分：</p>
-
-<ol>
-  <li>判断<code class="highlighter-rouge">arg</code>是否是local import。<strong>Local Import</strong>表是一个ImportPath是”.”、”..”、”./”开头后者是”../”开头。是的话，就对<code class="highlighter-rouge">arg</code>进行特殊处理。</li>
-  <li>判断<code class="highlighter-rouge">arg</code>是否以<em>cmd/</em>开头且<em>cmd/</em>之后没有<em>/</em>。是的话表示构建的是一个go命令。会在这个分支里执行载入，然后返回。</li>
-  <li>如果构建的不是一个go命令，那么就是一个package。会先处理一下local import一个standard package的情况，也就是说使用local import的方式指定一个standard package的情况。<strong>standard package是指GOROOT中的那些package</strong>。</li>
-  <li>最后，调用<code class="highlighter-rouge">loadImport(arg, cwd, nil, stk, nil, 0)</code>来进行arg的载入。</li>
-</ol>
-
-<p>对于我们的简单例子，在这里会直接走到最后的<code class="highlighter-rouge">loadImport</code>调用。</p>
-
-<h2 id="importstack"><code class="highlighter-rouge">importStack</code></h2>
-
-<p>这个是一个简单的栈实现，用来在载入一个package的过程中，记录import的路径，栈底是命令行指定要载入的package，栈顶是当前正在处理的ImportPath。</p>
-
-<h2 id="loadimport函数"><code class="highlighter-rouge">loadImport</code>函数</h2>
-
-<p><code class="highlighter-rouge">loadImport(path, srcDir string, parent *Package, stk *importStack, importPos []token.Position, mode int) *Package</code>位于<em>cmd/go/pkg.go</em>文件中。几个参数的含义如下：</p>
+<p>他重点介绍了从2013年开始block层的开发比较活跃的原因：</p>
 
 <ul>
-  <li><strong>path</strong>，package的ImportPath，可能是local import的。</li>
-  <li><strong>srcDir</strong>，是执行命令时的当前路径，用于当arg是local import path的情况下，查找package用的。</li>
-  <li><strong>parent</strong>，是<code class="highlighter-rouge">path</code>的父package，也就是把<code class="highlighter-rouge">path</code> import进来的package。</li>
-  <li><strong>stk</strong>，记录package import路径的栈。</li>
-  <li><strong>importPos</strong>，记录import语句的位置用的，以便出错时可以显示出位置信息。</li>
-  <li><strong>mode</strong>，目前只有一个mode，<strong>useVendor</strong>，表示是否需要进行vendor展开。useVendor为真，表示一个文件中的import path还没有被转换为一个vendor中的path，需要被进行vendor展开处理。当我们从<code class="highlighter-rouge">loadPackage</code>中调用<code class="highlighter-rouge">loadImport</code>时，传递的<code class="highlighter-rouge">mode</code>为0，因为我们要构建的package显然不会在vendor目录中。</li>
+  <li>从2013年开始引入了blk-mq，即Multiqueue Block Layer。新的block层的出现是为了更好的使用新设备，遗留的块层是为HDD设计的，现在显然过时了，所以kernel引入了blk-mq，并且不断的改进。</li>
+  <li>除了性能的提升，block层也在I/O抽象接口方面做了很多工作，block层不再是只提供简单的read、write和passthrough这些简单的接口，还有</li>
+  <li>很多其他高级特性，比如discard、write zeros等。</li>
+  <li>增加对zoned block device的支持。</li>
+  <li>NVMe支持的改进。</li>
+  <li>Persistent Memory的支持。</li>
 </ul>
 
-<p>下面来看<code class="highlighter-rouge">loadImport</code>中的主要流程。这个函数中还考虑了<strong>vendor</strong>和<strong>internal</strong>的情况，我们先跳过这些，只看主要步骤：</p>
+<p>最后，一张commit数量的图显示，2017年的以来，Block Storage方面的开发活跃度正在高速增长。</p>
 
-<ol>
-  <li><code class="highlighter-rouge">stk.push(path)</code>对<code class="highlighter-rouge">path</code>进行入栈处理，这个栈的作用上面已经讲过。</li>
-  <li>通过<code class="highlighter-rouge">packageCache</code>全局变量，判断这个<code class="highlighter-rouge">path</code>是否已经被处理过了，如果已经处理过，就直接进行重用，调用<code class="highlighter-rouge">reusePackage(p, stk)</code>。</li>
-  <li>生产一个新的<code class="highlighter-rouge">Package</code>对象<code class="highlighter-rouge">p</code>，并且加入<code class="highlighter-rouge">packageCache</code>。</li>
-  <li>调用<code class="highlighter-rouge">bp, err := buildContext.Import(path, srcDir, buildMode)</code>来获得这个<code class="highlighter-rouge">path</code>对应的<code class="highlighter-rouge">go/build.Package</code>对象。</li>
-  <li>调用<code class="highlighter-rouge">p.load(stk, bp, err)</code>把这个<code class="highlighter-rouge">build.Package</code>对象载入到<code class="highlighter-rouge">Package</code>对象<code class="highlighter-rouge">p</code>中。</li>
-  <li>返回<code class="highlighter-rouge">p</code>。</li>
-</ol>
-
-<p>上面这个流程里有几个新的东西，我们先来看一下。</p>
-
-<ol>
-  <li>
-    <p><code class="highlighter-rouge">reusePackage</code>函数，这个函数的主要作用是判断是否存在循环应用的情况。在后面的文章会讲解判断方法。</p>
-  </li>
-  <li>
-    <p><code class="highlighter-rouge">buildContext</code></p>
-
-    <p><em>cmd/go/build.go</em>文件中的<code class="highlighter-rouge">buildContext</code>变量是用来保存构建上下文的全局变量，默认指向<code class="highlighter-rouge">go/build.Default</code>。</p>
-
-    <p><em>注: <code class="highlighter-rouge">go/build</code>这个package是用来收集一个go package有关的信息的，是Golang的一个基础package。</em></p>
-
-    <p><code class="highlighter-rouge">go/build.Context</code>包含有支持构建的上下文信息，会保存一些Golang的基本信息，以及其他和构建相关的信息。</p>
-  </li>
-  <li>
-    <p><code class="highlighter-rouge">go/build</code>中的<code class="highlighter-rouge">Package</code>对象</p>
-
-    <p><code class="highlighter-rouge">go/build.Package</code>对象位于文件<em>go/build/build.go</em>中。这个<code class="highlighter-rouge">Package</code>对象用来描述一个目录中的package（Golang的每个目录都是一个package）。当上面提到的<code class="highlighter-rouge">loadImport</code>函数调用<code class="highlighter-rouge">buildContext.Import()</code>时，它得到的就是一个<code class="highlighter-rouge">go/build.Package</code>。</p>
-  </li>
-</ol>
-
-<p>现在回过头来看<code class="highlighter-rouge">loadImport</code>的流程。 上面已经列出了这个流程的主要步骤，这里的关键点在于步骤4和步骤5。步骤4的<code class="highlighter-rouge">buildContext.Import(path, srcDir, mode)</code>是把这个<code class="highlighter-rouge">path</code>目录中的package的信息收集起来；而步骤5则是载入这个package相关的依赖。这两个步骤的内容就非常多了，在后面的文章独立说明。</p>
-
-<h1 id="总结">总结</h1>
-
-<p>我们现在知道了<code class="highlighter-rouge">go build</code>命令的入口，并且知道当要构建一个package的时候，要先载入这个package的信息。这个主要是在<code class="highlighter-rouge">loadPackage</code>这个函数中完成的，载入的是通过调用<code class="highlighter-rouge">loadImport</code>函数进行的，要分别载入这个package自己的信息，然后再载入它的依赖信息。这个过程说明了，载入一个命令行指定的package和载入一个<code class="highlighter-rouge">import</code>语句指定的package是差不多的。</p>
-
-<p>下一篇文章会说明<code class="highlighter-rouge">buildConext.Import</code>内部的逻辑。</p>
+<p><img src="/assets/imgs/00015_sdc2017_block_storage_commits.png" alt="Block Storage Commits" /></p>
 
     <br />
     <div>

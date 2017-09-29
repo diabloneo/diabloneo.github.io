@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Golang源码阅读笔记 -- go build(1)</title>
-  <meta name="description" content="go build命令用来构建一个go package，最常用的就是构建一个package得到一个可执行文件。build命令接受很多参数用来控制构建过程。本文使用的Golang源码的版本是1.7.5，这个版本的Go是自举的，也就是说Go构建器本身也是Go写的。">
+  <title>Rob Pike&#39;s Go Proverb</title>
+  <meta name="description" content="">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="/2017/02/26/golang-code-reading-notes-1.html">
+  <link rel="canonical" href="/2017/09/29/rob-pike-go-proverb.html">
   <link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="/feed.xml">
 </head>
 
@@ -56,129 +56,39 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Golang源码阅读笔记 -- go build(1)</h1>
-    <p class="post-meta"><time datetime="2017-02-26T00:00:00+08:00" itemprop="datePublished">Feb 26, 2017</time></p>
+    <h1 class="post-title" itemprop="name headline">Rob Pike's Go Proverb</h1>
+    <p class="post-meta"><time datetime="2017-09-29T00:00:00+08:00" itemprop="datePublished">Sep 29, 2017</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p><strong>go build</strong>命令用来构建一个go package，最常用的就是构建一个package得到一个可执行文件。<strong>build</strong>命令接受很多参数用来控制构建过程。本文使用的<strong>Golang</strong>源码的版本是<strong>1.7.5</strong>，这个版本的Go是自举的，也就是说Go构建器本身也是Go写的。</p>
+    <p><img src="/assets/imgs/00017_rob_pike_go_proverb.png" alt="Rob Pike" /></p>
 
-<p><strong>代码路径约定</strong>: <strong>Golang</strong>的仓库中所有的代码在子目录<em>src/</em>下，所以下面提到代码路径时，会把前缀<em>src/</em>去掉，避免表述过于冗长。</p>
+<p>Rob Pike在2015年的Gopherfest的演讲，题目是 <em>Go Proverbs</em>. YouTube地址:</p>
 
-<p><strong>package中的符号</strong>: <code class="highlighter-rouge">go/build.Context</code>表示<code class="highlighter-rouge">go/build</code>这个package中的<code class="highlighter-rouge">Context</code>这个表达式。</p>
+<p>[Go Proverbs - Rob Pike - Gopherfest - November 18, 2015]<a href="https://www.youtube.com/watch?v=PAAkCSZUG1c&amp;index=27&amp;t=1s&amp;list=WL">https://www.youtube.com/watch?v=PAAkCSZUG1c&amp;index=27&amp;t=1s&amp;list=WL</a></p>
 
-<p>另外，因为<strong>go build</strong>命令的参数很多，支持的操作系统和架构平台也很多，这里只描述最简单的参数的情况下的代码路径。操作系统是<strong>Linux</strong>，架构平台是<strong>x86_64</strong>，在Golang源码里称为<strong>amd64</strong>。</p>
-
-<h1 id="go-build命令入口"><strong>go build</strong>命令入口</h1>
-
-<p>Golang的源码中，<strong>go build</strong>命令的入口在<em>cmd/go/build.go</em>的<code class="highlighter-rouge">runBuild(cmd *Command, args []string)</code>函数。该函数会在<em>cmd/go/main.go</em>的<strong>main()</strong>函数中被调用。调用前，会先解析所有的命令行参数，解析的参数会设置到<em>cmd/go/build.go</em>文件的全局变量中，比如<code class="highlighter-rouge">buildA</code>、<code class="highlighter-rouge">buildN</code>等。其他的非参数部分，就会通过<code class="highlighter-rouge">runBuild()</code>函数的<code class="highlighter-rouge">args</code>参数传递进来。</p>
-
-<ul>
-  <li>当你执行<code class="highlighter-rouge">go build -a a.go b.go</code>时，<code class="highlighter-rouge">args</code>的内容会是<code class="highlighter-rouge"><span class="p">{</span><span class="nt">"a.go"</span><span class="err">,</span><span class="w"> </span><span class="nt">"b.go"</span><span class="err">}</span></code>。</li>
-  <li>当你执行<code class="highlighter-rouge">go build -a goexample/hello goexample/foo</code>时，<code class="highlighter-rouge">args</code>的内容会是<code class="highlighter-rouge"><span class="p">{</span><span class="nt">"goexample/hello"</span><span class="err">,</span><span class="w"> </span><span class="nt">"goexample/foo"</span><span class="err">}</span></code>。</li>
-</ul>
-
-<p>从<code class="highlighter-rouge">runBuild</code>函数进来后，会先执行<code class="highlighter-rouge">instrumentInit()</code>和<code class="highlighter-rouge">buildModeInit()</code>这两个函数。<code class="highlighter-rouge">instrumentInit()</code>函数处理<strong>-race</strong>和<strong>-msan</strong>两个参数，进行一些初始化配置。<code class="highlighter-rouge">buildModeInit()</code>函数根据<code class="highlighter-rouge">-buildmode</code>参数的值来设置一些全局变量。<code class="highlighter-rouge">-buildmode</code>的默认值是<code class="highlighter-rouge">"default"</code>。上面这两个函数我们先不用关心，不影响主线代码的阅读。</p>
-
-<p>接下来，<code class="highlighter-rouge">runBuild()</code>函数会调用<code class="highlighter-rouge">packagesForBuild(args)</code>获得需要构建的pkg的信息。</p>
-
-<h1 id="packagesforbuild函数"><code class="highlighter-rouge">packagesForBuild</code>函数</h1>
-
-<p><code class="highlighter-rouge">packagesForBuild(args []string) []*Package</code>函数位于<em>cmd/go/pkg.go</em>文件中。它的功能是载入参数<code class="highlighter-rouge">args</code>指定的packages以及这些packages的依赖，生成一个<code class="highlighter-rouge">Package</code>对象列表，这个列表随后会被用于构建。</p>
-
-<p><code class="highlighter-rouge">packagesForBuild()</code>本身并不执行载入packages的工作，而是调用<code class="highlighter-rouge">packagesAndErrors()</code>函数来载入packages，然后检查载入的packages是否有错误，有错的话就让<code class="highlighter-rouge">go build</code>命令报错并返回。</p>
-
-<h1 id="packagesanderrors函数"><code class="highlighter-rouge">packagesAndErrors</code>函数</h1>
-
-<p><code class="highlighter-rouge">packagesAndErrors(args []string) []*Package</code>函数也是位于<em>cmd/go/pkg.go</em>文件中，它开始执行载入packages的操作。分为两种情况：</p>
+<p>他分享了他自己写的几条Go编程的格言，类似 <em>The Zen of Python</em>，但是没那么正式，格言的列表如下，推荐看视频：</p>
 
 <ol>
-  <li>如果<code class="highlighter-rouge">args</code>中都是文件名，比如<code class="highlighter-rouge">go build -a a.go b.go</code>，那么会调用<code class="highlighter-rouge">goFilesPackage(args)</code>来执行载入package的操作。</li>
-  <li>否则，就是<code class="highlighter-rouge">go build -a goexample/hello goexample/foo</code>这种情况。</li>
+  <li>Don’t communicate by sharing memory, share memory by communicating.</li>
+  <li>Concurrency is not parallism.</li>
+  <li>Channels orchestrate; mutexes serialize.</li>
+  <li>The bigger the interface, the weaker the abstraction.</li>
+  <li>Make the zero value useful. (e.g. <code class="highlighter-rouge">bytes.Buffer</code> or <code class="highlighter-rouge">sync.Mutex</code>)</li>
+  <li><code class="highlighter-rouge">interface{}</code> says nothing.</li>
+  <li>Gofmt’s style is no one’s favorite, yet gofmt is everyone’s favorite.</li>
+  <li>A little copying is better than a little dependency.</li>
+  <li>Syscall must always be guarded with build tags.</li>
+  <li>Cgo must always be guarded with build tags.</li>
+  <li>Cgo is not Go. (他说自己几乎不使用cgo)</li>
+  <li>With the <code class="highlighter-rouge">unsafe</code> package, there are no guarantees.</li>
+  <li>Clear is better than clever.</li>
+  <li>Reflection is never clear.</li>
+  <li>Errors are values.</li>
+  <li>Don’t just check errors, handle them gracefully.</li>
+  <li>Design the architecture, name the components, document the details.</li>
+  <li>Documentation is for users.</li>
 </ol>
-
-<p>第一种情况我们先跳过，回头再来看。先来看第二种情况，也就是更常见的情况。我们先限制命令行参数只传递了一个package <em>goexample/hello</em>，然后来看下代码：</p>
-
-<ol>
-  <li><code class="highlighter-rouge">args = importPaths(args)</code>，该函数处理命令行传递进来的packages的特殊情况，比如Windows系统、路径中多余的部分、<strong>std/cmd/all</strong>这些保留名称、扩展符<strong>…</strong><em>等，然后返回所有所有需要处理packages。此时返回的每个package都可以认为是一个<strong>ImportPath</strong>。因为我们举的例子</em>goexample/hello*都不在特殊情况里面，所以它会原样返回。</li>
-  <li>针对args中的每个ImportPath，调用<code class="highlighter-rouge">loadPackage(arg, &amp;stk)</code>来载入这个package。其中<code class="highlighter-rouge">stk</code>参数是一个表示依赖深度的栈，后面再仔细说明。在这一步，就得到了所需的<code class="highlighter-rouge">Package</code>对象。</li>
-  <li>最后，调用<code class="highlighter-rouge">computeStale()</code>函数，该函数会判断一个package是否需要重新构建。如果<code class="highlighter-rouge">go build</code>传递了<code class="highlighter-rouge">-a</code>参数，那么所有的packages都要重新构建。</li>
-</ol>
-
-<p>从上面的流程可以看出，载入一个package的主要工作都是在<code class="highlighter-rouge">loadPackage()</code>函数中完成的。</p>
-
-<h1 id="loadpackage函数"><code class="highlighter-rouge">loadPackage</code>函数</h1>
-
-<p><code class="highlighter-rouge">loadPackage(arg string, stk *importStack) *Package</code>位于<em>cmd/go/pkg.go</em>文件中，它载入一个命令行参数指定的package。<code class="highlighter-rouge">stk</code>参数是用于记录import路径的一个栈。</p>
-
-<p>该函数的流程分为4个部分：</p>
-
-<ol>
-  <li>判断<code class="highlighter-rouge">arg</code>是否是local import。<strong>Local Import</strong>表是一个ImportPath是”.”、”..”、”./”开头后者是”../”开头。是的话，就对<code class="highlighter-rouge">arg</code>进行特殊处理。</li>
-  <li>判断<code class="highlighter-rouge">arg</code>是否以<em>cmd/</em>开头且<em>cmd/</em>之后没有<em>/</em>。是的话表示构建的是一个go命令。会在这个分支里执行载入，然后返回。</li>
-  <li>如果构建的不是一个go命令，那么就是一个package。会先处理一下local import一个standard package的情况，也就是说使用local import的方式指定一个standard package的情况。<strong>standard package是指GOROOT中的那些package</strong>。</li>
-  <li>最后，调用<code class="highlighter-rouge">loadImport(arg, cwd, nil, stk, nil, 0)</code>来进行arg的载入。</li>
-</ol>
-
-<p>对于我们的简单例子，在这里会直接走到最后的<code class="highlighter-rouge">loadImport</code>调用。</p>
-
-<h2 id="importstack"><code class="highlighter-rouge">importStack</code></h2>
-
-<p>这个是一个简单的栈实现，用来在载入一个package的过程中，记录import的路径，栈底是命令行指定要载入的package，栈顶是当前正在处理的ImportPath。</p>
-
-<h2 id="loadimport函数"><code class="highlighter-rouge">loadImport</code>函数</h2>
-
-<p><code class="highlighter-rouge">loadImport(path, srcDir string, parent *Package, stk *importStack, importPos []token.Position, mode int) *Package</code>位于<em>cmd/go/pkg.go</em>文件中。几个参数的含义如下：</p>
-
-<ul>
-  <li><strong>path</strong>，package的ImportPath，可能是local import的。</li>
-  <li><strong>srcDir</strong>，是执行命令时的当前路径，用于当arg是local import path的情况下，查找package用的。</li>
-  <li><strong>parent</strong>，是<code class="highlighter-rouge">path</code>的父package，也就是把<code class="highlighter-rouge">path</code> import进来的package。</li>
-  <li><strong>stk</strong>，记录package import路径的栈。</li>
-  <li><strong>importPos</strong>，记录import语句的位置用的，以便出错时可以显示出位置信息。</li>
-  <li><strong>mode</strong>，目前只有一个mode，<strong>useVendor</strong>，表示是否需要进行vendor展开。useVendor为真，表示一个文件中的import path还没有被转换为一个vendor中的path，需要被进行vendor展开处理。当我们从<code class="highlighter-rouge">loadPackage</code>中调用<code class="highlighter-rouge">loadImport</code>时，传递的<code class="highlighter-rouge">mode</code>为0，因为我们要构建的package显然不会在vendor目录中。</li>
-</ul>
-
-<p>下面来看<code class="highlighter-rouge">loadImport</code>中的主要流程。这个函数中还考虑了<strong>vendor</strong>和<strong>internal</strong>的情况，我们先跳过这些，只看主要步骤：</p>
-
-<ol>
-  <li><code class="highlighter-rouge">stk.push(path)</code>对<code class="highlighter-rouge">path</code>进行入栈处理，这个栈的作用上面已经讲过。</li>
-  <li>通过<code class="highlighter-rouge">packageCache</code>全局变量，判断这个<code class="highlighter-rouge">path</code>是否已经被处理过了，如果已经处理过，就直接进行重用，调用<code class="highlighter-rouge">reusePackage(p, stk)</code>。</li>
-  <li>生产一个新的<code class="highlighter-rouge">Package</code>对象<code class="highlighter-rouge">p</code>，并且加入<code class="highlighter-rouge">packageCache</code>。</li>
-  <li>调用<code class="highlighter-rouge">bp, err := buildContext.Import(path, srcDir, buildMode)</code>来获得这个<code class="highlighter-rouge">path</code>对应的<code class="highlighter-rouge">go/build.Package</code>对象。</li>
-  <li>调用<code class="highlighter-rouge">p.load(stk, bp, err)</code>把这个<code class="highlighter-rouge">build.Package</code>对象载入到<code class="highlighter-rouge">Package</code>对象<code class="highlighter-rouge">p</code>中。</li>
-  <li>返回<code class="highlighter-rouge">p</code>。</li>
-</ol>
-
-<p>上面这个流程里有几个新的东西，我们先来看一下。</p>
-
-<ol>
-  <li>
-    <p><code class="highlighter-rouge">reusePackage</code>函数，这个函数的主要作用是判断是否存在循环应用的情况。在后面的文章会讲解判断方法。</p>
-  </li>
-  <li>
-    <p><code class="highlighter-rouge">buildContext</code></p>
-
-    <p><em>cmd/go/build.go</em>文件中的<code class="highlighter-rouge">buildContext</code>变量是用来保存构建上下文的全局变量，默认指向<code class="highlighter-rouge">go/build.Default</code>。</p>
-
-    <p><em>注: <code class="highlighter-rouge">go/build</code>这个package是用来收集一个go package有关的信息的，是Golang的一个基础package。</em></p>
-
-    <p><code class="highlighter-rouge">go/build.Context</code>包含有支持构建的上下文信息，会保存一些Golang的基本信息，以及其他和构建相关的信息。</p>
-  </li>
-  <li>
-    <p><code class="highlighter-rouge">go/build</code>中的<code class="highlighter-rouge">Package</code>对象</p>
-
-    <p><code class="highlighter-rouge">go/build.Package</code>对象位于文件<em>go/build/build.go</em>中。这个<code class="highlighter-rouge">Package</code>对象用来描述一个目录中的package（Golang的每个目录都是一个package）。当上面提到的<code class="highlighter-rouge">loadImport</code>函数调用<code class="highlighter-rouge">buildContext.Import()</code>时，它得到的就是一个<code class="highlighter-rouge">go/build.Package</code>。</p>
-  </li>
-</ol>
-
-<p>现在回过头来看<code class="highlighter-rouge">loadImport</code>的流程。 上面已经列出了这个流程的主要步骤，这里的关键点在于步骤4和步骤5。步骤4的<code class="highlighter-rouge">buildContext.Import(path, srcDir, mode)</code>是把这个<code class="highlighter-rouge">path</code>目录中的package的信息收集起来；而步骤5则是载入这个package相关的依赖。这两个步骤的内容就非常多了，在后面的文章独立说明。</p>
-
-<h1 id="总结">总结</h1>
-
-<p>我们现在知道了<code class="highlighter-rouge">go build</code>命令的入口，并且知道当要构建一个package的时候，要先载入这个package的信息。这个主要是在<code class="highlighter-rouge">loadPackage</code>这个函数中完成的，载入的是通过调用<code class="highlighter-rouge">loadImport</code>函数进行的，要分别载入这个package自己的信息，然后再载入它的依赖信息。这个过程说明了，载入一个命令行指定的package和载入一个<code class="highlighter-rouge">import</code>语句指定的package是差不多的。</p>
-
-<p>下一篇文章会说明<code class="highlighter-rouge">buildConext.Import</code>内部的逻辑。</p>
 
     <br />
     <div>

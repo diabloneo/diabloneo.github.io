@@ -2,13 +2,225 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Coffee, Coke and Code</title>
-    <description>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+    <description>Archive diabloneo's articles.
 </description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 23 Aug 2017 23:02:33 +0800</pubDate>
-    <lastBuildDate>Wed, 23 Aug 2017 23:02:33 +0800</lastBuildDate>
+    <pubDate>Fri, 29 Sep 2017 22:06:35 +0800</pubDate>
+    <lastBuildDate>Fri, 29 Sep 2017 22:06:35 +0800</lastBuildDate>
     <generator>Jekyll v3.4.0</generator>
+    
+      <item>
+        <title>Rob Pike's Go Proverb</title>
+        <description>&lt;p&gt;&lt;img src=&quot;/assets/imgs/00017_rob_pike_go_proverb.png&quot; alt=&quot;Rob Pike&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Rob Pike在2015年的Gopherfest的演讲，题目是 &lt;em&gt;Go Proverbs&lt;/em&gt;. YouTube地址:&lt;/p&gt;
+
+&lt;p&gt;[Go Proverbs - Rob Pike - Gopherfest - November 18, 2015]&lt;a href=&quot;https://www.youtube.com/watch?v=PAAkCSZUG1c&amp;amp;index=27&amp;amp;t=1s&amp;amp;list=WL&quot;&gt;https://www.youtube.com/watch?v=PAAkCSZUG1c&amp;amp;index=27&amp;amp;t=1s&amp;amp;list=WL&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;他分享了他自己写的几条Go编程的格言，类似 &lt;em&gt;The Zen of Python&lt;/em&gt;，但是没那么正式，格言的列表如下，推荐看视频：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Don’t communicate by sharing memory, share memory by communicating.&lt;/li&gt;
+  &lt;li&gt;Concurrency is not parallism.&lt;/li&gt;
+  &lt;li&gt;Channels orchestrate; mutexes serialize.&lt;/li&gt;
+  &lt;li&gt;The bigger the interface, the weaker the abstraction.&lt;/li&gt;
+  &lt;li&gt;Make the zero value useful. (e.g. &lt;code class=&quot;highlighter-rouge&quot;&gt;bytes.Buffer&lt;/code&gt; or &lt;code class=&quot;highlighter-rouge&quot;&gt;sync.Mutex&lt;/code&gt;)&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;interface{}&lt;/code&gt; says nothing.&lt;/li&gt;
+  &lt;li&gt;Gofmt’s style is no one’s favorite, yet gofmt is everyone’s favorite.&lt;/li&gt;
+  &lt;li&gt;A little copying is better than a little dependency.&lt;/li&gt;
+  &lt;li&gt;Syscall must always be guarded with build tags.&lt;/li&gt;
+  &lt;li&gt;Cgo must always be guarded with build tags.&lt;/li&gt;
+  &lt;li&gt;Cgo is not Go. (他说自己几乎不使用cgo)&lt;/li&gt;
+  &lt;li&gt;With the &lt;code class=&quot;highlighter-rouge&quot;&gt;unsafe&lt;/code&gt; package, there are no guarantees.&lt;/li&gt;
+  &lt;li&gt;Clear is better than clever.&lt;/li&gt;
+  &lt;li&gt;Reflection is never clear.&lt;/li&gt;
+  &lt;li&gt;Errors are values.&lt;/li&gt;
+  &lt;li&gt;Don’t just check errors, handle them gracefully.&lt;/li&gt;
+  &lt;li&gt;Design the architecture, name the components, document the details.&lt;/li&gt;
+  &lt;li&gt;Documentation is for users.&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        <pubDate>Fri, 29 Sep 2017 00:00:00 +0800</pubDate>
+        <link>/2017/09/29/rob-pike-go-proverb.html</link>
+        <guid isPermaLink="true">/2017/09/29/rob-pike-go-proverb.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>SDC 2017 Day 3 General Session</title>
+        <description>&lt;p&gt;&lt;img src=&quot;/assets/imgs/00016_sdc2017_day3.jpg&quot; alt=&quot;Day3&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;今天SDC 2017进入第三天，早上还是General Session。&lt;/p&gt;
+
+&lt;h1 id=&quot;impact-of-persistent-memory-on-ssds-and-fabrics&quot;&gt;Impact of Persistent Memory on SSDs and Fabrics&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://sniasdc17.pathable.com/meetings/549928&quot;&gt;https://sniasdc17.pathable.com/meetings/549928&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;是一个联合介绍PM的session，三个公司分别介绍了他们在PM上的产品，具体的可以到他们官网上查看&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://www.everspin.com/&quot;&gt;https://www.everspin.com/&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;http://www.newisys.com/&quot;&gt;http://www.newisys.com/&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;http://www.mobiveil.com/&quot;&gt;http://www.mobiveil.com/&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;linux-optimizations-for-low-latency-block-devices&quot;&gt;Linux Optimizations for Low Latency Block Devices&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://sniasdc17.pathable.com/meetings/549964&quot;&gt;https://sniasdc17.pathable.com/meetings/549964&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Througput is easy, latency is hard&lt;/strong&gt;。存储的性能在不断的提升，但是软件层面要提高latency是很困难的。&lt;/p&gt;
+
+&lt;p&gt;SPDK带来的latency降低有限，代价不小，不适用于普通的应用，比较适合专门做硬件的使用。kernel的I/O增加了polling机制，可以有效降低延迟，同时不增加应用的复杂度。一开始做的是不断的polling，会导致CPU 100%，后来增加了hybrid polling机制，cpu降低到58%的同时，I/O延迟和不断的polling是一样的。后续会继续改进，会在需要I/O结果时再做polling，可以进一步降低CPU。&lt;/p&gt;
+
+&lt;h1 id=&quot;data-and-intelligence-in-storage&quot;&gt;Data and Intelligence in Storage&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://sniasdc17.pathable.com/meetings/549932&quot;&gt;https://sniasdc17.pathable.com/meetings/549932&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Intel的广告，介绍了Intel Rack Scale Design。&lt;/p&gt;
+
+&lt;h1 id=&quot;persistent-memory-new-tier-or-storage-replacement&quot;&gt;Persistent Memory: New Tier or Storage Replacement?&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://sniasdc17.pathable.com/meetings/549982&quot;&gt;https://sniasdc17.pathable.com/meetings/549982&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;这个没听。&lt;/p&gt;
+</description>
+        <pubDate>Thu, 14 Sep 2017 00:00:00 +0800</pubDate>
+        <link>/2017/09/14/sdc-2017-3.html</link>
+        <guid isPermaLink="true">/2017/09/14/sdc-2017-3.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>SDC 2017 Day 2 General Session</title>
+        <description>&lt;p&gt;&lt;img src=&quot;/assets/imgs/00014_sdc2017_day2.jpg&quot; alt=&quot;Day2&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;今天会议的第二天，上午是General Session。从现场看，参会人数大约150人。整个General Session包括4个Keynote。&lt;/p&gt;
+
+&lt;h1 id=&quot;snia-20-years-of-storage-innovation-and-predictions-for-the-next-20-years&quot;&gt;SNIA: 20 Years of Storage Innovation and Predictions for the Next 20 Years&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://sniasdc17.pathable.com/meetings/549880&quot;&gt;https://sniasdc17.pathable.com/meetings/549880&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;因为今年是SNIA 20周年，这个keynote紧扣20年这个周期，回顾了过去20周年的存储的发展以及SNIA在这期间的工作。&lt;/p&gt;
+
+&lt;p&gt;Michael Qros特别强调了标准化的重要性，他举了供电系统作为例子。供电系统刚出现的时候没有标准话，而且建设之后很难再推倒重来，所以长期下来，现在供电系统就有2种不同的电压标准以及两种不同的频率标准（4种组合），以及15种不同的接口标准。这种缺失标准化的做法，导致解决供电问题的成本上升。所以SNIA在过去20年在存储方面做了很多标准化工作，将来也会继续推进存储的标准化工作。他也分享了SNIA在接下来的主要方向，包括：storage management, flash, persistent memory, cloud, green, object drives, security。&lt;/p&gt;
+
+&lt;h1 id=&quot;memories-of-tomorrow&quot;&gt;Memories of Tomorrow&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://sniasdc17.pathable.com/meetings/549938&quot;&gt;https://sniasdc17.pathable.com/meetings/549938&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;介绍了非易失性内存，作者称为storage class memory的最新进展。目前内存和存储的主要问题是：内存数据是易失的，存储的时延则太高。persistent memory（非易失存储内存）是目前被看好的解决方案。但是PM的推广和应用属于架构改变，需要这个计算机系统的严禁来配合，从BIOS到CPU到操作系统到应用软件都需要做出修改，才能充分发挥这种新技术的优势。作者认为SSD的推广和普及也是有类似的过程，不断改进的SATA，以及新出现的NVMe都是为了更好的发挥出SSD的能力。因为PM方面还有很多工作需要去做。&lt;/p&gt;
+
+&lt;h1 id=&quot;goodbye-xfs-building-a-new-faster-storage-backend-for-ceph&quot;&gt;Goodbye, XFS: Building a new, faster storage backend for Ceph&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://sniasdc17.pathable.com/meetings/550621&quot;&gt;https://sniasdc17.pathable.com/meetings/550621&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Sage Weil回顾了Ceph在store方面的历史。他最开始的直觉是要做一个文件系统，绕过POSIX，这样可以更好的作为存储的底层，所以在2008年之前，Ceph使用的是FakeStore + EBOFS。但是那个时候资源有限，Ceph的其他方面需要更多的投入，自己的文件系统无法做好，所以后来Ceph就转到了大家熟悉的FileStore + XFS + LevelDB的模式，利用已经成熟的解决方案来实现底层的数据存储。FileStore的主要问题是POSIX操作无法实现事务，所以就采用了double write的解决方案，也就有了double write的问题。他还分享了好几个FileStore的问题，都是由于POSIX接口并不适用于OSD的操作需求导致的。所以，Sage觉得实际上一开始自己做文件系统的方向是对的，现在Ceph项目壮大，开始有能力重新回到这个轨道上来，所以从2016年开始，BlueStore的研发就开始了，直到最近L版中正式product ready。最后Sage介绍了BlueStore中解决的几个主要问题，以及和FileStore的性能对比数据，BlueStore相对FileStore来说有很大的性能提升。&lt;/p&gt;
+
+&lt;h1 id=&quot;recent-developments-in-the-linux-io-stack&quot;&gt;Recent Developments in The Linux I/O Stack&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://sniasdc17.pathable.com/meetings/550618&quot;&gt;https://sniasdc17.pathable.com/meetings/550618&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;内核开发者Martin Petersen介绍了Linux从2013年到现在，在I/O栈方面的总体进展。他通过展示不通类型IO类型系统的开发活跃度来介绍Linux的开发重点。简单的总结一下，活跃度较高的是block层、SCSI和NVMe，SATA的活跃度正在慢慢下降，IDE已经基本不动了，新出现的Persistent Memory呈上升趋势。这个活跃度很客观的反应了目前设备的流行程度。&lt;/p&gt;
+
+&lt;p&gt;他重点介绍了从2013年开始block层的开发比较活跃的原因：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;从2013年开始引入了blk-mq，即Multiqueue Block Layer。新的block层的出现是为了更好的使用新设备，遗留的块层是为HDD设计的，现在显然过时了，所以kernel引入了blk-mq，并且不断的改进。&lt;/li&gt;
+  &lt;li&gt;除了性能的提升，block层也在I/O抽象接口方面做了很多工作，block层不再是只提供简单的read、write和passthrough这些简单的接口，还有&lt;/li&gt;
+  &lt;li&gt;很多其他高级特性，比如discard、write zeros等。&lt;/li&gt;
+  &lt;li&gt;增加对zoned block device的支持。&lt;/li&gt;
+  &lt;li&gt;NVMe支持的改进。&lt;/li&gt;
+  &lt;li&gt;Persistent Memory的支持。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;最后，一张commit数量的图显示，2017年的以来，Block Storage方面的开发活跃度正在高速增长。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/imgs/00015_sdc2017_block_storage_commits.png&quot; alt=&quot;Block Storage Commits&quot; /&gt;&lt;/p&gt;
+</description>
+        <pubDate>Wed, 13 Sep 2017 00:00:00 +0800</pubDate>
+        <link>/2017/09/13/sdc-2017-2.html</link>
+        <guid isPermaLink="true">/2017/09/13/sdc-2017-2.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>SDC 2017 Day 1</title>
+        <description>&lt;p&gt;&lt;img src=&quot;/assets/imgs/00013_sdc2017_day1.jpg&quot; alt=&quot;Day1&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;9月11日到14日，SNIA SDC (Storage Developer Conference) 2017在美国圣何塞召开。我把今天听的几个演讲分享一下。给出的链接可以下载演讲的幻灯片。&lt;/p&gt;
+
+&lt;h1 id=&quot;causally-ordering-distributed-file-system-events&quot;&gt;Causally Ordering Distributed File System Events&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;Dell EMC Isilon&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://sniasdc17.pathable.com/meetings/549459&quot;&gt;https://sniasdc17.pathable.com/meetings/549459&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;讲了一种在Isilon中使用的高效的分布式文件系统的事件排序方法。基本思路是，Isilon中的每个inode都有编号以及版本号，通过组合文件操作中的inode信息来表示一个事件。将所有的事件发送到一个排序节点上，构建一个有向无环图，然后使用拓扑排序得到一个事件序列。这个事件序列可以用于写入log文件，用于实现文件系统的快照功能。&lt;/p&gt;
+
+&lt;h1 id=&quot;container-native-storage---solving-the-persistent-storage-challenge-with-gluster&quot;&gt;Container Native Storage - Solving the Persistent Storage Challenge With Gluster&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;RedHat&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://sniasdc17.pathable.com/meetings/549464&quot;&gt;https://sniasdc17.pathable.com/meetings/549464&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;使用Gluster来为容器K8s的容器提供存储。&lt;/p&gt;
+
+&lt;h1 id=&quot;breaking-the-cloud-storage-chains&quot;&gt;Breaking the Cloud Storage Chains&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;INFINIDAT&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://sniasdc17.pathable.com/meetings/549469&quot;&gt;https://sniasdc17.pathable.com/meetings/549469&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;介绍了InfiniBox产品，这个产品可以帮助拜托公有云的存储绑定问题。将这个存储放在私有云中，然后通过共有云的VPC网络和公有云连接起来，使得公有云的计算资源可以访问到私有云的存储。这种方法的好处包括：省钱、不会有公有云绑定问题，数据安全等。至于性能问题，在网络延迟为2ms的情况下，对于文件系统，Infinibox比公有云性能好；对于块存储，在带宽方面比公有云好。&lt;/p&gt;
+
+&lt;h1 id=&quot;universal-hybrid-cloud-connector-for-seamless-data-migration&quot;&gt;Universal Hybrid Cloud Connector for Seamless Data Migration&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;Veritas Technologies&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://sniasdc17.pathable.com/meetings/549473&quot;&gt;https://sniasdc17.pathable.com/meetings/549473&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;基于VxFS之上，实现了一种Mutti-Volume filesystem + SmartTier的文件系统，可以通过配置文件把文件系统的数据分布到不同的本地磁盘或者公有云对象存储上。类似AWS Storage Gateway。&lt;/p&gt;
+
+&lt;h1 id=&quot;providing-efficient-storage-operations-for-both-data-centers-and-hyperscale-applications&quot;&gt;Providing Efficient Storage Operations for Both Data Centers and Hyperscale Applications&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;Samsung&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://sniasdc17.pathable.com/meetings/549818&quot;&gt;https://sniasdc17.pathable.com/meetings/549818&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;为了发挥出SSD的性能，需要应用或者host控制SSD的更多方面。探讨了Open Channel和IO Determinism。&lt;/p&gt;
+
+&lt;h1 id=&quot;andromeda-building-the-next-generation-high-density-storage-interface-for-successful-adoption&quot;&gt;Andromeda: Building the Next-Generation High-Density Storage Interface for Successful Adoption&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;Microsoft&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://sniasdc17.pathable.com/meetings/549841&quot;&gt;https://sniasdc17.pathable.com/meetings/549841&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;介绍了微软在SSD应用方面的一些进展。微软的不同应用有不同的SSD性能需求，为了在一个节点上同时运行不同的应用，需要应用和host来控制SSD的运行时配置。采用了Open Channel的方案，正在尝试将log manager和media manager分开，log manager放在host中，media manager放在硬盘中，从让不同应用都可以把SSD的性能发挥出来。&lt;/p&gt;
+
+&lt;h1 id=&quot;dynamic-reliability-methods-for-a-clustered-task-server&quot;&gt;Dynamic Reliability Methods for a Clustered-task Server&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;Dell EMC&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://sniasdc17.pathable.com/meetings/549848&quot;&gt;https://sniasdc17.pathable.com/meetings/549848&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;讲了一个对服务器集群生命周期进行建模的方法。个人觉得这个方法更适合给硬盘使用&lt;/p&gt;
+</description>
+        <pubDate>Tue, 12 Sep 2017 00:00:00 +0800</pubDate>
+        <link>/2017/09/12/sdc-2017-1.html</link>
+        <guid isPermaLink="true">/2017/09/12/sdc-2017-1.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>GopherCon 2017 观后感(2)</title>
@@ -462,995 +674,6 @@
         <pubDate>Mon, 27 Feb 2017 00:00:00 +0800</pubDate>
         <link>/2017/02/27/golang-code-reading-notes-2.html</link>
         <guid isPermaLink="true">/2017/02/27/golang-code-reading-notes-2.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Golang源码阅读笔记 -- go build(1)</title>
-        <description>&lt;p&gt;&lt;strong&gt;go build&lt;/strong&gt;命令用来构建一个go package，最常用的就是构建一个package得到一个可执行文件。&lt;strong&gt;build&lt;/strong&gt;命令接受很多参数用来控制构建过程。本文使用的&lt;strong&gt;Golang&lt;/strong&gt;源码的版本是&lt;strong&gt;1.7.5&lt;/strong&gt;，这个版本的Go是自举的，也就是说Go构建器本身也是Go写的。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;代码路径约定&lt;/strong&gt;: &lt;strong&gt;Golang&lt;/strong&gt;的仓库中所有的代码在子目录&lt;em&gt;src/&lt;/em&gt;下，所以下面提到代码路径时，会把前缀&lt;em&gt;src/&lt;/em&gt;去掉，避免表述过于冗长。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;package中的符号&lt;/strong&gt;: &lt;code class=&quot;highlighter-rouge&quot;&gt;go/build.Context&lt;/code&gt;表示&lt;code class=&quot;highlighter-rouge&quot;&gt;go/build&lt;/code&gt;这个package中的&lt;code class=&quot;highlighter-rouge&quot;&gt;Context&lt;/code&gt;这个表达式。&lt;/p&gt;
-
-&lt;p&gt;另外，因为&lt;strong&gt;go build&lt;/strong&gt;命令的参数很多，支持的操作系统和架构平台也很多，这里只描述最简单的参数的情况下的代码路径。操作系统是&lt;strong&gt;Linux&lt;/strong&gt;，架构平台是&lt;strong&gt;x86_64&lt;/strong&gt;，在Golang源码里称为&lt;strong&gt;amd64&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;h1 id=&quot;go-build命令入口&quot;&gt;&lt;strong&gt;go build&lt;/strong&gt;命令入口&lt;/h1&gt;
-
-&lt;p&gt;Golang的源码中，&lt;strong&gt;go build&lt;/strong&gt;命令的入口在&lt;em&gt;cmd/go/build.go&lt;/em&gt;的&lt;code class=&quot;highlighter-rouge&quot;&gt;runBuild(cmd *Command, args []string)&lt;/code&gt;函数。该函数会在&lt;em&gt;cmd/go/main.go&lt;/em&gt;的&lt;strong&gt;main()&lt;/strong&gt;函数中被调用。调用前，会先解析所有的命令行参数，解析的参数会设置到&lt;em&gt;cmd/go/build.go&lt;/em&gt;文件的全局变量中，比如&lt;code class=&quot;highlighter-rouge&quot;&gt;buildA&lt;/code&gt;、&lt;code class=&quot;highlighter-rouge&quot;&gt;buildN&lt;/code&gt;等。其他的非参数部分，就会通过&lt;code class=&quot;highlighter-rouge&quot;&gt;runBuild()&lt;/code&gt;函数的&lt;code class=&quot;highlighter-rouge&quot;&gt;args&lt;/code&gt;参数传递进来。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;当你执行&lt;code class=&quot;highlighter-rouge&quot;&gt;go build -a a.go b.go&lt;/code&gt;时，&lt;code class=&quot;highlighter-rouge&quot;&gt;args&lt;/code&gt;的内容会是&lt;code class=&quot;highlighter-rouge&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;a.go&quot;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;b.go&quot;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;&lt;/code&gt;。&lt;/li&gt;
-  &lt;li&gt;当你执行&lt;code class=&quot;highlighter-rouge&quot;&gt;go build -a goexample/hello goexample/foo&lt;/code&gt;时，&lt;code class=&quot;highlighter-rouge&quot;&gt;args&lt;/code&gt;的内容会是&lt;code class=&quot;highlighter-rouge&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;goexample/hello&quot;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;goexample/foo&quot;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;&lt;/code&gt;。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;从&lt;code class=&quot;highlighter-rouge&quot;&gt;runBuild&lt;/code&gt;函数进来后，会先执行&lt;code class=&quot;highlighter-rouge&quot;&gt;instrumentInit()&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;buildModeInit()&lt;/code&gt;这两个函数。&lt;code class=&quot;highlighter-rouge&quot;&gt;instrumentInit()&lt;/code&gt;函数处理&lt;strong&gt;-race&lt;/strong&gt;和&lt;strong&gt;-msan&lt;/strong&gt;两个参数，进行一些初始化配置。&lt;code class=&quot;highlighter-rouge&quot;&gt;buildModeInit()&lt;/code&gt;函数根据&lt;code class=&quot;highlighter-rouge&quot;&gt;-buildmode&lt;/code&gt;参数的值来设置一些全局变量。&lt;code class=&quot;highlighter-rouge&quot;&gt;-buildmode&lt;/code&gt;的默认值是&lt;code class=&quot;highlighter-rouge&quot;&gt;&quot;default&quot;&lt;/code&gt;。上面这两个函数我们先不用关心，不影响主线代码的阅读。&lt;/p&gt;
-
-&lt;p&gt;接下来，&lt;code class=&quot;highlighter-rouge&quot;&gt;runBuild()&lt;/code&gt;函数会调用&lt;code class=&quot;highlighter-rouge&quot;&gt;packagesForBuild(args)&lt;/code&gt;获得需要构建的pkg的信息。&lt;/p&gt;
-
-&lt;h1 id=&quot;packagesforbuild函数&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;packagesForBuild&lt;/code&gt;函数&lt;/h1&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;packagesForBuild(args []string) []*Package&lt;/code&gt;函数位于&lt;em&gt;cmd/go/pkg.go&lt;/em&gt;文件中。它的功能是载入参数&lt;code class=&quot;highlighter-rouge&quot;&gt;args&lt;/code&gt;指定的packages以及这些packages的依赖，生成一个&lt;code class=&quot;highlighter-rouge&quot;&gt;Package&lt;/code&gt;对象列表，这个列表随后会被用于构建。&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;packagesForBuild()&lt;/code&gt;本身并不执行载入packages的工作，而是调用&lt;code class=&quot;highlighter-rouge&quot;&gt;packagesAndErrors()&lt;/code&gt;函数来载入packages，然后检查载入的packages是否有错误，有错的话就让&lt;code class=&quot;highlighter-rouge&quot;&gt;go build&lt;/code&gt;命令报错并返回。&lt;/p&gt;
-
-&lt;h1 id=&quot;packagesanderrors函数&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;packagesAndErrors&lt;/code&gt;函数&lt;/h1&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;packagesAndErrors(args []string) []*Package&lt;/code&gt;函数也是位于&lt;em&gt;cmd/go/pkg.go&lt;/em&gt;文件中，它开始执行载入packages的操作。分为两种情况：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;如果&lt;code class=&quot;highlighter-rouge&quot;&gt;args&lt;/code&gt;中都是文件名，比如&lt;code class=&quot;highlighter-rouge&quot;&gt;go build -a a.go b.go&lt;/code&gt;，那么会调用&lt;code class=&quot;highlighter-rouge&quot;&gt;goFilesPackage(args)&lt;/code&gt;来执行载入package的操作。&lt;/li&gt;
-  &lt;li&gt;否则，就是&lt;code class=&quot;highlighter-rouge&quot;&gt;go build -a goexample/hello goexample/foo&lt;/code&gt;这种情况。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;第一种情况我们先跳过，回头再来看。先来看第二种情况，也就是更常见的情况。我们先限制命令行参数只传递了一个package &lt;em&gt;goexample/hello&lt;/em&gt;，然后来看下代码：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;args = importPaths(args)&lt;/code&gt;，该函数处理命令行传递进来的packages的特殊情况，比如Windows系统、路径中多余的部分、&lt;strong&gt;std/cmd/all&lt;/strong&gt;这些保留名称、扩展符&lt;strong&gt;…&lt;/strong&gt;&lt;em&gt;等，然后返回所有所有需要处理packages。此时返回的每个package都可以认为是一个&lt;strong&gt;ImportPath&lt;/strong&gt;。因为我们举的例子&lt;/em&gt;goexample/hello*都不在特殊情况里面，所以它会原样返回。&lt;/li&gt;
-  &lt;li&gt;针对args中的每个ImportPath，调用&lt;code class=&quot;highlighter-rouge&quot;&gt;loadPackage(arg, &amp;amp;stk)&lt;/code&gt;来载入这个package。其中&lt;code class=&quot;highlighter-rouge&quot;&gt;stk&lt;/code&gt;参数是一个表示依赖深度的栈，后面再仔细说明。在这一步，就得到了所需的&lt;code class=&quot;highlighter-rouge&quot;&gt;Package&lt;/code&gt;对象。&lt;/li&gt;
-  &lt;li&gt;最后，调用&lt;code class=&quot;highlighter-rouge&quot;&gt;computeStale()&lt;/code&gt;函数，该函数会判断一个package是否需要重新构建。如果&lt;code class=&quot;highlighter-rouge&quot;&gt;go build&lt;/code&gt;传递了&lt;code class=&quot;highlighter-rouge&quot;&gt;-a&lt;/code&gt;参数，那么所有的packages都要重新构建。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;从上面的流程可以看出，载入一个package的主要工作都是在&lt;code class=&quot;highlighter-rouge&quot;&gt;loadPackage()&lt;/code&gt;函数中完成的。&lt;/p&gt;
-
-&lt;h1 id=&quot;loadpackage函数&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;loadPackage&lt;/code&gt;函数&lt;/h1&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;loadPackage(arg string, stk *importStack) *Package&lt;/code&gt;位于&lt;em&gt;cmd/go/pkg.go&lt;/em&gt;文件中，它载入一个命令行参数指定的package。&lt;code class=&quot;highlighter-rouge&quot;&gt;stk&lt;/code&gt;参数是用于记录import路径的一个栈。&lt;/p&gt;
-
-&lt;p&gt;该函数的流程分为4个部分：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;判断&lt;code class=&quot;highlighter-rouge&quot;&gt;arg&lt;/code&gt;是否是local import。&lt;strong&gt;Local Import&lt;/strong&gt;表是一个ImportPath是”.”、”..”、”./”开头后者是”../”开头。是的话，就对&lt;code class=&quot;highlighter-rouge&quot;&gt;arg&lt;/code&gt;进行特殊处理。&lt;/li&gt;
-  &lt;li&gt;判断&lt;code class=&quot;highlighter-rouge&quot;&gt;arg&lt;/code&gt;是否以&lt;em&gt;cmd/&lt;/em&gt;开头且&lt;em&gt;cmd/&lt;/em&gt;之后没有&lt;em&gt;/&lt;/em&gt;。是的话表示构建的是一个go命令。会在这个分支里执行载入，然后返回。&lt;/li&gt;
-  &lt;li&gt;如果构建的不是一个go命令，那么就是一个package。会先处理一下local import一个standard package的情况，也就是说使用local import的方式指定一个standard package的情况。&lt;strong&gt;standard package是指GOROOT中的那些package&lt;/strong&gt;。&lt;/li&gt;
-  &lt;li&gt;最后，调用&lt;code class=&quot;highlighter-rouge&quot;&gt;loadImport(arg, cwd, nil, stk, nil, 0)&lt;/code&gt;来进行arg的载入。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;对于我们的简单例子，在这里会直接走到最后的&lt;code class=&quot;highlighter-rouge&quot;&gt;loadImport&lt;/code&gt;调用。&lt;/p&gt;
-
-&lt;h2 id=&quot;importstack&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;importStack&lt;/code&gt;&lt;/h2&gt;
-
-&lt;p&gt;这个是一个简单的栈实现，用来在载入一个package的过程中，记录import的路径，栈底是命令行指定要载入的package，栈顶是当前正在处理的ImportPath。&lt;/p&gt;
-
-&lt;h2 id=&quot;loadimport函数&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;loadImport&lt;/code&gt;函数&lt;/h2&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;loadImport(path, srcDir string, parent *Package, stk *importStack, importPos []token.Position, mode int) *Package&lt;/code&gt;位于&lt;em&gt;cmd/go/pkg.go&lt;/em&gt;文件中。几个参数的含义如下：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;path&lt;/strong&gt;，package的ImportPath，可能是local import的。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;srcDir&lt;/strong&gt;，是执行命令时的当前路径，用于当arg是local import path的情况下，查找package用的。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;parent&lt;/strong&gt;，是&lt;code class=&quot;highlighter-rouge&quot;&gt;path&lt;/code&gt;的父package，也就是把&lt;code class=&quot;highlighter-rouge&quot;&gt;path&lt;/code&gt; import进来的package。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;stk&lt;/strong&gt;，记录package import路径的栈。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;importPos&lt;/strong&gt;，记录import语句的位置用的，以便出错时可以显示出位置信息。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;mode&lt;/strong&gt;，目前只有一个mode，&lt;strong&gt;useVendor&lt;/strong&gt;，表示是否需要进行vendor展开。useVendor为真，表示一个文件中的import path还没有被转换为一个vendor中的path，需要被进行vendor展开处理。当我们从&lt;code class=&quot;highlighter-rouge&quot;&gt;loadPackage&lt;/code&gt;中调用&lt;code class=&quot;highlighter-rouge&quot;&gt;loadImport&lt;/code&gt;时，传递的&lt;code class=&quot;highlighter-rouge&quot;&gt;mode&lt;/code&gt;为0，因为我们要构建的package显然不会在vendor目录中。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;下面来看&lt;code class=&quot;highlighter-rouge&quot;&gt;loadImport&lt;/code&gt;中的主要流程。这个函数中还考虑了&lt;strong&gt;vendor&lt;/strong&gt;和&lt;strong&gt;internal&lt;/strong&gt;的情况，我们先跳过这些，只看主要步骤：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;stk.push(path)&lt;/code&gt;对&lt;code class=&quot;highlighter-rouge&quot;&gt;path&lt;/code&gt;进行入栈处理，这个栈的作用上面已经讲过。&lt;/li&gt;
-  &lt;li&gt;通过&lt;code class=&quot;highlighter-rouge&quot;&gt;packageCache&lt;/code&gt;全局变量，判断这个&lt;code class=&quot;highlighter-rouge&quot;&gt;path&lt;/code&gt;是否已经被处理过了，如果已经处理过，就直接进行重用，调用&lt;code class=&quot;highlighter-rouge&quot;&gt;reusePackage(p, stk)&lt;/code&gt;。&lt;/li&gt;
-  &lt;li&gt;生产一个新的&lt;code class=&quot;highlighter-rouge&quot;&gt;Package&lt;/code&gt;对象&lt;code class=&quot;highlighter-rouge&quot;&gt;p&lt;/code&gt;，并且加入&lt;code class=&quot;highlighter-rouge&quot;&gt;packageCache&lt;/code&gt;。&lt;/li&gt;
-  &lt;li&gt;调用&lt;code class=&quot;highlighter-rouge&quot;&gt;bp, err := buildContext.Import(path, srcDir, buildMode)&lt;/code&gt;来获得这个&lt;code class=&quot;highlighter-rouge&quot;&gt;path&lt;/code&gt;对应的&lt;code class=&quot;highlighter-rouge&quot;&gt;go/build.Package&lt;/code&gt;对象。&lt;/li&gt;
-  &lt;li&gt;调用&lt;code class=&quot;highlighter-rouge&quot;&gt;p.load(stk, bp, err)&lt;/code&gt;把这个&lt;code class=&quot;highlighter-rouge&quot;&gt;build.Package&lt;/code&gt;对象载入到&lt;code class=&quot;highlighter-rouge&quot;&gt;Package&lt;/code&gt;对象&lt;code class=&quot;highlighter-rouge&quot;&gt;p&lt;/code&gt;中。&lt;/li&gt;
-  &lt;li&gt;返回&lt;code class=&quot;highlighter-rouge&quot;&gt;p&lt;/code&gt;。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;上面这个流程里有几个新的东西，我们先来看一下。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;reusePackage&lt;/code&gt;函数，这个函数的主要作用是判断是否存在循环应用的情况。在后面的文章会讲解判断方法。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;buildContext&lt;/code&gt;&lt;/p&gt;
-
-    &lt;p&gt;&lt;em&gt;cmd/go/build.go&lt;/em&gt;文件中的&lt;code class=&quot;highlighter-rouge&quot;&gt;buildContext&lt;/code&gt;变量是用来保存构建上下文的全局变量，默认指向&lt;code class=&quot;highlighter-rouge&quot;&gt;go/build.Default&lt;/code&gt;。&lt;/p&gt;
-
-    &lt;p&gt;&lt;em&gt;注: &lt;code class=&quot;highlighter-rouge&quot;&gt;go/build&lt;/code&gt;这个package是用来收集一个go package有关的信息的，是Golang的一个基础package。&lt;/em&gt;&lt;/p&gt;
-
-    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;go/build.Context&lt;/code&gt;包含有支持构建的上下文信息，会保存一些Golang的基本信息，以及其他和构建相关的信息。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;go/build&lt;/code&gt;中的&lt;code class=&quot;highlighter-rouge&quot;&gt;Package&lt;/code&gt;对象&lt;/p&gt;
-
-    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;go/build.Package&lt;/code&gt;对象位于文件&lt;em&gt;go/build/build.go&lt;/em&gt;中。这个&lt;code class=&quot;highlighter-rouge&quot;&gt;Package&lt;/code&gt;对象用来描述一个目录中的package（Golang的每个目录都是一个package）。当上面提到的&lt;code class=&quot;highlighter-rouge&quot;&gt;loadImport&lt;/code&gt;函数调用&lt;code class=&quot;highlighter-rouge&quot;&gt;buildContext.Import()&lt;/code&gt;时，它得到的就是一个&lt;code class=&quot;highlighter-rouge&quot;&gt;go/build.Package&lt;/code&gt;。&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;现在回过头来看&lt;code class=&quot;highlighter-rouge&quot;&gt;loadImport&lt;/code&gt;的流程。 上面已经列出了这个流程的主要步骤，这里的关键点在于步骤4和步骤5。步骤4的&lt;code class=&quot;highlighter-rouge&quot;&gt;buildContext.Import(path, srcDir, mode)&lt;/code&gt;是把这个&lt;code class=&quot;highlighter-rouge&quot;&gt;path&lt;/code&gt;目录中的package的信息收集起来；而步骤5则是载入这个package相关的依赖。这两个步骤的内容就非常多了，在后面的文章独立说明。&lt;/p&gt;
-
-&lt;h1 id=&quot;总结&quot;&gt;总结&lt;/h1&gt;
-
-&lt;p&gt;我们现在知道了&lt;code class=&quot;highlighter-rouge&quot;&gt;go build&lt;/code&gt;命令的入口，并且知道当要构建一个package的时候，要先载入这个package的信息。这个主要是在&lt;code class=&quot;highlighter-rouge&quot;&gt;loadPackage&lt;/code&gt;这个函数中完成的，载入的是通过调用&lt;code class=&quot;highlighter-rouge&quot;&gt;loadImport&lt;/code&gt;函数进行的，要分别载入这个package自己的信息，然后再载入它的依赖信息。这个过程说明了，载入一个命令行指定的package和载入一个&lt;code class=&quot;highlighter-rouge&quot;&gt;import&lt;/code&gt;语句指定的package是差不多的。&lt;/p&gt;
-
-&lt;p&gt;下一篇文章会说明&lt;code class=&quot;highlighter-rouge&quot;&gt;buildConext.Import&lt;/code&gt;内部的逻辑。&lt;/p&gt;
-</description>
-        <pubDate>Sun, 26 Feb 2017 00:00:00 +0800</pubDate>
-        <link>/2017/02/26/golang-code-reading-notes-1.html</link>
-        <guid isPermaLink="true">/2017/02/26/golang-code-reading-notes-1.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Golang的reflect有多慢？</title>
-        <description>&lt;p&gt;由于Golang不支持泛型，所以我们会使用Golang的&lt;code class=&quot;highlighter-rouge&quot;&gt;interface{]&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;reflect&lt;/code&gt;来实现语言的动态特性。但是，这个也会带来很严重的性能下降问题。但是，到底有多慢呢？我们可以通过Golang的&lt;code class=&quot;highlighter-rouge&quot;&gt;testing&lt;/code&gt;库的&lt;code class=&quot;highlighter-rouge&quot;&gt;Benchmark&lt;/code&gt;来测试一下。&lt;/p&gt;
-
-&lt;h1 id=&quot;测试程序&quot;&gt;测试程序&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;bench.go&lt;/em&gt;的代码如下：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-go&quot; data-lang=&quot;go&quot;&gt;&lt;table style=&quot;border-spacing: 0&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;gutter gl&quot; style=&quot;text-align: right&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;k&quot;&gt;package&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bench&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-
-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;reflect&quot;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-
-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;process&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{}&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-
-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;process&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Run1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-
-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;process&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Run2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-
-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;staticRun1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;process&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Run1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-
-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;staticRun2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;process&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Run2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-
-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dynamicRun1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;interface&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{},&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;interface&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{})&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;reflect&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ValueOf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MethodByName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Run1&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Call&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([]&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;reflect&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;reflect&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ValueOf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)})&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-
-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dynamicRun2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;interface&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{})&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;reflect&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ValueOf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MethodByName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Run2&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Call&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([]&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;reflect&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{})&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;主要是测试 &lt;strong&gt;staticRun&lt;/strong&gt;和 &lt;strong&gt;dynamicRun&lt;/strong&gt;方法的性能差距。注意，&lt;code class=&quot;highlighter-rouge&quot;&gt;process&lt;/code&gt;类型的&lt;code class=&quot;highlighter-rouge&quot;&gt;Run1&lt;/code&gt;方法和&lt;code class=&quot;highlighter-rouge&quot;&gt;Run2&lt;/code&gt;方法必须是exported的。&lt;/p&gt;
-
-&lt;p&gt;另外建一个文件 &lt;em&gt;bench_test.go&lt;/em&gt;保存benchmark代码：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-go&quot; data-lang=&quot;go&quot;&gt;&lt;table style=&quot;border-spacing: 0&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;gutter gl&quot; style=&quot;text-align: right&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53
-54
-55
-56
-57
-58
-59
-60
-61
-62
-63
-64
-65
-66&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;k&quot;&gt;package&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bench&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-
-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;reflect&quot;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;testing&quot;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-
-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;BenchmarkStaticRun1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;testing&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;B&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:=&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;process&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:=&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ResetTimer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:=&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-		&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;staticRun1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-
-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;BenchmarkDynamicRun1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;testing&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;B&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:=&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;process&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:=&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ResetTimer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:=&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-		&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dynamicRun1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-
-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;BenchmarkStaticRun2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;testing&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;B&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:=&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;process&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ResetTimer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:=&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-		&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;staticRun2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-
-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;BenchmarkDynamicRun2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;testing&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;B&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:=&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;process&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ResetTimer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:=&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-		&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dynamicRun2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-
-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;BenchmarkValueOf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;testing&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;B&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:=&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;process&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ResetTimer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:=&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-		&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;reflect&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ValueOf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-
-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;BenchmarkMethodByName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;testing&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;B&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:=&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;process&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;v&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:=&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;reflect&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ValueOf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ResetTimer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:=&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-		&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;v&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MethodByName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Run2&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-
-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;BenchmarkCallRun2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;testing&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;B&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:=&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;process&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;v&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:=&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;reflect&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ValueOf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MethodByName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Run2&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ResetTimer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:=&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-		&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;v&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Call&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([]&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;reflect&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{})&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;h1 id=&quot;测试结果&quot;&gt;测试结果&lt;/h1&gt;
-
-&lt;p&gt;执行&lt;code class=&quot;highlighter-rouge&quot;&gt;go test -bench-.&lt;/code&gt;来运行测试：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-shell&quot; data-lang=&quot;shell&quot;&gt;➜ ~/go/src/goexamples/bench  &lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;go &lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt; -bench&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;.
-testing: warning: no tests to run
-BenchmarkStaticRun1-4           2000000000               0.45 ns/op
-BenchmarkDynamicRun1-4           1000000              1840 ns/op
-BenchmarkStaticRun2-4           2000000000               0.42 ns/op
-BenchmarkDynamicRun2-4           1000000              1389 ns/op
-BenchmarkValueOf-4              200000000                7.56 ns/op
-BenchmarkMethodByName-4          2000000               753 ns/op
-BenchmarkCallRun2-4              3000000               531 ns/op
-PASS
-ok      goexamples/bench        11.742s&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;&lt;strong&gt;BenchmarkStaticRun1&lt;/strong&gt;和&lt;strong&gt;BenchmarkDynamicRun1&lt;/strong&gt;
-这两个测试结果显示，采用动态的方式来调用一个方法，并且传递一个动态的参数，要比使用纯静态的方式慢大概4000倍。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;BenchmarkStaticRun2&lt;/strong&gt;和&lt;strong&gt;BenchmarkDynamicRun2&lt;/strong&gt;
-这两个测试结果显示，采用动态的方式来调用一个方法，不传递任何参数，要比使用纯静态的方式慢大概3300倍。&lt;/p&gt;
-
-&lt;p&gt;另外的三个结果测给出了一次动态调用中，不同部分的耗时，可以看出动态获取方法以及调用这个方法都是很慢的。&lt;/p&gt;
-</description>
-        <pubDate>Sat, 05 Nov 2016 00:00:00 +0800</pubDate>
-        <link>/2016/11/05/how-slow-is-golang-reflect.html</link>
-        <guid isPermaLink="true">/2016/11/05/how-slow-is-golang-reflect.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>理解Golang程序(1) -- 基础</title>
-        <description>&lt;h1 id=&quot;为什么写这个系列&quot;&gt;为什么写这个系列&lt;/h1&gt;
-
-&lt;p&gt;这个系列的文章是希望能帮助读者从Go汇编的层面更好的理解一个Golang程序。笔者刚工作的时候用的是C语言，深刻的感到理解一个程序的汇编代码对于编程的是非常有帮助的（这个也是读了&lt;a href=&quot;http://product.china-pub.com/216981&quot;&gt;深入理解计算机系统&lt;/a&gt;之后才意识到这个问题）。所以，笔者觉得，要想更好的使用Golang，也应该理解其汇编层面的东西（这里说的汇编是指Golang工具链使用的汇编格式）。&lt;!--more--&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;环境&quot;&gt;环境&lt;/h1&gt;
-
-&lt;p&gt;Golang自带的工具就能够帮助我们理解其汇编代码了，我们只需要建立一个简单的编程环境即可。 &lt;strong&gt;Golang上个月刚刚发布了1.7版本&lt;/strong&gt;，所以本系列也会使用go1.7。主要的环境设置如下：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-shell&quot; data-lang=&quot;shell&quot;&gt;➜ ~  &lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;go version
-go version go1.7 linux/amd64
-➜ ~  &lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;go env
-&lt;span class=&quot;nv&quot;&gt;GOARCH&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;amd64&quot;&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;GOBIN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;GOEXE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;GOHOSTARCH&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;amd64&quot;&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;GOHOSTOS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;linux&quot;&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;GOOS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;linux&quot;&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;GOPATH&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/home/diabloneo/go&quot;&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;GORACE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;GOROOT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/opt/go&quot;&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;GOTOOLDIR&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/opt/go/pkg/tool/linux_amd64&quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;然后，我们建议一个本地的代码目录用来存放实验代码：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-shell&quot; data-lang=&quot;shell&quot;&gt;➜ ~  &lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;go/src
-➜ ~/go/src  &lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;mkdir -p goexamples/hello
-➜ ~/go/src  &lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;goexamples/hello
-➜ ~/go/src/goexamples/hello  &lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;后面的实验代码都会存放在 &lt;em&gt;${GOPATH}/goexamples/src&lt;/em&gt;这个目录下。&lt;/p&gt;
-
-&lt;h1 id=&quot;编译和反汇编&quot;&gt;编译和反汇编&lt;/h1&gt;
-
-&lt;p&gt;编译Golang程序，一般是用 &lt;strong&gt;go build&lt;/strong&gt;工具，不过为了查看汇编代码，我们需要使用 &lt;strong&gt;go tool compile&lt;/strong&gt;工具。其实 &lt;strong&gt;go build&lt;/strong&gt;也是使用了 &lt;strong&gt;go tool compile&lt;/strong&gt;和 &lt;strong&gt;go tool link&lt;/strong&gt;工具，一个负责编译，一个负责链接。&lt;/p&gt;
-
-&lt;p&gt;先写个 &lt;em&gt;hello, world&lt;/em&gt; 程序 &lt;em&gt;goexamples/hello/hello.go&lt;/em&gt; ，在程序里定义一个看起来没用的 &lt;code class=&quot;highlighter-rouge&quot;&gt;foo()&lt;/code&gt;函数：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-go&quot; data-lang=&quot;go&quot;&gt;&lt;table style=&quot;border-spacing: 0&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;gutter gl&quot; style=&quot;text-align: right&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;k&quot;&gt;package&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-
-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;fmt&quot;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-
-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;var&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-
-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Printf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;hello, world&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;接下来，我们可以执行编译该文件来得到该文件的汇编代码，执行命令&lt;code class=&quot;highlighter-rouge&quot;&gt;go tool compile -S hello.go&lt;/code&gt;：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-shell&quot; data-lang=&quot;shell&quot;&gt;➜ ~/go/src/goexamples/hello  &lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;go tool compile -S hello.go
-&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;.foo &lt;span class=&quot;nv&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;10 &lt;span class=&quot;nv&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0x8 &lt;span class=&quot;nv&quot;&gt;locals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0x0
-        0x0000 00000 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:7&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;       TEXT    &lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;.foo&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, &lt;span class=&quot;nv&quot;&gt;$0&lt;/span&gt;-8
-        0x0000 00000 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:7&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;       NOP
-        0x0000 00000 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:7&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;       NOP
-        0x0000 00000 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:7&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;       FUNCDATA        &lt;span class=&quot;nv&quot;&gt;$0&lt;/span&gt;, gclocals·5184031d3a32a42d85027f073f873668&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        0x0000 00000 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:7&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;       FUNCDATA        &lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;, gclocals·33cdeccccebe80329f1fdbee7f5874cb&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        0x0000 00000 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:9&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;       MOVQ    &lt;span class=&quot;nv&quot;&gt;$0&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;.~r0+8&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;FP&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        0x0009 00009 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:9&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;       RET
-        0x0000 48 c7 44 24 08 00 00 00 00 c3                    H.D&lt;span class=&quot;nv&quot;&gt;$.&lt;/span&gt;.....
-&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;.main &lt;span class=&quot;nv&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;98 &lt;span class=&quot;nv&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0x0 &lt;span class=&quot;nv&quot;&gt;locals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0x48
-        0x0000 00000 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:12&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;      TEXT    &lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;.main&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, &lt;span class=&quot;nv&quot;&gt;$72&lt;/span&gt;-0
-        0x0000 00000 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:12&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;      MOVQ    &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;TLS&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, CX
-        0x0009 00009 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:12&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;      CMPQ    SP, 16&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;CX&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        0x000d 00013 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:12&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;      JLS     91
-        0x000f 00015 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:12&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;      SUBQ    &lt;span class=&quot;nv&quot;&gt;$72&lt;/span&gt;, SP
-        0x0013 00019 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:12&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;      MOVQ    BP, 64&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SP&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        0x0018 00024 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:12&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;      LEAQ    64&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SP&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, BP
-        0x001d 00029 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:12&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;      FUNCDATA        &lt;span class=&quot;nv&quot;&gt;$0&lt;/span&gt;, gclocals·33cdeccccebe80329f1fdbee7f5874cb&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        0x001d 00029 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:12&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;      FUNCDATA        &lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;, gclocals·33cdeccccebe80329f1fdbee7f5874cb&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        0x001d 00029 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:13&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;      LEAQ    go.string.&lt;span class=&quot;s2&quot;&gt;&quot;hello, world&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, AX
-        0x0024 00036 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:13&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;      MOVQ    AX, &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SP&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        0x0028 00040 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:13&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;      MOVQ    &lt;span class=&quot;nv&quot;&gt;$13&lt;/span&gt;, 8&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SP&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        0x0031 00049 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:13&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;      MOVQ    &lt;span class=&quot;nv&quot;&gt;$0&lt;/span&gt;, 16&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SP&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        0x003a 00058 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:13&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;      MOVQ    &lt;span class=&quot;nv&quot;&gt;$0&lt;/span&gt;, 24&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SP&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        0x0043 00067 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:13&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;      MOVQ    &lt;span class=&quot;nv&quot;&gt;$0&lt;/span&gt;, 32&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SP&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        0x004c 00076 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:13&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;      PCDATA  &lt;span class=&quot;nv&quot;&gt;$0&lt;/span&gt;, &lt;span class=&quot;nv&quot;&gt;$0&lt;/span&gt;
-        0x004c 00076 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:13&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;      CALL    fmt.Printf&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        0x0051 00081 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:14&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;      MOVQ    64&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SP&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, BP
-        0x0056 00086 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:14&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;      ADDQ    &lt;span class=&quot;nv&quot;&gt;$72&lt;/span&gt;, SP
-        0x005a 00090 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:14&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;      RET
-        0x005b 00091 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:14&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;      NOP
-        0x005b 00091 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:12&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;      CALL    runtime.morestack_noctxt&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        0x0060 00096 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:12&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;      JMP     0
-        0x0000 64 48 8b 0c 25 00 00 00 00 48 3b 61 10 76 4c 48  dH..%....H;a.vLH
-        0x0010 83 ec 48 48 89 6c 24 40 48 8d 6c 24 40 48 8d 05  ..HH.l&lt;span class=&quot;nv&quot;&gt;$@&lt;/span&gt;H.l&lt;span class=&quot;nv&quot;&gt;$@&lt;/span&gt;H..
-        0x0020 00 00 00 00 48 89 04 24 48 c7 44 24 08 0d 00 00  ....H..&lt;span class=&quot;nv&quot;&gt;$H&lt;/span&gt;.D&lt;span class=&quot;nv&quot;&gt;$.&lt;/span&gt;...
-        0x0030 00 48 c7 44 24 10 00 00 00 00 48 c7 44 24 18 00  .H.D&lt;span class=&quot;nv&quot;&gt;$.&lt;/span&gt;....H.D&lt;span class=&quot;nv&quot;&gt;$.&lt;/span&gt;.
-        0x0040 00 00 00 48 c7 44 24 20 00 00 00 00 e8 00 00 00  ...H.D&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;........
-        0x0050 00 48 8b 6c 24 40 48 83 c4 48 c3 e8 00 00 00 00  .H.l&lt;span class=&quot;nv&quot;&gt;$@&lt;/span&gt;H..H......
-        0x0060 eb 9e                                            ..
-        rel 5+4 &lt;span class=&quot;nv&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;15 TLS+0
-        rel 32+4 &lt;span class=&quot;nv&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;14 go.string.&lt;span class=&quot;s2&quot;&gt;&quot;hello, world&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;+0
-        rel 77+4 &lt;span class=&quot;nv&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;7 fmt.Printf+0
-        rel 92+4 &lt;span class=&quot;nv&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;7 runtime.morestack_noctxt+0
-&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;.init &lt;span class=&quot;nv&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;61 &lt;span class=&quot;nv&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0x0 &lt;span class=&quot;nv&quot;&gt;locals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0x0
-        0x0000 00000 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:15&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;      TEXT    &lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;.init&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, &lt;span class=&quot;nv&quot;&gt;$0&lt;/span&gt;-0
-        0x0000 00000 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:15&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;      MOVQ    &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;TLS&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, CX
-        0x0009 00009 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:15&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;      CMPQ    SP, 16&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;CX&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        0x000d 00013 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:15&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;      JLS     54
-        0x000f 00015 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:15&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;      NOP
-        0x000f 00015 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:15&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;      NOP
-        0x000f 00015 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:15&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;      FUNCDATA        &lt;span class=&quot;nv&quot;&gt;$0&lt;/span&gt;, gclocals·33cdeccccebe80329f1fdbee7f5874cb&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        0x000f 00015 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:15&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;      FUNCDATA        &lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;, gclocals·33cdeccccebe80329f1fdbee7f5874cb&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        0x000f 00015 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:15&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;      MOVBLZX &lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;.initdone·&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, AX
-        0x0016 00022 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:15&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;      CMPB    AL, &lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;
-        0x0018 00024 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:15&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;      JLS     &lt;span class=&quot;nv&quot;&gt;$0&lt;/span&gt;, 27
-        0x001a 00026 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:15&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;      RET
-        0x001b 00027 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:15&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;      JNE     &lt;span class=&quot;nv&quot;&gt;$0&lt;/span&gt;, 34
-        0x001d 00029 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:15&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;      PCDATA  &lt;span class=&quot;nv&quot;&gt;$0&lt;/span&gt;, &lt;span class=&quot;nv&quot;&gt;$0&lt;/span&gt;
-        0x001d 00029 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:15&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;      CALL    runtime.throwinit&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        0x0022 00034 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:15&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;      MOVB    &lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;.initdone·&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        0x0029 00041 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:15&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;      PCDATA  &lt;span class=&quot;nv&quot;&gt;$0&lt;/span&gt;, &lt;span class=&quot;nv&quot;&gt;$0&lt;/span&gt;
-        0x0029 00041 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:15&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;      CALL    fmt.init&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        0x002e 00046 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:15&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;      MOVB    &lt;span class=&quot;nv&quot;&gt;$2&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;.initdone·&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        0x0035 00053 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:15&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;      RET
-        0x0036 00054 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:15&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;      NOP
-        0x0036 00054 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:15&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;      CALL    runtime.morestack_noctxt&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        0x003b 00059 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:15&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;      JMP     0
-        0x0000 64 48 8b 0c 25 00 00 00 00 48 3b 61 10 76 27 0f  dH..%....H;a.v&lt;span class=&quot;s1&quot;&gt;'.
-        0x0010 b6 05 00 00 00 00 3c 01 76 01 c3 75 05 e8 00 00  ......&amp;lt;.v..u....
-        0x0020 00 00 c6 05 00 00 00 00 01 e8 00 00 00 00 c6 05  ................
-        0x0030 00 00 00 00 02 c3 e8 00 00 00 00 eb c3           .............
-        rel 5+4 t=15 TLS+0
-        rel 18+4 t=14 &quot;&quot;.initdone·+0
-        rel 30+4 t=7 runtime.throwinit+0
-        rel 36+4 t=14 &quot;&quot;.initdone·+-1
-        rel 42+4 t=7 fmt.init+0
-        rel 48+4 t=14 &quot;&quot;.initdone·+-1
-        rel 55+4 t=7 runtime.morestack_noctxt+0
-gclocals·33cdeccccebe80329f1fdbee7f5874cb t=9 dupok size=8
-        0x0000 01 00 00 00 00 00 00 00                          ........
-gclocals·5184031d3a32a42d85027f073f873668 t=9 dupok size=12
-        0x0000 01 00 00 00 01 00 00 00 00 00 00 00              ............
-go.string.hdr.&quot;hello, world\n&quot; t=9 dupok size=16
-        0x0000 00 00 00 00 00 00 00 00 0d 00 00 00 00 00 00 00  ................
-        rel 0+8 t=1 go.string.&quot;hello, world\n&quot;+0
-go.string.&quot;hello, world\n&quot; t=9 dupok size=13
-        0x0000 68 65 6c 6c 6f 2c 20 77 6f 72 6c 64 0a           hello, world.
-&quot;&quot;.initdone· t=34 size=1
-&quot;&quot;.foo·f t=9 dupok size=8
-        0x0000 00 00 00 00 00 00 00 00                          ........
-        rel 0+8 t=1 &quot;&quot;.foo+0
-&quot;&quot;.main·f t=9 dupok size=8
-        0x0000 00 00 00 00 00 00 00 00                          ........
-        rel 0+8 t=1 &quot;&quot;.main+0
-&quot;&quot;.init·f t=9 dupok size=8
-        0x0000 00 00 00 00 00 00 00 00                          ........
-        rel 0+8 t=1 &quot;&quot;.init+0
-type..importpath.fmt. t=9 dupok size=6
-        0x0000 00 00 03 66 6d 74                                ...fmt&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;现在我们得到了这个文件的汇编代码，可以看到这个代码里不仅有汇编指令，还有很多Golang实现相关的东西。现在，作为起步，我们先来看一些基本的内容：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-shell&quot; data-lang=&quot;shell&quot;&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;.foo &lt;span class=&quot;nv&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;10 &lt;span class=&quot;nv&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0x8 &lt;span class=&quot;nv&quot;&gt;locals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0x0
-...
-&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;.main &lt;span class=&quot;nv&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;98 &lt;span class=&quot;nv&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0x0 &lt;span class=&quot;nv&quot;&gt;locals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0x48
-...&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;上面两行就是我们定义的两个函数：&lt;code class=&quot;highlighter-rouge&quot;&gt;main()&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;foo()&lt;/code&gt;，跟在这两行后面的是两个函数的内容。为了方便阐述，这里会把要研究的代码都写在&lt;code class=&quot;highlighter-rouge&quot;&gt;foo()&lt;/code&gt;函数内。&lt;/p&gt;
-
-&lt;p&gt;接下来，我们需要 &lt;strong&gt;关系编译优化&lt;/strong&gt;。Golang的编译器在编译的时候会执行一些默认的优化，这会提升性能和节约空间，但是会使得汇编代码和Golang代码对应不起来，所以我们要先关闭这个优化，然后才能更好的研究汇编代码。关闭优化需要传递 &lt;strong&gt;-N&lt;/strong&gt;选项给编译器：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-shell&quot; data-lang=&quot;shell&quot;&gt;➜ ~/go/src/goexamples/hello  &lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;go tool compile -N -S hello.go&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;这样得到的汇编输出会和前面略有不同，可以通过对比&lt;code class=&quot;highlighter-rouge&quot;&gt;foo()&lt;/code&gt;函数的汇编代码来看到这些不同点：&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;有优化&lt;/strong&gt;&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-shell&quot; data-lang=&quot;shell&quot;&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;.foo &lt;span class=&quot;nv&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;10 &lt;span class=&quot;nv&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0x8 &lt;span class=&quot;nv&quot;&gt;locals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0x0
-        0x0000 00000 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:7&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;       TEXT    &lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;.foo&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, &lt;span class=&quot;nv&quot;&gt;$0&lt;/span&gt;-8
-        0x0000 00000 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:7&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;       NOP
-        0x0000 00000 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:7&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;       NOP
-        0x0000 00000 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:7&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;       FUNCDATA        &lt;span class=&quot;nv&quot;&gt;$0&lt;/span&gt;, gclocals·5184031d3a32a42d85027f073f873668&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        0x0000 00000 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:7&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;       FUNCDATA        &lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;, gclocals·33cdeccccebe80329f1fdbee7f5874cb&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        0x0000 00000 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:9&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;       MOVQ    &lt;span class=&quot;nv&quot;&gt;$0&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;.~r0+8&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;FP&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        0x0009 00009 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:9&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;       RET
-        0x0000 48 c7 44 24 08 00 00 00 00 c3                    H.D&lt;span class=&quot;nv&quot;&gt;$.&lt;/span&gt;.....&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;&lt;strong&gt;无优化&lt;/strong&gt;&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-shell&quot; data-lang=&quot;shell&quot;&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;.foo &lt;span class=&quot;nv&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;50 &lt;span class=&quot;nv&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0x8 &lt;span class=&quot;nv&quot;&gt;locals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0x10
-        0x0000 00000 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:7&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;       TEXT    &lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;.foo&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, &lt;span class=&quot;nv&quot;&gt;$16&lt;/span&gt;-8
-        0x0000 00000 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:7&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;       SUBQ    &lt;span class=&quot;nv&quot;&gt;$16&lt;/span&gt;, SP
-        0x0004 00004 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:7&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;       MOVQ    BP, 8&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SP&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        0x0009 00009 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:7&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;       LEAQ    8&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SP&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, BP
-        0x000e 00014 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:7&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;       FUNCDATA        &lt;span class=&quot;nv&quot;&gt;$0&lt;/span&gt;, gclocals·5184031d3a32a42d85027f073f873668&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        0x000e 00014 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:7&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;       FUNCDATA        &lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;, gclocals·33cdeccccebe80329f1fdbee7f5874cb&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        0x000e 00014 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:7&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;       MOVQ    &lt;span class=&quot;nv&quot;&gt;$0&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;.~r0+24&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;FP&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        0x0017 00023 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:8&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;       MOVQ    &lt;span class=&quot;nv&quot;&gt;$0&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;.a&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SP&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        0x001f 00031 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:9&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;       MOVQ    &lt;span class=&quot;nv&quot;&gt;$0&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;.~r0+24&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;FP&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        0x0028 00040 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:9&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;       MOVQ    8&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SP&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, BP
-        0x002d 00045 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:9&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;       ADDQ    &lt;span class=&quot;nv&quot;&gt;$16&lt;/span&gt;, SP
-        0x0031 00049 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:9&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;       RET
-        0x0000 48 83 ec 10 48 89 6c 24 08 48 8d 6c 24 08 48 c7  H...H.l&lt;span class=&quot;nv&quot;&gt;$.&lt;/span&gt;H.l&lt;span class=&quot;nv&quot;&gt;$.&lt;/span&gt;H.
-        0x0010 44 24 18 00 00 00 00 48 c7 04 24 00 00 00 00 48  D&lt;span class=&quot;nv&quot;&gt;$.&lt;/span&gt;....H..&lt;span class=&quot;nv&quot;&gt;$.&lt;/span&gt;...H
-        0x0020 c7 44 24 18 00 00 00 00 48 8b 6c 24 08 48 83 c4  .D&lt;span class=&quot;nv&quot;&gt;$.&lt;/span&gt;....H.l&lt;span class=&quot;nv&quot;&gt;$.&lt;/span&gt;H..
-        0x0030 10 c3                                            ..&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;可以看出，无优化的代码更长，包含了函数完整的栈帧操作。后续我们会一步一步的研究Golang的代码和无优化的汇编代码之间的关系，以帮助读者更好的理解Golang。&lt;/p&gt;
-
-&lt;h1 id=&quot;golang汇编基础&quot;&gt;Golang汇编基础&lt;/h1&gt;
-
-&lt;p&gt;Golang的汇编器采用的是Plan 9的汇编语法，官方有一篇关于Golang汇编器的快速入门：&lt;a href=&quot;https://golang.org/doc/asm&quot;&gt;A Quick Guide to Go’s Assembler&lt;/a&gt;，其中介绍了一些简单的语法。在开始研究Golang的汇编代码之前，我们也需要先了解一下基本的语法。&lt;/p&gt;
-
-&lt;h2 id=&quot;伪寄存器&quot;&gt;伪寄存器&lt;/h2&gt;
-
-&lt;p&gt;Golang汇编中有4个伪寄存器，这些伪寄存器是由Golang工具链维护的。这4个伪寄存器是：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;FP&lt;/strong&gt;: Frame pointer：栈帧寄存器，指向参数和本地变量。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;PC&lt;/strong&gt;：Program counter：程序计数器，用来进行跳转处理。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;SB&lt;/strong&gt;：Static base pointer：全局符号表。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;SP&lt;/strong&gt;：Stack pointer：栈顶指针。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;strong&gt;SB&lt;/strong&gt;寄存器的常用语法有以下几种：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;foo(SB)&lt;/strong&gt;是全局变量foo的地址&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;foo&amp;lt;&amp;gt;(SB)&lt;/strong&gt;是只在当前源文件可见的变量foo的地址&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;foo+4(SB)&lt;/strong&gt;是全局变量foo的地址偏移4字节的地址&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;strong&gt;FP&lt;/strong&gt;寄存器是用来访问函数参数的，理论上来说，&lt;strong&gt;0(FP)&lt;/strong&gt;是第一个参数，&lt;strong&gt;8(FP)&lt;/strong&gt;是第二个参数（64位系统）。但是，实际使用时，需要把参数名加进去：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;first_arg+0(FP)&lt;/strong&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;second_arg+8(FP)&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;strong&gt;SP&lt;/strong&gt;寄存器是一个虚拟的栈指针，用于指向当前栈帧的栈顶，用于访问局部变量和函数参数（除了 &lt;strong&gt;FP&lt;/strong&gt;，这个也可以访问到函数参数）。&lt;strong&gt;SP&lt;/strong&gt;是指向栈顶的，所以访问数据通常是做减法：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;x-8(SP)&lt;/strong&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;y-4(SP)&lt;/strong&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;-8(SP)&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;注意，这里的两个不同语法。在有 &lt;strong&gt;SP&lt;/strong&gt;寄存器的机器上，带有一个名称前缀的语法表示访问Golang虚拟的SP寄存器，而不带名称前缀的则是访问硬件的SP寄存器。&lt;/p&gt;
-
-&lt;h2 id=&quot;寻址模式&quot;&gt;寻址模式&lt;/h2&gt;
-
-&lt;p&gt;说到汇编，就不得不提到寻址模式。Plan 9汇编的寻址模式挺多的，具体的可以看&lt;a href=&quot;https://9p.io/sys/doc/asm.html&quot;&gt;A Manual for Plan 9 assembler&lt;/a&gt;。这里我们列举一些常用的：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;em&gt;$con&lt;/em&gt; 常量&lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;$fcon&lt;/em&gt; 浮点数常量&lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;name+o(SB)&lt;/em&gt; 外部符号&lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;name&amp;lt;&amp;gt;+o(SB)&lt;/em&gt; 本地符号&lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;name+o(FP)&lt;/em&gt; 函数参数&lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;$name+o(SB)&lt;/em&gt; 外部符号地址&lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;$name&amp;lt;&amp;gt;+o(SB)&lt;/em&gt; 本地符号地址&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;em&gt;o&lt;/em&gt;表示整数偏移量。&lt;/p&gt;
-
-&lt;h2 id=&quot;指令&quot;&gt;指令&lt;/h2&gt;
-
-&lt;p&gt;下面来介绍一下上文代码中的&lt;code class=&quot;highlighter-rouge&quot;&gt;foo()&lt;/code&gt;函数的汇编代码中用到的汇编指令：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-shell&quot; data-lang=&quot;shell&quot;&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;.foo &lt;span class=&quot;nv&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;50 &lt;span class=&quot;nv&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0x8 &lt;span class=&quot;nv&quot;&gt;locals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0x10
-        0x0000 00000 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:7&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;       TEXT    &lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;.foo&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, &lt;span class=&quot;nv&quot;&gt;$16&lt;/span&gt;-8
-        0x0000 00000 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:7&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;       SUBQ    &lt;span class=&quot;nv&quot;&gt;$16&lt;/span&gt;, SP
-        0x0004 00004 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:7&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;       MOVQ    BP, 8&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SP&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        0x0009 00009 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:7&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;       LEAQ    8&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SP&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, BP
-        0x000e 00014 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:7&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;       FUNCDATA        &lt;span class=&quot;nv&quot;&gt;$0&lt;/span&gt;, gclocals·5184031d3a32a42d85027f073f873668&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        0x000e 00014 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:7&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;       FUNCDATA        &lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;, gclocals·33cdeccccebe80329f1fdbee7f5874cb&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        0x000e 00014 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:7&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;       MOVQ    &lt;span class=&quot;nv&quot;&gt;$0&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;.~r0+24&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;FP&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        0x0017 00023 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:8&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;       MOVQ    &lt;span class=&quot;nv&quot;&gt;$0&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;.a&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SP&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        0x001f 00031 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:9&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;       MOVQ    &lt;span class=&quot;nv&quot;&gt;$0&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;.~r0+24&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;FP&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        0x0028 00040 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:9&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;       MOVQ    8&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SP&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, BP
-        0x002d 00045 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:9&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;       ADDQ    &lt;span class=&quot;nv&quot;&gt;$16&lt;/span&gt;, SP
-        0x0031 00049 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;hello.go:9&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;       RET&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;TEXT &quot;&quot;.foo(SB), $16-8
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;TEXT&lt;/strong&gt;是一个伪指令，表示定义一个入口点，也就是定义一个函数。它可以带三个参数：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;第一个参数表示函数名，就是这里的&lt;code class=&quot;highlighter-rouge&quot;&gt;&quot;&quot;.foo(SB)&lt;/code&gt;。&lt;/li&gt;
-  &lt;li&gt;第二个参数是flag，这里没有体现出来，以后的文章再说。&lt;/li&gt;
-  &lt;li&gt;第三个参数是frame size，表示当前函数的栈帧大小以及参数大小，形式如同&lt;code class=&quot;highlighter-rouge&quot;&gt;$framesize-argsize&lt;/code&gt;，减号前面是栈帧大小，减号后面是参数大小（包括返回值）。比如&lt;code class=&quot;highlighter-rouge&quot;&gt;$16-8&lt;/code&gt;表示该函数栈帧大小为16，参数大小为8。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;SUBQ $16, SP
-MOVQ BP, 8(SP)
-LEAQ 8(SP), BP
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;这是一段入栈的代码。在这段代码执行前，&lt;strong&gt;SP&lt;/strong&gt;指针指向调用函数，这里分配栈帧，并且保存函数返回地址，也就是 &lt;strong&gt;BP&lt;/strong&gt;寄存器的内容到栈的开始部分，然后设置新的 &lt;strong&gt;BP&lt;/strong&gt;寄存器的值。随后就可以开始执行这个函数了。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;BP&lt;/strong&gt;寄存器是 &lt;em&gt;base pointer&lt;/em&gt; ，一般用于指向当前栈帧的某个位置，和 &lt;em&gt;SP&lt;/em&gt; 寄存器配合完成函数调用的操作。&lt;/p&gt;
-
-&lt;p&gt;这里的三个指令都是常用指令，格式都是源操作数在前，目标操作数在后：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;&lt;strong&gt;SUBQ&lt;/strong&gt; 减&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;MOVQ&lt;/strong&gt; 拷贝&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;LEAQ&lt;/strong&gt; 载入有效地址。LEA的全称是 &lt;em&gt;Load Effective Address&lt;/em&gt;，LEA指令计算源操作数所表示的地址的值，然后保存在目标操作数中。有时候LEA指令也会被用来进行简单的无符号计算（支持加、减、乘）。关于LEA指令的更多资料，可以看这里&lt;a href=&quot;https://en.wikibooks.org/wiki/X86_Assembly/Data_Transfer&quot;&gt;X86 Assembly/Data Transfer&lt;/a&gt;。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;FUNCDATA        $0, gclocals·5184031d3a32a42d85027f073f873668(SB)
-FUNCDATA        $1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;这两行是用于保存GC所需要的数据。相关指定以后再介绍。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;MOVQ $0, &quot;&quot;.~r0+24(FP)
-MOVQ $0, &quot;&quot;.a(SP)
-MOVQ $0, &quot;&quot;.~r0+24(FP)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;这里没有新的指令，赋值操作实现了返回&lt;code class=&quot;highlighter-rouge&quot;&gt;a&lt;/code&gt;变量。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;MOVQ 8(SP), BP
-ADDQ $16, SP
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;这些是出栈的代码，通过把 &lt;em&gt;SP&lt;/em&gt; 寄存器和 &lt;em&gt;BP&lt;/em&gt; 寄存器设置为调用函数的值来完成返回。&lt;/p&gt;
-
-</description>
-        <pubDate>Tue, 01 Nov 2016 00:00:00 +0800</pubDate>
-        <link>/2016/11/01/understanding-golang-internals-1.html</link>
-        <guid isPermaLink="true">/2016/11/01/understanding-golang-internals-1.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>通过demo学习OpenStack开发所需的基础知识 -- 单元测试</title>
-        <description>&lt;p&gt;本文将进入单元测试的部分，这也是基础知识中最后一个大块。本文将重点讲述Python和OpenStack中的单元测试的生态环境。&lt;/p&gt;
-
-&lt;h1 id=&quot;单元测试的重要性&quot;&gt;单元测试的重要性&lt;/h1&gt;
-
-&lt;p&gt;github上有个人画了一些不同语言的学习曲线图：&lt;a href=&quot;https://github.com/dobiasd/articles/blob/master/programming_language_learning_curves.md&quot;&gt;Learning Curves (for different programming languages)&lt;/a&gt;，虽然有些恶搞的倾向，不过确实说明了问题。这里贴一下Python的部分：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/imgs/00008_python_learning_curve.png&quot; alt=&quot;Python Learning Curve&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;这个图说明了，会单元测试对于提高Python生产力的重要性，这主要是因为Python是个动态语言，很多问题都无法通过静态编译检查来发现，因此单元测试就成了一个重要的确保质量的手段。OpenStack的核心项目都对单元测试有极高的要求，以保证项目的高质量。&lt;/p&gt;
-
-&lt;h1 id=&quot;单元测试工具&quot;&gt;单元测试工具&lt;/h1&gt;
-
-&lt;p&gt;Python的单元测试工具很多，为单元测试提供不同方面的功能。OpenStack的项目也基本把现在流行的单元测试工具都用全了。单元测试可以说是入门OpenStack开发的最难的部分，也是最后一公里。本章，我们就介绍一下在OpenStack中会用到的单元测试的工具。由于数量很多，不可能详细介绍，因此主要做一些概念和用途上的介绍。&lt;/p&gt;
-
-&lt;h2 id=&quot;unittest&quot;&gt;unittest&lt;/h2&gt;
-
-&lt;p&gt;unittest是Python的标准库，提供了最基本的单元测试功能，包括单元测试运行器（简称runner）和单元测试框架。项目的单元测试代码的测试类可以继承&lt;code class=&quot;highlighter-rouge&quot;&gt;unittest.TestCase&lt;/code&gt;类，这样这个类就能够被runner发现并且执行。同时，&lt;code class=&quot;highlighter-rouge&quot;&gt;unittest.TestCase&lt;/code&gt;这个类还定义了&lt;code class=&quot;highlighter-rouge&quot;&gt;setUp()&lt;/code&gt;，&lt;code class=&quot;highlighter-rouge&quot;&gt;tearDown()&lt;/code&gt;，&lt;code class=&quot;highlighter-rouge&quot;&gt;setUpClass()&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;tearDownClass()&lt;/code&gt;方法，是用来运行单元测试前的设置工作代码和单元测试后的清理工作代码，这个也是所有Python代码遵守的规范，所以第三方的单元测试库和框架也都遵循这个规范。&lt;/p&gt;
-
-&lt;p&gt;unittest库也提供了一个runner，可以使用&lt;code class=&quot;highlighter-rouge&quot;&gt;$ python -m unittest test_module&lt;/code&gt;的命令来执行某个模块的单元测试。另外，在Python中指定要运行的单元测试用例的完整语法是：&lt;strong&gt;path.to.your.module:ClassOfYourTest.test_method&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;p&gt;unittest是学习Python单元测试最基本也最重要的一个库，完整的说明请查看官方文档：&lt;a href=&quot;https://docs.python.org/2.7/library/unittest.html&quot;&gt;https://docs.python.org/2.7/library/unittest.html&lt;/a&gt;。&lt;/p&gt;
-
-&lt;h2 id=&quot;mock&quot;&gt;mock&lt;/h2&gt;
-
-&lt;p&gt;mock也是另一个重要的单元测试库，在Python 2中是作为一个第三方库被使用的，到Python 3时，就被纳入了标准库，可见这个库的重要性。简单的说，mock就是用来模拟对象的行为，这样在进行单元测试的时候，可以指定任何对象的返回值，便于测试对外部接口有依赖的代码。关于mock的使用，可以查看我之前写的这篇文章&lt;a href=&quot;https://segmentfault.com/a/1190000002965620&quot;&gt;Python Mock的入门&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;testtools&quot;&gt;testtools&lt;/h2&gt;
-
-&lt;p&gt;testtools是个unittest的扩展框架，主要是在unittest的基础上提供了更好的assert功能，使得写单元测试更加方便。具体可以查看文档：&lt;a href=&quot;http://testtools.readthedocs.org/en/latest/&quot;&gt;http://testtools.readthedocs.org/en/latest/&lt;/a&gt;。&lt;/p&gt;
-
-&lt;h2 id=&quot;fixtures&quot;&gt;fixtures&lt;/h2&gt;
-
-&lt;p&gt;fixture的意思是固定装置，在Python的单元测试中，是指某段可以复用的单元测试&lt;code class=&quot;highlighter-rouge&quot;&gt;setUp&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;tearDown&lt;/code&gt;代码组合。一个fixture一般用来实现某个组件的setUp和tearDown逻辑，比如测试前要先创建好某些数据，测试后要删掉这些数据，这些操作就可以封装到一个fixture中。这样不同的测试用例就不用重复写这些代码，只要使用fixture即可。fixtures模块是一个第三方模块，提供了一种简单的创建fixture类和对象的机制，并且也提供了一些内置的fixture。具体的使用方法可以查看官方文档：&lt;a href=&quot;https://pypi.python.org/pypi/fixtures/&quot;&gt;https://pypi.python.org/pypi/fixtures/&lt;/a&gt;。&lt;/p&gt;
-
-&lt;h2 id=&quot;testscenarios&quot;&gt;testscenarios&lt;/h2&gt;
-
-&lt;p&gt;testscenarios模块满足了场景测试的需求。它的基本用法是在测试类中添加一个类属性&lt;code class=&quot;highlighter-rouge&quot;&gt;scenarios&lt;/code&gt;，该属性是一个元组，定义了每一种场景下不同的变量的值。比如说你测试一段数据访问代码，你需要测试该代码在使用不同的驱动时，比如MongoDB、SQL、File，是否都能正常工作。我们有三种办法：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;最笨的办法是为不同的驱动把同一个测试用例编写3遍。&lt;/li&gt;
-  &lt;li&gt;比较好的办法是，编写一个统一的非测试用例方法，接收driver作为参数，执行测试逻辑，然后再分别编写三个测试用例方法去调用这个非测试用例方法。&lt;/li&gt;
-  &lt;li&gt;更好的办法就是使用testscenarios模块，定义好scenarios变量，然后实现一个测试用例方法。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;testscenarios模块在OpenStack Ceilometer中被大量使用。更多的信息可以查看文档：&lt;a href=&quot;https://pypi.python.org/pypi/testscenarios/&quot;&gt;https://pypi.python.org/pypi/testscenarios/&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;subunit&quot;&gt;subunit&lt;/h2&gt;
-
-&lt;p&gt;subunit是一个用于传输单元测试结果的流协议。一般来说，运行单元测试的时候是把单元测试的结果直接输出到标准输出，但是如果运行大量的测试用例，这些测试结果就很难被分析。因此就可以使用python-subunit模块来运行测试用例，并且把测试用例通过subunit协议输出，这样测试结果就可以被分析工具聚合以及分析。python-subunit模块自带了一些工具用来解析subunit协议，比如你可以这样运行测试用例：&lt;code class=&quot;highlighter-rouge&quot;&gt;$ python -m subunit.run test_module | subunit2pyunit&lt;/code&gt;，&lt;code class=&quot;highlighter-rouge&quot;&gt;subunit2pyunit&lt;/code&gt;命令会解析subunit协议，并且输出到标准输出。关于subunit的更多信息，请查看官方文档：&lt;a href=&quot;https://pypi.python.org/pypi/python-subunit/&quot;&gt;https://pypi.python.org/pypi/python-subunit/&lt;/a&gt;。&lt;/p&gt;
-
-&lt;h2 id=&quot;testrepository&quot;&gt;testrepository&lt;/h2&gt;
-
-&lt;p&gt;OpenStack中使用testrepository模块管理单元测试用例。当一个项目中的测试用例很多时，如何更有效的处理单元测试用例的结果就变得很重要。testrepository的出现就是为了解决这个问题。testrepository使用python-subunit模块来运行测试用例，然后分析subunit的输出并对测试结果进行记录（记录到本地文件）。举例来说，testrepository允许你做这样的事情：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;知道哪些用例运行时间最长&lt;/li&gt;
-  &lt;li&gt;显示运行失败的用例&lt;/li&gt;
-  &lt;li&gt;重新运行上次运行失败的用例&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;testrepository的更多信息，请查看官方文档：&lt;a href=&quot;http://testrepository.readthedocs.org/en/latest/&quot;&gt;http://testrepository.readthedocs.org/en/latest/&lt;/a&gt;。&lt;/p&gt;
-
-&lt;h2 id=&quot;coverage&quot;&gt;coverage&lt;/h2&gt;
-
-&lt;p&gt;coverage是用来计算代码运行时的覆盖率的，也就是统计多少代码被执行了。它可以和testrepository一起使用，用来统计单元测试的覆盖率，在运行完单元测试之后，输出覆盖率报告。具体的使用方法可以查看官方文档：&lt;a href=&quot;http://coverage.readthedocs.org/en/latest/&quot;&gt;http://coverage.readthedocs.org/en/latest/&lt;/a&gt;。&lt;/p&gt;
-
-&lt;h2 id=&quot;tox&quot;&gt;tox&lt;/h2&gt;
-
-&lt;p&gt;tox是用来管理和构建虚拟环境(virtualenv)的。对于一个项目，我们需要运行Python 2.7的单元测试，也需要运行Python 3.4的单元测试，还需要运行PEP8的代码检查。这些不同的任务需要依赖不同的库，所以需要使用不同的虚拟环境。使用tox的时候，我们会在tox的配置文件&lt;strong&gt;tox.ini&lt;/strong&gt;中指定不同任务的虚拟环境名称，该任务在虚拟环境中需要安装哪些包，以及该任务执行的时候需要运行哪些命令。更多信息，请查看官方文档：&lt;a href=&quot;https://testrun.org/tox/latest/&quot;&gt;https://testrun.org/tox/latest/&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;单元测试工具小结&quot;&gt;单元测试工具小结&lt;/h2&gt;
-
-&lt;p&gt;本章介绍了OpenStack中常用的单元测试工具的基本用途，希望大家对这些工具有个大概的认识。这里我们可以按照类别总结一下这些工具：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;测试环境管理&lt;/strong&gt;: tox
-使用tox来管理测试运行的虚拟环境，并且调用testrepository来执行测试用例。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;测试用例的运行和管理&lt;/strong&gt;: testrepository, subunit, coverage
-testrepository调用subunit来执行测试用例，对测试结果进行聚合和管理；调用coverage来执行代码覆盖率的计算。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;测试用例的编写&lt;/strong&gt;: unittest, mock, testtools, fixtures, testscenarios
-使用testtools作为所有测试用例的基类，同时应用mock, fixtures, testscenarios来更好的编写测试用例。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;在&lt;em&gt;The Hacker’s Guide to Python&lt;/em&gt;（《Python高手之路》）一书中，也有专门的一章介绍了各种单元测试工具及其用法，读者也可以参考一下。下一章，我们来分析Keystone项目的单元测试框架，可以让你看到在OpenStack的实际项目中，这些工具是如何被使用的。&lt;/p&gt;
-
-&lt;h1 id=&quot;keystone的单元测试框架&quot;&gt;Keystone的单元测试框架&lt;/h1&gt;
-
-&lt;p&gt;现在，我们以Keystone项目为例，来看下真实项目中的单元测试是如何架构的。我们采用自顶向下的方式，先从最上层的部分介绍起。&lt;/p&gt;
-
-&lt;h2 id=&quot;使用tox进行测试环境管理&quot;&gt;使用tox进行测试环境管理&lt;/h2&gt;
-
-&lt;p&gt;大部分情况下，我们都是通过&lt;strong&gt;tox&lt;/strong&gt;命令来执行单元测试的，并且传递环境名称给tox命令：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;➜ ~/openstack/env/p/keystone git:(master) ✗ $ tox -e py27
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;tox命令首先会读取项目根目录下的&lt;em&gt;tox.ini&lt;/em&gt;文件，获取相关的信息，然后根据配置构建virtualenv，保存在&lt;em&gt;.tox/&lt;/em&gt;目录下，以环境名称命名：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;➜ ~/openstack/env/p/keystone git:(master) ✗ $ ls .tox
-log  pep8  py27
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;除了&lt;em&gt;log&lt;/em&gt;目录，其他的都是普通的virtualenv环境，你可以自己查看一下内容。我们来看下&lt;em&gt;py27&lt;/em&gt;这个环境的相关配置（在tox.ini）中，我直接在内容上注释一些配置的用途：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[tox]
-minversion = 1.6
-skipsdist = True
-# envlist表示本文件中配置的环境都有哪些
-envlist = py34,py27,pep8,docs,genconfig,releasenotes
-
-# testenv是默认配置，如果某个配置在环境专属的section中没有，就从这个section中读取
-[testenv]
-# usedevelop表示安装virtualenv的时候，本项目自己的代码采用开发模式安装，也就是不会拷贝代码到virtualenv目录中，只是做个链接
-usedevelop = True
-# install_command表示构建环境的时候要执行的命令，一般是使用pip安装
-install_command = pip install -U {opts} {packages}
-setenv = VIRTUAL_ENV={envdir}
-# deps指定构建环境的时候需要安装的依赖包，这个就是作为pip命令的参数
-# keystone这里使用的写法比较特殊一点，第二行的.[ldap,memcache,mongodb]是两个依赖，第一个点'.'表示当前项目的依赖，也就是requirements.txt，第二个部分[ldap,memcache,mongodb]表示extra，是在setup.cfg文件中定义的一个段的名称，该段下定义了额外的依赖，这些可以查看PEP0508
-# 一般的项目这里会采用更简单的方式来书写，直接安装两个文件中的依赖：
-#    -r{toxinidir}/requirements.txt
-#    -r{toxinidir}/test-requirements.txt
-deps = -r{toxinidir}/test-requirements.txt
-       .[ldap,memcache,mongodb]
-# commands表示构建好virtualenv之后要执行的命令，这里调用了tools/pretty_tox.sh来执行测试
-commands =
-  find keystone -type f -name &quot;*.pyc&quot; -delete
-  bash tools/pretty_tox.sh '{posargs}'
-whitelist_externals =
-  bash
-  find
-passenv = http_proxy HTTP_PROXY https_proxy HTTPS_PROXY no_proxy NO_PROXY PBR_VERSION
-
-# 这个section是为py34环境定制某些配置的，没有定制的配置，从[testenv]读取
-[testenv:py34]
-commands =
-  find keystone -type f -name &quot;*.pyc&quot; -delete
-  bash tools/pretty_tox_py3.sh
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;上面提到的&lt;a href=&quot;https://www.python.org/dev/peps/pep-0508/&quot;&gt;PEP-0508&lt;/a&gt;是依赖格式的完整说明。setup.cfg的&lt;em&gt;extra&lt;/em&gt;部分如下：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[extras]
-ldap =
-  python-ldap&amp;gt;=2.4:python_version=='2.7' # PSF
-  ldappool&amp;gt;=1.0:python_version=='2.7' # MPL
-memcache =
-  python-memcached&amp;gt;=1.56 # PSF
-mongodb =
-  pymongo!=3.1,&amp;gt;=3.0.2 # Apache-2.0
-bandit =
-  bandit&amp;gt;=0.17.3 # Apache-2.0
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;使用testrepository管理测试的运行&quot;&gt;使用testrepository管理测试的运行&lt;/h2&gt;
-
-&lt;p&gt;上面我们看到&lt;em&gt;tox.ini&lt;/em&gt;文件中的&lt;code class=&quot;highlighter-rouge&quot;&gt;commands&lt;/code&gt;参数中执行的是&lt;em&gt;tools/pretty_tox.sh&lt;/em&gt;命令。这个脚本的内容如下：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/usr/bin/env bash&lt;/span&gt;
-
-&lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt; -o pipefail
-
-&lt;span class=&quot;nv&quot;&gt;TESTRARGS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# testr和setuptools已经集成，所以可以通过setup.py testr命令来执行&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# --testr-args表示传递给testr命令的参数，告诉testr要传递给subunit的参数&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# subunit-trace是os-testr包中的命令（os-testr是OpenStack的一个项目），用来解析subunit的输出的。&lt;/span&gt;
-python setup.py testr --testr-args&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;--subunit &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$TESTRARGS&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; | subunit-trace -f
-&lt;span class=&quot;nv&quot;&gt;retval&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$?&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# NOTE(mtreinish) The pipe above would eat the slowest display from pbr's testr&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# wrapper so just manually print the slowest tests.&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; -e &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Slowest Tests:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# 测试结束后，让testr显示出执行时间最长的那些测试用例&lt;/span&gt;
-testr slowest
-&lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$retval&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;tox就是从&lt;em&gt;tools/pretty_tox.sh&lt;/em&gt;这个命令开始调用testr来执行单元测试的。testr本身的配置是放在项目根目录下的&lt;em&gt;.testr.conf&lt;/em&gt;文件：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[DEFAULT]
-test_command=
-    ${PYTHON:-python} -m subunit.run discover -t ./ ${OS_TEST_PATH:-./keystone/tests/unit} $LISTOPT $IDOPTION
-
-test_id_option=--load-list $IDFILE
-test_list_option=--list
-group_regex=.*(test_cert_setup)
-
-
-# NOTE(morganfainberg): If single-worker mode is wanted (e.g. for live tests)
-# the environment variable ``TEST_RUN_CONCURRENCY`` should be set to ``1``. If
-# a non-default (1 worker per available core) concurrency is desired, set
-# environment variable ``TEST_RUN_CONCURRENCY`` to the desired number of
-# workers.
-test_run_concurrency=echo ${TEST_RUN_CONCURRENCY:-0}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;这个文件中的配置项可以从&lt;a href=&quot;http://testrepository.readthedocs.org/en/latest/&quot;&gt;testr官方文档&lt;/a&gt;中找到。其中&lt;code class=&quot;highlighter-rouge&quot;&gt;test_command&lt;/code&gt;命令表示要执行什么命令来运行测试用例，这里使用的是&lt;code class=&quot;highlighter-rouge&quot;&gt;subunit.run&lt;/code&gt;，这个我们在上面提到过了。&lt;/p&gt;
-
-&lt;p&gt;到目前为止的流程就是：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;tox建好virtualenv&lt;/li&gt;
-  &lt;li&gt;tox调用testr&lt;/li&gt;
-  &lt;li&gt;testr调用subunit来执行测试用例&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;每个OpenStack项目基本上也都是这样。如果你自己在开发一个Python项目，你也可以参考这个架构。&lt;/p&gt;
-
-&lt;h2 id=&quot;单元测试用例的代码架构&quot;&gt;单元测试用例的代码架构&lt;/h2&gt;
-
-&lt;p&gt;下面我们来看一下Keystone的单元测试代码是如何写的，主要是看一下其层次结构。每个OpenStack项目的单元测试代码结构可能都不一样，不过你了解完Keystone的结构之后，看其他项目的就会比较快了。&lt;/p&gt;
-
-&lt;p&gt;我们以一个测试类为例来分析测试代码的结构：&lt;code class=&quot;highlighter-rouge&quot;&gt;keystone.tests.unit.test_v3_assignment:AssignmentTestCase&lt;/code&gt;。下面是这个类的继承结构，同一级别的缩进表示多重继承，增加缩进表示父类，这里删掉了不必要的路径前缀（从unit目录开始），如下所示：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# 这个测试类是测RoleAssignment的API的
-unit.test_v3_assignment.RoleAssignmentBaseTestCase
--&amp;gt; unit.test_v3.AssignmentTestMixin  这个类包含了一下测试Assignment的工具函数
--&amp;gt; unit.test_v3.RestfulTestCase      这个类是进行V3 REST API测试的基类，实现了V3 API的请求发起和校验
-  -&amp;gt; unit.core.SQLDriverOverride     用于修改各个配置的driver字段为sql
-  -&amp;gt; unit.test_v3.AuthTestMixin      包含创建认证请求的辅助函数
-  -&amp;gt; unit.rest.RestfulTestCase       这个类是进行RESP API测试的基类，V2和V3的API测试都是以这个类为基类，这个类的setUp方法会初始化数据库，创建好TestApp。
-    -&amp;gt; unit.TestCase                 这个类是Keystone中所有单元测试类的基类，它主要初始化配置，以及初始化log
-      -&amp;gt; unit.BaseTestCase           这个类主要是配置测试运行的基本环境，修改一些环境变量，比如HOME等。
-        -&amp;gt; oslotest.BaseTestCase     这个是在oslotest中定义的基类，原来所有的OpenStack项目的单元测试都继承自这个基类。
-                                     不过，这个继承在Keystone中已经被删除了，Keystone自己在unit.BaseTestCase中做了差不多的事情。
-                                     这个是2016-02-17做的变更，具体的可以查看这个revision 262d0b66c3bcb82eadb663910ee21ded63e77a78。
-          -&amp;gt; testtools.TestCase      使用testtools作为测试框架
-            -&amp;gt; unittest.TestCase     testtools本身是unittest的扩展
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;从上面的层次结构可以看出，OpenStack中的大项目，由于单元测试用例很多（Keystone现在有超过6200个单元测试用例），所以其单元测试架构也会比较复杂。要写好单元测试，需要先了解一下整个测试代码的架构。&lt;/p&gt;
-
-&lt;h1 id=&quot;总结&quot;&gt;总结&lt;/h1&gt;
-
-&lt;p&gt;本文我们了解了Python中的单元测试的概念和工具，并且通过Keystone项目了解了实际项目中的单元测试的架构，希望有助于各位读者更好的掌握OpenStack项目的单元测试基础。&lt;a href=&quot;https://github.com/diabloneo/webdemo&quot;&gt;webdemo项目&lt;/a&gt;目前没有单元测试的代码，有兴趣的读者可以自己fork然后参考Keystone的架构为其增加完整的单元测试架构。&lt;/p&gt;
-
-&lt;h1 id=&quot;系列后记&quot;&gt;系列后记&lt;/h1&gt;
-
-&lt;p&gt;这个系列我打算就此结束，到目前为止一共写了8篇文章，写写停停，前后写了9个月。这里也做个小结。&lt;/p&gt;
-
-&lt;p&gt;一开始写这个系列的文章是因为我自己在学习OpenStack开发的过程中遇到很多困难，很难找到所需的入门文章。所以打算写点文章，既能作为自己的总结，也能为其他人提供些帮助。如果这些文章能帮到你，我就非常的开心。当然，这些文章的质量肯定有好有坏，欢迎大家提意见，如果有时间，我会继续修改。&lt;/p&gt;
-
-&lt;p&gt;然后，我想说一下写这类文章的难点，主要是要保证细节都是正确的，然后又不能太啰嗦。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;细节都是正确的&lt;/strong&gt;。举个例子，大学的很多数据结构教材中的代码，你直接贴到电脑上，然后编译，大部分是编译不通过的。这个会让初学者非常沮丧。所以我希望能够保证这些文章里的细节都是正确的，包括一些工具的配置，如果觉得有必要，我也会描述下配置的作用，以及要去哪里找更多的信息。如果这方面有遗漏，请和我说。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;不能太啰嗦&lt;/strong&gt;。这8篇文章里涉及的库有好几十个，每个库如果都讲仔细了，那就会让文章显得非常啰嗦。但是又不能直接让读者去看库的官方文档，所以权衡内容也是很麻烦的。如果各位有这方面的建议，也请和我说。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;这个系列的文章是关于OpenStack的基础知识，其实OpenStack开发还要涉及到很多其他的知识，比如消息队列、非阻塞IO等，而且还要了解整个OpenStack的开发生态，包括Gerrit评审系统、Zuul持续集成、devstack开发环境、oslo项目等。&lt;/p&gt;
-
-</description>
-        <pubDate>Sun, 13 Mar 2016 00:00:00 +0800</pubDate>
-        <link>/2016/03/13/learn-openstack-dev-skill-by-demo-08.html</link>
-        <guid isPermaLink="true">/2016/03/13/learn-openstack-dev-skill-by-demo-08.html</guid>
         
         
       </item>
