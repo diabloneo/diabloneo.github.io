@@ -6,8 +6,8 @@
 </description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 29 Sep 2017 22:06:35 +0800</pubDate>
-    <lastBuildDate>Fri, 29 Sep 2017 22:06:35 +0800</lastBuildDate>
+    <pubDate>Fri, 29 Sep 2017 22:20:37 +0800</pubDate>
+    <lastBuildDate>Fri, 29 Sep 2017 22:20:37 +0800</lastBuildDate>
     <generator>Jekyll v3.4.0</generator>
     
       <item>
@@ -16,7 +16,7 @@
 
 &lt;p&gt;Rob Pike在2015年的Gopherfest的演讲，题目是 &lt;em&gt;Go Proverbs&lt;/em&gt;. YouTube地址:&lt;/p&gt;
 
-&lt;p&gt;[Go Proverbs - Rob Pike - Gopherfest - November 18, 2015]&lt;a href=&quot;https://www.youtube.com/watch?v=PAAkCSZUG1c&amp;amp;index=27&amp;amp;t=1s&amp;amp;list=WL&quot;&gt;https://www.youtube.com/watch?v=PAAkCSZUG1c&amp;amp;index=27&amp;amp;t=1s&amp;amp;list=WL&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=PAAkCSZUG1c&amp;amp;index=27&amp;amp;t=1s&amp;amp;list=WL&quot;&gt;Go Proverbs - Rob Pike - Gopherfest - November 18, 2015&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;他分享了他自己写的几条Go编程的格言，类似 &lt;em&gt;The Zen of Python&lt;/em&gt;，但是没那么正式，格言的列表如下，推荐看视频：&lt;/p&gt;
 
