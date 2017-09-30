@@ -10,8 +10,8 @@
   <meta name="description" content="OpenStack中的关系型数据库应用">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="/2016/01/06/learn-openstack-dev-skill-by-demo-06.html">
-  <link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="/feed.xml">
+  <link rel="canonical" href="http://diabloneo.github.io//2016/01/06/learn-openstack-dev-skill-by-demo-06.html">
+  <link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
 </head>
 
 
@@ -43,6 +43,7 @@
         
           
         
+        <a href="/feed.xml">RSS</a>
       </div>
     </nav>
 
@@ -101,7 +102,7 @@
 
 <p>先让我们来看一下SQLAlchemy这个库的总体架构，如下图（图来自官网）所示：</p>
 
-<p><img src="/assets/imgs/00002_sql_alchemy_architecture.png" alt="sqla_arch_small.png" /></p>
+<p><img src="http://diabloneo.github.io//assets/imgs/00002_sql_alchemy_architecture.png" alt="sqla_arch_small.png" /></p>
 
 <p>SQLAlchemy这个库分为两层：</p>
 
@@ -112,7 +113,7 @@
       <li><em>SQL Expression Language</em>是SQLAlchemy中实现的一套SQL表达系统，主要是实现了对SQL的DML(Data Manipulation Language)的封装。这里实现了对数据库的SELECT、DELETE、UPDATE等语句的封装。SQL Expression Language是实现ORM层的基础。</li>
       <li><em>Schema/Types</em>这部分主要是实现了对SQL的DDL(Data Definition Language)的封装。实现了Table类用来表示一个表，Column类用来表示一个列，也是实现了将数据库的数据类型映射到Python的数据类型。上面的<em>SQL Expression Language</em>的操作对象就是这里定义的Table。</li>
       <li><em>Engine</em>实现了对各种不同的数据库客户端的封装和调度，是所有SQLAlchemy应用程序的入口点，要使用SQLAlchemy库来操作一个数据库，首先就要有一个Engine对象，后续的所有对数据库的操作都要通过这个Engine对象来进行。下图是官方文档中的Engine位置的描述图：
-<img src="/assets/imgs/00003_sql_alchemy_engine_position.png" alt="sqla_engine_arch.png" />
+<img src="http://diabloneo.github.io//assets/imgs/00003_sql_alchemy_engine_position.png" alt="sqla_engine_arch.png" />
         <ul>
           <li>Pool是Engine下面的一个模块，用来管理应用程序到数据库的连接。</li>
           <li>Dialect是Engine下的另一个模块，用来对接不同的数据库驱动（即DBMS客户端），这些驱动要实现DBAPI接口。</li>

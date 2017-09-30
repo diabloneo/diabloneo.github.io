@@ -10,8 +10,8 @@
   <meta name="description" content="在上一篇文章，我们介绍了SQLAlchemy的基本概念，也介绍了基本的使用流程。本文我们结合webdemo这个项目来介绍如何在项目中使用SQLAlchemy。另外，我们还会介绍数据库版本管理的概念和实践，这也是OpenStack每个项目都需要做的事情。">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="/2016/02/21/learn-openstack-dev-skill-by-demo-07.html">
-  <link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="/feed.xml">
+  <link rel="canonical" href="http://diabloneo.github.io//2016/02/21/learn-openstack-dev-skill-by-demo-07.html">
+  <link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
 </head>
 
 
@@ -43,6 +43,7 @@
         
           
         
+        <a href="/feed.xml">RSS</a>
       </div>
     </nav>
 
@@ -82,15 +83,15 @@
 
 <p>OpenStack项目中我见过两种数据库的代码框架分隔，一种是Keystone的风格，它把一组API的API代码和数据库代码都放在同一个目录下，如下所示：</p>
 
-<p><img src="/assets/imgs/00004_keystone_db_code.png" alt="Keystone的数据库代码" /></p>
+<p><img src="http://diabloneo.github.io//assets/imgs/00004_keystone_db_code.png" alt="Keystone的数据库代码" /></p>
 
 <p>采用Pecan框架的项目则大多把数据库相关代码都放在db目录下，比如Magnum项目，如下所示：</p>
 
-<p><img src="/assets/imgs/00005_magnum_db_code.png" alt="Magnum的数据库代码" /></p>
+<p><img src="http://diabloneo.github.io//assets/imgs/00005_magnum_db_code.png" alt="Magnum的数据库代码" /></p>
 
 <p>由于webdemo采用的是Pecan框架，而且把数据库操作的代码放到同一个目录下也会比较清晰，所以我们采用和Magnum项目相同的方式来编写数据库相关的代码，创建<strong>webdemo/db</strong>目录，然后把数据库操作的相关代码都放在这个目录下，如下所示：</p>
 
-<p><img src="/assets/imgs/00006_webdemo_db_code.png" alt="webdemo的数据库代码" /></p>
+<p><img src="http://diabloneo.github.io//assets/imgs/00006_webdemo_db_code.png" alt="webdemo的数据库代码" /></p>
 
 <p>由于webdemo项目还没有使用<strong>oslo_db</strong>库，所以代码看起来比较直观，没有Magnum项目复杂。接下来，我们就要开始写数据库操作的相关代码，分为两个步骤：</p>
 
@@ -368,7 +369,7 @@ api.py  api.pyc  __init__.py  __init__.pyc  models.py  models.pyc  sqlalchemy
 
 <p>现在，我们就在<em>webdemo/db/sqlalchemy/alembic/</em>目录下建立了一个Alembic migration环境：</p>
 
-<p><img src="/assets/imgs/00007_alembic_migration_environment.png" alt="Alembic Migration Environment" /></p>
+<p><img src="http://diabloneo.github.io//assets/imgs/00007_alembic_migration_environment.png" alt="Alembic Migration Environment" /></p>
 
 <h3 id="修改alembic配置文件">修改Alembic配置文件</h3>
 

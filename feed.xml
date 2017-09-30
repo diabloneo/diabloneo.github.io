@@ -4,10 +4,10 @@
     <title>Coffee, Coke and Code</title>
     <description>Archive diabloneo's articles.
 </description>
-    <link>/</link>
-    <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 30 Sep 2017 22:37:20 +0800</pubDate>
-    <lastBuildDate>Sat, 30 Sep 2017 22:37:20 +0800</lastBuildDate>
+    <link>http://diabloneo.github.io//</link>
+    <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Sat, 30 Sep 2017 23:28:46 +0800</pubDate>
+    <lastBuildDate>Sat, 30 Sep 2017 23:28:46 +0800</lastBuildDate>
     <generator>Jekyll v3.4.0</generator>
     
       <item>
@@ -41,7 +41,7 @@
 
 &lt;p&gt;&lt;em&gt;Jaeger&lt;/em&gt;的架构如下图所示：&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/imgs/00018_uber_jaeger_architecture.png&quot; alt=&quot;Jaeger Architecture&quot; /&gt;
+&lt;p&gt;&lt;img src=&quot;http://diabloneo.github.io//assets/imgs/00018_uber_jaeger_architecture.png&quot; alt=&quot;Jaeger Architecture&quot; /&gt;
 &lt;em&gt;图片来自http://jaeger.readthedocs.io/en/latest/architecture/&lt;/em&gt;&lt;/p&gt;
 
 &lt;p&gt;Jaeger的架构很简洁：&lt;/p&gt;
@@ -63,15 +63,15 @@
 &lt;p&gt;这个demo项目是用了 &lt;em&gt;Uber&lt;/em&gt;的 &lt;strong&gt;&lt;a href=&quot;https://github.com/uber/tchannel&quot;&gt;TChannel&lt;/a&gt;&lt;/strong&gt;来实现微服务的RPC，它已经和OpenTracing做了集成，用起来很方便。另外一个流行的rpc框架 &lt;strong&gt;gRPC&lt;/strong&gt;也已经和OpenTracing进行了集成。&lt;/p&gt;
 </description>
         <pubDate>Sat, 30 Sep 2017 00:00:00 +0800</pubDate>
-        <link>/2017/09/30/uber-jaeger-introduction.html</link>
-        <guid isPermaLink="true">/2017/09/30/uber-jaeger-introduction.html</guid>
+        <link>http://diabloneo.github.io//2017/09/30/uber-jaeger-introduction.html</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2017/09/30/uber-jaeger-introduction.html</guid>
         
         
       </item>
     
       <item>
         <title>Rob Pike's Go Proverb</title>
-        <description>&lt;p&gt;&lt;img src=&quot;/assets/imgs/00017_rob_pike_go_proverb.png&quot; alt=&quot;Rob Pike&quot; /&gt;&lt;/p&gt;
+        <description>&lt;p&gt;&lt;img src=&quot;http://diabloneo.github.io//assets/imgs/00017_rob_pike_go_proverb.png&quot; alt=&quot;Rob Pike&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Rob Pike在2015年的Gopherfest的演讲，题目是 &lt;em&gt;Go Proverbs&lt;/em&gt;. YouTube地址:&lt;/p&gt;
 
@@ -101,15 +101,15 @@
 &lt;/ol&gt;
 </description>
         <pubDate>Fri, 29 Sep 2017 00:00:00 +0800</pubDate>
-        <link>/2017/09/29/rob-pike-go-proverb.html</link>
-        <guid isPermaLink="true">/2017/09/29/rob-pike-go-proverb.html</guid>
+        <link>http://diabloneo.github.io//2017/09/29/rob-pike-go-proverb.html</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2017/09/29/rob-pike-go-proverb.html</guid>
         
         
       </item>
     
       <item>
         <title>SDC 2017 Day 3 General Session</title>
-        <description>&lt;p&gt;&lt;img src=&quot;/assets/imgs/00016_sdc2017_day3.jpg&quot; alt=&quot;Day3&quot; /&gt;&lt;/p&gt;
+        <description>&lt;p&gt;&lt;img src=&quot;http://diabloneo.github.io//assets/imgs/00016_sdc2017_day3.jpg&quot; alt=&quot;Day3&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;今天SDC 2017进入第三天，早上还是General Session。&lt;/p&gt;
 
@@ -152,15 +152,15 @@
 &lt;p&gt;这个没听。&lt;/p&gt;
 </description>
         <pubDate>Thu, 14 Sep 2017 00:00:00 +0800</pubDate>
-        <link>/2017/09/14/sdc-2017-3.html</link>
-        <guid isPermaLink="true">/2017/09/14/sdc-2017-3.html</guid>
+        <link>http://diabloneo.github.io//2017/09/14/sdc-2017-3.html</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2017/09/14/sdc-2017-3.html</guid>
         
         
       </item>
     
       <item>
         <title>SDC 2017 Day 2 General Session</title>
-        <description>&lt;p&gt;&lt;img src=&quot;/assets/imgs/00014_sdc2017_day2.jpg&quot; alt=&quot;Day2&quot; /&gt;&lt;/p&gt;
+        <description>&lt;p&gt;&lt;img src=&quot;http://diabloneo.github.io//assets/imgs/00014_sdc2017_day2.jpg&quot; alt=&quot;Day2&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;今天会议的第二天，上午是General Session。从现场看，参会人数大约150人。整个General Session包括4个Keynote。&lt;/p&gt;
 
@@ -203,18 +203,18 @@
 
 &lt;p&gt;最后，一张commit数量的图显示，2017年的以来，Block Storage方面的开发活跃度正在高速增长。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/imgs/00015_sdc2017_block_storage_commits.png&quot; alt=&quot;Block Storage Commits&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://diabloneo.github.io//assets/imgs/00015_sdc2017_block_storage_commits.png&quot; alt=&quot;Block Storage Commits&quot; /&gt;&lt;/p&gt;
 </description>
         <pubDate>Wed, 13 Sep 2017 00:00:00 +0800</pubDate>
-        <link>/2017/09/13/sdc-2017-2.html</link>
-        <guid isPermaLink="true">/2017/09/13/sdc-2017-2.html</guid>
+        <link>http://diabloneo.github.io//2017/09/13/sdc-2017-2.html</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2017/09/13/sdc-2017-2.html</guid>
         
         
       </item>
     
       <item>
         <title>SDC 2017 Day 1</title>
-        <description>&lt;p&gt;&lt;img src=&quot;/assets/imgs/00013_sdc2017_day1.jpg&quot; alt=&quot;Day1&quot; /&gt;&lt;/p&gt;
+        <description>&lt;p&gt;&lt;img src=&quot;http://diabloneo.github.io//assets/imgs/00013_sdc2017_day1.jpg&quot; alt=&quot;Day1&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;9月11日到14日，SNIA SDC (Storage Developer Conference) 2017在美国圣何塞召开。我把今天听的几个演讲分享一下。给出的链接可以下载演讲的幻灯片。&lt;/p&gt;
 
@@ -275,8 +275,8 @@
 &lt;p&gt;讲了一个对服务器集群生命周期进行建模的方法。个人觉得这个方法更适合给硬盘使用&lt;/p&gt;
 </description>
         <pubDate>Tue, 12 Sep 2017 00:00:00 +0800</pubDate>
-        <link>/2017/09/12/sdc-2017-1.html</link>
-        <guid isPermaLink="true">/2017/09/12/sdc-2017-1.html</guid>
+        <link>http://diabloneo.github.io//2017/09/12/sdc-2017-1.html</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2017/09/12/sdc-2017-1.html</guid>
         
         
       </item>
@@ -327,8 +327,8 @@
 &lt;p&gt;讲了golang单元测试的一些基本需求以及HashiCorp在这方面对应的技术实现。&lt;/p&gt;
 </description>
         <pubDate>Wed, 16 Aug 2017 00:00:00 +0800</pubDate>
-        <link>/2017/08/16/gophercon-2017-2.html</link>
-        <guid isPermaLink="true">/2017/08/16/gophercon-2017-2.html</guid>
+        <link>http://diabloneo.github.io//2017/08/16/gophercon-2017-2.html</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2017/08/16/gophercon-2017-2.html</guid>
         
         
       </item>
@@ -375,15 +375,15 @@
 &lt;p&gt;介绍了社区的实验项目 github.com/golang/dep ，这是一个用来实现包依赖管理的工具，用来解决现在广为诟病的包依赖问题。如果合适，将来会进入go tool chain。该项目已经production ready，大家可以开始使用了。&lt;/p&gt;
 </description>
         <pubDate>Sat, 05 Aug 2017 00:00:00 +0800</pubDate>
-        <link>/2017/08/05/gophercon-2017-1.html</link>
-        <guid isPermaLink="true">/2017/08/05/gophercon-2017-1.html</guid>
+        <link>http://diabloneo.github.io//2017/08/05/gophercon-2017-1.html</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2017/08/05/gophercon-2017-1.html</guid>
         
         
       </item>
     
       <item>
         <title>2017 OpenStack Days China Day 1</title>
-        <description>&lt;p&gt;&lt;img src=&quot;/assets/imgs/00010_2017_openstack_days_china_gate.jpg&quot; alt=&quot;Gate&quot; /&gt;&lt;/p&gt;
+        <description>&lt;p&gt;&lt;img src=&quot;http://diabloneo.github.io//assets/imgs/00010_2017_openstack_days_china_gate.jpg&quot; alt=&quot;Gate&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;2017 OpenStack Days China于7月24日和7月25日在北京国家会议中心举行。会议的目标依旧是推广OpenStack在中国的普及。人数大约2000，但是根据去年有来的人说，人数没有去年多。&lt;/p&gt;
 
@@ -391,17 +391,17 @@
 
 &lt;p&gt;宣传方面，来进行宣传的基本都是本土厂商，包括我所在的XSKY，看到的外国厂商貌似只有Intel, RedHat, NetApp。本土厂商中最让我感到意外的是腾讯。腾讯在本次会议上推出了TStack产品，也就是腾讯定制的OpenStack产品以及相关的服务。搜索了一下，发现腾讯在发布TStack的同时，还向基金会提交了superuser的采访稿（http://superuser.openstack.org/articles/tencent-openstack/），准备参加11月份悉尼summit的superuser评选，说明腾讯对这次TStack发布做了充分的准备。TStack一开始是作为腾讯的内部私有云服务来建设的，目前的版本是基于K版，其内部集群运行了4年多，可用性达到99.99%，运行了5000个物理机和10000+个虚拟机，是国内最大的私有云平台之一（这应该也是他们参加superuser评选的资本）。除了自己用以外，腾讯还发展了一些TStack的用户，比如著名的0元中标的厦门政务云。根据产品介绍页，腾讯这次是产品和服务一起推出，虽然版本看起来有点旧，但是毕竟是个超级大厂，想必会极大的冲击国内的OpenStack市场。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/imgs/00011_tstack_page1.jpg&quot; alt=&quot;TStack1&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://diabloneo.github.io//assets/imgs/00011_tstack_page1.jpg&quot; alt=&quot;TStack1&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/imgs/00012_tstack_page2.jpg&quot; alt=&quot;TStack2&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://diabloneo.github.io//assets/imgs/00012_tstack_page2.jpg&quot; alt=&quot;TStack2&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;我也听了几场技术分享，其中最热门的是EasyStack的一个分享：OpenStack对vCenter存量虚拟机的纳管和迁移实践。来这场分享的听众很多，说明大家对VMWare和OpenStack共存是有很大需求的。从分享中也可以发现EasyStack做了很多这方面的工作。&lt;/p&gt;
 
 &lt;p&gt;我第二天没去，所以没有第二天相关的内容。&lt;/p&gt;
 </description>
         <pubDate>Wed, 26 Jul 2017 00:00:00 +0800</pubDate>
-        <link>/2017/07/26/2017-openstack-days-china-day1.html</link>
-        <guid isPermaLink="true">/2017/07/26/2017-openstack-days-china-day1.html</guid>
+        <link>http://diabloneo.github.io//2017/07/26/2017-openstack-days-china-day1.html</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2017/07/26/2017-openstack-days-china-day1.html</guid>
         
         
       </item>
@@ -437,7 +437,7 @@
 
 &lt;p&gt;这次的summit上，社区和主要厂商都把kubernetes、mesos、swarm等看成是应用管理平台，这个平台通过容器技术可以实现应用在混合云上的编排需求。OpenStack则作为私有云的管理平台，向K8s提供资源，但是不参与应用的管理。类似下图这样的架构。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/imgs/00009_hybrid_cloud_architecture.jpg&quot; alt=&quot;Hybrid Cloud Architecture&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://diabloneo.github.io//assets/imgs/00009_hybrid_cloud_architecture.jpg&quot; alt=&quot;Hybrid Cloud Architecture&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;也就是说，OpenStack打算脱离应用管理平台，各大厂商目前也在这么做，比如Red Hat和Ubuntu。&lt;/p&gt;
 
@@ -449,8 +449,8 @@
 &lt;p&gt;总的来说，使用容器来调度应用也是个事实上的标准了，OpenStack已经没有办法在这个领域中占到地盘了（所以我对Magnum项目的前途感到十分担忧啊）。如何和容器更好的结合，肯定是未来一两年内OpenStack要做的主要事情。&lt;/p&gt;
 </description>
         <pubDate>Fri, 26 May 2017 00:00:00 +0800</pubDate>
-        <link>/2017/05/26/openstack-summit-2017-boston-review.html</link>
-        <guid isPermaLink="true">/2017/05/26/openstack-summit-2017-boston-review.html</guid>
+        <link>http://diabloneo.github.io//2017/05/26/openstack-summit-2017-boston-review.html</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2017/05/26/openstack-summit-2017-boston-review.html</guid>
         
         
       </item>
@@ -598,8 +598,8 @@
 &lt;p&gt;因为&lt;code class=&quot;highlighter-rouge&quot;&gt;packagesForBuild&lt;/code&gt;函数是调用了&lt;code class=&quot;highlighter-rouge&quot;&gt;packagesAndErrors&lt;/code&gt;函数来获得packages，如果获取的过程没有错误，那么&lt;code class=&quot;highlighter-rouge&quot;&gt;packagesForBuild&lt;/code&gt;就返回获取到的packages。我们又回到了&lt;code class=&quot;highlighter-rouge&quot;&gt;runBuild&lt;/code&gt;函数中。&lt;/p&gt;
 </description>
         <pubDate>Tue, 28 Feb 2017 00:00:00 +0800</pubDate>
-        <link>/2017/02/28/golang-code-reading-notes-3.html</link>
-        <guid isPermaLink="true">/2017/02/28/golang-code-reading-notes-3.html</guid>
+        <link>http://diabloneo.github.io//2017/02/28/golang-code-reading-notes-3.html</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2017/02/28/golang-code-reading-notes-3.html</guid>
         
         
       </item>
