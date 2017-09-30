@@ -6,9 +6,68 @@
 </description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 29 Sep 2017 22:20:37 +0800</pubDate>
-    <lastBuildDate>Fri, 29 Sep 2017 22:20:37 +0800</lastBuildDate>
+    <pubDate>Sat, 30 Sep 2017 22:37:20 +0800</pubDate>
+    <lastBuildDate>Sat, 30 Sep 2017 22:37:20 +0800</lastBuildDate>
     <generator>Jekyll v3.4.0</generator>
+    
+      <item>
+        <title>Uber Jaeger介绍</title>
+        <description>&lt;h1 id=&quot;jaeger加入cncf&quot;&gt;Jaeger加入CNCF&lt;/h1&gt;
+
+&lt;p&gt;&lt;strong&gt;Jaeger&lt;/strong&gt;是 &lt;em&gt;Uber&lt;/em&gt;开源的 &lt;strong&gt;&lt;a href=&quot;http://opentracing.io/&quot;&gt;OpenTracing&lt;/a&gt;&lt;/strong&gt;实现，包括客户端和服务端。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;项目地址: &lt;a href=&quot;https://github.com/jaegertracing/jaeger/&quot;&gt;https://github.com/jaegertracing/jaeger/&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;项目文档: &lt;a href=&quot;http://jaeger.readthedocs.io/en/latest/&quot;&gt;http://jaeger.readthedocs.io/en/latest/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Jaeger项目4月14日开源，9月13日被 &lt;em&gt;CNCF&lt;/em&gt;接受成为第12个托管项目, &lt;a href=&quot;https://www.cncf.io/blog/2017/09/13/cncf-hosts-jaeger/&quot;&gt;CNCF Hosts Jaeger&lt;/a&gt;。CNCF托管的其他11个项目是：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Kubernetes&lt;/li&gt;
+  &lt;li&gt;Prometheus&lt;/li&gt;
+  &lt;li&gt;OpenTracing&lt;/li&gt;
+  &lt;li&gt;Fluentd&lt;/li&gt;
+  &lt;li&gt;Linkerd&lt;/li&gt;
+  &lt;li&gt;gRPC&lt;/li&gt;
+  &lt;li&gt;CoreDNS&lt;/li&gt;
+  &lt;li&gt;containerd&lt;/li&gt;
+  &lt;li&gt;rkt&lt;/li&gt;
+  &lt;li&gt;CNI&lt;/li&gt;
+  &lt;li&gt;Envoy&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h1 id=&quot;jaeger架构&quot;&gt;Jaeger架构&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;Jaeger&lt;/em&gt;的架构如下图所示：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/imgs/00018_uber_jaeger_architecture.png&quot; alt=&quot;Jaeger Architecture&quot; /&gt;
+&lt;em&gt;图片来自http://jaeger.readthedocs.io/en/latest/architecture/&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Jaeger的架构很简洁：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;在每个服务器上运行 &lt;em&gt;jaeger-agent&lt;/em&gt;，用于收集本服务器的信息，然后发送给 &lt;em&gt;jaeger-collector&lt;/em&gt;。&lt;/li&gt;
+  &lt;li&gt;每个服务都嵌入 &lt;em&gt;jaeger-client&lt;/em&gt;，这是一个客户端，会把服务的请求处理的tracing信息发送给 &lt;em&gt;jaeger-agent&lt;/em&gt;。&lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;jaeger-collector&lt;/em&gt;是一个中心化的服务端，用于收集 &lt;em&gt;jaeger-agent&lt;/em&gt;发送过来的tracing信息进行处理后存储到数据库中（目前只支持Cassandra）。&lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;jaeger-query&lt;/em&gt;是一个查询服务，对外保护tracing信息的查询API。&lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;jaeger-ui&lt;/em&gt;是一个浏览器客户端。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h1 id=&quot;jaeger的demo&quot;&gt;Jaeger的demo&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;Jaeger&lt;/em&gt;项目的leader写了一篇很好的文章来介绍Jaeger的使用 &lt;a href=&quot;https://medium.com/opentracing/take-opentracing-for-a-hotrod-ride-f6e3141f7941&quot;&gt;Take OpenTracing for a HotROD ride&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;文中演示了查看服务的架构，查看请求的详细构成，定位延迟原因等基本用法。还介绍了span，基于上下文的log，tag，OpenTracing baggage等概念。要了解 &lt;em&gt;Jaeger&lt;/em&gt;能做什么，可以从这篇文章开始。&lt;/p&gt;
+
+&lt;p&gt;这个demo项目是用了 &lt;em&gt;Uber&lt;/em&gt;的 &lt;strong&gt;&lt;a href=&quot;https://github.com/uber/tchannel&quot;&gt;TChannel&lt;/a&gt;&lt;/strong&gt;来实现微服务的RPC，它已经和OpenTracing做了集成，用起来很方便。另外一个流行的rpc框架 &lt;strong&gt;gRPC&lt;/strong&gt;也已经和OpenTracing进行了集成。&lt;/p&gt;
+</description>
+        <pubDate>Sat, 30 Sep 2017 00:00:00 +0800</pubDate>
+        <link>/2017/09/30/uber-jaeger-introduction.html</link>
+        <guid isPermaLink="true">/2017/09/30/uber-jaeger-introduction.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>Rob Pike's Go Proverb</title>
@@ -541,139 +600,6 @@
         <pubDate>Tue, 28 Feb 2017 00:00:00 +0800</pubDate>
         <link>/2017/02/28/golang-code-reading-notes-3.html</link>
         <guid isPermaLink="true">/2017/02/28/golang-code-reading-notes-3.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Golang源码阅读笔记 -- go build(2)</title>
-        <description>&lt;p&gt;在&lt;a href=&quot;/2017/02/26/golang-code-reading-notes-1.html&quot;&gt;上一篇文章go build(1)&lt;/a&gt;中，我们已经来到了&lt;em&gt;cmd/go/pkg.go&lt;/em&gt;文件的&lt;code class=&quot;highlighter-rouge&quot;&gt;loadImport&lt;/code&gt;函数中，在这个函数里，会调用&lt;code class=&quot;highlighter-rouge&quot;&gt;buildContext.Import()&lt;/code&gt;方法来载入一个package的信息。本文会深入的看一下这个&lt;code class=&quot;highlighter-rouge&quot;&gt;buildContext.Import()&lt;/code&gt;中的逻辑。&lt;/p&gt;
-
-&lt;h1 id=&quot;gobuildcontext的import方法&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;go/build.Context&lt;/code&gt;的&lt;code class=&quot;highlighter-rouge&quot;&gt;Import&lt;/code&gt;方法&lt;/h1&gt;
-
-&lt;p&gt;这个方法位于&lt;em&gt;go/build/build.go&lt;/em&gt;文件中，是&lt;code class=&quot;highlighter-rouge&quot;&gt;Context&lt;/code&gt;对象的一个导出接口。该接口的声明是&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;(ctx *Context) Import(path string, srcDir string, mode ImportMode) (*Package, error)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;它的参数含义如下：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;path&lt;/code&gt; 表示这个package的ImportPath。&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;srcDir&lt;/code&gt; 当&lt;code class=&quot;highlighter-rouge&quot;&gt;path&lt;/code&gt;是一个local path的时候，相对路径是以&lt;code class=&quot;highlighter-rouge&quot;&gt;srcDir&lt;/code&gt;开始的。&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;mode&lt;/code&gt; 是用来控制&lt;code class=&quot;highlighter-rouge&quot;&gt;Import&lt;/code&gt;方法的行为的。目前有三个值:
-    &lt;ul&gt;
-      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;FindOnly&lt;/code&gt; 只查找package所在的目录，不读取其中的源码的内容&lt;/li&gt;
-      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;ImportComment&lt;/code&gt; 解析import comment。Golang允许在&lt;code class=&quot;highlighter-rouge&quot;&gt;import&lt;/code&gt;语句之后跟随一个有含义的comment，具体的功能见&lt;a href=&quot;http://golang.org/s/go14customimport&quot;&gt;http://golang.org/s/go14customimport&lt;/a&gt;。&lt;/li&gt;
-      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;IgnoreVendor&lt;/code&gt; 忽略Vendor目录的搜索。&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Import&lt;/code&gt;方法很长，这里还是只描述最常见情况下的代码路径，也就是参数&lt;code class=&quot;highlighter-rouge&quot;&gt;path&lt;/code&gt;的值是&lt;em&gt;goexample/hello&lt;/em&gt;这样的形式，且没有vendor目录，而&lt;code class=&quot;highlighter-rouge&quot;&gt;srcDir&lt;/code&gt;的值是命令执行时的当前工作目录。&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Import&lt;/code&gt;方法工作就是生产一个&lt;code class=&quot;highlighter-rouge&quot;&gt;go/build.Package&lt;/code&gt;对象（在本文中我们简称为&lt;code class=&quot;highlighter-rouge&quot;&gt;Package&lt;/code&gt;对象，在上一篇文章中还有一个&lt;code class=&quot;highlighter-rouge&quot;&gt;cmd/go.Package&lt;/code&gt;对象，不要弄混了）。&lt;code class=&quot;highlighter-rouge&quot;&gt;Import&lt;/code&gt;方法的逻辑主要分为几块，我们分别来看。&lt;/p&gt;
-
-&lt;h2 id=&quot;设置构建结果的目标路径&quot;&gt;设置构建结果的目标路径&lt;/h2&gt;
-
-&lt;p&gt;当要构建一个package的时候，就要知道构建结果的存放位置，包括最终结果和中间结果。这里首先会设置设置两个变量的值。&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;pkgtargetroot&lt;/code&gt;，这个是存放结果的根目录，这个目录下会存放很多不同的package的构建结果。在Golang的环境中，你可以在GOPATH和GOROOT目录下分别找到&lt;strong&gt;pkg/&lt;/strong&gt;目录，这个目录就是存放构建结果的地方，其中，&lt;strong&gt;GOROOT下的pkg目录中存放的是Golang的标准库构建的结果，都是以arcihve的文件格式存放的，当你的代码引用了标准库时，标准库可以不用重新编译，直接进行链接&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;pkgtargetroot&lt;/code&gt;的值是由&lt;em&gt;pkg/&lt;/em&gt;前缀、操作系统、架构和suffix组成的。最常用的情况下，使用&lt;strong&gt;gc&lt;/strong&gt;编译器（也就是Golang官方编译器，另一种是gccgo），没有suffix，是linux系统和x86_64架构，所以&lt;code class=&quot;highlighter-rouge&quot;&gt;pkgtargetroot&lt;/code&gt;的值是&lt;em&gt;pkg/linux_amd64&lt;/em&gt;。这个目录就这个最常用的情况下，package存放构建结果的地方。&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;pkgtargetroot&lt;/code&gt;下还要为每个package建立单独的子目录用于存放构建结果。这里是否有子目录，完全取决于package的ImportPath，也就是&lt;code class=&quot;highlighter-rouge&quot;&gt;Import&lt;/code&gt;方法的&lt;code class=&quot;highlighter-rouge&quot;&gt;path&lt;/code&gt;参数。比如我们的&lt;code class=&quot;highlighter-rouge&quot;&gt;goexample/hello&lt;/code&gt;，最终生成的构建目标文件路径为&lt;em&gt;pkg/linux_amd64/goexample/hello.a&lt;/em&gt;。&lt;/p&gt;
-
-&lt;p&gt;最后，当&lt;code class=&quot;highlighter-rouge&quot;&gt;Import&lt;/code&gt;返回前，会把这些路径设置到&lt;code class=&quot;highlighter-rouge&quot;&gt;Package&lt;/code&gt;对象中。其中&lt;code class=&quot;highlighter-rouge&quot;&gt;PkgObj&lt;/code&gt;成员用来存放package构建结果的完整存放路径，类似&lt;em&gt;GOPATH/pkg/linux_amd64/goexample/hello.a&lt;/em&gt;。&lt;/p&gt;
-
-&lt;h2 id=&quot;查找package的位置&quot;&gt;查找package的位置&lt;/h2&gt;
-
-&lt;p&gt;接下来，&lt;code class=&quot;highlighter-rouge&quot;&gt;Import&lt;/code&gt;方法会根据是否是local import来查找package的位置，这里我们只看非local import的情况。按照下面的顺序来查找：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;如果允许查找vendor目录，就先查找vendor目录。这里我们先忽略。&lt;/li&gt;
-  &lt;li&gt;如果GOROOT不为空，那么就先查找GOROOT的src目录下是否存在&lt;code class=&quot;highlighter-rouge&quot;&gt;path&lt;/code&gt;的值这个目录，就是&lt;em&gt;GOROOT/src/goexample/hello&lt;/em&gt;这个目录，找到则跳转到&lt;code class=&quot;highlighter-rouge&quot;&gt;Found&lt;/code&gt;标签。&lt;/li&gt;
-  &lt;li&gt;遍历所有的GOPATH，进行和上面一样的查找，找到则跳转到&lt;code class=&quot;highlighter-rouge&quot;&gt;Found&lt;/code&gt;标签。&lt;/li&gt;
-  &lt;li&gt;如果上面都找不到，那么说明这个package不存在，也就是你提供的ImportPath指向了一个不存在的目录，那么就在这里返回失败。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;找到了之后，设置&lt;code class=&quot;highlighter-rouge&quot;&gt;package&lt;/code&gt;对象的&lt;code class=&quot;highlighter-rouge&quot;&gt;Root&lt;/code&gt;为包含这个package的GOROOT或者GOPATH的路径，设置&lt;code class=&quot;highlighter-rouge&quot;&gt;package&lt;/code&gt;对象的&lt;code class=&quot;highlighter-rouge&quot;&gt;Dir&lt;/code&gt;为这个package的完整路径（绝对路径）。&lt;/p&gt;
-
-&lt;h2 id=&quot;found标签下的处理&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Found&lt;/code&gt;标签下的处理&lt;/h2&gt;
-
-&lt;p&gt;现在，已经找到了package所在的位置。接下来就要处理package的内容。在&lt;code class=&quot;highlighter-rouge&quot;&gt;Found&lt;/code&gt;标签开始的地方，先读取package目录下的所有文件，然后针对每个文件进行一段复杂的处理。所有的文件都处理过后，就收集了这个package的绝大部分信息，然后再进行一些汇总处理。这里的重点是针对每个文件的处理过程。&lt;/p&gt;
-
-&lt;p&gt;针对每个文件的处理过程只处理于package目录下的文件，跳过子目录，原因是Golang把每个目录都当成一个独立的package。这个处理过程大概分为4个部分。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;匹配文件
- 你会先看到一行代码&lt;code class=&quot;highlighter-rouge&quot;&gt;match, data, filename, err := ctxt.matchFile(p.Dir, name, true, allTags, &amp;amp;p.BinaryOnly)&lt;/code&gt;。这个&lt;code class=&quot;highlighter-rouge&quot;&gt;matchFile&lt;/code&gt;方法的功能是判断当前文件是否需要参与到构建中来。这个判断条件有两个：
-    &lt;ol&gt;
-      &lt;li&gt;根据文件名中的os和arch信息来判断是否符合。Golang支持的文件名格式有六种：
-        &lt;ol&gt;
-          &lt;li&gt;name_$(GOOS).*&lt;/li&gt;
-          &lt;li&gt;name_$(GOARCH).*&lt;/li&gt;
-          &lt;li&gt;name_$(GOOS)_$(GOARCH).*&lt;/li&gt;
-          &lt;li&gt;name_$(GOOS)_test.*&lt;/li&gt;
-          &lt;li&gt;name_$(GOARCH)_test.*&lt;/li&gt;
-          &lt;li&gt;name_$(GOOS)_$(GOARCH)_test.*&lt;/li&gt;
-        &lt;/ol&gt;
-      &lt;/li&gt;
-      &lt;li&gt;根据文件投的注释中的build tag来判断是否符合。这个可以查看文档&lt;a href=&quot;https://golang.org/pkg/go/build/&quot;&gt;Package buld&lt;/a&gt;。&lt;/li&gt;
-    &lt;/ol&gt;
-
-    &lt;p&gt;上面看到&lt;code class=&quot;highlighter-rouge&quot;&gt;matchFile&lt;/code&gt;文件返回了4个参数，第一个参数&lt;code class=&quot;highlighter-rouge&quot;&gt;match&lt;/code&gt;表示这个文件是否需要参与到构建中，&lt;strong&gt;第二个参数&lt;code class=&quot;highlighter-rouge&quot;&gt;data&lt;/code&gt;包含了这个文件从开头到&lt;code class=&quot;highlighter-rouge&quot;&gt;import&lt;/code&gt;语句结束的内容&lt;/strong&gt;，第三个参数是这个文件的绝对路径名。&lt;/p&gt;
-
-    &lt;p&gt;如果这里得到的&lt;code class=&quot;highlighter-rouge&quot;&gt;match&lt;/code&gt;为&lt;code class=&quot;highlighter-rouge&quot;&gt;false&lt;/code&gt;，说明文件不需要参与构建，可以开始处理下一个文件。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;忽略非Golang源码的文件&lt;/p&gt;
-
-    &lt;p&gt;对于扩展名不是&lt;em&gt;.go&lt;/em&gt;的文件，会把文件名记录到对应的列表中，然后开始处理下一个文件。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;解析文件内容&lt;/p&gt;
-
-    &lt;p&gt;严格的说，是解析从文件开头到&lt;code class=&quot;highlighter-rouge&quot;&gt;import&lt;/code&gt;语句结束这部分的内容，这部分内容是我们在上面调用&lt;code class=&quot;highlighter-rouge&quot;&gt;matchFile&lt;/code&gt;方法时获得的。 解析过程是执行代码：&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; pf, err := parser.ParseFile(fset, filename, data, parser.ImportsOnly|parser.ParseComments)
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-
-    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;parser&lt;/code&gt;是&lt;code class=&quot;highlighter-rouge&quot;&gt;go/parser&lt;/code&gt;这个package，一个专门用于解析Golang源码的package。这个会在专门的文章说阐述，不在本文中展开讲解。&lt;/p&gt;
-
-    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;parser.ParseFile&lt;/code&gt;函数的最后一个参数我们执行了两个mode：&lt;code class=&quot;highlighter-rouge&quot;&gt;ImportsOnly&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;ParseComments&lt;/code&gt;，这个是因为我们传递进去的内容只包含了从文件开头到&lt;code class=&quot;highlighter-rouge&quot;&gt;import&lt;/code&gt;语句结束的地方，&lt;code class=&quot;highlighter-rouge&quot;&gt;ImportsOnly&lt;/code&gt;表示解析到&lt;code class=&quot;highlighter-rouge&quot;&gt;imports&lt;/code&gt;语句结束的地方就返回，而&lt;code class=&quot;highlighter-rouge&quot;&gt;ParseComments&lt;/code&gt;表示会解析注释，如果文件开头存在注释，那么就可以得到一个文件doc。&lt;/p&gt;
-
-    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;parser.ParseFile&lt;/code&gt;函数的第一个参数&lt;code class=&quot;highlighter-rouge&quot;&gt;fset&lt;/code&gt;是一个&lt;code class=&quot;highlighter-rouge&quot;&gt;go/token.FileSet&lt;/code&gt;对象，用来表示多个Golang源码文件构成的集合，主要是用来在解析源码的过程中快速的处理文件位置。&lt;/p&gt;
-
-    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;parser.ParseFile&lt;/code&gt;函数的返回值是一个&lt;code class=&quot;highlighter-rouge&quot;&gt;go/ast.File&lt;/code&gt;对象，这个是将一个文件的内容进行语法解析后得到的对象。&lt;em&gt;ast的是Abstract Syntax Tree的缩写，即抽象语法树&lt;/em&gt;。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;处理解析后的文件&lt;/p&gt;
-
-    &lt;p&gt;解析完这个文件后，就可以根据得到的&lt;code class=&quot;highlighter-rouge&quot;&gt;go/ast.File&lt;/code&gt;对象继续进行处理：&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;如果package名为&lt;strong&gt;documentation&lt;/strong&gt;时的情况&lt;/li&gt;
-      &lt;li&gt;处理package名&lt;strong&gt;xxx_test&lt;/strong&gt;的情况，也就是允许同一个目录中包含有一个名为&lt;em&gt;xxx&lt;/em&gt;的package，以及它的黑盒测试package，名为&lt;em&gt;xxx_test&lt;/em&gt;&lt;/li&gt;
-      &lt;li&gt;检查一个目录下的文件是否声明了多个不同的package名称（上面的_test情况除外）&lt;/li&gt;
-      &lt;li&gt;处理import comment的内容&lt;/li&gt;
-      &lt;li&gt;查找并记录这个文件中import的package&lt;/li&gt;
-      &lt;li&gt;记录cgo的信息&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;针对每个文件的处理流程结束后，就把记录的信息设置到要返回的&lt;code class=&quot;highlighter-rouge&quot;&gt;Package&lt;/code&gt;对象中。经过这些处理，我们得到的&lt;code class=&quot;highlighter-rouge&quot;&gt;Package&lt;/code&gt;对象中记录了这个package的基本信息，包括这个package中包含哪些文件、package名称以及这个package的依赖等。&lt;/p&gt;
-
-&lt;h2 id=&quot;小结&quot;&gt;小结&lt;/h2&gt;
-
-&lt;p&gt;经过上面这些处理，当&lt;code class=&quot;highlighter-rouge&quot;&gt;go/build.Context&lt;/code&gt;的&lt;code class=&quot;highlighter-rouge&quot;&gt;Import&lt;/code&gt;方法成功返回时，会给调用者一个&lt;code class=&quot;highlighter-rouge&quot;&gt;go/build.Package&lt;/code&gt;对象，这个对象会包含这个package的基本信息，以及这个package的依赖信息。&lt;/p&gt;
-</description>
-        <pubDate>Mon, 27 Feb 2017 00:00:00 +0800</pubDate>
-        <link>/2017/02/27/golang-code-reading-notes-2.html</link>
-        <guid isPermaLink="true">/2017/02/27/golang-code-reading-notes-2.html</guid>
         
         
       </item>
