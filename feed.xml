@@ -6,9 +6,30 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 30 Sep 2017 23:28:46 +0800</pubDate>
-    <lastBuildDate>Sat, 30 Sep 2017 23:28:46 +0800</lastBuildDate>
+    <pubDate>Sun, 01 Oct 2017 22:47:09 +0800</pubDate>
+    <lastBuildDate>Sun, 01 Oct 2017 22:47:09 +0800</lastBuildDate>
     <generator>Jekyll v3.4.0</generator>
+    
+      <item>
+        <title>想到什么写什么周报 第1期 - 2017-10-01</title>
+        <description>&lt;h1 id=&quot;go-185和191快要发布了&quot;&gt;Go 1.8.5和1.9.1快要发布了&lt;/h1&gt;
+
+&lt;p&gt;预计发布时间是北京时间10月5日。&lt;/p&gt;
+
+&lt;h1 id=&quot;rob-pikes-go-proverb&quot;&gt;Rob Pike’s Go Proverb&lt;/h1&gt;
+
+&lt;p&gt;看了个视频，是Rob Pike分享自己关于Go的一些编程格言的，具体见文章：&lt;a href=&quot;http://diabloneo.github.io/2017/09/29/rob-pike-go-proverb.html&quot;&gt;Rob Pike’s Go Proverb&lt;/a&gt;。&lt;/p&gt;
+
+&lt;h1 id=&quot;uber-jaeger-一个分布式tracing系统&quot;&gt;Uber Jaeger: 一个分布式tracing系统&lt;/h1&gt;
+
+&lt;p&gt;Uber开源的一个分布式tracing系统，具体见文章： &lt;a href=&quot;http://diabloneo.github.io/2017/09/30/uber-jaeger-introduction.html&quot;&gt;Uber Jaeger介绍&lt;/a&gt;。&lt;/p&gt;
+</description>
+        <pubDate>Sun, 01 Oct 2017 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2017/10/01/write-what-i-have-001.html</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2017/10/01/write-what-i-have-001.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>Uber Jaeger介绍</title>
@@ -451,155 +472,6 @@
         <pubDate>Fri, 26 May 2017 00:00:00 +0800</pubDate>
         <link>http://diabloneo.github.io//2017/05/26/openstack-summit-2017-boston-review.html</link>
         <guid isPermaLink="true">http://diabloneo.github.io//2017/05/26/openstack-summit-2017-boston-review.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Golang源码阅读笔记 -- go build(3)</title>
-        <description>&lt;p&gt;在&lt;a href=&quot;/2017/02/26/golang-code-reading-notes-1.html&quot;&gt;第一篇文章go build(1)&lt;/a&gt;中，我们提到了&lt;em&gt;cmd/go/pkg.go&lt;/em&gt;文件中的&lt;code class=&quot;highlighter-rouge&quot;&gt;loadImport&lt;/code&gt;函数。该函数有两个主要的步骤，一个是调用&lt;code class=&quot;highlighter-rouge&quot;&gt;buildContext.Import()&lt;/code&gt;方法来获得要构建的package的基本信息，这个我们在&lt;a href=&quot;/2017/02/27/golang-code-reading-notes-2.html&quot;&gt;上一篇文章go build(2)&lt;/a&gt;中已经说明了其内部逻辑，另外一个调用是&lt;code class=&quot;highlighter-rouge&quot;&gt;p.load(stk, bp, err)&lt;/code&gt;，也就是载入这个package的依赖。本文要看的是第二个步骤的具体过程。&lt;/p&gt;
-
-&lt;h1 id=&quot;cmdgopackage对象的load方法&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;cmd/go.Package&lt;/code&gt;对象的&lt;code class=&quot;highlighter-rouge&quot;&gt;load&lt;/code&gt;方法&lt;/h1&gt;
-
-&lt;p&gt;该方法位于&lt;em&gt;cmd/go/pkg.go&lt;/em&gt;文件中。&lt;/p&gt;
-
-&lt;h2 id=&quot;调用说明&quot;&gt;调用说明&lt;/h2&gt;
-
-&lt;p&gt;在&lt;code class=&quot;highlighter-rouge&quot;&gt;loadImport&lt;/code&gt;函数中执行的代码是&lt;code class=&quot;highlighter-rouge&quot;&gt;p.load(stk, bp, err)&lt;/code&gt;：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;p&lt;/code&gt;是&lt;code class=&quot;highlighter-rouge&quot;&gt;cmd/go.Package&lt;/code&gt;对象，这个是表示一个要构建的package。相对的&lt;code class=&quot;highlighter-rouge&quot;&gt;go/build.Package&lt;/code&gt;表示一个被import的package。前者包含的信息更多。&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;stk&lt;/code&gt;是一个表示依赖深度的栈，用于记录import路径的一个栈。通过栈的&lt;strong&gt;push&lt;/strong&gt;和&lt;strong&gt;pop&lt;/strong&gt;操作，不断的记录import的路径，栈顶是当前正在处理的package，栈顶下的那个package则import了栈顶package。&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;bp&lt;/code&gt; 是&lt;code class=&quot;highlighter-rouge&quot;&gt;buildContext.Import&lt;/code&gt;方法返回的对象，是一个&lt;code class=&quot;highlighter-rouge&quot;&gt;go/build.Package&lt;/code&gt;对象，包含了要构建的package的基本信息。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;load方法的内部逻辑&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;load&lt;/code&gt;方法的内部逻辑&lt;/h2&gt;
-
-&lt;p&gt;强调一下，这里我们还是以最常见的import path形式，类似&lt;strong&gt;goexample/hello&lt;/strong&gt;这样，来看&lt;code class=&quot;highlighter-rouge&quot;&gt;load&lt;/code&gt;方法的内部逻辑。&lt;/p&gt;
-
-&lt;h3 id=&quot;拷贝信息&quot;&gt;拷贝信息&lt;/h3&gt;
-
-&lt;p&gt;首先执行&lt;code class=&quot;highlighter-rouge&quot;&gt;p.copyBuild(bp)&lt;/code&gt;将&lt;code class=&quot;highlighter-rouge&quot;&gt;go/build.Package&lt;/code&gt;对象的内容拷贝到&lt;code class=&quot;highlighter-rouge&quot;&gt;p&lt;/code&gt;，也就是&lt;code class=&quot;highlighter-rouge&quot;&gt;cmd/go.Package&lt;/code&gt;中，也会把&lt;code class=&quot;highlighter-rouge&quot;&gt;bp&lt;/code&gt;赋值给&lt;code class=&quot;highlighter-rouge&quot;&gt;p.build&lt;/code&gt;。&lt;/p&gt;
-
-&lt;h3 id=&quot;构建结果存放位置的处理&quot;&gt;构建结果存放位置的处理&lt;/h3&gt;
-
-&lt;p&gt;区分两个情况：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;package的名称是&lt;strong&gt;main&lt;/strong&gt;，也就是构建结果是一个可执行程序。这个时候构建结果的存放目录是在一个&lt;em&gt;bin&lt;/em&gt;目录下，最常见的情况就是&lt;em&gt;GOPATH/bin&lt;/em&gt;目录，输出的文件名是package的目录名。&lt;/li&gt;
-  &lt;li&gt;如果是非&lt;strong&gt;main&lt;/strong&gt;的package，那么一般使用&lt;code class=&quot;highlighter-rouge&quot;&gt;p.build.PkgObj&lt;/code&gt;这个路径作为目标路径。这个路径在上一篇文章中有描述了生成过程，类似&lt;em&gt;GOPATH/pkg/linux_amd64/goexample/hello.a&lt;/em&gt;。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;依赖的预处理&quot;&gt;依赖的预处理&lt;/h3&gt;
-
-&lt;p&gt;之前已经得到了要构建的package的依赖，保存在&lt;code class=&quot;highlighter-rouge&quot;&gt;p.build.Imports&lt;/code&gt;中，又被拷贝到&lt;code class=&quot;highlighter-rouge&quot;&gt;p.Imports&lt;/code&gt;中。这些只是源码中写的&lt;code class=&quot;highlighter-rouge&quot;&gt;import&lt;/code&gt;语句的依赖，构建过程还需要加上其他的内部依赖。对于最常见的情况，还需要把&lt;strong&gt;runtime&lt;/strong&gt;增加到依赖中。其他的情况会根据是否有cgo、架构平台、是否是标准库以及命令行参数等条件来增加相应的依赖。经过预处理的依赖存放在变量&lt;code class=&quot;highlighter-rouge&quot;&gt;importPaths&lt;/code&gt;中。&lt;/p&gt;
-
-&lt;h3 id=&quot;文件的预处理&quot;&gt;文件的预处理&lt;/h3&gt;
-
-&lt;p&gt;将这个package中的go文件和非go文件都生成绝对路径，保存到相应的变量中并按照文件名排序。&lt;/p&gt;
-
-&lt;p&gt;检查package中的文件名是否有重名，&lt;strong&gt;这个要求是忽略大小的情况下也不能重名&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;h3 id=&quot;处理依赖&quot;&gt;处理依赖&lt;/h3&gt;
-
-&lt;p&gt;接下来，&lt;code class=&quot;highlighter-rouge&quot;&gt;load&lt;/code&gt;方法开始处理依赖，也就是&lt;code class=&quot;highlighter-rouge&quot;&gt;importPaths&lt;/code&gt;变量中的package。这里会遍历每个ImportPath，然后依次处理。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;首先，跳过ImportPath为&lt;strong&gt;C&lt;/strong&gt;的package，因为这是cgo的package，不属于依赖。&lt;/li&gt;
-  &lt;li&gt;执行&lt;code class=&quot;highlighter-rouge&quot;&gt;p1 := loadImport(path, p.Dir, p, stk, p.build.ImportPos[path], useVendor)&lt;/code&gt;。看到&lt;code class=&quot;highlighter-rouge&quot;&gt;loadImport&lt;/code&gt;函数是不是觉得很熟悉？没错，这个就是在&lt;a href=&quot;% post_url 2017-02-26-golang-code-reading-notes-1 %}&quot;&gt;文章go build(1)&lt;/a&gt;中提到的&lt;code class=&quot;highlighter-rouge&quot;&gt;loadImport&lt;/code&gt;函数，也就是调用了我们正在讲解的这个&lt;code class=&quot;highlighter-rouge&quot;&gt;cmd/go.Package&lt;/code&gt;对象的&lt;code class=&quot;highlighter-rouge&quot;&gt;load&lt;/code&gt;方法。所以，这里是一个递归调用，不过同样path的package只会收集一次信息，之后再遇到会直接从cache返回，这个在&lt;a href=&quot;% post_url 2017-02-26-golang-code-reading-notes-1 %}&quot;&gt;文章go build(1)&lt;/a&gt;中已经提到过了。&lt;/li&gt;
-  &lt;li&gt;判断一下import进来的package的名称是否是&lt;strong&gt;main&lt;/strong&gt;，是的话就报错。&lt;/li&gt;
-  &lt;li&gt;把&lt;code class=&quot;highlighter-rouge&quot;&gt;p1&lt;/code&gt;加入到&lt;code class=&quot;highlighter-rouge&quot;&gt;deps&lt;/code&gt;这个map中，这样&lt;code class=&quot;highlighter-rouge&quot;&gt;deps&lt;/code&gt;就是一个包含所有package &lt;code class=&quot;highlighter-rouge&quot;&gt;p&lt;/code&gt;的依赖的map。同样，也把&lt;code class=&quot;highlighter-rouge&quot;&gt;p1&lt;/code&gt;加入到&lt;code class=&quot;highlighter-rouge&quot;&gt;imports&lt;/code&gt;这个slice中，这样&lt;code class=&quot;highlighter-rouge&quot;&gt;imports&lt;/code&gt;就是一个包含所有package &lt;code class=&quot;highlighter-rouge&quot;&gt;p&lt;/code&gt;的依赖的slice。&lt;/li&gt;
-  &lt;li&gt;如果&lt;code class=&quot;highlighter-rouge&quot;&gt;p1.Incomplete&lt;/code&gt;为&lt;code class=&quot;highlighter-rouge&quot;&gt;true&lt;/code&gt;，那么也设置&lt;code class=&quot;highlighter-rouge&quot;&gt;p.Incomplete&lt;/code&gt;为&lt;code class=&quot;highlighter-rouge&quot;&gt;true&lt;/code&gt;。&lt;code class=&quot;highlighter-rouge&quot;&gt;Incomplete&lt;/code&gt;表示在载入这个package或者它的依赖时出现错误。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;经过上面的处理，就已经递归的载入了package &lt;code class=&quot;highlighter-rouge&quot;&gt;p&lt;/code&gt;的所有依赖，这些依赖的相关信息会被记录到&lt;code class=&quot;highlighter-rouge&quot;&gt;p&lt;/code&gt;中，&lt;code class=&quot;highlighter-rouge&quot;&gt;p.imports = imports&lt;/code&gt;，&lt;code class=&quot;highlighter-rouge&quot;&gt;p.deps&lt;/code&gt;会是排序过的&lt;code class=&quot;highlighter-rouge&quot;&gt;deps&lt;/code&gt;。&lt;/p&gt;
-
-&lt;h3 id=&quot;计算buildid&quot;&gt;计算BuildID&lt;/h3&gt;
-
-&lt;p&gt;对于编译一个package而言，&lt;strong&gt;buildID&lt;/strong&gt;是根据这个package的所有文件的文件名，和这个package的所有依赖的ImportPath以及依赖的buildID，计算出来的一个SHA-1值，主要是用来判断一个package是否需要重新构建。这个在后面会讲到。&lt;/p&gt;
-
-&lt;h3 id=&quot;小结&quot;&gt;小结&lt;/h3&gt;
-
-&lt;p&gt;完成上面这些步骤后，这个package的依赖也就都载入成功了，并且buildID也已经计算完成。&lt;/p&gt;
-
-&lt;h1 id=&quot;reusepackage函数&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;reusePackage&lt;/code&gt;函数&lt;/h1&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;reusePackage(p *Package, stk *importStack)&lt;/code&gt;函数位于文件&lt;em&gt;cmd/go/pkg.go&lt;/em&gt;文件中。我们已经知道，这个函数会在&lt;code class=&quot;highlighter-rouge&quot;&gt;loadImport&lt;/code&gt;中被调用，用来判断是否有循环应用的情况。现在我们来仔细看一下这个逻辑。&lt;/p&gt;
-
-&lt;p&gt;首先，看一下&lt;code class=&quot;highlighter-rouge&quot;&gt;loadImport&lt;/code&gt;中的代码：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;func loadImport(path, srcDir string, parent *Package, stk *importStack, importPos []token.Position, mode int) *Package {
-    ...
-    importPath := path
-    ...
-    if p := packageCache[importPath]; p != nil {
-        ...
-        return reusePackage(p, stk)
-    }
-
-    p := new(Package)
-    p.local = isLocal
-    p.Importpath = importPath
-    packageCache[importPath] = p
-    ...
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;从上面代码可以看出，在发现现在要import的path已经被处理过了之后，就可以直接返回cache中的&lt;code class=&quot;highlighter-rouge&quot;&gt;cmd/go.Package&lt;/code&gt;对象，但是返回前要先调用&lt;code class=&quot;highlighter-rouge&quot;&gt;reusePackage&lt;/code&gt;函数检查是否循环引用。如果这个path不在cache中，那么创建新的package之后，立刻加入到cache。&lt;/p&gt;
-
-&lt;p&gt;接下来看一下&lt;code class=&quot;highlighter-rouge&quot;&gt;reusePackage&lt;/code&gt;中是如何检查循环引用的：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;func reusePackage(p *Package, stk *importStack) *Package {
-    if p.imports == nil {
-        // import cycle
-    }
-    ...
-    return p
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;上一节中，我们看到了，&lt;code class=&quot;highlighter-rouge&quot;&gt;p.load&lt;/code&gt;这个方法在收集了所有的依赖的信息后，才会设置自己的&lt;code class=&quot;highlighter-rouge&quot;&gt;p.imports&lt;/code&gt;变量。所以，只要&lt;code class=&quot;highlighter-rouge&quot;&gt;p.imports&lt;/code&gt;这个变量还是空的，就说明这个package还没有处理完依赖，所以只要在处理依赖的过程中再次遇到自己，就会触发&lt;code class=&quot;highlighter-rouge&quot;&gt;reusePackage&lt;/code&gt;函数的调用，就会看到&lt;code class=&quot;highlighter-rouge&quot;&gt;p.imports == nil&lt;/code&gt;。&lt;/p&gt;
-
-&lt;h1 id=&quot;回到packagesanderrors函数&quot;&gt;回到&lt;code class=&quot;highlighter-rouge&quot;&gt;packagesAndErrors&lt;/code&gt;函数&lt;/h1&gt;
-
-&lt;p&gt;现在回到&lt;a href=&quot;% post_url 2017-02-26-golang-code-reading-notes-1 %}&quot;&gt;文章go build(1)&lt;/a&gt;中的&lt;code class=&quot;highlighter-rouge&quot;&gt;packagesAndErrors&lt;/code&gt;函数。我们回顾一下到目前为止走过的流程：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;packagesAndErrors()
-    loadPackage()
-        loadImport()
-            reusePackage()
-            buildContext.Import()
-            p.load()
-    computeStale()
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;到目前为止，我们已经分析了从&lt;code class=&quot;highlighter-rouge&quot;&gt;loadPackage()&lt;/code&gt;函数开始往下的流程。现在，在&lt;code class=&quot;highlighter-rouge&quot;&gt;packagesAndErrors&lt;/code&gt;函数中，我们通过调用&lt;code class=&quot;highlighter-rouge&quot;&gt;loadPackage&lt;/code&gt;函数，得到了一个&lt;code class=&quot;highlighter-rouge&quot;&gt;cmd/go.Package&lt;/code&gt;对象&lt;code class=&quot;highlighter-rouge&quot;&gt;pkg&lt;/code&gt;。下面就开始调用&lt;code class=&quot;highlighter-rouge&quot;&gt;computeStale(pkg)&lt;/code&gt;。&lt;/p&gt;
-
-&lt;h2 id=&quot;computestale函数&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;computeStale&lt;/code&gt;函数&lt;/h2&gt;
-
-&lt;p&gt;这个函数会判断一个package是否需要重新构建，也就是是否stale。如果需要，就设置&lt;code class=&quot;highlighter-rouge&quot;&gt;pkg.Stale&lt;/code&gt;为&lt;code class=&quot;highlighter-rouge&quot;&gt;true&lt;/code&gt;。判断的工作是由&lt;code class=&quot;highlighter-rouge&quot;&gt;isStale(p *Package) (bool, string)&lt;/code&gt;函数完成的，这个函数位于&lt;em&gt;cmd/go/pkg.go&lt;/em&gt;文件中。&lt;/p&gt;
-
-&lt;p&gt;判断stale的逻辑在&lt;code class=&quot;highlighter-rouge&quot;&gt;isStale&lt;/code&gt;函数的注释中写的非常清楚，包括演变过程，主要是基于buildID和文件修改时间来判断的。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;buildID的方法如下：编译输出时，将这个package的buildID记录到目标文件中，在&lt;code class=&quot;highlighter-rouge&quot;&gt;isStale&lt;/code&gt;函数中，会读取目标文件中保存的buildID，如果和现在package中计算出来的buildID不同，那么就需要重新构建。&lt;/li&gt;
-  &lt;li&gt;基于文件修改时间的方法如下：只要构建package有关的文件中，有一个文件的修改时间比目标文件晚，那么就需要重新构建。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;上面这个是最基本的方法介绍，&lt;code class=&quot;highlighter-rouge&quot;&gt;isStale&lt;/code&gt;函数中还考虑了命令行参数，以及文件是否存在等情况。&lt;/p&gt;
-
-&lt;h2 id=&quot;小结-1&quot;&gt;小结&lt;/h2&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;packagesAndErrors&lt;/code&gt;函数调用完&lt;code class=&quot;highlighter-rouge&quot;&gt;computeStale&lt;/code&gt;之后，就返回所获取到的packages对象。&lt;/p&gt;
-
-&lt;p&gt;因为&lt;code class=&quot;highlighter-rouge&quot;&gt;packagesForBuild&lt;/code&gt;函数是调用了&lt;code class=&quot;highlighter-rouge&quot;&gt;packagesAndErrors&lt;/code&gt;函数来获得packages，如果获取的过程没有错误，那么&lt;code class=&quot;highlighter-rouge&quot;&gt;packagesForBuild&lt;/code&gt;就返回获取到的packages。我们又回到了&lt;code class=&quot;highlighter-rouge&quot;&gt;runBuild&lt;/code&gt;函数中。&lt;/p&gt;
-</description>
-        <pubDate>Tue, 28 Feb 2017 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2017/02/28/golang-code-reading-notes-3.html</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2017/02/28/golang-code-reading-notes-3.html</guid>
         
         
       </item>
