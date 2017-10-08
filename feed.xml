@@ -6,9 +6,78 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 01 Oct 2017 22:48:08 +0800</pubDate>
-    <lastBuildDate>Sun, 01 Oct 2017 22:48:08 +0800</lastBuildDate>
+    <pubDate>Sun, 08 Oct 2017 23:20:40 +0800</pubDate>
+    <lastBuildDate>Sun, 08 Oct 2017 23:20:40 +0800</lastBuildDate>
     <generator>Jekyll v3.4.0</generator>
+    
+      <item>
+        <title>想到什么写什么周报 第2期 - 2017-10-08</title>
+        <description>&lt;h1 id=&quot;golang-184-and-191-released&quot;&gt;Golang 1.8.4 and 1.9.1 Released&lt;/h1&gt;
+
+&lt;p&gt;解决了两个安全问题：&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;第一个是go get的时候拒绝在vcs内部再执行vcs checkout（git submodule除外）&lt;/strong&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;By nesting a git checkout inside another version control repository, it was possible for an attacker to trick the “go get” command into executing arbitrary code. The go command now refuses to use version control checkouts found inside other version control systems, with an exception for git submodules (git inside git).
+The issue is tracked as https://golang.org/issue/22125 (Go 1.8.4) and https://golang.org/issue/22131 (Go 1.9.1). Fixes are linked from the issues.
+Thanks to Simon Rawet for the report.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;strong&gt;第二个是和SMTP通过非TLS通道发送PlainAuth认证信息的问题&lt;/strong&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;In the smtp package, PlainAuth is documented as sending credentials only over authenticated, encrypted TLS connections, but it was changed in Go 1.1 to also send credentials on non-TLS connections when the remote server advertises that PLAIN authentication is supported. The change was meant to allow use of PLAIN authentication on localhost, but it has the effect of allowing a man-in-the-middle attacker to harvest credentials. PlainAuth now requires either TLS or a localhost connection before sending credentials, regardless of what the remote server claims.
+This issue is tracked as https://golang.org/issue/22134 (Go 1.8.4) and https://golang.org/issue/22133 (Go 1.9.1). Fixes are linked from the issues.
+Thanks to Stevie Johnstone for the report.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h1 id=&quot;a-decade-of-dynamo-powering-the-next-wave-of-high-performance-internet-scale-applications&quot;&gt;A Decade of Dynamo: Powering the next wave of high-performance, internet-scale applications&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www.allthingsdistributed.com/2017/10/a-decade-of-dynamo.html&quot;&gt;http://www.allthingsdistributed.com/2017/10/a-decade-of-dynamo.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Wener Vogels写的关于Amazon Dynamo十周年纪念的文章。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;2004年Amazon开始遇到Oracle数据库的瓶颈，深度调查后发现70%的数据组织方式都是key-value式，操作只返回一行；20%的数据操作会返回多行，但是都属于同一张表。&lt;/li&gt;
+  &lt;li&gt;然后开始根据自己的需要设计Dynamo的原型：Our goal was to build a database that would have the unbounded scalability, consistent performance and the high availability to support the needs of our rapidly growing business.&lt;/li&gt;
+  &lt;li&gt;2007年在SOSP上发表论文。&lt;/li&gt;
+  &lt;li&gt;然后决定将其作为云服务推出，推出前在多个方面进行了加强和改进。&lt;/li&gt;
+  &lt;li&gt;在2012年1月份，正式在公有云上推出DynamoDB。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;现在有很多大公司在使用DynamoDB来存储关键数据，包括Lyft, Tinder, Comcase, BMW等。&lt;/p&gt;
+
+&lt;h1 id=&quot;amazon-linux-ami-201709发布&quot;&gt;Amazon Linux AMI 2017.09发布&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://aws.amazon.com/blogs/aws/now-available-amazon-linux-ami-2017-09/&quot;&gt;https://aws.amazon.com/blogs/aws/now-available-amazon-linux-ami-2017-09/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Amazon更新了Linux AMI版本到2017.09，包含主要特性是：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Kernel升级到4.9.51&lt;/li&gt;
+  &lt;li&gt;Amazon SSM Agent默认安装&lt;/li&gt;
+  &lt;li&gt;Python升级到3.6&lt;/li&gt;
+  &lt;li&gt;Ruby升级到2.4&lt;/li&gt;
+  &lt;li&gt;OpenSSL升级到1.0.2k&lt;/li&gt;
+  &lt;li&gt;HTTP/2支持，内置的软件包httpd24, nginx和curl支持HTTP/2&lt;/li&gt;
+  &lt;li&gt;Postgres升级到9.6版本，MySQL升级到5.7版本&lt;/li&gt;
+  &lt;li&gt;OpenMPI升级到2.1.1&lt;/li&gt;
+  &lt;li&gt;其他软件包升级&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h1 id=&quot;things-go-better-with-step-functions&quot;&gt;Things Go Better With Step Functions&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://aws.amazon.com/blogs/aws/things-go-better-with-step-functions/&quot;&gt;https://aws.amazon.com/blogs/aws/things-go-better-with-step-functions/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;介绍了可口可乐公司通过Step Function来降低一个积分系统费用的案例。可口可乐一开始使用一个中间带有等待90秒的Lambda函数来实现一个移动支付的积分逻辑，这个等待是因为需要调用老旧的后端代码来实现计费核算。Lambda函数是按照运行时长收费的，所以等待的90秒钟都是白花花的银子。后来可口可乐开始使用Step Function，将这个Lambda函数拆分成一个具有三次状态转换的状态机（start -&amp;gt; wait -&amp;gt; points -&amp;gt; end），这样就不用在Lambda函数中进行等待。原先等待90秒的费用变成了状态转换的费用，从而节约了开支。&lt;/p&gt;
+</description>
+        <pubDate>Sun, 08 Oct 2017 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2017/10/08/write-what-i-have-002.html</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2017/10/08/write-what-i-have-002.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>想到什么写什么周报 第1期 - 2017-10-01</title>
@@ -423,55 +492,6 @@
         <pubDate>Wed, 26 Jul 2017 00:00:00 +0800</pubDate>
         <link>http://diabloneo.github.io//2017/07/26/2017-openstack-days-china-day1.html</link>
         <guid isPermaLink="true">http://diabloneo.github.io//2017/07/26/2017-openstack-days-china-day1.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>OpenStack Summit 2017 Boston观后感</title>
-        <description>&lt;p&gt;这次summit已经不强调OpenStack本身的技术了，所有的核心项目都已经很成熟，各大厂商也把高可用和在线升级做得很成熟了。而且，OpenStack已经是私有云事实上的标准，除非你选VMWare产品，否则只能选择OpenStack。&lt;/p&gt;
-
-&lt;p&gt;在我看来，OpenStack summit这次强调的重点有两个，一个是open，另一个是和容器的结合。&lt;/p&gt;
-
-&lt;h1 id=&quot;open&quot;&gt;Open&lt;/h1&gt;
-
-&lt;p&gt;Open，在OpenStack的解释里有两个，一个是open source，另一个是open community。&lt;/p&gt;
-
-&lt;p&gt;Open source代表着透明、用户可控，也代表着运维困难等，是一些被大家广泛接受的观点。OpenStack基金会这次还在现场连线采访了斯诺登，就是为了向用户传递open source方面的价值。不过，我觉得这些观点并不能很好的吸引用户。&lt;/p&gt;
-
-&lt;p&gt;Open community是我觉得更有意思的一个方面。基金会COO Mark Collier在第二天的keynote Home of Open {Composable} Infrastructure 花了很大的篇幅来讲这个问题。OpenStack是一个很活跃的社区，Kubernetes是另一个很活跃的社区，两个社区之间是否能有合作呢？合作又会涉及到哪些方面呢？比如在运营方面，Mark觉得很多开源社区的运营都和OpenStack社区类似，其他社区可以学习OpenStack这七年来积累的社区运营经验。在技术方面，是否可以直接利用其他社区的产品，避免重复造轮子？&lt;/p&gt;
-
-&lt;p&gt;在技术方面，Mark举了个很好的例子，像Kubernetes这样的应用是需要解决存储问题的，而OpenStack已经花了7年的时间来解决存储问题，Cinder项目可以对接80种不同的后端，Kubernetes可以通过对接Cinder来解决存储问题，这样就不用重复对接不同存储后端这个工作了。目前Kubernetes也确实这么做了。&lt;/p&gt;
-
-&lt;p&gt;我觉得上面这个例子说明了OpenStack现在的地位，以及基金会对它的期望。现在的OpenStack就像是当年的Linux，已经开始成为一种标准，一种数据中心管理的标准：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;当年，你要管理一个服务器上的资源，你就给它装上Linux。Linux负责管理一个服务器上的计算、网络和存储资源。&lt;/li&gt;
-  &lt;li&gt;现在，你要管理一个数据中心的资源，你就给它装上OpenStack。OpenStack负责管理一个数据中心里的计算、网络和存储资源。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;预计，OpenStack会强化自己作为数据中心OS的路线。&lt;/p&gt;
-
-&lt;h1 id=&quot;容器&quot;&gt;容器&lt;/h1&gt;
-
-&lt;p&gt;这两年来，容器技术的发展绝对是对OpenStack发展的一大威胁。不论是用户，还是OpenStack社区，都对容器技术如何与OpenStack结合感到困惑。但是，今年，这个问题似乎得到了解决，不过并不是通过技术方案来解决，而是通过策略。&lt;/p&gt;
-
-&lt;p&gt;这次的summit上，社区和主要厂商都把kubernetes、mesos、swarm等看成是应用管理平台，这个平台通过容器技术可以实现应用在混合云上的编排需求。OpenStack则作为私有云的管理平台，向K8s提供资源，但是不参与应用的管理。类似下图这样的架构。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://diabloneo.github.io//assets/imgs/00009_hybrid_cloud_architecture.jpg&quot; alt=&quot;Hybrid Cloud Architecture&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;也就是说，OpenStack打算脱离应用管理平台，各大厂商目前也在这么做，比如Red Hat和Ubuntu。&lt;/p&gt;
-
-&lt;p&gt;另外，既然把容器管理平台作为连接私有云和公有云的重要工具，那么这个平台就得解决计算、网络和存储这三种资源在私有云和公有云之间迁移的问题。计算很简单，计算是无状态的，私有云的CPU和公有云的CPU可以做同样的事情，只需要一定的启停时间。网络，可以通过修改DNS或者IP地址达到目的，流量还是可以到达你服务所在的位置。存储，只有存储是最难的。
-混合云的存储问题，主要还是在于数据的存储位置是很难改变的，成本太高。存储决定了应用的状态，所以存储有一致性等各种要求。要想在混合云的场景里解决这个问题，要么是把数据复制一份，这就存在数据一致性和存储成本的问题；要么是忍受跨WAN的数据访问带来的延迟和吞吐的降低。这个问题应该来说，还没有好的解决方案。但是，从另一方面来说，这个问题应该不是一个太大的问题，公有云一直是推行多region数据不相通的运作方式，大家也都用得好好的。所以，使用容器管理平台来连接私有云和公有云时，还是需要考虑数据的存储位置。&lt;/p&gt;
-
-&lt;p&gt;虽然数据存储不可能那么灵活，Red Hat和AWS还是做了一个尝试。在Red Hat summit上，发布了AWS broker类容器。这类容器是AWS公有云服务的代理容器，创建一个这样的容器，就等于在AWS创建了一个对应的服务，应用连接到这个容器就可以直接访问AWS服务。所以应用不用关心自己在哪里运行，访问的数据始终是在AWS上。这是一个很好的尝试。&lt;/p&gt;
-
-&lt;p&gt;总的来说，使用容器来调度应用也是个事实上的标准了，OpenStack已经没有办法在这个领域中占到地盘了（所以我对Magnum项目的前途感到十分担忧啊）。如何和容器更好的结合，肯定是未来一两年内OpenStack要做的主要事情。&lt;/p&gt;
-</description>
-        <pubDate>Fri, 26 May 2017 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2017/05/26/openstack-summit-2017-boston-review.html</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2017/05/26/openstack-summit-2017-boston-review.html</guid>
         
         
       </item>
