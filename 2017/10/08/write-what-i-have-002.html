@@ -123,29 +123,14 @@ Thanks to Stevie Johnstone for the report.</p>
 <p>介绍了可口可乐公司通过Step Function来降低一个积分系统费用的案例。可口可乐一开始使用一个中间带有等待90秒的Lambda函数来实现一个移动支付的积分逻辑，这个等待是因为需要调用老旧的后端代码来实现计费核算。Lambda函数是按照运行时长收费的，所以等待的90秒钟都是白花花的银子。后来可口可乐开始使用Step Function，将这个Lambda函数拆分成一个具有三次状态转换的状态机（start -&gt; wait -&gt; points -&gt; end），这样就不用在Lambda函数中进行等待。原先等待90秒的费用变成了状态转换的费用，从而节约了开支。</p>
 
     <br />
-    <div>
-      <!-- aThis Button BEGIN -->
-      <div class="jiathis_style_32x32">
-        <a class="jiathis_button_tsina"></a>
-        <a class="jiathis_button_twitter"></a>
-        <a class="jiathis_button_googleplus"></a>
-        <a class="jiathis_button_weixin"></a>
-        <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
-      </div>
-      <script type="text/javascript" >
-var jiathis_config={
-  sm:"tsina,weixin,twitter,googleplus",
-  summary:"",
-  shortUrl:false,
-  hideMore:true
-}
-      </script>
-      <script type="text/javascript" src="http://v3.jiathis.com/code_mini/jia.js" charset="utf-8"></script>
-      <!-- JiaThis Button END -->
-    </div>
+
     <div>
       <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议</a>进行许可。
     </div>
+
+    <br />
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+    <div class="addthis_inline_share_toolbox"></div>
   </div>
   <div class="post-comment">
     
@@ -242,6 +227,8 @@ s.setAttribute('data-timestamp', +new Date());
 </script>
 
     
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
   </body>
 
 </html>
