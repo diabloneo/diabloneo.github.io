@@ -1,0 +1,10 @@
+version: '3.2'
+
+services:
+  site:
+    image: jekyll/minimal
+    volumes:
+      - $PWD:/srv/jekyll
+    ports:
+      - 4000:4000
+    command: jekyll serve
