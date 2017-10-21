@@ -62,6 +62,9 @@
   </header>
 
   <div class="post-content" itemprop="articleBody">
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+    <div class="addthis_inline_share_toolbox"></div>
+    <br />
     <h1 id="为什么写这个系列">为什么写这个系列</h1>
 
 <p>这个系列的文章是希望能帮助读者从Go汇编的层面更好的理解一个Golang程序。笔者刚工作的时候用的是C语言，深刻的感到理解一个程序的汇编代码对于编程的是非常有帮助的（这个也是读了<a href="http://product.china-pub.com/216981">深入理解计算机系统</a>之后才意识到这个问题）。所以，笔者觉得，要想更好的使用Golang，也应该理解其汇编层面的东西（这里说的汇编是指Golang工具链使用的汇编格式）。<!--more--></p>
@@ -420,6 +423,23 @@ ADDQ $16, SP
   </div>
   <div class="post-comment">
     
+<div id="disqus_thread"></div>
+<script>
+var disqus_config = function () {
+  this.page.url = "http://diabloneo.github.io/2016/11/01/understanding-golang-internals-1.html"; // <--- use canonical URL
+  this.page.identifier = "/2016/11/01/understanding-golang-internals-1";
+};
+(function() { // DON'T EDIT BELOW THIS LINE
+  var d = document, s = d.createElement('script');
+
+  s.src = 'https://coffee-coke-and-code.disqus.com/embed.js';
+
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
 
   </div>
 

@@ -62,6 +62,9 @@
   </header>
 
   <div class="post-content" itemprop="articleBody">
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+    <div class="addthis_inline_share_toolbox"></div>
+    <br />
     <p>本文会重点讲解OpenStack中使用的API开发框架的使用。但是本文的目的并不是覆盖这些框架的使用细节，而是通过说明重要的部分，降低初学者的入门的门槛。框架的使用细节都可以从文档中找到。<strong>说明一下，除非特殊说明，本文中的相对路径都是相对于项目源码目录的相对路径</strong>。</p>
 
 <h1 id="paste--pastedeploy--routes--webob">Paste + PasteDeploy + Routes + WebOb</h1>
@@ -431,6 +434,23 @@ paste.filter_factory = keystone.middleware:AuthContextMiddleware.factory
   </div>
   <div class="post-comment">
     
+<div id="disqus_thread"></div>
+<script>
+var disqus_config = function () {
+  this.page.url = "http://diabloneo.github.io/2015/09/08/learn-openstack-dev-skill-by-demo-03.html"; // <--- use canonical URL
+  this.page.identifier = "/2015/09/08/learn-openstack-dev-skill-by-demo-03";
+};
+(function() { // DON'T EDIT BELOW THIS LINE
+  var d = document, s = d.createElement('script');
+
+  s.src = 'https://coffee-coke-and-code.disqus.com/embed.js';
+
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
 
   </div>
 

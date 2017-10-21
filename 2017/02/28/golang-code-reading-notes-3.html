@@ -62,6 +62,9 @@
   </header>
 
   <div class="post-content" itemprop="articleBody">
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+    <div class="addthis_inline_share_toolbox"></div>
+    <br />
     <p>在<a href="/2017/02/26/golang-code-reading-notes-1.html">第一篇文章go build(1)</a>中，我们提到了<em>cmd/go/pkg.go</em>文件中的<code class="highlighter-rouge">loadImport</code>函数。该函数有两个主要的步骤，一个是调用<code class="highlighter-rouge">buildContext.Import()</code>方法来获得要构建的package的基本信息，这个我们在<a href="/2017/02/27/golang-code-reading-notes-2.html">上一篇文章go build(2)</a>中已经说明了其内部逻辑，另外一个调用是<code class="highlighter-rouge">p.load(stk, bp, err)</code>，也就是载入这个package的依赖。本文要看的是第二个步骤的具体过程。</p>
 
 <h1 id="cmdgopackage对象的load方法"><code class="highlighter-rouge">cmd/go.Package</code>对象的<code class="highlighter-rouge">load</code>方法</h1>
@@ -214,6 +217,23 @@
   </div>
   <div class="post-comment">
     
+<div id="disqus_thread"></div>
+<script>
+var disqus_config = function () {
+  this.page.url = "http://diabloneo.github.io/2017/02/28/golang-code-reading-notes-3.html"; // <--- use canonical URL
+  this.page.identifier = "/2017/02/28/golang-code-reading-notes-3";
+};
+(function() { // DON'T EDIT BELOW THIS LINE
+  var d = document, s = d.createElement('script');
+
+  s.src = 'https://coffee-coke-and-code.disqus.com/embed.js';
+
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
 
   </div>
 

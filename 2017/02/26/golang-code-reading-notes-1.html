@@ -62,6 +62,9 @@
   </header>
 
   <div class="post-content" itemprop="articleBody">
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+    <div class="addthis_inline_share_toolbox"></div>
+    <br />
     <p><strong>go build</strong>命令用来构建一个go package，最常用的就是构建一个package得到一个可执行文件。<strong>build</strong>命令接受很多参数用来控制构建过程。本文使用的<strong>Golang</strong>源码的版本是<strong>1.7.5</strong>，这个版本的Go是自举的，也就是说Go构建器本身也是Go写的。</p>
 
 <p><strong>代码路径约定</strong>: <strong>Golang</strong>的仓库中所有的代码在子目录<em>src/</em>下，所以下面提到代码路径时，会把前缀<em>src/</em>去掉，避免表述过于冗长。</p>
@@ -193,6 +196,23 @@
   </div>
   <div class="post-comment">
     
+<div id="disqus_thread"></div>
+<script>
+var disqus_config = function () {
+  this.page.url = "http://diabloneo.github.io/2017/02/26/golang-code-reading-notes-1.html"; // <--- use canonical URL
+  this.page.identifier = "/2017/02/26/golang-code-reading-notes-1";
+};
+(function() { // DON'T EDIT BELOW THIS LINE
+  var d = document, s = d.createElement('script');
+
+  s.src = 'https://coffee-coke-and-code.disqus.com/embed.js';
+
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
 
   </div>
 

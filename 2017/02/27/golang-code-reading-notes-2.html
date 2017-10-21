@@ -62,6 +62,9 @@
   </header>
 
   <div class="post-content" itemprop="articleBody">
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+    <div class="addthis_inline_share_toolbox"></div>
+    <br />
     <p>在<a href="/2017/02/26/golang-code-reading-notes-1.html">上一篇文章go build(1)</a>中，我们已经来到了<em>cmd/go/pkg.go</em>文件的<code class="highlighter-rouge">loadImport</code>函数中，在这个函数里，会调用<code class="highlighter-rouge">buildContext.Import()</code>方法来载入一个package的信息。本文会深入的看一下这个<code class="highlighter-rouge">buildContext.Import()</code>中的逻辑。</p>
 
 <h1 id="gobuildcontext的import方法"><code class="highlighter-rouge">go/build.Context</code>的<code class="highlighter-rouge">Import</code>方法</h1>
@@ -198,6 +201,23 @@
   </div>
   <div class="post-comment">
     
+<div id="disqus_thread"></div>
+<script>
+var disqus_config = function () {
+  this.page.url = "http://diabloneo.github.io/2017/02/27/golang-code-reading-notes-2.html"; // <--- use canonical URL
+  this.page.identifier = "/2017/02/27/golang-code-reading-notes-2";
+};
+(function() { // DON'T EDIT BELOW THIS LINE
+  var d = document, s = d.createElement('script');
+
+  s.src = 'https://coffee-coke-and-code.disqus.com/embed.js';
+
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
 
   </div>
 
