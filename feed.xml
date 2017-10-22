@@ -6,9 +6,142 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 21 Oct 2017 16:35:13 +0800</pubDate>
-    <lastBuildDate>Sat, 21 Oct 2017 16:35:13 +0800</lastBuildDate>
+    <pubDate>Sun, 22 Oct 2017 23:32:42 +0800</pubDate>
+    <lastBuildDate>Sun, 22 Oct 2017 23:32:42 +0800</lastBuildDate>
     <generator>Jekyll v3.4.0</generator>
+    
+      <item>
+        <title>想到什么写什么周报 第4期 - 2017-10-22</title>
+        <description>&lt;h1 id=&quot;go-192&quot;&gt;Go 1.9.2&lt;/h1&gt;
+
+&lt;p&gt;预计下周发布&lt;/p&gt;
+
+&lt;h1 id=&quot;ubuntu-1710-artful-aardvark-发布&quot;&gt;Ubuntu 17.10 Artful Aardvark 发布&lt;/h1&gt;
+
+&lt;p&gt;Ubuntu 17.10已经发布，我升级后遇到了一些问题，&lt;a href=&quot;/2017/10/22/ubuntu-17.10-upgrade.html&quot;&gt;Ubuntu 17.10升级问题&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;ubuntu-13周年纪念&quot;&gt;Ubuntu 13周年纪念&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;http://www.omgubuntu.co.uk/2017/10/ubuntu-birthday-13th&quot;&gt;http://www.omgubuntu.co.uk/2017/10/ubuntu-birthday-13th&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;10月20号是Ubuntu的生日，已经13岁了。&lt;/p&gt;
+
+&lt;h1 id=&quot;help-us-choose-a-name-for-our-go-ide&quot;&gt;Help us Choose a Name for our Go IDE&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.jetbrains.com/go/2017/10/13/help-us-choose-a-name-for-our-go-ide/?utm_source=weibo&amp;amp;utm_medium=regular_task&amp;amp;utm_campaign=Go&quot;&gt;https://blog.jetbrains.com/go/2017/10/13/help-us-choose-a-name-for-our-go-ide/?utm_source=weibo&amp;amp;utm_medium=regular_task&amp;amp;utm_campaign=Go&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;JetBrain正在开发的Go IDE公开征名。&lt;/p&gt;
+
+&lt;h1 id=&quot;tidb-10-ga&quot;&gt;TiDB 1.0 GA&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://pingcap.github.io/blog/releases/2017/10/16/ga/&quot;&gt;https://pingcap.github.io/blog/releases/2017/10/16/ga/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;krack-demo-critical-key-reinstallation-attack-against-widely-used-wpa2-wi-fi-protocol&quot;&gt;KRACK Demo: Critical Key Reinstallation Attack Against Widely-Used WPA2 Wi-Fi Protocol&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://thehackernews.com/2017/10/wpa2-krack-wifi-hacking.html&quot;&gt;https://thehackernews.com/2017/10/wpa2-krack-wifi-hacking.html&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;中间人攻击的方式，通过诱导客户端重新使用对称秘钥来达到破解对称加密的目的。demo视频还演示了，破解WPA2加密后，还可以通过ssl bypass攻击，使得客户端脱离https。&lt;/p&gt;
+
+&lt;p&gt;此次攻击的官网：&lt;a href=&quot;https://www.krackattacks.com/&quot;&gt;https://www.krackattacks.com/&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;amazon-lightsail-update--launch-and-manage-windows-virtual-private-servers&quot;&gt;Amazon Lightsail Update – Launch and Manage Windows Virtual Private Servers&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://aws.amazon.com/cn/blogs/aws/amazon-lightsail-update-launch-and-manage-windows-virtual-private-servers/&quot;&gt;https://aws.amazon.com/cn/blogs/aws/amazon-lightsail-update-launch-and-manage-windows-virtual-private-servers/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;aws lightsail支持windows了。&lt;/p&gt;
+
+&lt;h1 id=&quot;docker-platform-and-moby-project-add-kubernetes&quot;&gt;DOCKER PLATFORM AND MOBY PROJECT ADD KUBERNETES&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.docker.com/2017/10/kubernetes-docker-platform-and-moby-project/&quot;&gt;https://blog.docker.com/2017/10/kubernetes-docker-platform-and-moby-project/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Docker官方宣布支持Kubernetes编排系统。&lt;/p&gt;
+
+&lt;h1 id=&quot;cgroups-namespaces-and-beyond-what-are-containers-made-from&quot;&gt;Cgroups, namespaces, and beyond: what are containers made from?&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=sK5i-N34im8&amp;amp;t=409s&quot;&gt;https://www.youtube.com/watch?v=sK5i-N34im8&amp;amp;t=409s&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;一个很不错的关于容器基本技术的入门视频。&lt;/p&gt;
+
+&lt;h1 id=&quot;introducing-software-certification-for-kubernetes&quot;&gt;Introducing Software Certification for Kubernetes&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;http://blog.kubernetes.io/2017/10/software-conformance-certification.html&quot;&gt;http://blog.kubernetes.io/2017/10/software-conformance-certification.html&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;k8s平台一致性认证计划，通过认证的k8s平台具高度一致的特性，确保不同的应用在不同的平台上都能得到一致的预期。预计年底GA。&lt;/p&gt;
+
+&lt;h1 id=&quot;pluggable-runtimes-containerd-cri-o-and-their-impact-on-kubernetes-users&quot;&gt;Pluggable runtimes: containerd, CRI-O and their impact on Kubernetes users&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://coreos.com/blog/pluggable-oci-runtimes-and-their-impact-on-kubernetes-users&quot;&gt;https://coreos.com/blog/pluggable-oci-runtimes-and-their-impact-on-kubernetes-users&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;K8s虽然开始支持CRI了，但是内部还对Docker有依赖，在生产环境中要支持多种不容的container runtime还需要一段时间，所以目前还是只能使用Docker。&lt;/p&gt;
+
+&lt;h1 id=&quot;feedly推出了team-newsletters&quot;&gt;Feedly推出了Team Newsletters&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.feedly.com/team-newsletters/&quot;&gt;https://blog.feedly.com/team-newsletters/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.feedly.com/newsletter-examples/&quot;&gt;https://blog.feedly.com/newsletter-examples/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;你可以把你在feedly team里面保存的文章通过feedly定期发送给团队，也可以添加非feedly账号的邮箱作为收件人。&lt;/p&gt;
+</description>
+        <pubDate>Sun, 22 Oct 2017 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2017/10/22/write-what-i-have-004.html</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2017/10/22/write-what-i-have-004.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Ubuntu 17.10升级问题</title>
+        <description>&lt;p&gt;本周Ubuntu 17.10已经正式发布，我在周末进行了升级，遇到了一些问题。&lt;/p&gt;
+
+&lt;h1 id=&quot;tmux配置有错&quot;&gt;tmux配置有错&lt;/h1&gt;
+
+&lt;p&gt;tmux版本升级到2.5版本，我原来使用的配置如下几行有问题：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bind-key -t vi-copy 'v' begin-selection
+bind-key -t vi-copy 'y' copy-selection
+bind-key -t vi-copy Escape cancel
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&quot;synaptic无法启动&quot;&gt;synaptic无法启动&lt;/h1&gt;
+
+&lt;p&gt;Bug: &lt;a href=&quot;https://bugs.launchpad.net/ubuntu/+source/synaptic/+bug/1551951&quot;&gt;https://bugs.launchpad.net/ubuntu/+source/synaptic/+bug/1551951&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;virtualbox虚拟机无法启动&quot;&gt;virtualbox虚拟机无法启动&lt;/h1&gt;
+
+&lt;p&gt;升级后有内核兼容性问题，我的解决办法如下：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;卸载，然后从oracle添加源，安装最新的5.2版本: &lt;a href=&quot;https://www.virtualbox.org/wiki/Linux_Downloads&quot;&gt;https://www.virtualbox.org/wiki/Linux_Downloads&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;然后安装 linux-headers-lowlatency&lt;/li&gt;
+  &lt;li&gt;然后执行 /sbin/vboxconfig&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h1 id=&quot;sougou输入法不能用&quot;&gt;sougou输入法不能用&lt;/h1&gt;
+
+&lt;p&gt;没办法解决，只能等更新了，可以先用ibus。&lt;/p&gt;
+
+&lt;h1 id=&quot;dns解析问题&quot;&gt;dns解析问题&lt;/h1&gt;
+
+&lt;p&gt;Bug: &lt;a href=&quot;https://bugs.launchpad.net/ubuntu/+source/netcfg/+bug/1712283&quot;&gt;https://bugs.launchpad.net/ubuntu/+source/netcfg/+bug/1712283&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;有个解决办法：&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;I can confirm that for me removing /etc/resolv.conf and replacing it with a link to stub-resolv.conf using
+sudo ln -s /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h1 id=&quot;网易云音乐无法打开&quot;&gt;网易云音乐无法打开&lt;/h1&gt;
+
+&lt;p&gt;和synaptic无法打开可能是一样的问题。&lt;/p&gt;
+</description>
+        <pubDate>Sun, 22 Oct 2017 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2017/10/22/ubuntu-17.10-upgrade.html</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2017/10/22/ubuntu-17.10-upgrade.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>想到什么写什么周报 第3期 - 2017-10-15</title>
@@ -457,106 +590,6 @@ Thanks to Stevie Johnstone for the report.&lt;/p&gt;
         <pubDate>Tue, 12 Sep 2017 00:00:00 +0800</pubDate>
         <link>http://diabloneo.github.io//2017/09/12/sdc-2017-1.html</link>
         <guid isPermaLink="true">http://diabloneo.github.io//2017/09/12/sdc-2017-1.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>GopherCon 2017 观后感(2)</title>
-        <description>&lt;p&gt;GopherConf 2017于7月13日到15日在美国丹佛举行，我在youtube上看了一些视频，本文是一些视频的观后感。&lt;/p&gt;
-
-&lt;h1 id=&quot;ian-schenck---operability-in-go&quot;&gt;Ian Schenck - Operability in Go&lt;/h1&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=SIl3wi1iWPE&quot;&gt;https://www.youtube.com/watch?v=SIl3wi1iWPE&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;介绍使用 stuct log（github.com/Sirupsen/logrus）和 expvar库来增强互操作性，其实和互操作性没什么关系，就是讲增强导出log的可读性，并且通过expvar来暴露程序运行时的内部状态。不推荐看。&lt;/p&gt;
-
-&lt;h1 id=&quot;jon-bodner---runtime-generated-typesafe-and-declarative-pick-any-three&quot;&gt;Jon Bodner - Runtime Generated, Typesafe, and Declarative: Pick Any Three&lt;/h1&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=hz6d7rzqJ6Q&quot;&gt;https://www.youtube.com/watch?v=hz6d7rzqJ6Q&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;介绍了https://github.com/jonbodner/proteus 项目。这个项目通过使用sturct tag, function generation, reflect和template来实现了一个DAO层。这个DAO层可以用来实现把一种DSL转换成对存储系统的访问。演讲中描述了如何使用这个方法来实现SQL的访问。另外，大家都认为大量使用reflect会很慢，但是作者还现场跑了benchmark，说明对于存储访问这种重IO的操作，reflect带来的影响可以接受，速度是足够快的。&lt;/p&gt;
-
-&lt;h1 id=&quot;david-crawshaw---go-build-modes&quot;&gt;David Crawshaw - Go Build Modes&lt;/h1&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=x-LhC-J2Vbk&quot;&gt;https://www.youtube.com/watch?v=x-LhC-J2Vbk&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;介绍了go的8种build mode：&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;exe(static)&lt;/li&gt;
-  &lt;li&gt;exe(with libc)&lt;/li&gt;
-  &lt;li&gt;exe(with libc and non-Go code)&lt;/li&gt;
-  &lt;li&gt;pie&lt;/li&gt;
-  &lt;li&gt;c-archive&lt;/li&gt;
-  &lt;li&gt;c-shared&lt;/li&gt;
-  &lt;li&gt;shared&lt;/li&gt;
-  &lt;li&gt;plugin
-最后介绍了go plugin的一种应用场景。Plugin的模式正在被慢慢改进，不过短期内还不会进入生产ready。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h1 id=&quot;edward-muller---go-anti-patterns&quot;&gt;Edward Muller - Go Anti-Patterns&lt;/h1&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=ltqV6pDKZD8&quot;&gt;https://www.youtube.com/watch?v=ltqV6pDKZD8&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;介绍了go的一些反模式，也就是非常规编码模式。不过，这种事情见仁见智，可以参考，不一定全部接受。&lt;/p&gt;
-
-&lt;h1 id=&quot;mitchell-hashimoto---advanced-testing-with-go&quot;&gt;Mitchell Hashimoto - Advanced Testing with Go&lt;/h1&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=8hQG7QlcLBk&quot;&gt;https://www.youtube.com/watch?v=8hQG7QlcLBk&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;讲了golang单元测试的一些基本需求以及HashiCorp在这方面对应的技术实现。&lt;/p&gt;
-</description>
-        <pubDate>Wed, 16 Aug 2017 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2017/08/16/gophercon-2017-2.html</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2017/08/16/gophercon-2017-2.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>GopherCon 2017 观后感(1)</title>
-        <description>&lt;p&gt;GopherConf 2017于7月13日到15日在美国丹佛举行，我在youtube上看了一些视频，本文是一些视频的观后感。&lt;/p&gt;
-
-&lt;h1 id=&quot;russ-cox---the-future-of-go&quot;&gt;Russ Cox - The Future of Go&lt;/h1&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=0Zbh_vmAKvk&quot;&gt;https://www.youtube.com/watch?v=0Zbh_vmAKvk&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;开始为Go2进行宣传。Go2的开发启动还早，但是社区已经开始考虑这个问题。Russ Cox分享了社区这几年来是如何改进语言的。我总结了几点如下：&lt;/p&gt;
-
-&lt;p&gt;首选需要清晰的描述出问题，以便社区进行讨论。
-一个问题是否要解决取决于该问题的重要性和影响范围。社区引入一个不确定的feature的方式是等，等到这个feature足够重要了引入。。他举了Go 1.9中新增的type alias和monotonic clock的例子。这两个问题的解决都是在1.9版本中引入的，虽然问题的提出和解决方案在很早之前就完成了，但直到今年才决定要放到Go中。
-解决问题的方式不一定是增加变成语言特性，也可能是增加工具（race detection），或者是增加标准库。&lt;/p&gt;
-
-&lt;p&gt;最后，他呼吁大家参与ExperienceReport（golang.org/wiki/ExperienceReports），为社区提供更多的问题积累，以便社区更好的决定哪些特性要引入到语言中。&lt;/p&gt;
-
-&lt;h1 id=&quot;keith-randall---generating-better-machine-code-with-ssa&quot;&gt;Keith Randall - Generating Better Machine Code with SSA&lt;/h1&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=uTMvKVma5ms&quot;&gt;https://www.youtube.com/watch?v=uTMvKVma5ms&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;讲述了Golang为什么要引入SSA（Static Single Assignemnt）。从1.5版本之后开始引入，1.7版本合入主干发布。SSA能够让Go代码更快更小，也能够让编译器更方便的对代码进行优化。从结果来看，引入SSA
-后，AMD64平台，代码性能提升12%，缩小13%；ARM平台，性能提升20%，缩小18%。&lt;/p&gt;
-
-&lt;h1 id=&quot;kavya-joshi---understanding-channels&quot;&gt;Kavya Joshi - Understanding Channels&lt;/h1&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=KBZlN0izeiY&quot;&gt;https://www.youtube.com/watch?v=KBZlN0izeiY&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;介绍了channel的内部实现，以及channel导致的goroutine的阻塞和唤醒在runtime中是如何实现的。&lt;/p&gt;
-
-&lt;h1 id=&quot;rhys-hiltner---an-introduction-to-go-tool-trace&quot;&gt;Rhys Hiltner - An Introduction to “go tool trace”&lt;/h1&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=V74JnrGTwKA&quot;&gt;https://www.youtube.com/watch?v=V74JnrGTwKA&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;介绍了 go tool trace，内容一般，听得也不太清楚，不推荐。&lt;/p&gt;
-
-&lt;h1 id=&quot;sam-boyer---the-new-era-of-go-package&quot;&gt;Sam Boyer - The New Era of Go Package&lt;/h1&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=5LtMb090AZI&quot;&gt;https://www.youtube.com/watch?v=5LtMb090AZI&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;介绍了社区的实验项目 github.com/golang/dep ，这是一个用来实现包依赖管理的工具，用来解决现在广为诟病的包依赖问题。如果合适，将来会进入go tool chain。该项目已经production ready，大家可以开始使用了。&lt;/p&gt;
-</description>
-        <pubDate>Sat, 05 Aug 2017 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2017/08/05/gophercon-2017-1.html</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2017/08/05/gophercon-2017-1.html</guid>
         
         
       </item>
