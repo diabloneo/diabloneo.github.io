@@ -6,9 +6,56 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 22 Oct 2017 23:32:42 +0800</pubDate>
-    <lastBuildDate>Sun, 22 Oct 2017 23:32:42 +0800</lastBuildDate>
+    <pubDate>Sun, 29 Oct 2017 22:54:21 +0800</pubDate>
+    <lastBuildDate>Sun, 29 Oct 2017 22:54:21 +0800</lastBuildDate>
     <generator>Jekyll v3.4.0</generator>
+    
+      <item>
+        <title>想到什么写什么周报 第5期 - 2017-10-29</title>
+        <description>&lt;h1 id=&quot;cri-o-the-project-to-run-containers-without-docker-reaches-10&quot;&gt;CRI-O, the Project to Run Containers without Docker, Reaches 1.0&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://thenewstack.io/cri-o-project-run-containers-without-docker-reaches-1-0/&quot;&gt;https://thenewstack.io/cri-o-project-run-containers-without-docker-reaches-1-0/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;容器运行时CRI-O 1.0版本发布，本文阐述了CRI-O和K8s的关系。CRI-O使得K8s可以用统一的接口调用容器运行时，可以避免现在Docker升级导致K8s不可用的情况。&lt;/p&gt;
+
+&lt;h1 id=&quot;nuclio-the-new-serverless-superhero&quot;&gt;nuclio: The New Serverless Superhero&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.iguazio.com/nuclio-new-serverless-superhero/&quot;&gt;https://www.iguazio.com/nuclio-new-serverless-superhero/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;一个FaaS的开源实现。&lt;/p&gt;
+
+&lt;h1 id=&quot;building-distributed-systems-and-microservices-in-go-with-nats-streaming&quot;&gt;Building Distributed Systems and Microservices in Go with NATS Streaming&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://medium.com/@shijuvar/building-distributed-systems-and-microservices-in-go-with-nats-streaming-d8b4baa633a2&quot;&gt;https://medium.com/@shijuvar/building-distributed-systems-and-microservices-in-go-with-nats-streaming-d8b4baa633a2&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;NATS是一个Go实现的消息队列服务，NATS Streaming是其中带消息持久化的实现，本文介绍了NATS Streaming的持久化实现以及使用方式。NATS Streaming目前还不支持集群。&lt;/p&gt;
+
+&lt;h1 id=&quot;kubeadm-v18-released-introducing-easy-upgrades-for-kubernetes-clusters&quot;&gt;kubeadm v1.8 Released: Introducing Easy Upgrades for Kubernetes Clusters&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;http://blog.kubernetes.io/2017/10/kubeadm-v18-released.html&quot;&gt;http://blog.kubernetes.io/2017/10/kubeadm-v18-released.html&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;the-linux-foundation-releases-annual-kernel-development-report&quot;&gt;The Linux Foundation Releases Annual Kernel Development Report&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.linuxfoundation.org/press-release/linux-foundation-releases-annual-kernel-development-report/&quot;&gt;https://www.linuxfoundation.org/press-release/linux-foundation-releases-annual-kernel-development-report/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;2017年度Linux内核开发报告&lt;/p&gt;
+
+&lt;h1 id=&quot;kubernetes-182发布&quot;&gt;Kubernetes 1.8.2发布&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://groups.google.com/forum/#!topic/kubernetes-announce/9iA4Pw-obLQ&quot;&gt;https://groups.google.com/forum/#!topic/kubernetes-announce/9iA4Pw-obLQ&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;now-available--amazon-aurora-with-postgresql-compatibility&quot;&gt;Now Available – Amazon Aurora with PostgreSQL Compatibility&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://aws.amazon.com/blogs/aws/now-available-amazon-aurora-with-postgresql-compatibility/&quot;&gt;https://aws.amazon.com/blogs/aws/now-available-amazon-aurora-with-postgresql-compatibility/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Amazon Aurora的PostgresSQL兼容性支持现在已经GA，与9.6.3版本兼容。&lt;/p&gt;
+</description>
+        <pubDate>Sun, 29 Oct 2017 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2017/10/29/write-what-i-have-005.html</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2017/10/29/write-what-i-have-005.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>想到什么写什么周报 第4期 - 2017-10-22</title>
@@ -521,75 +568,6 @@ Thanks to Stevie Johnstone for the report.&lt;/p&gt;
         <pubDate>Wed, 13 Sep 2017 00:00:00 +0800</pubDate>
         <link>http://diabloneo.github.io//2017/09/13/sdc-2017-2.html</link>
         <guid isPermaLink="true">http://diabloneo.github.io//2017/09/13/sdc-2017-2.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>SDC 2017 Day 1</title>
-        <description>&lt;p&gt;&lt;img src=&quot;http://diabloneo.github.io//assets/imgs/00013_sdc2017_day1.jpg&quot; alt=&quot;Day1&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;9月11日到14日，SNIA SDC (Storage Developer Conference) 2017在美国圣何塞召开。我把今天听的几个演讲分享一下。给出的链接可以下载演讲的幻灯片。&lt;/p&gt;
-
-&lt;h1 id=&quot;causally-ordering-distributed-file-system-events&quot;&gt;Causally Ordering Distributed File System Events&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;Dell EMC Isilon&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://sniasdc17.pathable.com/meetings/549459&quot;&gt;https://sniasdc17.pathable.com/meetings/549459&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;讲了一种在Isilon中使用的高效的分布式文件系统的事件排序方法。基本思路是，Isilon中的每个inode都有编号以及版本号，通过组合文件操作中的inode信息来表示一个事件。将所有的事件发送到一个排序节点上，构建一个有向无环图，然后使用拓扑排序得到一个事件序列。这个事件序列可以用于写入log文件，用于实现文件系统的快照功能。&lt;/p&gt;
-
-&lt;h1 id=&quot;container-native-storage---solving-the-persistent-storage-challenge-with-gluster&quot;&gt;Container Native Storage - Solving the Persistent Storage Challenge With Gluster&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;RedHat&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://sniasdc17.pathable.com/meetings/549464&quot;&gt;https://sniasdc17.pathable.com/meetings/549464&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;使用Gluster来为容器K8s的容器提供存储。&lt;/p&gt;
-
-&lt;h1 id=&quot;breaking-the-cloud-storage-chains&quot;&gt;Breaking the Cloud Storage Chains&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;INFINIDAT&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://sniasdc17.pathable.com/meetings/549469&quot;&gt;https://sniasdc17.pathable.com/meetings/549469&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;介绍了InfiniBox产品，这个产品可以帮助拜托公有云的存储绑定问题。将这个存储放在私有云中，然后通过共有云的VPC网络和公有云连接起来，使得公有云的计算资源可以访问到私有云的存储。这种方法的好处包括：省钱、不会有公有云绑定问题，数据安全等。至于性能问题，在网络延迟为2ms的情况下，对于文件系统，Infinibox比公有云性能好；对于块存储，在带宽方面比公有云好。&lt;/p&gt;
-
-&lt;h1 id=&quot;universal-hybrid-cloud-connector-for-seamless-data-migration&quot;&gt;Universal Hybrid Cloud Connector for Seamless Data Migration&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;Veritas Technologies&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://sniasdc17.pathable.com/meetings/549473&quot;&gt;https://sniasdc17.pathable.com/meetings/549473&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;基于VxFS之上，实现了一种Mutti-Volume filesystem + SmartTier的文件系统，可以通过配置文件把文件系统的数据分布到不同的本地磁盘或者公有云对象存储上。类似AWS Storage Gateway。&lt;/p&gt;
-
-&lt;h1 id=&quot;providing-efficient-storage-operations-for-both-data-centers-and-hyperscale-applications&quot;&gt;Providing Efficient Storage Operations for Both Data Centers and Hyperscale Applications&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;Samsung&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://sniasdc17.pathable.com/meetings/549818&quot;&gt;https://sniasdc17.pathable.com/meetings/549818&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;为了发挥出SSD的性能，需要应用或者host控制SSD的更多方面。探讨了Open Channel和IO Determinism。&lt;/p&gt;
-
-&lt;h1 id=&quot;andromeda-building-the-next-generation-high-density-storage-interface-for-successful-adoption&quot;&gt;Andromeda: Building the Next-Generation High-Density Storage Interface for Successful Adoption&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;Microsoft&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://sniasdc17.pathable.com/meetings/549841&quot;&gt;https://sniasdc17.pathable.com/meetings/549841&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;介绍了微软在SSD应用方面的一些进展。微软的不同应用有不同的SSD性能需求，为了在一个节点上同时运行不同的应用，需要应用和host来控制SSD的运行时配置。采用了Open Channel的方案，正在尝试将log manager和media manager分开，log manager放在host中，media manager放在硬盘中，从让不同应用都可以把SSD的性能发挥出来。&lt;/p&gt;
-
-&lt;h1 id=&quot;dynamic-reliability-methods-for-a-clustered-task-server&quot;&gt;Dynamic Reliability Methods for a Clustered-task Server&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;Dell EMC&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://sniasdc17.pathable.com/meetings/549848&quot;&gt;https://sniasdc17.pathable.com/meetings/549848&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;讲了一个对服务器集群生命周期进行建模的方法。个人觉得这个方法更适合给硬盘使用&lt;/p&gt;
-</description>
-        <pubDate>Tue, 12 Sep 2017 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2017/09/12/sdc-2017-1.html</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2017/09/12/sdc-2017-1.html</guid>
         
         
       </item>
