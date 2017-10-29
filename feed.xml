@@ -6,13 +6,17 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 29 Oct 2017 22:54:21 +0800</pubDate>
-    <lastBuildDate>Sun, 29 Oct 2017 22:54:21 +0800</lastBuildDate>
+    <pubDate>Sun, 29 Oct 2017 23:07:12 +0800</pubDate>
+    <lastBuildDate>Sun, 29 Oct 2017 23:07:12 +0800</lastBuildDate>
     <generator>Jekyll v3.4.0</generator>
     
       <item>
         <title>想到什么写什么周报 第5期 - 2017-10-29</title>
-        <description>&lt;h1 id=&quot;cri-o-the-project-to-run-containers-without-docker-reaches-10&quot;&gt;CRI-O, the Project to Run Containers without Docker, Reaches 1.0&lt;/h1&gt;
+        <description>&lt;h1 id=&quot;go-192-发布&quot;&gt;Go 1.9.2 发布&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://golang.org/doc/devel/release.html#go1.9.minor&quot;&gt;https://golang.org/doc/devel/release.html#go1.9.minor&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;cri-o-the-project-to-run-containers-without-docker-reaches-10&quot;&gt;CRI-O, the Project to Run Containers without Docker, Reaches 1.0&lt;/h1&gt;
 
 &lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://thenewstack.io/cri-o-project-run-containers-without-docker-reaches-1-0/&quot;&gt;https://thenewstack.io/cri-o-project-run-containers-without-docker-reaches-1-0/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 
