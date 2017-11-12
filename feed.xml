@@ -6,9 +6,48 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 29 Oct 2017 23:07:12 +0800</pubDate>
-    <lastBuildDate>Sun, 29 Oct 2017 23:07:12 +0800</lastBuildDate>
+    <pubDate>Sun, 12 Nov 2017 22:32:23 +0800</pubDate>
+    <lastBuildDate>Sun, 12 Nov 2017 22:32:23 +0800</lastBuildDate>
     <generator>Jekyll v3.4.0</generator>
+    
+      <item>
+        <title>想到什么写什么周报 第6期 - 2017-11-12</title>
+        <description>&lt;h1 id=&quot;announcing-goland-former-gogland-eap-18-final-product-name-templates-support-and-more&quot;&gt;Announcing GoLand (Former Gogland) EAP 18: Final Product Name, Templates Support and More&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.jetbrains.com/go/2017/11/02/announcing-goland-former-gogland-eap-18-final-product-name-templates-support-and-more/&quot;&gt;https://blog.jetbrains.com/go/2017/11/02/announcing-goland-former-gogland-eap-18-final-product-name-templates-support-and-more/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;JetBrain的Go IDE确定名字为GoLand&lt;/p&gt;
+
+&lt;h1 id=&quot;openstack-sydney-summit-2017-complete-keynote-session&quot;&gt;OpenStack Sydney Summit 2017 Complete Keynote Session&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=oCIRhleXztU&quot;&gt;https://www.youtube.com/watch?v=oCIRhleXztU&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Ironic的使用率在过去6个月从9%增长到20%.&lt;/li&gt;
+  &lt;li&gt;Kubernetes是OpenStack上用来管理应用最流行的方案，占比达到50%，已经是事实上的标准。&lt;/li&gt;
+  &lt;li&gt;现在用户都会使用多个不同的开源项目来实现自己的业务需求，一个典型案例是：OpenStack+Kubernetes。OpenStack打算开始帮助用户更好的集成这些新技术。&lt;/li&gt;
+  &lt;li&gt;中国市场在OpenStack生态中非常突出。腾讯表现抢眼。SuperUser候选，四家里有三家是中国公司，包括中国铁总、中国银联和腾讯。&lt;/li&gt;
+  &lt;li&gt;istio.io An open platform to connect, manage, and secure microservices&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h1 id=&quot;the-past-and-future-of-vim-go&quot;&gt;The Past and Future of Vim-go&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://speakerdeck.com/farslan/the-past-and-future-of-vim-go&quot;&gt;https://speakerdeck.com/farslan/the-past-and-future-of-vim-go&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Vim-go的作者Fatih Arslan回顾了vim-go的发展历史，并且提到了接下来要做的一些改进。&lt;/p&gt;
+
+&lt;h1 id=&quot;understanding-go-panic-output&quot;&gt;Understanding Go panic output&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://joeshaw.org/understanding-go-panic-output/&quot;&gt;https://joeshaw.org/understanding-go-panic-output/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;说明了Go panic时输出的栈信息的内容。&lt;/p&gt;
+</description>
+        <pubDate>Sun, 12 Nov 2017 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2017/11/12/write-what-i-have-006.html</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2017/11/12/write-what-i-have-006.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>想到什么写什么周报 第5期 - 2017-10-29</title>
@@ -518,60 +557,6 @@ Thanks to Stevie Johnstone for the report.&lt;/p&gt;
         <pubDate>Thu, 14 Sep 2017 00:00:00 +0800</pubDate>
         <link>http://diabloneo.github.io//2017/09/14/sdc-2017-3.html</link>
         <guid isPermaLink="true">http://diabloneo.github.io//2017/09/14/sdc-2017-3.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>SDC 2017 Day 2 General Session</title>
-        <description>&lt;p&gt;&lt;img src=&quot;http://diabloneo.github.io//assets/imgs/00014_sdc2017_day2.jpg&quot; alt=&quot;Day2&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;今天会议的第二天，上午是General Session。从现场看，参会人数大约150人。整个General Session包括4个Keynote。&lt;/p&gt;
-
-&lt;h1 id=&quot;snia-20-years-of-storage-innovation-and-predictions-for-the-next-20-years&quot;&gt;SNIA: 20 Years of Storage Innovation and Predictions for the Next 20 Years&lt;/h1&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://sniasdc17.pathable.com/meetings/549880&quot;&gt;https://sniasdc17.pathable.com/meetings/549880&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;因为今年是SNIA 20周年，这个keynote紧扣20年这个周期，回顾了过去20周年的存储的发展以及SNIA在这期间的工作。&lt;/p&gt;
-
-&lt;p&gt;Michael Qros特别强调了标准化的重要性，他举了供电系统作为例子。供电系统刚出现的时候没有标准话，而且建设之后很难再推倒重来，所以长期下来，现在供电系统就有2种不同的电压标准以及两种不同的频率标准（4种组合），以及15种不同的接口标准。这种缺失标准化的做法，导致解决供电问题的成本上升。所以SNIA在过去20年在存储方面做了很多标准化工作，将来也会继续推进存储的标准化工作。他也分享了SNIA在接下来的主要方向，包括：storage management, flash, persistent memory, cloud, green, object drives, security。&lt;/p&gt;
-
-&lt;h1 id=&quot;memories-of-tomorrow&quot;&gt;Memories of Tomorrow&lt;/h1&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://sniasdc17.pathable.com/meetings/549938&quot;&gt;https://sniasdc17.pathable.com/meetings/549938&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;介绍了非易失性内存，作者称为storage class memory的最新进展。目前内存和存储的主要问题是：内存数据是易失的，存储的时延则太高。persistent memory（非易失存储内存）是目前被看好的解决方案。但是PM的推广和应用属于架构改变，需要这个计算机系统的严禁来配合，从BIOS到CPU到操作系统到应用软件都需要做出修改，才能充分发挥这种新技术的优势。作者认为SSD的推广和普及也是有类似的过程，不断改进的SATA，以及新出现的NVMe都是为了更好的发挥出SSD的能力。因为PM方面还有很多工作需要去做。&lt;/p&gt;
-
-&lt;h1 id=&quot;goodbye-xfs-building-a-new-faster-storage-backend-for-ceph&quot;&gt;Goodbye, XFS: Building a new, faster storage backend for Ceph&lt;/h1&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://sniasdc17.pathable.com/meetings/550621&quot;&gt;https://sniasdc17.pathable.com/meetings/550621&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Sage Weil回顾了Ceph在store方面的历史。他最开始的直觉是要做一个文件系统，绕过POSIX，这样可以更好的作为存储的底层，所以在2008年之前，Ceph使用的是FakeStore + EBOFS。但是那个时候资源有限，Ceph的其他方面需要更多的投入，自己的文件系统无法做好，所以后来Ceph就转到了大家熟悉的FileStore + XFS + LevelDB的模式，利用已经成熟的解决方案来实现底层的数据存储。FileStore的主要问题是POSIX操作无法实现事务，所以就采用了double write的解决方案，也就有了double write的问题。他还分享了好几个FileStore的问题，都是由于POSIX接口并不适用于OSD的操作需求导致的。所以，Sage觉得实际上一开始自己做文件系统的方向是对的，现在Ceph项目壮大，开始有能力重新回到这个轨道上来，所以从2016年开始，BlueStore的研发就开始了，直到最近L版中正式product ready。最后Sage介绍了BlueStore中解决的几个主要问题，以及和FileStore的性能对比数据，BlueStore相对FileStore来说有很大的性能提升。&lt;/p&gt;
-
-&lt;h1 id=&quot;recent-developments-in-the-linux-io-stack&quot;&gt;Recent Developments in The Linux I/O Stack&lt;/h1&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://sniasdc17.pathable.com/meetings/550618&quot;&gt;https://sniasdc17.pathable.com/meetings/550618&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;内核开发者Martin Petersen介绍了Linux从2013年到现在，在I/O栈方面的总体进展。他通过展示不通类型IO类型系统的开发活跃度来介绍Linux的开发重点。简单的总结一下，活跃度较高的是block层、SCSI和NVMe，SATA的活跃度正在慢慢下降，IDE已经基本不动了，新出现的Persistent Memory呈上升趋势。这个活跃度很客观的反应了目前设备的流行程度。&lt;/p&gt;
-
-&lt;p&gt;他重点介绍了从2013年开始block层的开发比较活跃的原因：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;从2013年开始引入了blk-mq，即Multiqueue Block Layer。新的block层的出现是为了更好的使用新设备，遗留的块层是为HDD设计的，现在显然过时了，所以kernel引入了blk-mq，并且不断的改进。&lt;/li&gt;
-  &lt;li&gt;除了性能的提升，block层也在I/O抽象接口方面做了很多工作，block层不再是只提供简单的read、write和passthrough这些简单的接口，还有&lt;/li&gt;
-  &lt;li&gt;很多其他高级特性，比如discard、write zeros等。&lt;/li&gt;
-  &lt;li&gt;增加对zoned block device的支持。&lt;/li&gt;
-  &lt;li&gt;NVMe支持的改进。&lt;/li&gt;
-  &lt;li&gt;Persistent Memory的支持。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;最后，一张commit数量的图显示，2017年的以来，Block Storage方面的开发活跃度正在高速增长。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://diabloneo.github.io//assets/imgs/00015_sdc2017_block_storage_commits.png&quot; alt=&quot;Block Storage Commits&quot; /&gt;&lt;/p&gt;
-</description>
-        <pubDate>Wed, 13 Sep 2017 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2017/09/13/sdc-2017-2.html</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2017/09/13/sdc-2017-2.html</guid>
         
         
       </item>
