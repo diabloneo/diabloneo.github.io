@@ -6,9 +6,67 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 12 Nov 2017 22:32:23 +0800</pubDate>
-    <lastBuildDate>Sun, 12 Nov 2017 22:32:23 +0800</lastBuildDate>
+    <pubDate>Mon, 20 Nov 2017 22:08:40 +0800</pubDate>
+    <lastBuildDate>Mon, 20 Nov 2017 22:08:40 +0800</lastBuildDate>
     <generator>Jekyll v3.4.0</generator>
+    
+      <item>
+        <title>想到什么写什么周报 第7期 - 2017-11-20</title>
+        <description>&lt;h1 id=&quot;caching-at-netflix-the-hidden-microservice-by-scott-mansfield&quot;&gt;“Caching at Netflix: The Hidden Microservice” by Scott Mansfield&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=Rzdxgx3RC0Q&quot;&gt;https://www.youtube.com/watch?v=Rzdxgx3RC0Q&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Netflix的cache系统。一开始是一套简单的全内存分布式系统，跨越三个aws region。随后发现cache数据的热点非常集中，所以改成将所有数据存储在ssd中，只把热点数据放在内存中。通过这种改造，节约了70%的成本。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;github.com/netflix/rend 高性能的memcache proxy and server，用来对cache数据进行分层存储，管理冷热数据等。&lt;/li&gt;
+  &lt;li&gt;Mnemnic 管理SSD上的数据，底层使用rocksdb，上层复用了部分rend项目的代码。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;announcing-prometheus-20&quot;&gt;Announcing Prometheus 2.0&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://prometheus.io/blog/2017/11/08/announcing-prometheus-2-0/&quot;&gt;https://prometheus.io/blog/2017/11/08/announcing-prometheus-2-0/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Prometheus 2.0发布，使用新的时间序列数据库，资源消耗降低，性能提升。&lt;/p&gt;
+
+&lt;p&gt;CoreOS发表的这篇文章有不同版本的对比测试数据：&lt;em&gt;&lt;a href=&quot;https://coreos.com/blog/prometheus-2.0-released&quot;&gt;https://coreos.com/blog/prometheus-2.0-released&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;除了性能，我看到这次还增加了一个snapshot的功能，允许对整个数据库进行备份和恢复，相当实用。视频地址：&lt;em&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=15uc8oTMgPY&quot;&gt;https://www.youtube.com/watch?v=15uc8oTMgPY&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;best-practices-for-go-grpc-services&quot;&gt;Best Practices for (Go) gRPC Services&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=Z_yD7YPL2oE&quot;&gt;https://www.youtube.com/watch?v=Z_yD7YPL2oE&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;API设计&lt;/li&gt;
+  &lt;li&gt;错误处理&lt;/li&gt;
+  &lt;li&gt;Always use deadlines&lt;/li&gt;
+  &lt;li&gt;Rate Limiting and retry&lt;/li&gt;
+  &lt;li&gt;Memory Management&lt;/li&gt;
+  &lt;li&gt;Logging&lt;/li&gt;
+  &lt;li&gt;Monitoring&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;influxdb-14-now-available-influxql-enhancements-prometheus-readwrite-better-compaction-and-a-lot-more&quot;&gt;InfluxDB 1.4 Now Available: InfluxQL Enhancements, Prometheus Read/Write, Better Compaction and a lot more!&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.influxdata.com/blog/whats-new-influxdb-oss-1-4/&quot;&gt;https://www.influxdata.com/blog/whats-new-influxdb-oss-1-4/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;InfluxDB 1.4发布&lt;/p&gt;
+
+&lt;p&gt;同时，InfluxData宣布加入CNCF &lt;em&gt;&lt;a href=&quot;https://www.influxdata.com/blog/press-release-influxdata-joins-cloud-native-computing-foundation/&quot;&gt;https://www.influxdata.com/blog/press-release-influxdata-joins-cloud-native-computing-foundation/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;new-amazon-s3-encryption--security-features&quot;&gt;New Amazon S3 Encryption &amp;amp; Security Features&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://aws.amazon.com/blogs/aws/new-amazon-s3-encryption-security-features/&quot;&gt;https://aws.amazon.com/blogs/aws/new-amazon-s3-encryption-security-features/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;S3增加了一些和加密及安全有关的特性。&lt;/p&gt;
+</description>
+        <pubDate>Mon, 20 Nov 2017 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2017/11/20/write-what-i-have-007.html</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2017/11/20/write-what-i-have-007.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>想到什么写什么周报 第6期 - 2017-11-12</title>
@@ -506,57 +564,6 @@ Thanks to Stevie Johnstone for the report.&lt;/p&gt;
         <pubDate>Fri, 29 Sep 2017 00:00:00 +0800</pubDate>
         <link>http://diabloneo.github.io//2017/09/29/rob-pike-go-proverb.html</link>
         <guid isPermaLink="true">http://diabloneo.github.io//2017/09/29/rob-pike-go-proverb.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>SDC 2017 Day 3 General Session</title>
-        <description>&lt;p&gt;&lt;img src=&quot;http://diabloneo.github.io//assets/imgs/00016_sdc2017_day3.jpg&quot; alt=&quot;Day3&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;今天SDC 2017进入第三天，早上还是General Session。&lt;/p&gt;
-
-&lt;h1 id=&quot;impact-of-persistent-memory-on-ssds-and-fabrics&quot;&gt;Impact of Persistent Memory on SSDs and Fabrics&lt;/h1&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://sniasdc17.pathable.com/meetings/549928&quot;&gt;https://sniasdc17.pathable.com/meetings/549928&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;是一个联合介绍PM的session，三个公司分别介绍了他们在PM上的产品，具体的可以到他们官网上查看&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;a href=&quot;https://www.everspin.com/&quot;&gt;https://www.everspin.com/&lt;/a&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;a href=&quot;http://www.newisys.com/&quot;&gt;http://www.newisys.com/&lt;/a&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;a href=&quot;http://www.mobiveil.com/&quot;&gt;http://www.mobiveil.com/&lt;/a&gt;&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;linux-optimizations-for-low-latency-block-devices&quot;&gt;Linux Optimizations for Low Latency Block Devices&lt;/h1&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://sniasdc17.pathable.com/meetings/549964&quot;&gt;https://sniasdc17.pathable.com/meetings/549964&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Througput is easy, latency is hard&lt;/strong&gt;。存储的性能在不断的提升，但是软件层面要提高latency是很困难的。&lt;/p&gt;
-
-&lt;p&gt;SPDK带来的latency降低有限，代价不小，不适用于普通的应用，比较适合专门做硬件的使用。kernel的I/O增加了polling机制，可以有效降低延迟，同时不增加应用的复杂度。一开始做的是不断的polling，会导致CPU 100%，后来增加了hybrid polling机制，cpu降低到58%的同时，I/O延迟和不断的polling是一样的。后续会继续改进，会在需要I/O结果时再做polling，可以进一步降低CPU。&lt;/p&gt;
-
-&lt;h1 id=&quot;data-and-intelligence-in-storage&quot;&gt;Data and Intelligence in Storage&lt;/h1&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://sniasdc17.pathable.com/meetings/549932&quot;&gt;https://sniasdc17.pathable.com/meetings/549932&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Intel的广告，介绍了Intel Rack Scale Design。&lt;/p&gt;
-
-&lt;h1 id=&quot;persistent-memory-new-tier-or-storage-replacement&quot;&gt;Persistent Memory: New Tier or Storage Replacement?&lt;/h1&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://sniasdc17.pathable.com/meetings/549982&quot;&gt;https://sniasdc17.pathable.com/meetings/549982&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;这个没听。&lt;/p&gt;
-</description>
-        <pubDate>Thu, 14 Sep 2017 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2017/09/14/sdc-2017-3.html</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2017/09/14/sdc-2017-3.html</guid>
         
         
       </item>
