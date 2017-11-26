@@ -6,9 +6,38 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 20 Nov 2017 22:08:40 +0800</pubDate>
-    <lastBuildDate>Mon, 20 Nov 2017 22:08:40 +0800</lastBuildDate>
+    <pubDate>Sun, 26 Nov 2017 23:02:26 +0800</pubDate>
+    <lastBuildDate>Sun, 26 Nov 2017 23:02:26 +0800</lastBuildDate>
     <generator>Jekyll v3.4.0</generator>
+    
+      <item>
+        <title>想到什么写什么周报 第8期 - 2017-11-26</title>
+        <description>&lt;h1 id=&quot;kubernetes-184发布&quot;&gt;Kubernetes 1.8.4发布&lt;/h1&gt;
+
+&lt;h1 id=&quot;go-slice-vs-maps&quot;&gt;Go Slice vs Maps&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://boltandnuts.wordpress.com/2017/11/20/go-slice-vs-maps/&quot;&gt;https://boltandnuts.wordpress.com/2017/11/20/go-slice-vs-maps/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Go 1.9.2中slice和map的一些性能对比，最重要的是这个：looping over slice is approximately 20x faster than looping over a map&lt;/p&gt;
+
+&lt;h1 id=&quot;with-multi-region-support-in-cloud-spanner-have-your-cake-and-eat-it-too&quot;&gt;With Multi-Region support in Cloud Spanner, have your cake and eat it too&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://cloudplatform.googleblog.com/2017/11/with-Multi-Region-support-in-Cloud-Spanner-have-your-cake-and-eat-it-too.html&quot;&gt;https://cloudplatform.googleblog.com/2017/11/with-Multi-Region-support-in-Cloud-Spanner-have-your-cake-and-eat-it-too.html&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Google的Cloud Spanner现在支持部署多region实例了，真正的强一致数据的全球化。&lt;/p&gt;
+
+&lt;h1 id=&quot;standard-package-layout&quot;&gt;Standard Package Layout&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://medium.com/@benbjohnson/standard-package-layout-7cdbc8391fc1&quot;&gt;https://medium.com/@benbjohnson/standard-package-layout-7cdbc8391fc1&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;作者根据自己经验总结出的一套Go项目的代码组织方法。&lt;/p&gt;
+</description>
+        <pubDate>Sun, 26 Nov 2017 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2017/11/26/write-what-i-have-008.html</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2017/11/26/write-what-i-have-008.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>想到什么写什么周报 第7期 - 2017-11-20</title>
@@ -526,44 +555,6 @@ Thanks to Stevie Johnstone for the report.&lt;/p&gt;
         <pubDate>Sat, 30 Sep 2017 00:00:00 +0800</pubDate>
         <link>http://diabloneo.github.io//2017/09/30/uber-jaeger-introduction.html</link>
         <guid isPermaLink="true">http://diabloneo.github.io//2017/09/30/uber-jaeger-introduction.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Rob Pike's Go Proverb</title>
-        <description>&lt;p&gt;&lt;img src=&quot;http://diabloneo.github.io//assets/imgs/00017_rob_pike_go_proverb.png&quot; alt=&quot;Rob Pike&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Rob Pike在2015年的Gopherfest的演讲，题目是 &lt;em&gt;Go Proverbs&lt;/em&gt;. YouTube地址:&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=PAAkCSZUG1c&amp;amp;index=27&amp;amp;t=1s&amp;amp;list=WL&quot;&gt;Go Proverbs - Rob Pike - Gopherfest - November 18, 2015&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;他分享了他自己写的几条Go编程的格言，类似 &lt;em&gt;The Zen of Python&lt;/em&gt;，但是没那么正式，格言的列表如下，推荐看视频：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Don’t communicate by sharing memory, share memory by communicating.&lt;/li&gt;
-  &lt;li&gt;Concurrency is not parallism.&lt;/li&gt;
-  &lt;li&gt;Channels orchestrate; mutexes serialize.&lt;/li&gt;
-  &lt;li&gt;The bigger the interface, the weaker the abstraction.&lt;/li&gt;
-  &lt;li&gt;Make the zero value useful. (e.g. &lt;code class=&quot;highlighter-rouge&quot;&gt;bytes.Buffer&lt;/code&gt; or &lt;code class=&quot;highlighter-rouge&quot;&gt;sync.Mutex&lt;/code&gt;)&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;interface{}&lt;/code&gt; says nothing.&lt;/li&gt;
-  &lt;li&gt;Gofmt’s style is no one’s favorite, yet gofmt is everyone’s favorite.&lt;/li&gt;
-  &lt;li&gt;A little copying is better than a little dependency.&lt;/li&gt;
-  &lt;li&gt;Syscall must always be guarded with build tags.&lt;/li&gt;
-  &lt;li&gt;Cgo must always be guarded with build tags.&lt;/li&gt;
-  &lt;li&gt;Cgo is not Go. (他说自己几乎不使用cgo)&lt;/li&gt;
-  &lt;li&gt;With the &lt;code class=&quot;highlighter-rouge&quot;&gt;unsafe&lt;/code&gt; package, there are no guarantees.&lt;/li&gt;
-  &lt;li&gt;Clear is better than clever.&lt;/li&gt;
-  &lt;li&gt;Reflection is never clear.&lt;/li&gt;
-  &lt;li&gt;Errors are values.&lt;/li&gt;
-  &lt;li&gt;Don’t just check errors, handle them gracefully.&lt;/li&gt;
-  &lt;li&gt;Design the architecture, name the components, document the details.&lt;/li&gt;
-  &lt;li&gt;Documentation is for users.&lt;/li&gt;
-&lt;/ol&gt;
-</description>
-        <pubDate>Fri, 29 Sep 2017 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2017/09/29/rob-pike-go-proverb.html</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2017/09/29/rob-pike-go-proverb.html</guid>
         
         
       </item>
