@@ -6,9 +6,58 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 26 Nov 2017 23:02:26 +0800</pubDate>
-    <lastBuildDate>Sun, 26 Nov 2017 23:02:26 +0800</lastBuildDate>
+    <pubDate>Sun, 03 Dec 2017 23:20:23 +0800</pubDate>
+    <lastBuildDate>Sun, 03 Dec 2017 23:20:23 +0800</lastBuildDate>
     <generator>Jekyll v3.4.0</generator>
+    
+      <item>
+        <title>想到什么写什么周报 第9期 - 2017-12-03</title>
+        <description>&lt;h1 id=&quot;s3-select-and-glacier-select--retrieving-subsets-of-objects&quot;&gt;S3 Select and Glacier Select – Retrieving Subsets of Objects&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://aws.amazon.com/cn/blogs/aws/s3-glacier-select/&quot;&gt;https://aws.amazon.com/cn/blogs/aws/s3-glacier-select/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;http://docs.aws.amazon.com/AmazonS3/latest/API/RESTObjectSELECTContent.html&quot;&gt;http://docs.aws.amazon.com/AmazonS3/latest/API/RESTObjectSELECTContent.html&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;S3服务新增select功能，允许用户使用一个SQL语句来读取一个CSV或者JSON对象中的部分数据。这个功能还处于preview阶段，不过可以看出AWS打算在S3上增加一些计算能力，让计算尽可能靠近数据。&lt;/p&gt;
+
+&lt;h1 id=&quot;the-way-to-go-jetbrains-goland-ide-hits-the-market&quot;&gt;The Way to Go: JetBrains GoLand IDE Hits the Market&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.jetbrains.com/go/2017/11/30/the-way-to-go-jetbrains-goland-ide-hits-the-market/&quot;&gt;https://blog.jetbrains.com/go/2017/11/30/the-way-to-go-jetbrains-goland-ide-hits-the-market/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;GoLand IDE正式发布，和JetBrains的其他IDE一样，每年大更新三次，不用担心新特性。&lt;/p&gt;
+
+&lt;h1 id=&quot;promptui&quot;&gt;Promptui&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://github.com/manifoldco/promptui&quot;&gt;https://github.com/manifoldco/promptui&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;这是一个Go语言的用于创建交互式CLI的库，看起来很方便哦。&lt;/p&gt;
+
+&lt;h1 id=&quot;kubernetes-deep-dive-api-server&quot;&gt;Kubernetes deep dive: API Server&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.openshift.com/kubernetes-deep-dive-api-server-part-1/&quot;&gt;https://blog.openshift.com/kubernetes-deep-dive-api-server-part-1/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.openshift.com/kubernetes-deep-dive-api-server-part-2/&quot;&gt;https://blog.openshift.com/kubernetes-deep-dive-api-server-part-2/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.openshift.com/kubernetes-deep-dive-api-server-part-3a/&quot;&gt;https://blog.openshift.com/kubernetes-deep-dive-api-server-part-3a/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;介绍K8s的API server的基本实现。&lt;/p&gt;
+
+&lt;h1 id=&quot;announcing-the-openshift-container-platform-37-ga&quot;&gt;Announcing the OpenShift Container Platform 3.7 GA&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.openshift.com/announcing-the-openshift-container-platform-3-7-ga/&quot;&gt;https://blog.openshift.com/announcing-the-openshift-container-platform-3-7-ga/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;OpenShift Container Platform 3.7版本GA了，两个特性service catalog和brokers见下文介绍：&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.openshift.com/whats-new-in-openshift-3-7-service-catalog-and-brokers/&quot;&gt;https://blog.openshift.com/whats-new-in-openshift-3-7-service-catalog-and-brokers/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;现在RedHat和VMWare都明确了下一步发展是混合云啊，已经和AWS走得很近了。&lt;/p&gt;
+</description>
+        <pubDate>Sun, 03 Dec 2017 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2017/12/03/write-what-i-have-009.html</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2017/12/03/write-what-i-have-009.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>想到什么写什么周报 第8期 - 2017-11-26</title>
@@ -496,65 +545,6 @@ Thanks to Stevie Johnstone for the report.&lt;/p&gt;
         <pubDate>Sun, 01 Oct 2017 00:00:00 +0800</pubDate>
         <link>http://diabloneo.github.io//2017/10/01/write-what-i-have-001.html</link>
         <guid isPermaLink="true">http://diabloneo.github.io//2017/10/01/write-what-i-have-001.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Uber Jaeger介绍</title>
-        <description>&lt;h1 id=&quot;jaeger加入cncf&quot;&gt;Jaeger加入CNCF&lt;/h1&gt;
-
-&lt;p&gt;&lt;strong&gt;Jaeger&lt;/strong&gt;是 &lt;em&gt;Uber&lt;/em&gt;开源的 &lt;strong&gt;&lt;a href=&quot;http://opentracing.io/&quot;&gt;OpenTracing&lt;/a&gt;&lt;/strong&gt;实现，包括客户端和服务端。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;项目地址: &lt;a href=&quot;https://github.com/jaegertracing/jaeger/&quot;&gt;https://github.com/jaegertracing/jaeger/&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;项目文档: &lt;a href=&quot;http://jaeger.readthedocs.io/en/latest/&quot;&gt;http://jaeger.readthedocs.io/en/latest/&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Jaeger项目4月14日开源，9月13日被 &lt;em&gt;CNCF&lt;/em&gt;接受成为第12个托管项目, &lt;a href=&quot;https://www.cncf.io/blog/2017/09/13/cncf-hosts-jaeger/&quot;&gt;CNCF Hosts Jaeger&lt;/a&gt;。CNCF托管的其他11个项目是：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Kubernetes&lt;/li&gt;
-  &lt;li&gt;Prometheus&lt;/li&gt;
-  &lt;li&gt;OpenTracing&lt;/li&gt;
-  &lt;li&gt;Fluentd&lt;/li&gt;
-  &lt;li&gt;Linkerd&lt;/li&gt;
-  &lt;li&gt;gRPC&lt;/li&gt;
-  &lt;li&gt;CoreDNS&lt;/li&gt;
-  &lt;li&gt;containerd&lt;/li&gt;
-  &lt;li&gt;rkt&lt;/li&gt;
-  &lt;li&gt;CNI&lt;/li&gt;
-  &lt;li&gt;Envoy&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h1 id=&quot;jaeger架构&quot;&gt;Jaeger架构&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;Jaeger&lt;/em&gt;的架构如下图所示：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://diabloneo.github.io//assets/imgs/00018_uber_jaeger_architecture.png&quot; alt=&quot;Jaeger Architecture&quot; /&gt;
-&lt;em&gt;图片来自http://jaeger.readthedocs.io/en/latest/architecture/&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Jaeger的架构很简洁：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;在每个服务器上运行 &lt;em&gt;jaeger-agent&lt;/em&gt;，用于收集本服务器的信息，然后发送给 &lt;em&gt;jaeger-collector&lt;/em&gt;。&lt;/li&gt;
-  &lt;li&gt;每个服务都嵌入 &lt;em&gt;jaeger-client&lt;/em&gt;，这是一个客户端，会把服务的请求处理的tracing信息发送给 &lt;em&gt;jaeger-agent&lt;/em&gt;。&lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;jaeger-collector&lt;/em&gt;是一个中心化的服务端，用于收集 &lt;em&gt;jaeger-agent&lt;/em&gt;发送过来的tracing信息进行处理后存储到数据库中（目前只支持Cassandra）。&lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;jaeger-query&lt;/em&gt;是一个查询服务，对外保护tracing信息的查询API。&lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;jaeger-ui&lt;/em&gt;是一个浏览器客户端。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h1 id=&quot;jaeger的demo&quot;&gt;Jaeger的demo&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;Jaeger&lt;/em&gt;项目的leader写了一篇很好的文章来介绍Jaeger的使用 &lt;a href=&quot;https://medium.com/opentracing/take-opentracing-for-a-hotrod-ride-f6e3141f7941&quot;&gt;Take OpenTracing for a HotROD ride&lt;/a&gt;。&lt;/p&gt;
-
-&lt;p&gt;文中演示了查看服务的架构，查看请求的详细构成，定位延迟原因等基本用法。还介绍了span，基于上下文的log，tag，OpenTracing baggage等概念。要了解 &lt;em&gt;Jaeger&lt;/em&gt;能做什么，可以从这篇文章开始。&lt;/p&gt;
-
-&lt;p&gt;这个demo项目是用了 &lt;em&gt;Uber&lt;/em&gt;的 &lt;strong&gt;&lt;a href=&quot;https://github.com/uber/tchannel&quot;&gt;TChannel&lt;/a&gt;&lt;/strong&gt;来实现微服务的RPC，它已经和OpenTracing做了集成，用起来很方便。另外一个流行的rpc框架 &lt;strong&gt;gRPC&lt;/strong&gt;也已经和OpenTracing进行了集成。&lt;/p&gt;
-</description>
-        <pubDate>Sat, 30 Sep 2017 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2017/09/30/uber-jaeger-introduction.html</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2017/09/30/uber-jaeger-introduction.html</guid>
         
         
       </item>
