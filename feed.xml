@@ -6,9 +6,63 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 03 Dec 2017 23:20:23 +0800</pubDate>
-    <lastBuildDate>Sun, 03 Dec 2017 23:20:23 +0800</lastBuildDate>
+    <pubDate>Sun, 10 Dec 2017 23:05:43 +0800</pubDate>
+    <lastBuildDate>Sun, 10 Dec 2017 23:05:43 +0800</lastBuildDate>
     <generator>Jekyll v3.4.0</generator>
+    
+      <item>
+        <title>想到什么写什么周报 第10期 - 2017-12-10</title>
+        <description>&lt;h1 id=&quot;ubuntu-1710&quot;&gt;Ubuntu 17.10&lt;/h1&gt;
+
+&lt;h2 id=&quot;截屏无法复制到剪切板&quot;&gt;截屏无法复制到剪切板&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.reddit.com/r/gnome/comments/78rcsf/screenshot_copy_to_clipboard_not_working_326/&quot;&gt;https://www.reddit.com/r/gnome/comments/78rcsf/screenshot_copy_to_clipboard_not_working_326/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;still a bug&lt;/p&gt;
+
+&lt;p&gt;而且，使用快捷键截屏，甚至无法唤出截屏程序。&lt;/p&gt;
+
+&lt;h2 id=&quot;ack-grep包已经从仓库移除&quot;&gt;ack-grep包已经从仓库移除&lt;/h2&gt;
+
+&lt;p&gt;可以使用silversearcher-ag替代
+sudo apt install silversearcher-ag&lt;/p&gt;
+
+&lt;p&gt;vim里如果使用ack.vim，那么默认情况下是会调用ack-grep命令，可以通过如下配置修改&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;let g:ackprg = &quot;ag --vimgrep&quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&quot;catalog-of-error-handling-patterns-in-go&quot;&gt;Catalog of error handling patterns in Go&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;http://www.cirello.org/2017/12/catalog-error-handling-patterns-in-go&quot;&gt;http://www.cirello.org/2017/12/catalog-error-handling-patterns-in-go&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;作者总结的go中处理error的一些模式。&lt;/p&gt;
+
+&lt;h1 id=&quot;announcing-the-general-availability-of-containerd-10-the-industry-standard-runtime-used-by-millions-of-users&quot;&gt;ANNOUNCING THE GENERAL AVAILABILITY OF CONTAINERD 1.0, THE INDUSTRY-STANDARD RUNTIME USED BY MILLIONS OF USERS&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.docker.com/2017/12/cncf-containerd-1-0-ga-announcement/&quot;&gt;https://blog.docker.com/2017/12/cncf-containerd-1-0-ga-announcement/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;announcing-jaeger-10&quot;&gt;Announcing Jaeger 1.0&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://medium.com/jaegertracing/announcing-jaeger-1-0-37b5990cc59b&quot;&gt;https://medium.com/jaegertracing/announcing-jaeger-1-0-37b5990cc59b&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Jaeger 1.0发布。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;之前支持Cassandra，现在新增一个存储后端ElasticSearch，后续会增加更多其他的存储后端。&lt;/li&gt;
+  &lt;li&gt;WebUI改进&lt;/li&gt;
+  &lt;li&gt;与Prometheus、Docker和K8s的集成&lt;/li&gt;
+  &lt;li&gt;除了Go意外，还有C++客户端，正在开发更多语言的客户端。&lt;/li&gt;
+  &lt;li&gt;兼容Zipkin&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Sun, 10 Dec 2017 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2017/12/10/write-what-i-have-010.html</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2017/12/10/write-what-i-have-010.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>想到什么写什么周报 第9期 - 2017-12-03</title>
@@ -524,27 +578,6 @@ Thanks to Stevie Johnstone for the report.&lt;/p&gt;
         <pubDate>Sun, 08 Oct 2017 00:00:00 +0800</pubDate>
         <link>http://diabloneo.github.io//2017/10/08/write-what-i-have-002.html</link>
         <guid isPermaLink="true">http://diabloneo.github.io//2017/10/08/write-what-i-have-002.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>想到什么写什么周报 第1期 - 2017-10-01</title>
-        <description>&lt;h1 id=&quot;go-185和191快要发布了&quot;&gt;Go 1.8.5和1.9.1快要发布了&lt;/h1&gt;
-
-&lt;p&gt;预计发布时间是北京时间10月5日。&lt;/p&gt;
-
-&lt;h1 id=&quot;rob-pikes-go-proverb&quot;&gt;Rob Pike’s Go Proverb&lt;/h1&gt;
-
-&lt;p&gt;看了个视频，是Rob Pike分享自己关于Go的一些编程格言的，具体见文章：&lt;a href=&quot;http://diabloneo.github.io/2017/09/29/rob-pike-go-proverb.html&quot;&gt;Rob Pike’s Go Proverb&lt;/a&gt;。&lt;/p&gt;
-
-&lt;h1 id=&quot;uber-jaeger-一个分布式tracing系统&quot;&gt;Uber Jaeger: 一个分布式tracing系统&lt;/h1&gt;
-
-&lt;p&gt;Uber开源的一个分布式tracing系统，具体见文章： &lt;a href=&quot;http://diabloneo.github.io/2017/09/30/uber-jaeger-introduction.html&quot;&gt;Uber Jaeger介绍&lt;/a&gt;。&lt;/p&gt;
-</description>
-        <pubDate>Sun, 01 Oct 2017 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2017/10/01/write-what-i-have-001.html</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2017/10/01/write-what-i-have-001.html</guid>
         
         
       </item>
