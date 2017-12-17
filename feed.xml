@@ -6,9 +6,34 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 10 Dec 2017 23:05:43 +0800</pubDate>
-    <lastBuildDate>Sun, 10 Dec 2017 23:05:43 +0800</lastBuildDate>
+    <pubDate>Sun, 17 Dec 2017 22:49:43 +0800</pubDate>
+    <lastBuildDate>Sun, 17 Dec 2017 22:49:43 +0800</lastBuildDate>
     <generator>Jekyll v3.4.0</generator>
+    
+      <item>
+        <title>想到什么写什么周报 第11期 - 2017-12-17</title>
+        <description>&lt;h1 id=&quot;what-is-rcu-fundamentally&quot;&gt;What is RCU, Fundamentally?&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://lwn.net/Articles/262464/&quot;&gt;https://lwn.net/Articles/262464/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;introducing-conduit&quot;&gt;Introducing Conduit&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://buoyant.io/2017/12/05/introducing-conduit/&quot;&gt;https://buoyant.io/2017/12/05/introducing-conduit/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Linkered公司开发的、不同于Linkerd的service mesh平台，数据层使用rust开发，管理层使用go开发，适用于低配置的环境，只适配k8s。&lt;/p&gt;
+
+&lt;p&gt;Linkered引入了service mesh这个概念。&lt;/p&gt;
+
+&lt;h1 id=&quot;联邦通信委员会推翻了美国的网络中立你需要知道这些&quot;&gt;联邦通信委员会推翻了美国的网络中立，你需要知道这些&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;http://techcrunch.cn/2017/12/15/the-fcc-officially-votes-to-kill-net-neutrality/&quot;&gt;http://techcrunch.cn/2017/12/15/the-fcc-officially-votes-to-kill-net-neutrality/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+</description>
+        <pubDate>Sun, 17 Dec 2017 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2017/12/17/write-what-i-have-011.html</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2017/12/17/write-what-i-have-011.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>想到什么写什么周报 第10期 - 2017-12-10</title>
@@ -509,75 +534,6 @@ sudo ln -s /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf&lt;/p&gt;
         <pubDate>Sun, 15 Oct 2017 00:00:00 +0800</pubDate>
         <link>http://diabloneo.github.io//2017/10/15/write-what-i-have-003.html</link>
         <guid isPermaLink="true">http://diabloneo.github.io//2017/10/15/write-what-i-have-003.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>想到什么写什么周报 第2期 - 2017-10-08</title>
-        <description>&lt;h1 id=&quot;golang-184-and-191-released&quot;&gt;Golang 1.8.4 and 1.9.1 Released&lt;/h1&gt;
-
-&lt;p&gt;解决了两个安全问题：&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;第一个是go get的时候拒绝在vcs内部再执行vcs checkout（git submodule除外）&lt;/strong&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;By nesting a git checkout inside another version control repository, it was possible for an attacker to trick the “go get” command into executing arbitrary code. The go command now refuses to use version control checkouts found inside other version control systems, with an exception for git submodules (git inside git).
-The issue is tracked as https://golang.org/issue/22125 (Go 1.8.4) and https://golang.org/issue/22131 (Go 1.9.1). Fixes are linked from the issues.
-Thanks to Simon Rawet for the report.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;strong&gt;第二个是和SMTP通过非TLS通道发送PlainAuth认证信息的问题&lt;/strong&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;In the smtp package, PlainAuth is documented as sending credentials only over authenticated, encrypted TLS connections, but it was changed in Go 1.1 to also send credentials on non-TLS connections when the remote server advertises that PLAIN authentication is supported. The change was meant to allow use of PLAIN authentication on localhost, but it has the effect of allowing a man-in-the-middle attacker to harvest credentials. PlainAuth now requires either TLS or a localhost connection before sending credentials, regardless of what the remote server claims.
-This issue is tracked as https://golang.org/issue/22134 (Go 1.8.4) and https://golang.org/issue/22133 (Go 1.9.1). Fixes are linked from the issues.
-Thanks to Stevie Johnstone for the report.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h1 id=&quot;a-decade-of-dynamo-powering-the-next-wave-of-high-performance-internet-scale-applications&quot;&gt;A Decade of Dynamo: Powering the next wave of high-performance, internet-scale applications&lt;/h1&gt;
-
-&lt;p&gt;&lt;a href=&quot;http://www.allthingsdistributed.com/2017/10/a-decade-of-dynamo.html&quot;&gt;http://www.allthingsdistributed.com/2017/10/a-decade-of-dynamo.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Wener Vogels写的关于Amazon Dynamo十周年纪念的文章。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;2004年Amazon开始遇到Oracle数据库的瓶颈，深度调查后发现70%的数据组织方式都是key-value式，操作只返回一行；20%的数据操作会返回多行，但是都属于同一张表。&lt;/li&gt;
-  &lt;li&gt;然后开始根据自己的需要设计Dynamo的原型：Our goal was to build a database that would have the unbounded scalability, consistent performance and the high availability to support the needs of our rapidly growing business.&lt;/li&gt;
-  &lt;li&gt;2007年在SOSP上发表论文。&lt;/li&gt;
-  &lt;li&gt;然后决定将其作为云服务推出，推出前在多个方面进行了加强和改进。&lt;/li&gt;
-  &lt;li&gt;在2012年1月份，正式在公有云上推出DynamoDB。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;现在有很多大公司在使用DynamoDB来存储关键数据，包括Lyft, Tinder, Comcase, BMW等。&lt;/p&gt;
-
-&lt;h1 id=&quot;amazon-linux-ami-201709发布&quot;&gt;Amazon Linux AMI 2017.09发布&lt;/h1&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://aws.amazon.com/blogs/aws/now-available-amazon-linux-ami-2017-09/&quot;&gt;https://aws.amazon.com/blogs/aws/now-available-amazon-linux-ami-2017-09/&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Amazon更新了Linux AMI版本到2017.09，包含主要特性是：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Kernel升级到4.9.51&lt;/li&gt;
-  &lt;li&gt;Amazon SSM Agent默认安装&lt;/li&gt;
-  &lt;li&gt;Python升级到3.6&lt;/li&gt;
-  &lt;li&gt;Ruby升级到2.4&lt;/li&gt;
-  &lt;li&gt;OpenSSL升级到1.0.2k&lt;/li&gt;
-  &lt;li&gt;HTTP/2支持，内置的软件包httpd24, nginx和curl支持HTTP/2&lt;/li&gt;
-  &lt;li&gt;Postgres升级到9.6版本，MySQL升级到5.7版本&lt;/li&gt;
-  &lt;li&gt;OpenMPI升级到2.1.1&lt;/li&gt;
-  &lt;li&gt;其他软件包升级&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h1 id=&quot;things-go-better-with-step-functions&quot;&gt;Things Go Better With Step Functions&lt;/h1&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://aws.amazon.com/blogs/aws/things-go-better-with-step-functions/&quot;&gt;https://aws.amazon.com/blogs/aws/things-go-better-with-step-functions/&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;介绍了可口可乐公司通过Step Function来降低一个积分系统费用的案例。可口可乐一开始使用一个中间带有等待90秒的Lambda函数来实现一个移动支付的积分逻辑，这个等待是因为需要调用老旧的后端代码来实现计费核算。Lambda函数是按照运行时长收费的，所以等待的90秒钟都是白花花的银子。后来可口可乐开始使用Step Function，将这个Lambda函数拆分成一个具有三次状态转换的状态机（start -&amp;gt; wait -&amp;gt; points -&amp;gt; end），这样就不用在Lambda函数中进行等待。原先等待90秒的费用变成了状态转换的费用，从而节约了开支。&lt;/p&gt;
-</description>
-        <pubDate>Sun, 08 Oct 2017 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2017/10/08/write-what-i-have-002.html</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2017/10/08/write-what-i-have-002.html</guid>
         
         
       </item>
