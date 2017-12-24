@@ -6,9 +6,58 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 17 Dec 2017 22:49:43 +0800</pubDate>
-    <lastBuildDate>Sun, 17 Dec 2017 22:49:43 +0800</lastBuildDate>
+    <pubDate>Sun, 24 Dec 2017 22:25:38 +0800</pubDate>
+    <lastBuildDate>Sun, 24 Dec 2017 22:25:38 +0800</lastBuildDate>
     <generator>Jekyll v3.4.0</generator>
+    
+      <item>
+        <title>想到什么写什么周报 第11期 - 2017-12-17</title>
+        <description>&lt;h1 id=&quot;grpc-go-beyond-the-basics&quot;&gt;gRPC Go: Beyond the basics&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.gopheracademy.com/advent-2017/go-grpc-beyond-basics/&quot;&gt;https://blog.gopheracademy.com/advent-2017/go-grpc-beyond-basics/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;介绍了gRPC的高级应用：使用TLS，开发插件，以及相关生态项目。&lt;/p&gt;
+
+&lt;h1 id=&quot;keynote-cncf-project-updates---michelle-noorali-senior-software-engineer-microsoft-azure&quot;&gt;Keynote: CNCF Project Updates - Michelle Noorali, Senior Software Engineer, Microsoft Azure&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=zPOlDe-J9ZA&amp;amp;index=2&amp;amp;list=PLj6h78yzYM2P-3-xqvmWaZbbI1sW-ulZb&quot;&gt;https://www.youtube.com/watch?v=zPOlDe-J9ZA&amp;amp;index=2&amp;amp;list=PLj6h78yzYM2P-3-xqvmWaZbbI1sW-ulZb&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;KubeCon的Keynote，介绍了CNCF旗下的14个项目目前的状况。&lt;/p&gt;
+
+&lt;h1 id=&quot;amazon-linux-2&quot;&gt;Amazon Linux 2&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://aws.amazon.com/amazon-linux-2/&quot;&gt;https://aws.amazon.com/amazon-linux-2/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;AWS推出了新一代的Linux系统，目前还是LTS candidate状态。&lt;/p&gt;
+
+&lt;h1 id=&quot;kubernetes-19-and-a-look-inside-the-kubernetes-project&quot;&gt;Kubernetes 1.9 and a look inside the Kubernetes project&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://coreos.com/blog/kubernetes-19-and-a-look-inside-the-project&quot;&gt;https://coreos.com/blog/kubernetes-19-and-a-look-inside-the-project&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;介绍了k8s 1.9版本周期做的一些拆分项目的事情，Kubernetes已经是个巨大的项目了，为了将来的扩展，社区正在将这个项目进行必要的拆分，以便于整个生态进行扩展。另外也介绍了兼容性认证以及接下来会做的一些事情：cloud-controller-manager, CSI for external storage, and the longstanding goal of moving kubeadm to its own repo等。&lt;/p&gt;
+
+&lt;h1 id=&quot;kubernetes-and-containers-in-2018-buckle-your-seatbelts&quot;&gt;Kubernetes and containers in 2018: Buckle your seatbelts&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://coreos.com/blog/kubernetes-and-containers-in-2018&quot;&gt;https://coreos.com/blog/kubernetes-and-containers-in-2018&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Alex Polvi展望了Kubernetes以及相关生态在2018年的发展。&lt;/p&gt;
+
+&lt;h1 id=&quot;许式伟我与go语言的这十年&quot;&gt;许式伟：我与Go语言的这十年&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://mp.weixin.qq.com/s/iU7gaZNgCsU3DHaHa5PZ_Q&quot;&gt;https://mp.weixin.qq.com/s/iU7gaZNgCsU3DHaHa5PZ_Q&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;error-handling-in-upspin&quot;&gt;Error handling in Upspin&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://commandcenter.blogspot.com/2017/12/error-handling-in-upspin.html&quot;&gt;https://commandcenter.blogspot.com/2017/12/error-handling-in-upspin.html&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Upspin项目自己创建了一个小的errors库，用于满足其自己的需求。本文介绍了这个库的一些设计思想。同时 Rob Pike and Andrew Gerrand也强调了Go中没有一个errors库能满足所有的需求，大家需要自己做出选择。&lt;/p&gt;
+</description>
+        <pubDate>Sun, 24 Dec 2017 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2017/12/24/write-what-i-have-012.html</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2017/12/24/write-what-i-have-012.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>想到什么写什么周报 第11期 - 2017-12-17</title>
@@ -444,96 +493,6 @@ sudo ln -s /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf&lt;/p&gt;
         <pubDate>Sun, 22 Oct 2017 00:00:00 +0800</pubDate>
         <link>http://diabloneo.github.io//2017/10/22/ubuntu-17.10-upgrade.html</link>
         <guid isPermaLink="true">http://diabloneo.github.io//2017/10/22/ubuntu-17.10-upgrade.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>想到什么写什么周报 第3期 - 2017-10-15</title>
-        <description>&lt;h1 id=&quot;ubuntu-1710artful-aardvark进入最终冻结状态-将于10月19日发布&quot;&gt;Ubuntu 17.10（Artful Aardvark）进入最终冻结状态 将于10月19日发布&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;http://www.cnbeta.com/articles/soft/660503.htm&quot;&gt;http://www.cnbeta.com/articles/soft/660503.htm&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;下周就能升级了，yeah！&lt;/p&gt;
-
-&lt;h1 id=&quot;go-192&quot;&gt;Go 1.9.2&lt;/h1&gt;
-
-&lt;p&gt;1.9.1的一个fix出问题了。&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;It appears that the security release Go 1.9.1 may have broken fresh “go get” checkouts of non-Git repositories at least in some cases. So probably we should issue Go 1.9.2 sooner rather than later.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;em&gt;issue: &lt;a href=&quot;https://github.com/golang/go/issues/22201&quot;&gt;https://github.com/golang/go/issues/22201&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;gopherfest-2017-upspin-rob-pike&quot;&gt;Gopherfest 2017: Upspin (Rob Pike)&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=ENLWEfi0Tkg&amp;amp;index=27&amp;amp;list=WL&quot;&gt;https://www.youtube.com/watch?v=ENLWEfi0Tkg&amp;amp;index=27&amp;amp;list=WL&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Rob Pike在今年的Gopherfest上介绍他新参与的项目 &lt;strong&gt;Upspin&lt;/strong&gt;，一种分布式的名字空间系统，用来管理分布在不同位置的数据。这个系统有 &lt;em&gt;key server&lt;/em&gt;, &lt;em&gt;directory server&lt;/em&gt;和 &lt;em&gt;storage server&lt;/em&gt;。 &lt;em&gt;Key server&lt;/em&gt;是集中式的，存储用户数据的地方实现 &lt;em&gt;directory server&lt;/em&gt;和 &lt;em&gt;storage server&lt;/em&gt;，这样用户就能用一种方式访问自己的、位于不同云端的数据。官网 &lt;a href=&quot;https://upspin.io/&quot;&gt;https://upspin.io/&lt;/a&gt;。&lt;/p&gt;
-
-&lt;h1 id=&quot;go-ten-years-and-climbing&quot;&gt;Go: Ten years and climbing&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://commandcenter.blogspot.com/2017/09/go-ten-years-and-climbing.html&quot;&gt;https://commandcenter.blogspot.com/2017/09/go-ten-years-and-climbing.html&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Rob Pike回顾Go发展的第一个十年，从2007年9月20日下午的一个讨论开始（Robert Griesemer, Rob Pike, and Ken Thompson ），一直到现在Go在很多领域都得到了广泛的应用。文章中还特别提到了Go在中国非常的流行。&lt;/p&gt;
-
-&lt;h1 id=&quot;microservices-from-design-to-deployment-中文版--微服务从设计到部署&quot;&gt;Microservices from Design to Deployment 中文版 — 《微服务：从设计到部署》&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://github.com/oopsguy/microservices-from-design-to-deployment-chinese&quot;&gt;https://github.com/oopsguy/microservices-from-design-to-deployment-chinese&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;introducing-abseil-a-new-common-libraries-project&quot;&gt;Introducing Abseil, a new common libraries project&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://opensource.googleblog.com/2017/09/introducing-abseil-new-common-libraries.html&quot;&gt;https://opensource.googleblog.com/2017/09/introducing-abseil-new-common-libraries.html&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Google开源的一个C++库。&lt;/p&gt;
-
-&lt;h1 id=&quot;press-release-influxdatas-time-series-platform-now-available-on-ibm-cloud&quot;&gt;Press Release: InfluxData’s Time Series Platform Now Available on IBM Cloud&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.influxdata.com/blog/influxdata-on-ibm-cloud/&quot;&gt;https://www.influxdata.com/blog/influxdata-on-ibm-cloud/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;InfluxData在IBM Cloud上推出InfluxCloud。&lt;/p&gt;
-
-&lt;h1 id=&quot;阿里云溪大会&quot;&gt;阿里云溪大会&lt;/h1&gt;
-
-&lt;p&gt;首日发布的产品: &lt;a href=&quot;https://linux.cn/article-8953-1.html&quot;&gt;https://linux.cn/article-8953-1.html&lt;/a&gt;
-发布ElasticSearch云服务: &lt;a href=&quot;https://linux.cn/article-8959-1.html&quot;&gt;https://linux.cn/article-8959-1.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;为什么-sql-正在击败-nosql数据的未来是什么&quot;&gt;为什么 SQL 正在击败 NoSQL，数据的未来是什么？&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://linux.cn/article-8949-1.html&quot;&gt;https://linux.cn/article-8949-1.html&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;TimescaleDB的CEO写的一篇StarWar风格的文章，介绍了SQL和NoSQL交替发展的历史。&lt;/p&gt;
-
-&lt;p&gt;原文地址：&lt;a href=&quot;https://blog.timescale.com/why-sql-beating-nosql-what-this-means-for-future-of-data-time-series-database-348b777b847a&quot;&gt;https://blog.timescale.com/why-sql-beating-nosql-what-this-means-for-future-of-data-time-series-database-348b777b847a&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;我的理解是，SQL很自然的描述了数据的关系，但是有一段时间SQL的实现不足以支撑数据的增长，所以出现了NoSQL的方式来管理数据，现在SQL的实现又变得更强大了，也能支撑更大的数据量了。其实SQL一直很流行。&lt;/p&gt;
-
-&lt;h1 id=&quot;digital-ocean的对象存储ga了&quot;&gt;Digital Ocean的对象存储GA了&lt;/h1&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;DigitalOcean Spaces is Object Storage designed for developers who want a simple way to store and serve a vast amount of data. Almost 90,000 developers signed up to try it out, and now it’s generally available to host your web assets and backups. Try out Spaces with a free 2-month trial.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h1 id=&quot;pingcap-与腾讯云达成合作htap-数据库-tidb-现开放内测&quot;&gt;PingCAP 与腾讯云达成合作，HTAP 数据库 TiDB 现开放内测&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://cloud.tencent.com/producwidb&quot;&gt;https://cloud.tencent.com/producwidb&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;cockroachdb-11-is-here&quot;&gt;CockroachDB 1.1 is here&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.cockroachlabs.com/blog/cockroachdb-1dot1/&quot;&gt;https://www.cockroachlabs.com/blog/cockroachdb-1dot1/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;包括数据导入的改进、集群任务管理的改进、性能提升。另外，百度也在使用CockroachDB。&lt;/p&gt;
-
-&lt;h1 id=&quot;words-still-matter--mediums-missionfive-years-in&quot;&gt;Words still matter – Medium’s mission — five years in&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.medium.com/words-still-matter-6e9163216052&quot;&gt;https://blog.medium.com/words-still-matter-6e9163216052&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Medium CEO在Medium成立5年的时候撰文，重点是说明Medium为什么要做一个读者订阅服务，而不是采用广告模式。这样可以让Medium直接服务读者和作者，而不是其他的买单人。Medium的收入分配模式是 &lt;strong&gt;Attention = Money&lt;/strong&gt;，所以做了一个鼓掌系统。&lt;/p&gt;
-</description>
-        <pubDate>Sun, 15 Oct 2017 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2017/10/15/write-what-i-have-003.html</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2017/10/15/write-what-i-have-003.html</guid>
         
         
       </item>
