@@ -6,9 +6,44 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 24 Dec 2017 22:25:38 +0800</pubDate>
-    <lastBuildDate>Sun, 24 Dec 2017 22:25:38 +0800</lastBuildDate>
+    <pubDate>Mon, 01 Jan 2018 22:42:43 +0800</pubDate>
+    <lastBuildDate>Mon, 01 Jan 2018 22:42:43 +0800</lastBuildDate>
     <generator>Jekyll v3.4.0</generator>
+    
+      <item>
+        <title>想到什么写什么周报 第13期 - 2018-01-01</title>
+        <description>&lt;h1 id=&quot;mixer-and-the-spof-myth&quot;&gt;Mixer and the SPOF Myth&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://istio.io/blog/posts/2017/mixer-spof-myth.html&quot;&gt;https://istio.io/blog/posts/2017/mixer-spof-myth.html&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;介绍了Istio中的Mixer的设计，是service mesh的重要组件。&lt;/p&gt;
+
+&lt;p&gt;P.S. 我终于明白了sidecar这个词在service mesh里的意思。&lt;/p&gt;
+
+&lt;h1 id=&quot;get-ready-for-the-aws-serverless-application-repository&quot;&gt;Get Ready for the AWS Serverless Application Repository&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://aws.amazon.com/blogs/aws/aws-serverless-app-repo/&quot;&gt;https://aws.amazon.com/blogs/aws/aws-serverless-app-repo/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;AWS推出的serverless应用仓库，就好像Python的pip。&lt;/p&gt;
+
+&lt;h1 id=&quot;using-code-generation-to-survive-without-generics-in-go&quot;&gt;Using code generation to survive without generics in Go&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.calhoun.io/using-code-generation-to-survive-without-generics-in-go/&quot;&gt;https://www.calhoun.io/using-code-generation-to-survive-without-generics-in-go/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;使用Go的template来自动生成代码，弥补Go不支持泛型的问题。对于小项目来说，还是很实用的。&lt;/p&gt;
+
+&lt;h1 id=&quot;kubernetes-19增强了容器存储提供了workloads-api支持及window-beta支持&quot;&gt;Kubernetes 1.9增强了容器存储，提供了Workloads API支持及Window Beta支持&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;http://www.infoq.com/cn/news/2017/12/kubernetes-1.9&quot;&gt;http://www.infoq.com/cn/news/2017/12/kubernetes-1.9&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;存储部分的增强肯定是将来的重点，但是还处于alpha阶段。&lt;/p&gt;
+</description>
+        <pubDate>Mon, 01 Jan 2018 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2018/01/01/write-what-i-have-013.html</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2018/01/01/write-what-i-have-013.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>想到什么写什么周报 第11期 - 2017-12-17</title>
@@ -439,60 +474,6 @@ sudo apt install silversearcher-ag&lt;/p&gt;
         <pubDate>Sun, 22 Oct 2017 00:00:00 +0800</pubDate>
         <link>http://diabloneo.github.io//2017/10/22/write-what-i-have-004.html</link>
         <guid isPermaLink="true">http://diabloneo.github.io//2017/10/22/write-what-i-have-004.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Ubuntu 17.10升级问题</title>
-        <description>&lt;p&gt;本周Ubuntu 17.10已经正式发布，我在周末进行了升级，遇到了一些问题。&lt;/p&gt;
-
-&lt;h1 id=&quot;tmux配置有错&quot;&gt;tmux配置有错&lt;/h1&gt;
-
-&lt;p&gt;tmux版本升级到2.5版本，我原来使用的配置如下几行有问题：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bind-key -t vi-copy 'v' begin-selection
-bind-key -t vi-copy 'y' copy-selection
-bind-key -t vi-copy Escape cancel
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h1 id=&quot;synaptic无法启动&quot;&gt;synaptic无法启动&lt;/h1&gt;
-
-&lt;p&gt;Bug: &lt;a href=&quot;https://bugs.launchpad.net/ubuntu/+source/synaptic/+bug/1551951&quot;&gt;https://bugs.launchpad.net/ubuntu/+source/synaptic/+bug/1551951&lt;/a&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;virtualbox虚拟机无法启动&quot;&gt;virtualbox虚拟机无法启动&lt;/h1&gt;
-
-&lt;p&gt;升级后有内核兼容性问题，我的解决办法如下：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;卸载，然后从oracle添加源，安装最新的5.2版本: &lt;a href=&quot;https://www.virtualbox.org/wiki/Linux_Downloads&quot;&gt;https://www.virtualbox.org/wiki/Linux_Downloads&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;然后安装 linux-headers-lowlatency&lt;/li&gt;
-  &lt;li&gt;然后执行 /sbin/vboxconfig&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h1 id=&quot;sougou输入法不能用&quot;&gt;sougou输入法不能用&lt;/h1&gt;
-
-&lt;p&gt;没办法解决，只能等更新了，可以先用ibus。&lt;/p&gt;
-
-&lt;h1 id=&quot;dns解析问题&quot;&gt;dns解析问题&lt;/h1&gt;
-
-&lt;p&gt;Bug: &lt;a href=&quot;https://bugs.launchpad.net/ubuntu/+source/netcfg/+bug/1712283&quot;&gt;https://bugs.launchpad.net/ubuntu/+source/netcfg/+bug/1712283&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;有个解决办法：&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;I can confirm that for me removing /etc/resolv.conf and replacing it with a link to stub-resolv.conf using
-sudo ln -s /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h1 id=&quot;网易云音乐无法打开&quot;&gt;网易云音乐无法打开&lt;/h1&gt;
-
-&lt;p&gt;和synaptic无法打开可能是一样的问题。&lt;/p&gt;
-</description>
-        <pubDate>Sun, 22 Oct 2017 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2017/10/22/ubuntu-17.10-upgrade.html</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2017/10/22/ubuntu-17.10-upgrade.html</guid>
         
         
       </item>
