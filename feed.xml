@@ -6,9 +6,36 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 01 Jan 2018 22:42:43 +0800</pubDate>
-    <lastBuildDate>Mon, 01 Jan 2018 22:42:43 +0800</lastBuildDate>
+    <pubDate>Mon, 08 Jan 2018 22:20:40 +0800</pubDate>
+    <lastBuildDate>Mon, 08 Jan 2018 22:20:40 +0800</lastBuildDate>
     <generator>Jekyll v3.4.0</generator>
+    
+      <item>
+        <title>想到什么写什么周报 第14期 - 2018-01-08</title>
+        <description>&lt;h1 id=&quot;go-experience-report-generics-in-kubernetes&quot;&gt;Go Experience Report: Generics in Kubernetes&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://medium.com/@arschles/go-experience-report-generics-in-kubernetes-25da87430301&quot;&gt;https://medium.com/@arschles/go-experience-report-generics-in-kubernetes-25da87430301&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Kubernetes自己内建了一套部分替代泛型的runtime系统，你可以看到类似runtime.Object这样的对象以及相关的处理。由于Go不支持泛型，k8s这也是不得以而为之，不过这种做法在目前的情况下很好的解决了需求。作者还讨论了自动生成代码替代这套自定义的runtime是否可行的问题，答案是可行，但是会生成太多的代码，以至于项目过于庞大而变得不合适。&lt;/p&gt;
+
+&lt;h1 id=&quot;how-to-improve-iot-application-performance-with-multi-row-dml&quot;&gt;How to Improve IoT Application Performance with Multi-Row DML&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.cockroachlabs.com/blog/multi-row-dml/&quot;&gt;https://www.cockroachlabs.com/blog/multi-row-dml/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;讲解了数据库的多行DML如何帮助提升性能，尤其是CockroachDB这种分布式的数据库，随着节点数的增加，可以支持更高的DML批处理大小。&lt;/p&gt;
+
+&lt;h1 id=&quot;managing-goroutine-lifecycles-with-rungroup&quot;&gt;Managing goroutine lifecycles with run.Group&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.gopheracademy.com/advent-2017/run-group/&quot;&gt;https://blog.gopheracademy.com/advent-2017/run-group/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;介绍了一种管理goroutine生命周期的方式， &lt;em&gt;&lt;a href=&quot;https://github.com/oklog/run&quot;&gt;https://github.com/oklog/run&lt;/a&gt;&lt;/em&gt;.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 08 Jan 2018 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2018/01/08/write-what-i-have-014.html</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2018/01/08/write-what-i-have-014.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>想到什么写什么周报 第13期 - 2018-01-01</title>
@@ -395,85 +422,6 @@ sudo apt install silversearcher-ag&lt;/p&gt;
         <pubDate>Sun, 29 Oct 2017 00:00:00 +0800</pubDate>
         <link>http://diabloneo.github.io//2017/10/29/write-what-i-have-005.html</link>
         <guid isPermaLink="true">http://diabloneo.github.io//2017/10/29/write-what-i-have-005.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>想到什么写什么周报 第4期 - 2017-10-22</title>
-        <description>&lt;h1 id=&quot;go-192&quot;&gt;Go 1.9.2&lt;/h1&gt;
-
-&lt;p&gt;预计下周发布&lt;/p&gt;
-
-&lt;h1 id=&quot;ubuntu-1710-artful-aardvark-发布&quot;&gt;Ubuntu 17.10 Artful Aardvark 发布&lt;/h1&gt;
-
-&lt;p&gt;Ubuntu 17.10已经发布，我升级后遇到了一些问题，&lt;a href=&quot;/2017/10/22/ubuntu-17.10-upgrade.html&quot;&gt;Ubuntu 17.10升级问题&lt;/a&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;ubuntu-13周年纪念&quot;&gt;Ubuntu 13周年纪念&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;http://www.omgubuntu.co.uk/2017/10/ubuntu-birthday-13th&quot;&gt;http://www.omgubuntu.co.uk/2017/10/ubuntu-birthday-13th&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;10月20号是Ubuntu的生日，已经13岁了。&lt;/p&gt;
-
-&lt;h1 id=&quot;help-us-choose-a-name-for-our-go-ide&quot;&gt;Help us Choose a Name for our Go IDE&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.jetbrains.com/go/2017/10/13/help-us-choose-a-name-for-our-go-ide/?utm_source=weibo&amp;amp;utm_medium=regular_task&amp;amp;utm_campaign=Go&quot;&gt;https://blog.jetbrains.com/go/2017/10/13/help-us-choose-a-name-for-our-go-ide/?utm_source=weibo&amp;amp;utm_medium=regular_task&amp;amp;utm_campaign=Go&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;JetBrain正在开发的Go IDE公开征名。&lt;/p&gt;
-
-&lt;h1 id=&quot;tidb-10-ga&quot;&gt;TiDB 1.0 GA&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://pingcap.github.io/blog/releases/2017/10/16/ga/&quot;&gt;https://pingcap.github.io/blog/releases/2017/10/16/ga/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;krack-demo-critical-key-reinstallation-attack-against-widely-used-wpa2-wi-fi-protocol&quot;&gt;KRACK Demo: Critical Key Reinstallation Attack Against Widely-Used WPA2 Wi-Fi Protocol&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://thehackernews.com/2017/10/wpa2-krack-wifi-hacking.html&quot;&gt;https://thehackernews.com/2017/10/wpa2-krack-wifi-hacking.html&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;中间人攻击的方式，通过诱导客户端重新使用对称秘钥来达到破解对称加密的目的。demo视频还演示了，破解WPA2加密后，还可以通过ssl bypass攻击，使得客户端脱离https。&lt;/p&gt;
-
-&lt;p&gt;此次攻击的官网：&lt;a href=&quot;https://www.krackattacks.com/&quot;&gt;https://www.krackattacks.com/&lt;/a&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;amazon-lightsail-update--launch-and-manage-windows-virtual-private-servers&quot;&gt;Amazon Lightsail Update – Launch and Manage Windows Virtual Private Servers&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://aws.amazon.com/cn/blogs/aws/amazon-lightsail-update-launch-and-manage-windows-virtual-private-servers/&quot;&gt;https://aws.amazon.com/cn/blogs/aws/amazon-lightsail-update-launch-and-manage-windows-virtual-private-servers/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;aws lightsail支持windows了。&lt;/p&gt;
-
-&lt;h1 id=&quot;docker-platform-and-moby-project-add-kubernetes&quot;&gt;DOCKER PLATFORM AND MOBY PROJECT ADD KUBERNETES&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.docker.com/2017/10/kubernetes-docker-platform-and-moby-project/&quot;&gt;https://blog.docker.com/2017/10/kubernetes-docker-platform-and-moby-project/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Docker官方宣布支持Kubernetes编排系统。&lt;/p&gt;
-
-&lt;h1 id=&quot;cgroups-namespaces-and-beyond-what-are-containers-made-from&quot;&gt;Cgroups, namespaces, and beyond: what are containers made from?&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=sK5i-N34im8&amp;amp;t=409s&quot;&gt;https://www.youtube.com/watch?v=sK5i-N34im8&amp;amp;t=409s&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;一个很不错的关于容器基本技术的入门视频。&lt;/p&gt;
-
-&lt;h1 id=&quot;introducing-software-certification-for-kubernetes&quot;&gt;Introducing Software Certification for Kubernetes&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;http://blog.kubernetes.io/2017/10/software-conformance-certification.html&quot;&gt;http://blog.kubernetes.io/2017/10/software-conformance-certification.html&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;k8s平台一致性认证计划，通过认证的k8s平台具高度一致的特性，确保不同的应用在不同的平台上都能得到一致的预期。预计年底GA。&lt;/p&gt;
-
-&lt;h1 id=&quot;pluggable-runtimes-containerd-cri-o-and-their-impact-on-kubernetes-users&quot;&gt;Pluggable runtimes: containerd, CRI-O and their impact on Kubernetes users&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://coreos.com/blog/pluggable-oci-runtimes-and-their-impact-on-kubernetes-users&quot;&gt;https://coreos.com/blog/pluggable-oci-runtimes-and-their-impact-on-kubernetes-users&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;K8s虽然开始支持CRI了，但是内部还对Docker有依赖，在生产环境中要支持多种不容的container runtime还需要一段时间，所以目前还是只能使用Docker。&lt;/p&gt;
-
-&lt;h1 id=&quot;feedly推出了team-newsletters&quot;&gt;Feedly推出了Team Newsletters&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.feedly.com/team-newsletters/&quot;&gt;https://blog.feedly.com/team-newsletters/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.feedly.com/newsletter-examples/&quot;&gt;https://blog.feedly.com/newsletter-examples/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;你可以把你在feedly team里面保存的文章通过feedly定期发送给团队，也可以添加非feedly账号的邮箱作为收件人。&lt;/p&gt;
-</description>
-        <pubDate>Sun, 22 Oct 2017 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2017/10/22/write-what-i-have-004.html</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2017/10/22/write-what-i-have-004.html</guid>
         
         
       </item>
