@@ -6,9 +6,45 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 08 Jan 2018 22:20:40 +0800</pubDate>
-    <lastBuildDate>Mon, 08 Jan 2018 22:20:40 +0800</lastBuildDate>
+    <pubDate>Mon, 15 Jan 2018 23:28:06 +0800</pubDate>
+    <lastBuildDate>Mon, 15 Jan 2018 23:28:06 +0800</lastBuildDate>
     <generator>Jekyll v3.4.0</generator>
+    
+      <item>
+        <title>想到什么写什么周报 第15期 - 2018-01-15</title>
+        <description>&lt;h1 id=&quot;aws-sdk-for-go-20-developer-preview&quot;&gt;AWS SDK for Go 2.0 Developer Preview&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://aws.amazon.com/cn/blogs/developer/aws-sdk-for-go-2-0-developer-preview/&quot;&gt;https://aws.amazon.com/cn/blogs/developer/aws-sdk-for-go-2-0-developer-preview/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;变化：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1. 去掉了session，只保留config，使用更简单。
+2. 支持API Request方法，允许对每个请求进行相关设置后再发送。
+3. API资源支持强类型。
+4. 直接支持slice和map类型了，不用再转成指针形式。
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;目前2.0版本处于开发者preview状态。1.0版本将会继续维护很长一段时间，不用担心。&lt;/p&gt;
+
+&lt;h1 id=&quot;introducing-container-storage-interface-csi-alpha-for-kubernetes&quot;&gt;Introducing Container Storage Interface (CSI) Alpha for Kubernetes&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;http://blog.kubernetes.io/2018/01/introducing-container-storage-interface.html&quot;&gt;http://blog.kubernetes.io/2018/01/introducing-container-storage-interface.html&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;CSI进入Alpha阶段。&lt;/p&gt;
+
+&lt;h1 id=&quot;how-to-correctly-use-contextcontext-in-go-17&quot;&gt;How to correctly use context.Context in Go 1.7&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://medium.com/@cep21/how-to-correctly-use-context-context-in-go-1-7-8f2c0fafdf39&quot;&gt;https://medium.com/@cep21/how-to-correctly-use-context-context-in-go-1-7-8f2c0fafdf39&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;关于context的用法的文章，作者反对通过context.Value传递可以控制程序行为的参数。&lt;/p&gt;
+</description>
+        <pubDate>Mon, 15 Jan 2018 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2018/01/15/write-what-i-have-015.html</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2018/01/15/write-what-i-have-015.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>想到什么写什么周报 第14期 - 2018-01-08</title>
@@ -371,57 +407,6 @@ sudo apt install silversearcher-ag&lt;/p&gt;
         <pubDate>Sun, 12 Nov 2017 00:00:00 +0800</pubDate>
         <link>http://diabloneo.github.io//2017/11/12/write-what-i-have-006.html</link>
         <guid isPermaLink="true">http://diabloneo.github.io//2017/11/12/write-what-i-have-006.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>想到什么写什么周报 第5期 - 2017-10-29</title>
-        <description>&lt;h1 id=&quot;go-192-发布&quot;&gt;Go 1.9.2 发布&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://golang.org/doc/devel/release.html#go1.9.minor&quot;&gt;https://golang.org/doc/devel/release.html#go1.9.minor&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;cri-o-the-project-to-run-containers-without-docker-reaches-10&quot;&gt;CRI-O, the Project to Run Containers without Docker, Reaches 1.0&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://thenewstack.io/cri-o-project-run-containers-without-docker-reaches-1-0/&quot;&gt;https://thenewstack.io/cri-o-project-run-containers-without-docker-reaches-1-0/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;容器运行时CRI-O 1.0版本发布，本文阐述了CRI-O和K8s的关系。CRI-O使得K8s可以用统一的接口调用容器运行时，可以避免现在Docker升级导致K8s不可用的情况。&lt;/p&gt;
-
-&lt;h1 id=&quot;nuclio-the-new-serverless-superhero&quot;&gt;nuclio: The New Serverless Superhero&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.iguazio.com/nuclio-new-serverless-superhero/&quot;&gt;https://www.iguazio.com/nuclio-new-serverless-superhero/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;一个FaaS的开源实现。&lt;/p&gt;
-
-&lt;h1 id=&quot;building-distributed-systems-and-microservices-in-go-with-nats-streaming&quot;&gt;Building Distributed Systems and Microservices in Go with NATS Streaming&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://medium.com/@shijuvar/building-distributed-systems-and-microservices-in-go-with-nats-streaming-d8b4baa633a2&quot;&gt;https://medium.com/@shijuvar/building-distributed-systems-and-microservices-in-go-with-nats-streaming-d8b4baa633a2&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;NATS是一个Go实现的消息队列服务，NATS Streaming是其中带消息持久化的实现，本文介绍了NATS Streaming的持久化实现以及使用方式。NATS Streaming目前还不支持集群。&lt;/p&gt;
-
-&lt;h1 id=&quot;kubeadm-v18-released-introducing-easy-upgrades-for-kubernetes-clusters&quot;&gt;kubeadm v1.8 Released: Introducing Easy Upgrades for Kubernetes Clusters&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;http://blog.kubernetes.io/2017/10/kubeadm-v18-released.html&quot;&gt;http://blog.kubernetes.io/2017/10/kubeadm-v18-released.html&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;the-linux-foundation-releases-annual-kernel-development-report&quot;&gt;The Linux Foundation Releases Annual Kernel Development Report&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.linuxfoundation.org/press-release/linux-foundation-releases-annual-kernel-development-report/&quot;&gt;https://www.linuxfoundation.org/press-release/linux-foundation-releases-annual-kernel-development-report/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;2017年度Linux内核开发报告&lt;/p&gt;
-
-&lt;h1 id=&quot;kubernetes-182发布&quot;&gt;Kubernetes 1.8.2发布&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://groups.google.com/forum/#!topic/kubernetes-announce/9iA4Pw-obLQ&quot;&gt;https://groups.google.com/forum/#!topic/kubernetes-announce/9iA4Pw-obLQ&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;now-available--amazon-aurora-with-postgresql-compatibility&quot;&gt;Now Available – Amazon Aurora with PostgreSQL Compatibility&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://aws.amazon.com/blogs/aws/now-available-amazon-aurora-with-postgresql-compatibility/&quot;&gt;https://aws.amazon.com/blogs/aws/now-available-amazon-aurora-with-postgresql-compatibility/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Amazon Aurora的PostgresSQL兼容性支持现在已经GA，与9.6.3版本兼容。&lt;/p&gt;
-</description>
-        <pubDate>Sun, 29 Oct 2017 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2017/10/29/write-what-i-have-005.html</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2017/10/29/write-what-i-have-005.html</guid>
         
         
       </item>
