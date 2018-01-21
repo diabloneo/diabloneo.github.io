@@ -6,9 +6,42 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 15 Jan 2018 23:28:06 +0800</pubDate>
-    <lastBuildDate>Mon, 15 Jan 2018 23:28:06 +0800</lastBuildDate>
+    <pubDate>Sun, 21 Jan 2018 21:57:36 +0800</pubDate>
+    <lastBuildDate>Sun, 21 Jan 2018 21:57:36 +0800</lastBuildDate>
     <generator>Jekyll v3.4.0</generator>
+    
+      <item>
+        <title>想到什么写什么周报 第16期 - 2018-01-21</title>
+        <description>&lt;h1 id=&quot;announcing-go-support-for-aws-lambda&quot;&gt;Announcing Go Support for AWS Lambda&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://aws.amazon.com/cn/blogs/compute/announcing-go-support-for-aws-lambda/&quot;&gt;https://aws.amazon.com/cn/blogs/compute/announcing-go-support-for-aws-lambda/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;AWS Lambda正式支持Go语言。去年的re:Invent大会上就宣布今年会支持，没想到这么快。&lt;/p&gt;
+
+&lt;h1 id=&quot;database-sharding-explained-in-plain-english&quot;&gt;Database sharding explained in plain English&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.citusdata.com/blog/2018/01/10/sharding-in-plain-english/&quot;&gt;https://www.citusdata.com/blog/2018/01/10/sharding-in-plain-english/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Citus团队介绍如何给数据库做sharding。&lt;/p&gt;
+
+&lt;h1 id=&quot;golang-uk-conference-2017--will-sewell--jim-fisher---golangs-realtime-gc-in-theory-and-practice&quot;&gt;Golang UK Conference 2017 | Will Sewell &amp;amp; Jim Fisher - Golang’s Realtime GC in Theory and Practice&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=bMujSVMarqY&quot;&gt;https://www.youtube.com/watch?v=bMujSVMarqY&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;介绍了GC的理论算法，以及Go的GC的实现情况。&lt;/p&gt;
+
+&lt;h1 id=&quot;why-are-there-nil-channels-in-go&quot;&gt;Why are there nil channels in Go?&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://medium.com/justforfunc/why-are-there-nil-channels-in-go-9877cc0b2308&quot;&gt;https://medium.com/justforfunc/why-are-there-nil-channels-in-go-9877cc0b2308&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Francesc Campoy在 justforfunc节目中介绍的 nil channel的一个应用。关键点：读写一个nil channel会被阻塞，读一个已关闭的channel永远不会阻塞（而是得到类型的默认值）。&lt;/p&gt;
+</description>
+        <pubDate>Sun, 21 Jan 2018 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2018/01/21/write-what-i-have-016.html</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2018/01/21/write-what-i-have-016.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>想到什么写什么周报 第15期 - 2018-01-15</title>
@@ -368,45 +401,6 @@ sudo apt install silversearcher-ag&lt;/p&gt;
         <pubDate>Mon, 20 Nov 2017 00:00:00 +0800</pubDate>
         <link>http://diabloneo.github.io//2017/11/20/write-what-i-have-007.html</link>
         <guid isPermaLink="true">http://diabloneo.github.io//2017/11/20/write-what-i-have-007.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>想到什么写什么周报 第6期 - 2017-11-12</title>
-        <description>&lt;h1 id=&quot;announcing-goland-former-gogland-eap-18-final-product-name-templates-support-and-more&quot;&gt;Announcing GoLand (Former Gogland) EAP 18: Final Product Name, Templates Support and More&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.jetbrains.com/go/2017/11/02/announcing-goland-former-gogland-eap-18-final-product-name-templates-support-and-more/&quot;&gt;https://blog.jetbrains.com/go/2017/11/02/announcing-goland-former-gogland-eap-18-final-product-name-templates-support-and-more/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;JetBrain的Go IDE确定名字为GoLand&lt;/p&gt;
-
-&lt;h1 id=&quot;openstack-sydney-summit-2017-complete-keynote-session&quot;&gt;OpenStack Sydney Summit 2017 Complete Keynote Session&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=oCIRhleXztU&quot;&gt;https://www.youtube.com/watch?v=oCIRhleXztU&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Ironic的使用率在过去6个月从9%增长到20%.&lt;/li&gt;
-  &lt;li&gt;Kubernetes是OpenStack上用来管理应用最流行的方案，占比达到50%，已经是事实上的标准。&lt;/li&gt;
-  &lt;li&gt;现在用户都会使用多个不同的开源项目来实现自己的业务需求，一个典型案例是：OpenStack+Kubernetes。OpenStack打算开始帮助用户更好的集成这些新技术。&lt;/li&gt;
-  &lt;li&gt;中国市场在OpenStack生态中非常突出。腾讯表现抢眼。SuperUser候选，四家里有三家是中国公司，包括中国铁总、中国银联和腾讯。&lt;/li&gt;
-  &lt;li&gt;istio.io An open platform to connect, manage, and secure microservices&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h1 id=&quot;the-past-and-future-of-vim-go&quot;&gt;The Past and Future of Vim-go&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://speakerdeck.com/farslan/the-past-and-future-of-vim-go&quot;&gt;https://speakerdeck.com/farslan/the-past-and-future-of-vim-go&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Vim-go的作者Fatih Arslan回顾了vim-go的发展历史，并且提到了接下来要做的一些改进。&lt;/p&gt;
-
-&lt;h1 id=&quot;understanding-go-panic-output&quot;&gt;Understanding Go panic output&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://joeshaw.org/understanding-go-panic-output/&quot;&gt;https://joeshaw.org/understanding-go-panic-output/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;说明了Go panic时输出的栈信息的内容。&lt;/p&gt;
-</description>
-        <pubDate>Sun, 12 Nov 2017 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2017/11/12/write-what-i-have-006.html</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2017/11/12/write-what-i-have-006.html</guid>
         
         
       </item>
