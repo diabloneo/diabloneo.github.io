@@ -6,9 +6,51 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 21 Jan 2018 21:57:36 +0800</pubDate>
-    <lastBuildDate>Sun, 21 Jan 2018 21:57:36 +0800</lastBuildDate>
+    <pubDate>Mon, 29 Jan 2018 22:19:18 +0800</pubDate>
+    <lastBuildDate>Mon, 29 Jan 2018 22:19:18 +0800</lastBuildDate>
     <generator>Jekyll v3.4.0</generator>
+    
+      <item>
+        <title>想到什么写什么周报 第17期 - 2018-01-29</title>
+        <description>&lt;h1 id=&quot;stream--go-news-feeds-for-over-300-million-end-users&quot;&gt;Stream &amp;amp; Go: News Feeds for Over 300 Million End Users&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://stackshare.io/stream/stream-and-go-news-feeds-for-over-300-million-end-users&quot;&gt;https://stackshare.io/stream/stream-and-go-news-feeds-for-over-300-million-end-users&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Stream，一家做Feed流服务的公司，介绍自己的架构的文章，很有借鉴意义。&lt;/p&gt;
+
+&lt;h1 id=&quot;hello-中国&quot;&gt;Hello, 中国!&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.golang.org/hello-china&quot;&gt;https://blog.golang.org/hello-china&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Go语言官方发表了一篇blog：Hello, 中国!  文中提到了中国社区是最大的Go社区之一，中国也是Goi最流行的国家之一。2018年Go将会为中国提供更多帮助。&lt;/p&gt;
+
+&lt;h1 id=&quot;go-193-发布&quot;&gt;Go 1.9.3 发布&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://golang.org/doc/devel/release.html#go1.9.minor&quot;&gt;https://golang.org/doc/devel/release.html#go1.9.minor&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;twirp-a-sweet-new-rpc-framework-for-go&quot;&gt;Twirp: a sweet new RPC framework for Go&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.twitch.tv/twirp-a-sweet-new-rpc-framework-for-go-5f2febbf35f&quot;&gt;https://blog.twitch.tv/twirp-a-sweet-new-rpc-framework-for-go-5f2febbf35f&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;grpc只支持http2，不能在某些环境中使用，比如AWS的ELB&lt;/li&gt;
+  &lt;li&gt;grpc生成的代码依赖runtime，有版本要求，容易因为版本问题导致bug&lt;/li&gt;
+  &lt;li&gt;grpc项目太复杂，自己实现了http2协议以及控制机制&lt;/li&gt;
+  &lt;li&gt;grpc只支持protobuf&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;automatic-stackdriver-tracing-for-grpc&quot;&gt;Automatic Stackdriver Tracing for gRPC&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://rakyll.org/grpc-trace/&quot;&gt;https://rakyll.org/grpc-trace/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;介绍了 cloud.google.com/go/trace的使用，这个项目已经被opencensus.io/trace 替代。&lt;/p&gt;
+</description>
+        <pubDate>Mon, 29 Jan 2018 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2018/01/29/write-what-i-have-017.html</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2018/01/29/write-what-i-have-017.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>想到什么写什么周报 第16期 - 2018-01-21</title>
@@ -343,64 +385,6 @@ sudo apt install silversearcher-ag&lt;/p&gt;
         <pubDate>Sun, 26 Nov 2017 00:00:00 +0800</pubDate>
         <link>http://diabloneo.github.io//2017/11/26/write-what-i-have-008.html</link>
         <guid isPermaLink="true">http://diabloneo.github.io//2017/11/26/write-what-i-have-008.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>想到什么写什么周报 第7期 - 2017-11-20</title>
-        <description>&lt;h1 id=&quot;caching-at-netflix-the-hidden-microservice-by-scott-mansfield&quot;&gt;“Caching at Netflix: The Hidden Microservice” by Scott Mansfield&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=Rzdxgx3RC0Q&quot;&gt;https://www.youtube.com/watch?v=Rzdxgx3RC0Q&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Netflix的cache系统。一开始是一套简单的全内存分布式系统，跨越三个aws region。随后发现cache数据的热点非常集中，所以改成将所有数据存储在ssd中，只把热点数据放在内存中。通过这种改造，节约了70%的成本。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;github.com/netflix/rend 高性能的memcache proxy and server，用来对cache数据进行分层存储，管理冷热数据等。&lt;/li&gt;
-  &lt;li&gt;Mnemnic 管理SSD上的数据，底层使用rocksdb，上层复用了部分rend项目的代码。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;announcing-prometheus-20&quot;&gt;Announcing Prometheus 2.0&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://prometheus.io/blog/2017/11/08/announcing-prometheus-2-0/&quot;&gt;https://prometheus.io/blog/2017/11/08/announcing-prometheus-2-0/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Prometheus 2.0发布，使用新的时间序列数据库，资源消耗降低，性能提升。&lt;/p&gt;
-
-&lt;p&gt;CoreOS发表的这篇文章有不同版本的对比测试数据：&lt;em&gt;&lt;a href=&quot;https://coreos.com/blog/prometheus-2.0-released&quot;&gt;https://coreos.com/blog/prometheus-2.0-released&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;除了性能，我看到这次还增加了一个snapshot的功能，允许对整个数据库进行备份和恢复，相当实用。视频地址：&lt;em&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=15uc8oTMgPY&quot;&gt;https://www.youtube.com/watch?v=15uc8oTMgPY&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;best-practices-for-go-grpc-services&quot;&gt;Best Practices for (Go) gRPC Services&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=Z_yD7YPL2oE&quot;&gt;https://www.youtube.com/watch?v=Z_yD7YPL2oE&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;API设计&lt;/li&gt;
-  &lt;li&gt;错误处理&lt;/li&gt;
-  &lt;li&gt;Always use deadlines&lt;/li&gt;
-  &lt;li&gt;Rate Limiting and retry&lt;/li&gt;
-  &lt;li&gt;Memory Management&lt;/li&gt;
-  &lt;li&gt;Logging&lt;/li&gt;
-  &lt;li&gt;Monitoring&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;influxdb-14-now-available-influxql-enhancements-prometheus-readwrite-better-compaction-and-a-lot-more&quot;&gt;InfluxDB 1.4 Now Available: InfluxQL Enhancements, Prometheus Read/Write, Better Compaction and a lot more!&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.influxdata.com/blog/whats-new-influxdb-oss-1-4/&quot;&gt;https://www.influxdata.com/blog/whats-new-influxdb-oss-1-4/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;InfluxDB 1.4发布&lt;/p&gt;
-
-&lt;p&gt;同时，InfluxData宣布加入CNCF &lt;em&gt;&lt;a href=&quot;https://www.influxdata.com/blog/press-release-influxdata-joins-cloud-native-computing-foundation/&quot;&gt;https://www.influxdata.com/blog/press-release-influxdata-joins-cloud-native-computing-foundation/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;new-amazon-s3-encryption--security-features&quot;&gt;New Amazon S3 Encryption &amp;amp; Security Features&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://aws.amazon.com/blogs/aws/new-amazon-s3-encryption-security-features/&quot;&gt;https://aws.amazon.com/blogs/aws/new-amazon-s3-encryption-security-features/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;S3增加了一些和加密及安全有关的特性。&lt;/p&gt;
-</description>
-        <pubDate>Mon, 20 Nov 2017 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2017/11/20/write-what-i-have-007.html</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2017/11/20/write-what-i-have-007.html</guid>
         
         
       </item>
