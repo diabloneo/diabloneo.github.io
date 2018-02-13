@@ -6,9 +6,42 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 04 Feb 2018 21:54:06 +0800</pubDate>
-    <lastBuildDate>Sun, 04 Feb 2018 21:54:06 +0800</lastBuildDate>
+    <pubDate>Tue, 13 Feb 2018 17:03:11 +0800</pubDate>
+    <lastBuildDate>Tue, 13 Feb 2018 17:03:11 +0800</lastBuildDate>
     <generator>Jekyll v3.4.0</generator>
+    
+      <item>
+        <title>想到什么写什么周报 第19期 - 2018-02-13</title>
+        <description>&lt;h1 id=&quot;prometheus原理和源码分析&quot;&gt;Prometheus原理和源码分析&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;http://www.infoq.com/cn/articles/Prometheus-theory-source-code&quot;&gt;http://www.infoq.com/cn/articles/Prometheus-theory-source-code&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;go-walkthrough-fmt&quot;&gt;Go Walkthrough: fmt&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://medium.com/go-walkthrough/go-walkthrough-fmt-55a14bbbfc53&quot;&gt;https://medium.com/go-walkthrough/go-walkthrough-fmt-55a14bbbfc53&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;关于Go的fmt库的介绍，最后有关于fmt.Formatter接口实现的例子。&lt;/p&gt;
+
+&lt;h1 id=&quot;github-introduces-multiple-commit-authors&quot;&gt;GitHub Introduces Multiple Commit Authors&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.infoq.com/news/2018/01/github-multiple-author-commit&quot;&gt;https://www.infoq.com/news/2018/01/github-multiple-author-commit&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Github引入联合提交提交者功能。通过在commit message中添加 Co-authored-by 字段来实现。&lt;/p&gt;
+
+&lt;h1 id=&quot;两篇关于nmi中断的文章&quot;&gt;两篇关于NMI中断的文章&lt;/h1&gt;
+
+&lt;p&gt;&lt;strong&gt;NMI是什么&lt;/strong&gt; &lt;em&gt;&lt;a href=&quot;http://linuxperf.com/?p=72&quot;&gt;http://linuxperf.com/?p=72&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;内核如何检测SOFT LOCKUP与HARD LOCKUP？&lt;/strong&gt; &lt;em&gt;&lt;a href=&quot;http://linuxperf.com/?p=83&quot;&gt;http://linuxperf.com/?p=83&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;介绍了NMI以及Linux如何实现LOCKUP检测。&lt;/p&gt;
+</description>
+        <pubDate>Tue, 13 Feb 2018 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2018/02/13/write-what-i-have-019.html</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2018/02/13/write-what-i-have-019.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>想到什么写什么周报 第18期 - 2018-02-04</title>
@@ -353,55 +386,6 @@ sudo apt install silversearcher-ag&lt;/p&gt;
         <pubDate>Sun, 10 Dec 2017 00:00:00 +0800</pubDate>
         <link>http://diabloneo.github.io//2017/12/10/write-what-i-have-010.html</link>
         <guid isPermaLink="true">http://diabloneo.github.io//2017/12/10/write-what-i-have-010.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>想到什么写什么周报 第9期 - 2017-12-03</title>
-        <description>&lt;h1 id=&quot;s3-select-and-glacier-select--retrieving-subsets-of-objects&quot;&gt;S3 Select and Glacier Select – Retrieving Subsets of Objects&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://aws.amazon.com/cn/blogs/aws/s3-glacier-select/&quot;&gt;https://aws.amazon.com/cn/blogs/aws/s3-glacier-select/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;http://docs.aws.amazon.com/AmazonS3/latest/API/RESTObjectSELECTContent.html&quot;&gt;http://docs.aws.amazon.com/AmazonS3/latest/API/RESTObjectSELECTContent.html&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;S3服务新增select功能，允许用户使用一个SQL语句来读取一个CSV或者JSON对象中的部分数据。这个功能还处于preview阶段，不过可以看出AWS打算在S3上增加一些计算能力，让计算尽可能靠近数据。&lt;/p&gt;
-
-&lt;h1 id=&quot;the-way-to-go-jetbrains-goland-ide-hits-the-market&quot;&gt;The Way to Go: JetBrains GoLand IDE Hits the Market&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.jetbrains.com/go/2017/11/30/the-way-to-go-jetbrains-goland-ide-hits-the-market/&quot;&gt;https://blog.jetbrains.com/go/2017/11/30/the-way-to-go-jetbrains-goland-ide-hits-the-market/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;GoLand IDE正式发布，和JetBrains的其他IDE一样，每年大更新三次，不用担心新特性。&lt;/p&gt;
-
-&lt;h1 id=&quot;promptui&quot;&gt;Promptui&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://github.com/manifoldco/promptui&quot;&gt;https://github.com/manifoldco/promptui&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;这是一个Go语言的用于创建交互式CLI的库，看起来很方便哦。&lt;/p&gt;
-
-&lt;h1 id=&quot;kubernetes-deep-dive-api-server&quot;&gt;Kubernetes deep dive: API Server&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.openshift.com/kubernetes-deep-dive-api-server-part-1/&quot;&gt;https://blog.openshift.com/kubernetes-deep-dive-api-server-part-1/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.openshift.com/kubernetes-deep-dive-api-server-part-2/&quot;&gt;https://blog.openshift.com/kubernetes-deep-dive-api-server-part-2/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.openshift.com/kubernetes-deep-dive-api-server-part-3a/&quot;&gt;https://blog.openshift.com/kubernetes-deep-dive-api-server-part-3a/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;介绍K8s的API server的基本实现。&lt;/p&gt;
-
-&lt;h1 id=&quot;announcing-the-openshift-container-platform-37-ga&quot;&gt;Announcing the OpenShift Container Platform 3.7 GA&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.openshift.com/announcing-the-openshift-container-platform-3-7-ga/&quot;&gt;https://blog.openshift.com/announcing-the-openshift-container-platform-3-7-ga/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;OpenShift Container Platform 3.7版本GA了，两个特性service catalog和brokers见下文介绍：&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.openshift.com/whats-new-in-openshift-3-7-service-catalog-and-brokers/&quot;&gt;https://blog.openshift.com/whats-new-in-openshift-3-7-service-catalog-and-brokers/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;现在RedHat和VMWare都明确了下一步发展是混合云啊，已经和AWS走得很近了。&lt;/p&gt;
-</description>
-        <pubDate>Sun, 03 Dec 2017 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2017/12/03/write-what-i-have-009.html</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2017/12/03/write-what-i-have-009.html</guid>
         
         
       </item>
