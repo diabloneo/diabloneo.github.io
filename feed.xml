@@ -6,9 +6,111 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 13 Feb 2018 17:03:11 +0800</pubDate>
-    <lastBuildDate>Tue, 13 Feb 2018 17:03:11 +0800</lastBuildDate>
+    <pubDate>Sun, 04 Mar 2018 22:40:34 +0800</pubDate>
+    <lastBuildDate>Sun, 04 Mar 2018 22:40:34 +0800</lastBuildDate>
     <generator>Jekyll v3.4.0</generator>
+    
+      <item>
+        <title>想到什么写什么周报 第20期 - 2018-03-04</title>
+        <description>&lt;h1 id=&quot;gerritbot&quot;&gt;GerritBot&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://github.com/golang/go/wiki/GerritBot&quot;&gt;https://github.com/golang/go/wiki/GerritBot&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Go社区开始接收Github的pr，不过是通过GerritBot自动映射为一个Gerrit change，review和comment也是在gerrit里完成。&lt;/p&gt;
+
+&lt;h1 id=&quot;github-shouldnt-allow-username-reuse&quot;&gt;GitHub Shouldn’t Allow Username Reuse&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://donatstudios.com/GithubsTotalSecurityFacepalm&quot;&gt;https://donatstudios.com/GithubsTotalSecurityFacepalm&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;最近go-bindata的作者从网络上消失了，顺便把自己的github账号删除了。这个做法导致了很多依赖go-bindata的项目无法编译。于是有人重建了原作者的账号，同步了一份最新的代码，同时也声明他们使用这种无奈举措的原因。本文的作者提出的观点是，这种做法有安全问题，github账号不应该被重用，否则会导致信任问题。&lt;/p&gt;
+
+&lt;h1 id=&quot;this-week-in-elasticsearch-and-apache-lucene---2018-02-05&quot;&gt;This Week in Elasticsearch and Apache Lucene - 2018-02-05&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.elastic.co/blog/this-week-in-elasticsearch-and-apache-lucene-2018-02-05&quot;&gt;https://www.elastic.co/blog/this-week-in-elasticsearch-and-apache-lucene-2018-02-05&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;ES也要支持sql了。&lt;/p&gt;
+
+&lt;h1 id=&quot;how-google-cloud-storage-offers-strongly-consistent-object-listing-thanks-to-spanner&quot;&gt;How Google Cloud Storage offers strongly consistent object listing thanks to Spanner&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://cloudplatform.googleblog.com/2018/02/how-Google-Cloud-Storage-offers-strongly-consistent-object-listing-thanks-to-Spanner.html&quot;&gt;https://cloudplatform.googleblog.com/2018/02/how-Google-Cloud-Storage-offers-strongly-consistent-object-listing-thanks-to-Spanner.html&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Google Cloud Storage依靠Spanner服务提升了数据的一致性，在这方面已经超过AWS了。可以对比两个对象存储服务的一致性说明：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;em&gt;&lt;a href=&quot;https://cloud.google.com/storage/docs/consistency&quot;&gt;https://cloud.google.com/storage/docs/consistency&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;&lt;a href=&quot;https://docs.aws.amazon.com/AmazonS3/latest/dev/Introduction.html#ConsistencyModel。&quot;&gt;https://docs.aws.amazon.com/AmazonS3/latest/dev/Introduction.html#ConsistencyModel。&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;go-2017-survey-results&quot;&gt;Go 2017 Survey Results&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.golang.org/survey2017-results&quot;&gt;https://blog.golang.org/survey2017-results&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Go 2017年的用户调查报告。&lt;/p&gt;
+
+&lt;h1 id=&quot;defer-internals&quot;&gt;Defer Internals&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.learngoprogramming.com/yeah-semantically-after-is-the-right-word-fad1d5181891&quot;&gt;https://blog.learngoprogramming.com/yeah-semantically-after-is-the-right-word-fad1d5181891&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;快速介绍了下defer的内部实现，是在return语句之前。&lt;/p&gt;
+
+&lt;h1 id=&quot;postgresql-rocks-except-when-it-blocks-understanding-locks&quot;&gt;PostgreSQL rocks, except when it blocks: Understanding locks&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.citusdata.com/blog/2018/02/15/when-postgresql-blocks/&quot;&gt;https://www.citusdata.com/blog/2018/02/15/when-postgresql-blocks/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;CitusData发布的一篇关于Postgres的lock介绍文章，里面有两张表格，可以方便的查询pg的lock级别。&lt;/p&gt;
+
+&lt;h1 id=&quot;a-gophers-reading-list&quot;&gt;A Gopher’s Reading List&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://github.com/enocom/gopher-reading-list&quot;&gt;https://github.com/enocom/gopher-reading-list&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;一个关于Go语言文章的列表，从初级到高级都有。&lt;/p&gt;
+</description>
+        <pubDate>Sun, 04 Mar 2018 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2018/03/04/write-what-i-have-020.html</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2018/03/04/write-what-i-have-020.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Go 1.10中Go的build cache和test cache</title>
+        <description>&lt;p&gt;最近Go发布了1.10版本，引入了cache等重要特性。Russ Cox去年11月份的时候在邮件列表golang-dev里发了一篇帖子说明了这几个变化。帖子的地址是： &lt;em&gt;&lt;a href=&quot;https://groups.google.com/forum/#!topic/golang-dev/qfa3mHN4ZPA&quot;&gt;https://groups.google.com/forum/#!topic/golang-dev/qfa3mHN4ZPA&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;build-cache&quot;&gt;Build Cache&lt;/h1&gt;
+
+&lt;p&gt;意思就是会把编译过程的中间结果cache下来，从而实现增量编译。原来需要通过&lt;code class=&quot;highlighter-rouge&quot;&gt;go build -i&lt;/code&gt;命令来实现，现在go build命令默认启用了cache。启用cache后的效果是很明显的，我司的一个大程序的编译时间如下：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;全新编译，耗时107秒。&lt;/li&gt;
+  &lt;li&gt;修改一个文件后，再次编译，耗时22秒。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;test-cache&quot;&gt;Test Cache&lt;/h1&gt;
+
+&lt;p&gt;测试现在也默认启用了cache，在内容没有变化的情况下，对于同样的参数的测试，会直接使用cache的测试结果，也就是同样的测试不会重复跑。当使用cache的结果时，go test命令最后会显示 &lt;code class=&quot;highlighter-rouge&quot;&gt;(cached)&lt;/code&gt; 的字样:&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;➜ ~/go/src/project git:&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;feature&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; ✗  &lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;go &lt;span class=&quot;nb&quot;&gt;test &lt;/span&gt;project/dp/master
+ok      project/dp/master    &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;cached&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&quot;cache-path-and-clean-cache&quot;&gt;Cache Path and Clean Cache&lt;/h1&gt;
+
+&lt;p&gt;cache默认的存储路径是操作系统所确定的用户缓存目录，但是可以通过GOCACHE环境变量修改。在Ubuntu下的默认cache路径是 &lt;em&gt;~/.cache/go-build&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;如果要清除cache，可以使用如下两个命令:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;go clean -cache&lt;/code&gt; 清除build cache。&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;go clean -testcache&lt;/code&gt; 清除test cache。&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Sun, 04 Mar 2018 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2018/03/04/go-1.10-cache.html</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2018/03/04/go-1.10-cache.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>想到什么写什么周报 第19期 - 2018-02-13</title>
@@ -307,85 +409,6 @@
         <pubDate>Sun, 24 Dec 2017 00:00:00 +0800</pubDate>
         <link>http://diabloneo.github.io//2017/12/24/write-what-i-have-012.html</link>
         <guid isPermaLink="true">http://diabloneo.github.io//2017/12/24/write-what-i-have-012.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>想到什么写什么周报 第11期 - 2017-12-17</title>
-        <description>&lt;h1 id=&quot;what-is-rcu-fundamentally&quot;&gt;What is RCU, Fundamentally?&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://lwn.net/Articles/262464/&quot;&gt;https://lwn.net/Articles/262464/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;introducing-conduit&quot;&gt;Introducing Conduit&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://buoyant.io/2017/12/05/introducing-conduit/&quot;&gt;https://buoyant.io/2017/12/05/introducing-conduit/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Linkered公司开发的、不同于Linkerd的service mesh平台，数据层使用rust开发，管理层使用go开发，适用于低配置的环境，只适配k8s。&lt;/p&gt;
-
-&lt;p&gt;Linkered引入了service mesh这个概念。&lt;/p&gt;
-
-&lt;h1 id=&quot;联邦通信委员会推翻了美国的网络中立你需要知道这些&quot;&gt;联邦通信委员会推翻了美国的网络中立，你需要知道这些&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;http://techcrunch.cn/2017/12/15/the-fcc-officially-votes-to-kill-net-neutrality/&quot;&gt;http://techcrunch.cn/2017/12/15/the-fcc-officially-votes-to-kill-net-neutrality/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-</description>
-        <pubDate>Sun, 17 Dec 2017 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2017/12/17/write-what-i-have-011.html</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2017/12/17/write-what-i-have-011.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>想到什么写什么周报 第10期 - 2017-12-10</title>
-        <description>&lt;h1 id=&quot;ubuntu-1710&quot;&gt;Ubuntu 17.10&lt;/h1&gt;
-
-&lt;h2 id=&quot;截屏无法复制到剪切板&quot;&gt;截屏无法复制到剪切板&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.reddit.com/r/gnome/comments/78rcsf/screenshot_copy_to_clipboard_not_working_326/&quot;&gt;https://www.reddit.com/r/gnome/comments/78rcsf/screenshot_copy_to_clipboard_not_working_326/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;still a bug&lt;/p&gt;
-
-&lt;p&gt;而且，使用快捷键截屏，甚至无法唤出截屏程序。&lt;/p&gt;
-
-&lt;h2 id=&quot;ack-grep包已经从仓库移除&quot;&gt;ack-grep包已经从仓库移除&lt;/h2&gt;
-
-&lt;p&gt;可以使用silversearcher-ag替代
-sudo apt install silversearcher-ag&lt;/p&gt;
-
-&lt;p&gt;vim里如果使用ack.vim，那么默认情况下是会调用ack-grep命令，可以通过如下配置修改&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;let g:ackprg = &quot;ag --vimgrep&quot;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h1 id=&quot;catalog-of-error-handling-patterns-in-go&quot;&gt;Catalog of error handling patterns in Go&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;http://www.cirello.org/2017/12/catalog-error-handling-patterns-in-go&quot;&gt;http://www.cirello.org/2017/12/catalog-error-handling-patterns-in-go&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;作者总结的go中处理error的一些模式。&lt;/p&gt;
-
-&lt;h1 id=&quot;announcing-the-general-availability-of-containerd-10-the-industry-standard-runtime-used-by-millions-of-users&quot;&gt;ANNOUNCING THE GENERAL AVAILABILITY OF CONTAINERD 1.0, THE INDUSTRY-STANDARD RUNTIME USED BY MILLIONS OF USERS&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.docker.com/2017/12/cncf-containerd-1-0-ga-announcement/&quot;&gt;https://blog.docker.com/2017/12/cncf-containerd-1-0-ga-announcement/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;announcing-jaeger-10&quot;&gt;Announcing Jaeger 1.0&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://medium.com/jaegertracing/announcing-jaeger-1-0-37b5990cc59b&quot;&gt;https://medium.com/jaegertracing/announcing-jaeger-1-0-37b5990cc59b&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Jaeger 1.0发布。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;之前支持Cassandra，现在新增一个存储后端ElasticSearch，后续会增加更多其他的存储后端。&lt;/li&gt;
-  &lt;li&gt;WebUI改进&lt;/li&gt;
-  &lt;li&gt;与Prometheus、Docker和K8s的集成&lt;/li&gt;
-  &lt;li&gt;除了Go意外，还有C++客户端，正在开发更多语言的客户端。&lt;/li&gt;
-  &lt;li&gt;兼容Zipkin&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Sun, 10 Dec 2017 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2017/12/10/write-what-i-have-010.html</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2017/12/10/write-what-i-have-010.html</guid>
         
         
       </item>
