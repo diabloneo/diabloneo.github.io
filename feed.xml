@@ -6,9 +6,50 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 04 Mar 2018 22:40:34 +0800</pubDate>
-    <lastBuildDate>Sun, 04 Mar 2018 22:40:34 +0800</lastBuildDate>
+    <pubDate>Mon, 12 Mar 2018 22:01:46 +0800</pubDate>
+    <lastBuildDate>Mon, 12 Mar 2018 22:01:46 +0800</lastBuildDate>
     <generator>Jekyll v3.4.0</generator>
+    
+      <item>
+        <title>想到什么写什么周报 第21期 - 2018-03-12</title>
+        <description>&lt;h1 id=&quot;book-go-internals&quot;&gt;Book: go-internals&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://github.com/teh-cmc/go-internals&quot;&gt;https://github.com/teh-cmc/go-internals&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;go--package-versioning&quot;&gt;Go += Package Versioning&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://research.swtch.com/vgo-intro&quot;&gt;https://research.swtch.com/vgo-intro&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+</description>
+        <pubDate>Mon, 12 Mar 2018 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2018/03/12/write-what-i-have-021.html</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2018/03/12/write-what-i-have-021.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Go终于要引入软件包版本管理了</title>
+        <description>&lt;p&gt;最近Russ Cox发表了篇文章: &lt;a href=&quot;https://research.swtch.com/vgo-intro&amp;gt;*&quot;&gt;&lt;strong&gt;Go += Package Versioning&lt;/strong&gt;&lt;/a&gt;。从这篇文章开始，Go社区算是开始着手处理对待软件包管理问题了。这篇文章也算是为接下来的正式提案预热。&lt;/p&gt;
+
+&lt;p&gt;提案包含4个步骤：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Import Compatiblity Rule: 导入兼容性规则。建议的规则很简单：如果一个新的package和老的package具有同样的import path，那么新的package就需要具备向后兼容性。Russ Cox指出，通过期待包的作者遵循这条规则，新的包管理系统不需要处理兼容性问题，这样会使得整个包管理系统更加简单和健壮。如果你熟悉OpenStack，那么你应该知道每个项目下的requirements有多麻烦，而且不同项目间还需要兼容同一个requirements。&lt;/li&gt;
+  &lt;li&gt;Minimal Version Select: 现在的包管理器一般都采用如下的策略：选择最新的版本。Russ Cox认为这是个错误的默认行为，因为只要上游软件包有更新，那么你的编译结果就会改变，这个不是开发者在大部分情况下所期望的行为。所以他采取的默认策略是选贼最老的版本。这个方案不仅使得编译结果稳定，而且也是软件包管理更加简单。&lt;/li&gt;
+  &lt;li&gt;Defining Go Modules: 一个Go module是一个package集合，这些package共享同样的import path prefix，称为module path。一个module定义在一个新的文件中，称为go.mod。一个module在网络上会存储成一个zip文件，可以通过HTTP协议下载，可以避免通过go get下载时需要安装各种cvs程序，而且也方便走代理。&lt;/li&gt;
+  &lt;li&gt;The go Command: go命令需要修改以支持Go Module。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;基于这个目标，Russ Cox开发了一个新的go命令：vgo。这个新的工具支持版本管理。另一篇文章 https://research.swtch.com/vgo-tour 说明了这个工具的使用。&lt;/p&gt;
+
+&lt;p&gt;现在这个命令还处于开发阶段，但是已经实现了上述4个步骤中的前三个。&lt;/p&gt;
+</description>
+        <pubDate>Mon, 12 Mar 2018 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2018/03/12/versioning-go-command.html</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2018/03/12/versioning-go-command.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>想到什么写什么周报 第20期 - 2018-03-04</title>
@@ -325,90 +366,6 @@ ok      project/dp/master    &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;cache
         <pubDate>Mon, 08 Jan 2018 00:00:00 +0800</pubDate>
         <link>http://diabloneo.github.io//2018/01/08/write-what-i-have-014.html</link>
         <guid isPermaLink="true">http://diabloneo.github.io//2018/01/08/write-what-i-have-014.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>想到什么写什么周报 第13期 - 2018-01-01</title>
-        <description>&lt;h1 id=&quot;mixer-and-the-spof-myth&quot;&gt;Mixer and the SPOF Myth&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://istio.io/blog/posts/2017/mixer-spof-myth.html&quot;&gt;https://istio.io/blog/posts/2017/mixer-spof-myth.html&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;介绍了Istio中的Mixer的设计，是service mesh的重要组件。&lt;/p&gt;
-
-&lt;p&gt;P.S. 我终于明白了sidecar这个词在service mesh里的意思。&lt;/p&gt;
-
-&lt;h1 id=&quot;get-ready-for-the-aws-serverless-application-repository&quot;&gt;Get Ready for the AWS Serverless Application Repository&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://aws.amazon.com/blogs/aws/aws-serverless-app-repo/&quot;&gt;https://aws.amazon.com/blogs/aws/aws-serverless-app-repo/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;AWS推出的serverless应用仓库，就好像Python的pip。&lt;/p&gt;
-
-&lt;h1 id=&quot;using-code-generation-to-survive-without-generics-in-go&quot;&gt;Using code generation to survive without generics in Go&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.calhoun.io/using-code-generation-to-survive-without-generics-in-go/&quot;&gt;https://www.calhoun.io/using-code-generation-to-survive-without-generics-in-go/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;使用Go的template来自动生成代码，弥补Go不支持泛型的问题。对于小项目来说，还是很实用的。&lt;/p&gt;
-
-&lt;h1 id=&quot;kubernetes-19增强了容器存储提供了workloads-api支持及window-beta支持&quot;&gt;Kubernetes 1.9增强了容器存储，提供了Workloads API支持及Window Beta支持&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;http://www.infoq.com/cn/news/2017/12/kubernetes-1.9&quot;&gt;http://www.infoq.com/cn/news/2017/12/kubernetes-1.9&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;存储部分的增强肯定是将来的重点，但是还处于alpha阶段。&lt;/p&gt;
-</description>
-        <pubDate>Mon, 01 Jan 2018 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2018/01/01/write-what-i-have-013.html</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2018/01/01/write-what-i-have-013.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>想到什么写什么周报 第11期 - 2017-12-17</title>
-        <description>&lt;h1 id=&quot;grpc-go-beyond-the-basics&quot;&gt;gRPC Go: Beyond the basics&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.gopheracademy.com/advent-2017/go-grpc-beyond-basics/&quot;&gt;https://blog.gopheracademy.com/advent-2017/go-grpc-beyond-basics/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;介绍了gRPC的高级应用：使用TLS，开发插件，以及相关生态项目。&lt;/p&gt;
-
-&lt;h1 id=&quot;keynote-cncf-project-updates---michelle-noorali-senior-software-engineer-microsoft-azure&quot;&gt;Keynote: CNCF Project Updates - Michelle Noorali, Senior Software Engineer, Microsoft Azure&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=zPOlDe-J9ZA&amp;amp;index=2&amp;amp;list=PLj6h78yzYM2P-3-xqvmWaZbbI1sW-ulZb&quot;&gt;https://www.youtube.com/watch?v=zPOlDe-J9ZA&amp;amp;index=2&amp;amp;list=PLj6h78yzYM2P-3-xqvmWaZbbI1sW-ulZb&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;KubeCon的Keynote，介绍了CNCF旗下的14个项目目前的状况。&lt;/p&gt;
-
-&lt;h1 id=&quot;amazon-linux-2&quot;&gt;Amazon Linux 2&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://aws.amazon.com/amazon-linux-2/&quot;&gt;https://aws.amazon.com/amazon-linux-2/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;AWS推出了新一代的Linux系统，目前还是LTS candidate状态。&lt;/p&gt;
-
-&lt;h1 id=&quot;kubernetes-19-and-a-look-inside-the-kubernetes-project&quot;&gt;Kubernetes 1.9 and a look inside the Kubernetes project&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://coreos.com/blog/kubernetes-19-and-a-look-inside-the-project&quot;&gt;https://coreos.com/blog/kubernetes-19-and-a-look-inside-the-project&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;介绍了k8s 1.9版本周期做的一些拆分项目的事情，Kubernetes已经是个巨大的项目了，为了将来的扩展，社区正在将这个项目进行必要的拆分，以便于整个生态进行扩展。另外也介绍了兼容性认证以及接下来会做的一些事情：cloud-controller-manager, CSI for external storage, and the longstanding goal of moving kubeadm to its own repo等。&lt;/p&gt;
-
-&lt;h1 id=&quot;kubernetes-and-containers-in-2018-buckle-your-seatbelts&quot;&gt;Kubernetes and containers in 2018: Buckle your seatbelts&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://coreos.com/blog/kubernetes-and-containers-in-2018&quot;&gt;https://coreos.com/blog/kubernetes-and-containers-in-2018&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Alex Polvi展望了Kubernetes以及相关生态在2018年的发展。&lt;/p&gt;
-
-&lt;h1 id=&quot;许式伟我与go语言的这十年&quot;&gt;许式伟：我与Go语言的这十年&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://mp.weixin.qq.com/s/iU7gaZNgCsU3DHaHa5PZ_Q&quot;&gt;https://mp.weixin.qq.com/s/iU7gaZNgCsU3DHaHa5PZ_Q&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;error-handling-in-upspin&quot;&gt;Error handling in Upspin&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://commandcenter.blogspot.com/2017/12/error-handling-in-upspin.html&quot;&gt;https://commandcenter.blogspot.com/2017/12/error-handling-in-upspin.html&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Upspin项目自己创建了一个小的errors库，用于满足其自己的需求。本文介绍了这个库的一些设计思想。同时 Rob Pike and Andrew Gerrand也强调了Go中没有一个errors库能满足所有的需求，大家需要自己做出选择。&lt;/p&gt;
-</description>
-        <pubDate>Sun, 24 Dec 2017 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2017/12/24/write-what-i-have-012.html</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2017/12/24/write-what-i-have-012.html</guid>
         
         
       </item>
