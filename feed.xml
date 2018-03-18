@@ -6,9 +6,42 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 12 Mar 2018 22:01:46 +0800</pubDate>
-    <lastBuildDate>Mon, 12 Mar 2018 22:01:46 +0800</lastBuildDate>
+    <pubDate>Sun, 18 Mar 2018 21:55:08 +0800</pubDate>
+    <lastBuildDate>Sun, 18 Mar 2018 21:55:08 +0800</lastBuildDate>
     <generator>Jekyll v3.4.0</generator>
+    
+      <item>
+        <title>想到什么写什么周报 第22期 - 2018-03-18</title>
+        <description>&lt;h1 id=&quot;running-a-free-twitter-bot-on-aws-lambda&quot;&gt;Running a free Twitter bot on AWS Lambda&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://dev.to/hivickylai/running-a-free-twitter-bot-on-aws-lambda--2pik?ref=stackshare&quot;&gt;https://dev.to/hivickylai/running-a-free-twitter-bot-on-aws-lambda--2pik?ref=stackshare&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;用AWS Lambda写一个解析RSS然后发tweet的bot，使用CloudWatch来做定时器，挺容易的。&lt;/p&gt;
+
+&lt;h1 id=&quot;the-postgres-10-feature-you-didnt-know-about-create-statistics&quot;&gt;The Postgres 10 feature you didn’t know about: CREATE STATISTICS&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.citusdata.com/blog/2018/03/06/postgres-planner-and-its-usage-of-statistics/?ref=stackshare&quot;&gt;https://www.citusdata.com/blog/2018/03/06/postgres-planner-and-its-usage-of-statistics/?ref=stackshare&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Postgres 10引入了一个新的特性: CREATE STATISTICS，可以让planner更准确的收集统计信息，以便做出更好的plan。&lt;/p&gt;
+
+&lt;h1 id=&quot;postgresql-10-a-great-new-version-for-a-great-database&quot;&gt;PostgreSQL 10: a Great New Version for a Great Database&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;http://www.linuxjournal.com/content/postgresql-10-great-new-version-great-database&quot;&gt;http://www.linuxjournal.com/content/postgresql-10-great-new-version-great-database&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;举例子描述了Postgres 10新增的两个主要特性：logical replication, table partitioning.&lt;/p&gt;
+
+&lt;h1 id=&quot;a-quick-comparison-between-different-go-file-walk-implementations&quot;&gt;A quick comparison between different Go file walk implementations&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;http://www.boyter.org/2018/03/quick-comparison-go-file-walk-implementations/&quot;&gt;http://www.boyter.org/2018/03/quick-comparison-go-file-walk-implementations/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;比较了Go的几个遍历文件的库的性能，可以参考下。内置的path/filepath.Walk是比较慢的。&lt;/p&gt;
+</description>
+        <pubDate>Sun, 18 Mar 2018 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2018/03/18/write-what-i-have-022.html</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2018/03/18/write-what-i-have-022.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>想到什么写什么周报 第21期 - 2018-03-12</title>
@@ -339,33 +372,6 @@ ok      project/dp/master    &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;cache
         <pubDate>Mon, 15 Jan 2018 00:00:00 +0800</pubDate>
         <link>http://diabloneo.github.io//2018/01/15/write-what-i-have-015.html</link>
         <guid isPermaLink="true">http://diabloneo.github.io//2018/01/15/write-what-i-have-015.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>想到什么写什么周报 第14期 - 2018-01-08</title>
-        <description>&lt;h1 id=&quot;go-experience-report-generics-in-kubernetes&quot;&gt;Go Experience Report: Generics in Kubernetes&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://medium.com/@arschles/go-experience-report-generics-in-kubernetes-25da87430301&quot;&gt;https://medium.com/@arschles/go-experience-report-generics-in-kubernetes-25da87430301&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Kubernetes自己内建了一套部分替代泛型的runtime系统，你可以看到类似runtime.Object这样的对象以及相关的处理。由于Go不支持泛型，k8s这也是不得以而为之，不过这种做法在目前的情况下很好的解决了需求。作者还讨论了自动生成代码替代这套自定义的runtime是否可行的问题，答案是可行，但是会生成太多的代码，以至于项目过于庞大而变得不合适。&lt;/p&gt;
-
-&lt;h1 id=&quot;how-to-improve-iot-application-performance-with-multi-row-dml&quot;&gt;How to Improve IoT Application Performance with Multi-Row DML&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.cockroachlabs.com/blog/multi-row-dml/&quot;&gt;https://www.cockroachlabs.com/blog/multi-row-dml/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;讲解了数据库的多行DML如何帮助提升性能，尤其是CockroachDB这种分布式的数据库，随着节点数的增加，可以支持更高的DML批处理大小。&lt;/p&gt;
-
-&lt;h1 id=&quot;managing-goroutine-lifecycles-with-rungroup&quot;&gt;Managing goroutine lifecycles with run.Group&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.gopheracademy.com/advent-2017/run-group/&quot;&gt;https://blog.gopheracademy.com/advent-2017/run-group/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;介绍了一种管理goroutine生命周期的方式， &lt;em&gt;&lt;a href=&quot;https://github.com/oklog/run&quot;&gt;https://github.com/oklog/run&lt;/a&gt;&lt;/em&gt;.&lt;/p&gt;
-</description>
-        <pubDate>Mon, 08 Jan 2018 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2018/01/08/write-what-i-have-014.html</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2018/01/08/write-what-i-have-014.html</guid>
         
         
       </item>
