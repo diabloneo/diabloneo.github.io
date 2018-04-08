@@ -6,9 +6,38 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 01 Apr 2018 21:25:43 +0800</pubDate>
-    <lastBuildDate>Sun, 01 Apr 2018 21:25:43 +0800</lastBuildDate>
+    <pubDate>Sun, 08 Apr 2018 21:59:21 +0800</pubDate>
+    <lastBuildDate>Sun, 08 Apr 2018 21:59:21 +0800</lastBuildDate>
     <generator>Jekyll v3.4.0</generator>
+    
+      <item>
+        <title>想到什么写什么周报 第24期 - 2018-04-08</title>
+        <description>&lt;h1 id=&quot;go-talk-recordings-from-meetups-and-conferences-during-q4-2017&quot;&gt;Go Talk recordings from meetups and conferences during Q4 2017&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.meetupfeed.com/go-talk-recordings-meetups-conferences-q4-2017/&quot;&gt;https://blog.meetupfeed.com/go-talk-recordings-meetups-conferences-q4-2017/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;@MeetupFeed 收集的2017年Q4的Go相关的演讲和文章。&lt;/p&gt;
+
+&lt;h1 id=&quot;kernel-recipes-2017---understanding-the-linux-kernel-via-ftrace---steven-rostedt&quot;&gt;Kernel Recipes 2017 - Understanding the Linux Kernel via Ftrace - Steven Rostedt&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=2ff-7UTg5rE&quot;&gt;https://www.youtube.com/watch?v=2ff-7UTg5rE&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Steven Rostedt关于ftrace的演讲，很全面。作者在2010年也放出过ftrace的幻灯片：&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://events.static.linuxfound.org/slides/2010/linuxcon_japan/linuxcon_jp2010_rostedt.pdf&quot;&gt;https://events.static.linuxfound.org/slides/2010/linuxcon_japan/linuxcon_jp2010_rostedt.pdf&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;fun-with-sql-generate_series-in-postgres&quot;&gt;Fun with SQL: generate_series in Postgres&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.citusdata.com/blog/2018/03/14/fun-with-sql-generate-sql/&quot;&gt;https://www.citusdata.com/blog/2018/03/14/fun-with-sql-generate-sql/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;介绍了postgres的generate_series函数的有趣应用。&lt;/p&gt;
+</description>
+        <pubDate>Sun, 08 Apr 2018 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2018/04/08/write-what-i-have-024.html</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2018/04/08/write-what-i-have-024.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>想到什么写什么周报 第23期 - 2018-04-01</title>
@@ -347,39 +376,6 @@ ok      project/dp/master    &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;cache
         <pubDate>Mon, 29 Jan 2018 00:00:00 +0800</pubDate>
         <link>http://diabloneo.github.io//2018/01/29/write-what-i-have-017.html</link>
         <guid isPermaLink="true">http://diabloneo.github.io//2018/01/29/write-what-i-have-017.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>想到什么写什么周报 第16期 - 2018-01-21</title>
-        <description>&lt;h1 id=&quot;announcing-go-support-for-aws-lambda&quot;&gt;Announcing Go Support for AWS Lambda&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://aws.amazon.com/cn/blogs/compute/announcing-go-support-for-aws-lambda/&quot;&gt;https://aws.amazon.com/cn/blogs/compute/announcing-go-support-for-aws-lambda/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;AWS Lambda正式支持Go语言。去年的re:Invent大会上就宣布今年会支持，没想到这么快。&lt;/p&gt;
-
-&lt;h1 id=&quot;database-sharding-explained-in-plain-english&quot;&gt;Database sharding explained in plain English&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.citusdata.com/blog/2018/01/10/sharding-in-plain-english/&quot;&gt;https://www.citusdata.com/blog/2018/01/10/sharding-in-plain-english/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Citus团队介绍如何给数据库做sharding。&lt;/p&gt;
-
-&lt;h1 id=&quot;golang-uk-conference-2017--will-sewell--jim-fisher---golangs-realtime-gc-in-theory-and-practice&quot;&gt;Golang UK Conference 2017 | Will Sewell &amp;amp; Jim Fisher - Golang’s Realtime GC in Theory and Practice&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=bMujSVMarqY&quot;&gt;https://www.youtube.com/watch?v=bMujSVMarqY&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;介绍了GC的理论算法，以及Go的GC的实现情况。&lt;/p&gt;
-
-&lt;h1 id=&quot;why-are-there-nil-channels-in-go&quot;&gt;Why are there nil channels in Go?&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://medium.com/justforfunc/why-are-there-nil-channels-in-go-9877cc0b2308&quot;&gt;https://medium.com/justforfunc/why-are-there-nil-channels-in-go-9877cc0b2308&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Francesc Campoy在 justforfunc节目中介绍的 nil channel的一个应用。关键点：读写一个nil channel会被阻塞，读一个已关闭的channel永远不会阻塞（而是得到类型的默认值）。&lt;/p&gt;
-</description>
-        <pubDate>Sun, 21 Jan 2018 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2018/01/21/write-what-i-have-016.html</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2018/01/21/write-what-i-have-016.html</guid>
         
         
       </item>
