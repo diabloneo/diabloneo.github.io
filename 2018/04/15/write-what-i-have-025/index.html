@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>想到什么写什么周报 第9期 - 2017-12-03</title>
-  <meta name="description" content="S3 Select and Glacier Select – Retrieving Subsets of Objects">
+  <title>想到什么写什么周报 第24期 - 2018-04-08</title>
+  <meta name="description" content="Amazon S3 Update: New Storage Class and General Availability of S3 Select">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://diabloneo.github.io//2017/12/03/write-what-i-have-009/">
+  <link rel="canonical" href="http://diabloneo.github.io//2018/04/15/write-what-i-have-025/">
   <link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
 </head>
 
@@ -76,12 +76,24 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">想到什么写什么周报 第9期 - 2017-12-03</h1>
-    <p class="post-meta"><time datetime="2017-12-03T00:00:00+08:00" itemprop="datePublished">Dec 3, 2017</time></p>
+    <h1 class="post-title" itemprop="name headline">想到什么写什么周报 第24期 - 2018-04-08</h1>
+    <p class="post-meta"><time datetime="2018-04-15T00:00:00+08:00" itemprop="datePublished">Apr 15, 2018</time></p>
   </header>
 
   <div class="post-tags">
     <ul>
+      
+      <li>
+        <a href="/tags/database/">database</a>
+      </li>
+      
+      <li>
+        <a href="/tags/golang/">golang</a>
+      </li>
+      
+      <li>
+        <a href="/tags/storage/">storage</a>
+      </li>
       
     </ul>
   </div>
@@ -90,45 +102,26 @@
     <!-- Go to www.addthis.com/dashboard to customize your tools -->
     <div class="addthis_inline_share_toolbox"></div>
     <br />
-    <h1 id="s3-select-and-glacier-select--retrieving-subsets-of-objects">S3 Select and Glacier Select – Retrieving Subsets of Objects</h1>
+    <h1 id="amazon-s3-update-new-storage-class-and-general-availability-of-s3-select">Amazon S3 Update: New Storage Class and General Availability of S3 Select</h1>
 
-<p><em><a href="https://aws.amazon.com/cn/blogs/aws/s3-glacier-select/">https://aws.amazon.com/cn/blogs/aws/s3-glacier-select/</a></em></p>
+<p><em><a href="https://aws.amazon.com/cn/blogs/aws/amazon-s3-update-new-storage-class-general-availability-of-s3-select/">https://aws.amazon.com/cn/blogs/aws/amazon-s3-update-new-storage-class-general-availability-of-s3-select/</a></em></p>
 
-<p><em><a href="http://docs.aws.amazon.com/AmazonS3/latest/API/RESTObjectSELECTContent.html">http://docs.aws.amazon.com/AmazonS3/latest/API/RESTObjectSELECTContent.html</a></em></p>
+<ul>
+  <li>S3增加了一个新的存储类型：One Zone - IA。数据只会保存在一个region的一个zone里，但是价格便宜20%，适合存放不重要的数据。</li>
+  <li>另外，S3 select已经GA了，国区也有。</li>
+</ul>
 
-<p>S3服务新增select功能，允许用户使用一个SQL语句来读取一个CSV或者JSON对象中的部分数据。这个功能还处于preview阶段，不过可以看出AWS打算在S3上增加一些计算能力，让计算尽可能靠近数据。</p>
+<h1 id="edgedb-a-new-beginning">EdgeDB: A New Beginning</h1>
 
-<h1 id="the-way-to-go-jetbrains-goland-ide-hits-the-market">The Way to Go: JetBrains GoLand IDE Hits the Market</h1>
+<p><em><a href="https://edgedb.com/blog/edgedb-a-new-beginning/">https://edgedb.com/blog/edgedb-a-new-beginning/</a></em></p>
 
-<p><em><a href="https://blog.jetbrains.com/go/2017/11/30/the-way-to-go-jetbrains-goland-ide-hits-the-market/">https://blog.jetbrains.com/go/2017/11/30/the-way-to-go-jetbrains-goland-ide-hits-the-market/</a></em></p>
+<p>一个新的数据库EdgeDB，这是一种对象关系数据库，和之前的数据库模型都不太一样，使用一种特殊的查询语言EdgeQL。官方说这个是开源的，但是github项目还没有建立，可能还没放上去。</p>
 
-<p>GoLand IDE正式发布，和JetBrains的其他IDE一样，每年大更新三次，不用担心新特性。</p>
+<h1 id="一个很有新意的磁盘监控图设计">一个很有新意的磁盘监控图设计</h1>
 
-<h1 id="promptui">Promptui</h1>
+<p><em><a href="https://bvckup2.com/wip/10042018">https://bvckup2.com/wip/10042018</a></em></p>
 
-<p><em><a href="https://github.com/manifoldco/promptui">https://github.com/manifoldco/promptui</a></em></p>
-
-<p>这是一个Go语言的用于创建交互式CLI的库，看起来很方便哦。</p>
-
-<h1 id="kubernetes-deep-dive-api-server">Kubernetes deep dive: API Server</h1>
-
-<p><em><a href="https://blog.openshift.com/kubernetes-deep-dive-api-server-part-1/">https://blog.openshift.com/kubernetes-deep-dive-api-server-part-1/</a></em></p>
-
-<p><em><a href="https://blog.openshift.com/kubernetes-deep-dive-api-server-part-2/">https://blog.openshift.com/kubernetes-deep-dive-api-server-part-2/</a></em></p>
-
-<p><em><a href="https://blog.openshift.com/kubernetes-deep-dive-api-server-part-3a/">https://blog.openshift.com/kubernetes-deep-dive-api-server-part-3a/</a></em></p>
-
-<p>介绍K8s的API server的基本实现。</p>
-
-<h1 id="announcing-the-openshift-container-platform-37-ga">Announcing the OpenShift Container Platform 3.7 GA</h1>
-
-<p><em><a href="https://blog.openshift.com/announcing-the-openshift-container-platform-3-7-ga/">https://blog.openshift.com/announcing-the-openshift-container-platform-3-7-ga/</a></em></p>
-
-<p>OpenShift Container Platform 3.7版本GA了，两个特性service catalog和brokers见下文介绍：</p>
-
-<p><em><a href="https://blog.openshift.com/whats-new-in-openshift-3-7-service-catalog-and-brokers/">https://blog.openshift.com/whats-new-in-openshift-3-7-service-catalog-and-brokers/</a></em></p>
-
-<p>现在RedHat和VMWare都明确了下一步发展是混合云啊，已经和AWS走得很近了。</p>
+<p>我觉得还挺实用的。</p>
 
     <br />
 
@@ -145,8 +138,8 @@
 <div id="disqus_thread"></div>
 <script>
 var disqus_config = function () {
-  this.page.url = "http://diabloneo.github.io/2017/12/03/write-what-i-have-009/"; // <--- use canonical URL
-  this.page.identifier = "/2017/12/03/write-what-i-have-009";
+  this.page.url = "http://diabloneo.github.io/2018/04/15/write-what-i-have-025/"; // <--- use canonical URL
+  this.page.identifier = "/2018/04/15/write-what-i-have-025";
 };
 (function() { // DON'T EDIT BELOW THIS LINE
   var d = document, s = d.createElement('script');
