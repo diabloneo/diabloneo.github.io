@@ -6,12 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>About</title>
-  <meta name="description" content="Archive diabloneo's articles.
-">
+  <title>想到什么写什么周报 第14期 - 2018-01-08</title>
+  <meta name="description" content="Go Experience Report: Generics in Kubernetes">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://diabloneo.github.io//about/">
+  <link rel="canonical" href="http://diabloneo.github.io//2018/01/08/write-what-i-have-014/">
   <link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
 </head>
 
@@ -72,14 +71,78 @@
 
     <div class="page-content">
       <div class="wrapper">
-        <article class="post">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title">About</h1>
+    <h1 class="post-title" itemprop="name headline">想到什么写什么周报 第14期 - 2018-01-08</h1>
+    <p class="post-meta"><time datetime="2018-01-08T00:00:00+08:00" itemprop="datePublished">Jan 8, 2018</time></p>
   </header>
 
-  <div class="post-content">
+  <div class="post-tags">
+    <ul>
+      
+      <li>
+        <a href="/tags/database/">database</a>
+      </li>
+      
+      <li>
+        <a href="/tags/golang/">golang</a>
+      </li>
+      
+    </ul>
+  </div>
+
+  <div class="post-content" itemprop="articleBody">
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+    <div class="addthis_inline_share_toolbox"></div>
+    <br />
+    <h1 id="go-experience-report-generics-in-kubernetes">Go Experience Report: Generics in Kubernetes</h1>
+
+<p><em><a href="https://medium.com/@arschles/go-experience-report-generics-in-kubernetes-25da87430301">https://medium.com/@arschles/go-experience-report-generics-in-kubernetes-25da87430301</a></em></p>
+
+<p>Kubernetes自己内建了一套部分替代泛型的runtime系统，你可以看到类似runtime.Object这样的对象以及相关的处理。由于Go不支持泛型，k8s这也是不得以而为之，不过这种做法在目前的情况下很好的解决了需求。作者还讨论了自动生成代码替代这套自定义的runtime是否可行的问题，答案是可行，但是会生成太多的代码，以至于项目过于庞大而变得不合适。</p>
+
+<h1 id="how-to-improve-iot-application-performance-with-multi-row-dml">How to Improve IoT Application Performance with Multi-Row DML</h1>
+
+<p><em><a href="https://www.cockroachlabs.com/blog/multi-row-dml/">https://www.cockroachlabs.com/blog/multi-row-dml/</a></em></p>
+
+<p>讲解了数据库的多行DML如何帮助提升性能，尤其是CockroachDB这种分布式的数据库，随着节点数的增加，可以支持更高的DML批处理大小。</p>
+
+<h1 id="managing-goroutine-lifecycles-with-rungroup">Managing goroutine lifecycles with run.Group</h1>
+
+<p><em><a href="https://blog.gopheracademy.com/advent-2017/run-group/">https://blog.gopheracademy.com/advent-2017/run-group/</a></em></p>
+
+<p>介绍了一种管理goroutine生命周期的方式， <em><a href="https://github.com/oklog/run">https://github.com/oklog/run</a></em>.</p>
+
+    <br />
+
+    <div>
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议</a>进行许可。
+    </div>
+
+    <br />
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+    <div class="addthis_inline_share_toolbox"></div>
+  </div>
+  <div class="post-comment">
     
+<div id="disqus_thread"></div>
+<script>
+var disqus_config = function () {
+  this.page.url = "http://diabloneo.github.io/2018/01/08/write-what-i-have-014/"; // <--- use canonical URL
+  this.page.identifier = "/2018/01/08/write-what-i-have-014";
+};
+(function() { // DON'T EDIT BELOW THIS LINE
+  var d = document, s = d.createElement('script');
+
+  s.src = 'https://coffee-coke-and-code.disqus.com/embed.js';
+
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
 
   </div>
 

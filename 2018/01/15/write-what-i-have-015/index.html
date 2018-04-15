@@ -6,12 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>About</title>
-  <meta name="description" content="Archive diabloneo's articles.
-">
+  <title>想到什么写什么周报 第15期 - 2018-01-15</title>
+  <meta name="description" content="AWS SDK for Go 2.0 Developer Preview">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://diabloneo.github.io//about/">
+  <link rel="canonical" href="http://diabloneo.github.io//2018/01/15/write-what-i-have-015/">
   <link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
 </head>
 
@@ -72,14 +71,86 @@
 
     <div class="page-content">
       <div class="wrapper">
-        <article class="post">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title">About</h1>
+    <h1 class="post-title" itemprop="name headline">想到什么写什么周报 第15期 - 2018-01-15</h1>
+    <p class="post-meta"><time datetime="2018-01-15T00:00:00+08:00" itemprop="datePublished">Jan 15, 2018</time></p>
   </header>
 
-  <div class="post-content">
+  <div class="post-tags">
+    <ul>
+      
+      <li>
+        <a href="/tags/cloud/">cloud</a>
+      </li>
+      
+      <li>
+        <a href="/tags/golang/">golang</a>
+      </li>
+      
+    </ul>
+  </div>
+
+  <div class="post-content" itemprop="articleBody">
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+    <div class="addthis_inline_share_toolbox"></div>
+    <br />
+    <h1 id="aws-sdk-for-go-20-developer-preview">AWS SDK for Go 2.0 Developer Preview</h1>
+
+<p><em><a href="https://aws.amazon.com/cn/blogs/developer/aws-sdk-for-go-2-0-developer-preview/">https://aws.amazon.com/cn/blogs/developer/aws-sdk-for-go-2-0-developer-preview/</a></em></p>
+
+<p>变化：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1. 去掉了session，只保留config，使用更简单。
+2. 支持API Request方法，允许对每个请求进行相关设置后再发送。
+3. API资源支持强类型。
+4. 直接支持slice和map类型了，不用再转成指针形式。
+</code></pre></div></div>
+
+<p>目前2.0版本处于开发者preview状态。1.0版本将会继续维护很长一段时间，不用担心。</p>
+
+<h1 id="introducing-container-storage-interface-csi-alpha-for-kubernetes">Introducing Container Storage Interface (CSI) Alpha for Kubernetes</h1>
+
+<p><em><a href="http://blog.kubernetes.io/2018/01/introducing-container-storage-interface.html">http://blog.kubernetes.io/2018/01/introducing-container-storage-interface.html</a></em></p>
+
+<p>CSI进入Alpha阶段。</p>
+
+<h1 id="how-to-correctly-use-contextcontext-in-go-17">How to correctly use context.Context in Go 1.7</h1>
+
+<p><em><a href="https://medium.com/@cep21/how-to-correctly-use-context-context-in-go-1-7-8f2c0fafdf39">https://medium.com/@cep21/how-to-correctly-use-context-context-in-go-1-7-8f2c0fafdf39</a></em></p>
+
+<p>关于context的用法的文章，作者反对通过context.Value传递可以控制程序行为的参数。</p>
+
+    <br />
+
+    <div>
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议</a>进行许可。
+    </div>
+
+    <br />
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+    <div class="addthis_inline_share_toolbox"></div>
+  </div>
+  <div class="post-comment">
     
+<div id="disqus_thread"></div>
+<script>
+var disqus_config = function () {
+  this.page.url = "http://diabloneo.github.io/2018/01/15/write-what-i-have-015/"; // <--- use canonical URL
+  this.page.identifier = "/2018/01/15/write-what-i-have-015";
+};
+(function() { // DON'T EDIT BELOW THIS LINE
+  var d = document, s = d.createElement('script');
+
+  s.src = 'https://coffee-coke-and-code.disqus.com/embed.js';
+
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
 
   </div>
 

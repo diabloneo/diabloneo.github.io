@@ -6,12 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>About</title>
-  <meta name="description" content="Archive diabloneo's articles.
-">
+  <title>tmux中的choose-buffer和delete-buffer</title>
+  <meta name="description" content="Tmux的buffer是一个非常使用的功能，我们可以通过bind-key [进入copy-mode来选择要保存到buffer中的数据，随后再通过bind-key ]来粘贴一个buffer。">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://diabloneo.github.io//about/">
+  <link rel="canonical" href="http://diabloneo.github.io//2015/01/17/choose-buffer-and-delete-buffer-in-tmux/">
   <link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
 </head>
 
@@ -72,14 +71,61 @@
 
     <div class="page-content">
       <div class="wrapper">
-        <article class="post">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title">About</h1>
+    <h1 class="post-title" itemprop="name headline">tmux中的choose-buffer和delete-buffer</h1>
+    <p class="post-meta"><time datetime="2015-01-17T00:00:00+08:00" itemprop="datePublished">Jan 17, 2015</time></p>
   </header>
 
-  <div class="post-content">
+  <div class="post-tags">
+    <ul>
+      
+    </ul>
+  </div>
+
+  <div class="post-content" itemprop="articleBody">
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+    <div class="addthis_inline_share_toolbox"></div>
+    <br />
+    <p><strong>Tmux</strong>的buffer是一个非常使用的功能，我们可以通过<strong>bind-key [</strong>进入copy-mode来选择要保存到buffer中的数据，随后再通过<strong>bind-key ]</strong>来粘贴一个buffer。<!--more--></p>
+
+<p>除了上面两个常用的功能之外，还有一个非常使用的功能：<strong>choose-buffer</strong>，快捷键是<strong>bind-key =</strong>，该命令的作用是显示出之前保存的buffers，并且可以通过序号选择本地要粘贴的哪个buffer中的内容。样子如下：</p>
+
+<p><img src="http://diabloneo.github.io//assets/imgs/00001-tmux-choose-buffer.png" alt="choose-buffer" /></p>
+
+<p>另外，我们还可以通过<strong>delete-buffer</strong>来选择删除掉一个之前保存的buffer，不加参数的情况是删除index为0的buffer，可以通过-b参数指定要删除的buffer，例如<code class="highlighter-rouge">delete-buffer -b a</code>。不过，遗憾的是，目前还没有命令可以删除所有的buffer（至少我没找到，有知道的同学麻烦告诉我一声，灰常感谢）。</p>
+
+
+    <br />
+
+    <div>
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议</a>进行许可。
+    </div>
+
+    <br />
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+    <div class="addthis_inline_share_toolbox"></div>
+  </div>
+  <div class="post-comment">
     
+<div id="disqus_thread"></div>
+<script>
+var disqus_config = function () {
+  this.page.url = "http://diabloneo.github.io/2015/01/17/choose-buffer-and-delete-buffer-in-tmux/"; // <--- use canonical URL
+  this.page.identifier = "/2015/01/17/choose-buffer-and-delete-buffer-in-tmux";
+};
+(function() { // DON'T EDIT BELOW THIS LINE
+  var d = document, s = d.createElement('script');
+
+  s.src = 'https://coffee-coke-and-code.disqus.com/embed.js';
+
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
 
   </div>
 

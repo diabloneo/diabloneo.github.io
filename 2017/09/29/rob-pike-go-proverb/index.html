@@ -6,12 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>About</title>
-  <meta name="description" content="Archive diabloneo's articles.
-">
+  <title>Rob Pike&#39;s Go Proverb</title>
+  <meta name="description" content="">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://diabloneo.github.io//about/">
+  <link rel="canonical" href="http://diabloneo.github.io//2017/09/29/rob-pike-go-proverb/">
   <link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
 </head>
 
@@ -72,14 +71,81 @@
 
     <div class="page-content">
       <div class="wrapper">
-        <article class="post">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title">About</h1>
+    <h1 class="post-title" itemprop="name headline">Rob Pike's Go Proverb</h1>
+    <p class="post-meta"><time datetime="2017-09-29T00:00:00+08:00" itemprop="datePublished">Sep 29, 2017</time></p>
   </header>
 
-  <div class="post-content">
+  <div class="post-tags">
+    <ul>
+      
+    </ul>
+  </div>
+
+  <div class="post-content" itemprop="articleBody">
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+    <div class="addthis_inline_share_toolbox"></div>
+    <br />
+    <p><img src="http://diabloneo.github.io//assets/imgs/00017_rob_pike_go_proverb.png" alt="Rob Pike" /></p>
+
+<p>Rob Pike在2015年的Gopherfest的演讲，题目是 <em>Go Proverbs</em>. YouTube地址:</p>
+
+<p><a href="https://www.youtube.com/watch?v=PAAkCSZUG1c&amp;index=27&amp;t=1s&amp;list=WL">Go Proverbs - Rob Pike - Gopherfest - November 18, 2015</a></p>
+
+<p>他分享了他自己写的几条Go编程的格言，类似 <em>The Zen of Python</em>，但是没那么正式，格言的列表如下，推荐看视频：</p>
+
+<ol>
+  <li>Don’t communicate by sharing memory, share memory by communicating.</li>
+  <li>Concurrency is not parallism.</li>
+  <li>Channels orchestrate; mutexes serialize.</li>
+  <li>The bigger the interface, the weaker the abstraction.</li>
+  <li>Make the zero value useful. (e.g. <code class="highlighter-rouge">bytes.Buffer</code> or <code class="highlighter-rouge">sync.Mutex</code>)</li>
+  <li><code class="highlighter-rouge">interface{}</code> says nothing.</li>
+  <li>Gofmt’s style is no one’s favorite, yet gofmt is everyone’s favorite.</li>
+  <li>A little copying is better than a little dependency.</li>
+  <li>Syscall must always be guarded with build tags.</li>
+  <li>Cgo must always be guarded with build tags.</li>
+  <li>Cgo is not Go. (他说自己几乎不使用cgo)</li>
+  <li>With the <code class="highlighter-rouge">unsafe</code> package, there are no guarantees.</li>
+  <li>Clear is better than clever.</li>
+  <li>Reflection is never clear.</li>
+  <li>Errors are values.</li>
+  <li>Don’t just check errors, handle them gracefully.</li>
+  <li>Design the architecture, name the components, document the details.</li>
+  <li>Documentation is for users.</li>
+</ol>
+
+    <br />
+
+    <div>
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议</a>进行许可。
+    </div>
+
+    <br />
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+    <div class="addthis_inline_share_toolbox"></div>
+  </div>
+  <div class="post-comment">
     
+<div id="disqus_thread"></div>
+<script>
+var disqus_config = function () {
+  this.page.url = "http://diabloneo.github.io/2017/09/29/rob-pike-go-proverb/"; // <--- use canonical URL
+  this.page.identifier = "/2017/09/29/rob-pike-go-proverb";
+};
+(function() { // DON'T EDIT BELOW THIS LINE
+  var d = document, s = d.createElement('script');
+
+  s.src = 'https://coffee-coke-and-code.disqus.com/embed.js';
+
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
 
   </div>
 

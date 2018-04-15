@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>通过demo学习OpenStack开发所需的基础知识 -- API服务(3)</title>
+  <meta name="description" content="上一篇文章我们了解了一个巨啰嗦的框架：Paste + PasteDeploy + Routes + WebOb。后来OpenStack社区的人受不了这么啰嗦的代码了，决定换一个框架，他们最终选中了Pecan。Pecan框架相比上一篇文章的啰嗦框架有如下好处：">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://diabloneo.github.io//2015/09/30/learn-openstack-dev-skill-by-demo-04/">
+  <link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
+</head>
+
+
+  <body>
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">Coffee, Coke and Code</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <a href="/tags">Tags</a>
+        <a href="/feed.xml">RSS</a>
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">通过demo学习OpenStack开发所需的基础知识 -- API服务(3)</h1>
+    <p class="post-meta"><time datetime="2015-09-30T00:00:00+08:00" itemprop="datePublished">Sep 30, 2015</time></p>
+  </header>
+
+  <div class="post-tags">
+    <ul>
+      
+      <li>
+        <a href="/tags/python/">python</a>
+      </li>
+      
+      <li>
+        <a href="/tags/openstack/">openstack</a>
+      </li>
+      
+    </ul>
+  </div>
+
+  <div class="post-content" itemprop="articleBody">
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+    <div class="addthis_inline_share_toolbox"></div>
+    <br />
+    <p>上一篇文章我们了解了一个巨啰嗦的框架：Paste + PasteDeploy + Routes + WebOb。后来OpenStack社区的人受不了这么啰嗦的代码了，决定换一个框架，他们最终选中了<strong>Pecan</strong>。Pecan框架相比上一篇文章的啰嗦框架有如下好处：</p>
+
+<ul>
+  <li>不用自己写WSGI application了</li>
+  <li>请求路由很容易就可以实现了</li>
+</ul>
+
+<p>总的来说，用上Pecan框架以后，很多重复的代码不用写了，开发人员可以专注于业务，也就是实现每个API的功能。</p>
+
+<h1 id="pecan">Pecan</h1>
+
+<p>Pecan框架的目标是实现一个采用对象分发方式进行URL路由的轻量级Web框架。它非常专注于自己的目标，它的大部分功能都和URL路由以及请求和响应的处理相关，而不去实现模板、安全以及数据库层，这些东西都可以通过其他的库来实现。关于Pecan的更多信息，可以查看文档：<a href="https://pecan.readthedocs.org/en/latest/index.html">https://pecan.readthedocs.org/en/latest/index.html</a>。本文以OpenStack的magnum项目为例来说明Pecan项目在实际中的应用，但是本文不会详细讲解Pecan的各个方面，一些细节请读者阅读Pecan的文档。</p>
+
+<h2 id="项目中的代码结构">项目中的代码结构</h2>
+
+<p>使用Pecan框架时，OpenStack项目一般会把API服务的实现都放在一个<strong>api</strong>目录下，比如magnum项目是这样的：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>➜ ~/openstack/env/p/magnum git:(master) $ tree magnum/api
+magnum/api
+├── app.py
+├── auth.py
+├── config.py
+├── controllers
+│   ├── base.py
+│   ├── __init__.py
+│   ├── link.py
+│   ├── root.py
+│   └── v1
+│       ├── base.py
+│       ├── baymodel.py
+│       ├── bay.py
+│       ├── certificate.py
+│       ├── collection.py
+│       ├── container.py
+│       ├── __init__.py
+│       ├── magnum_services.py
+│       ├── node.py
+│       ├── pod.py
+│       ├── replicationcontroller.py
+│       ├── service.py
+│       ├── types.py
+│       ├── utils.py
+│       └── x509keypair.py
+├── expose.py
+├── hooks.py
+├── __init__.py
+├── middleware
+│   ├── auth_token.py
+│   ├── __init__.py
+│   └── parsable_error.py
+├── servicegroup.py
+└── validation.py
+</code></pre></div></div>
+
+<p>你也可以在Ceilometer项目中看到类似的结构。介绍一下几个主要的文件，这样你以后看到一个使用Pecan的OpenStack项目时就会比较容易找到入口。</p>
+
+<ul>
+  <li>app.py  一般包含了Pecan应用的入口，包含应用初始化代码</li>
+  <li>config.py  包含Pecan的应用配置，会被app.py使用</li>
+  <li>controllers/  这个目录会包含所有的控制器，也就是API具体逻辑的地方</li>
+  <li>controllers/root.py  这个包含根路径对应的控制器</li>
+  <li>controllers/v1/   这个目录对应v1版本的API的控制器。如果有多个版本的API，你一般能看到v2等目录。</li>
+</ul>
+
+<h2 id="代码变少了application的配置">代码变少了：application的配置</h2>
+
+<p>Pecan的配置很容易，通过一个Python源码式的配置文件就可以完成基本的配置。这个配置的主要目的是指定应用程序的root，然后用于生成WSGI application。我们来看Magnum项目的例子。Magnum项目有个API服务是用Pecan实现的，在<em>magnum/api/config.py</em>文件中可以找到这个文件，主要内容如下：</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">app</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">'root'</span><span class="p">:</span> <span class="s">'magnum.api.controllers.root.RootController'</span><span class="p">,</span>
+    <span class="s">'modules'</span><span class="p">:</span> <span class="p">[</span><span class="s">'magnum.api'</span><span class="p">],</span>
+    <span class="s">'debug'</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+    <span class="s">'hooks'</span><span class="p">:</span> <span class="p">[</span>
+        <span class="n">hooks</span><span class="o">.</span><span class="n">ContextHook</span><span class="p">(),</span>
+        <span class="n">hooks</span><span class="o">.</span><span class="n">RPCHook</span><span class="p">(),</span>
+        <span class="n">hooks</span><span class="o">.</span><span class="n">NoExceptionTracebackHook</span><span class="p">(),</span>
+    <span class="p">],</span>
+    <span class="s">'acl_public_routes'</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s">'/'</span>
+    <span class="p">],</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>上面这个<strong>app</strong>对象就是Pecan的配置，每个Pecan应用都需要有这么一个名为app的配置。app配置中最主要的就是<strong>root</strong>的值，这个值表示了应用程序的入口，也就是从哪个地方开始解析HTTP的根path：<strong>/</strong>。<strong>hooks</strong>对应的配置是一些Pecan的hook，作用类似于WSGI Middleware。</p>
+
+<p>有了app配置后，就可以让Pecan生成一个WSGI application。在Magnum项目中，<em>magnum/api/app.py</em>文件就是生成WSGI application的地方，我们来看一下这个的主要内容：</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">get_pecan_config</span><span class="p">():</span>
+    <span class="c"># Set up the pecan configuration</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="n">api_config</span><span class="o">.</span><span class="n">__file__</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">'.pyc'</span><span class="p">,</span> <span class="s">'.py'</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">pecan</span><span class="o">.</span><span class="n">configuration</span><span class="o">.</span><span class="n">conf_from_file</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">setup_app</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">config</span><span class="p">:</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">get_pecan_config</span><span class="p">()</span>
+
+    <span class="n">app_conf</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">app</span><span class="p">)</span>
+
+    <span class="n">app</span> <span class="o">=</span> <span class="n">pecan</span><span class="o">.</span><span class="n">make_app</span><span class="p">(</span>
+        <span class="n">app_conf</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">'root'</span><span class="p">),</span>
+        <span class="n">logging</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s">'logging'</span><span class="p">,</span> <span class="p">{}),</span>
+        <span class="n">wrap_app</span><span class="o">=</span><span class="n">middleware</span><span class="o">.</span><span class="n">ParsableErrorMiddleware</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">app_conf</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">auth</span><span class="o">.</span><span class="n">install</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">CONF</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">acl_public_routes</span><span class="p">)</span></code></pre></figure>
+
+<p><code class="highlighter-rouge">get_pecan_config()</code>方法读取我们上面提到的config.py文件，然后返回一个<strong>pecan.configuration.Config</strong>对象。<code class="highlighter-rouge">setup_app()</code>函数首先调用<code class="highlighter-rouge">get_pecan_config()</code>函数获取application的配置，然后调用<code class="highlighter-rouge">pecan.make_app()</code>函数创建了一个WSGI application，最后调用了 <code class="highlighter-rouge">auth.install()</code>函数（也就是magnum.api.auth.install()函数）为刚刚生成的WSGI application加上Keystone的认证中间件（确保所有的请求都会通过Keystone认证）。</p>
+
+<p>到这边为止，一个Pecan的WSGI application就已经准备好了，只要调用这个<code class="highlighter-rouge">setup_app()</code>函数就能获得。至于如何部署这个WSGI application，请参考<a href="http://segmentfault.com/a/1190000003069785">WSGI简介</a>这篇文章。</p>
+
+<p>从Magnum这个实际的例子可以看出，使用了Pecan之后，我们不再需要自己写那些冗余的WSGI application代码了，直接调用Pecan的<code class="highlighter-rouge">make_app()</code>函数就能完成这些工作。另外，对于之前使用PasteDeploy时用到的很多WSGI中间件，可以选择使用Pecan的hooks机制来实现，也选择使用WSGI中间件的方式来实现。在Magnum的API服务就同时使用了这两种方式。其实，Pecan还可以和PasteDeploy一起使用，Ceilometer项目就是这么做的，大家可以看看。</p>
+
+<h2 id="确定路由变得容易了对象分发式的路由">确定路由变得容易了：对象分发式的路由</h2>
+
+<p>Pecan不仅缩减了生成WSGI application的代码，而且也让开发人员更容易的指定一个application的路由。Pecan采用了一种对象分发风格（<strong>object-dispatch style</strong>）的路由模式。我们直接通过例子来解释这种路由模式，还是以Magnum项目为例。</p>
+
+<p>上面提到了，Magnum的API服务的root是<strong>magnum.api.controllers.root.RootController</strong>。这里的RootController的是一个类，我们来看它的代码：</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">RootController</span><span class="p">(</span><span class="n">rest</span><span class="o">.</span><span class="n">RestController</span><span class="p">):</span>
+
+    <span class="n">_versions</span> <span class="o">=</span> <span class="p">[</span><span class="s">'v1'</span><span class="p">]</span>
+    <span class="s">"""All supported API versions"""</span>
+
+    <span class="n">_default_version</span> <span class="o">=</span> <span class="s">'v1'</span>
+    <span class="s">"""The default API version"""</span>
+
+    <span class="n">v1</span> <span class="o">=</span> <span class="n">v1</span><span class="o">.</span><span class="n">Controller</span><span class="p">()</span>
+
+    <span class="nd">@expose.expose</span><span class="p">(</span><span class="n">Root</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c"># NOTE: The reason why convert() it's being called for every</span>
+        <span class="c">#       request is because we need to get the host url from</span>
+        <span class="c">#       the request object to make the links.</span>
+        <span class="k">return</span> <span class="n">Root</span><span class="o">.</span><span class="n">convert</span><span class="p">()</span>
+
+    <span class="nd">@pecan.expose</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">_route</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+        <span class="s">"""Overrides the default routing behavior.
+
+        It redirects the request to the default version of the magnum API
+        if the version number is not specified in the url.
+        """</span>
+
+        <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_versions</span><span class="p">:</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_default_version</span><span class="p">]</span> <span class="o">+</span> <span class="n">args</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">RootController</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">_route</span><span class="p">(</span><span class="n">args</span><span class="p">)</span></code></pre></figure>
+
+<p>别看这个类这么长，我来解释一下你就懂了。首先，你可以先忽略掉<code class="highlighter-rouge">_route()</code>函数，这个函数是用来覆盖Pecan的默认路由实现的，在这里去掉它不妨碍我们理解Pecan（这里的<code class="highlighter-rouge">_route()</code>函数的作用把所有请求重定向到默认的API版本去）。去掉<code class="highlighter-rouge">_route()</code>和其他的东西后，整个类就变成这么短：</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">RootController</span><span class="p">(</span><span class="n">rest</span><span class="o">.</span><span class="n">RestController</span><span class="p">):</span>
+    <span class="n">v1</span> <span class="o">=</span> <span class="n">v1</span><span class="o">.</span><span class="n">Controller</span><span class="p">()</span>
+
+    <span class="nd">@expose.expose</span><span class="p">(</span><span class="n">Root</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Root</span><span class="o">.</span><span class="n">convert</span><span class="p">()</span></code></pre></figure>
+
+<ul>
+  <li>首先，你要记住，这个<em>RootController</em>对应的是URL中根路径，也就是path中最左边的<strong>/</strong>。</li>
+  <li><em>RootController</em>继承自<em>rest.RestController</em>，是Pecan实现的RESTful控制器。这里的<code class="highlighter-rouge">get()</code>函数表示，当访问的是<em>GET /</em>时，由该函数处理。<code class="highlighter-rouge">get()</code>函数会返回一个WSME对象，表示一个形式化的HTTP Response，这个下面再讲。<code class="highlighter-rouge">get()</code>函数上面的<code class="highlighter-rouge">expose</code>装饰器是Pecan实现路由控制的一个方式，被expose的函数才会被路由处理。</li>
+  <li>这里的<code class="highlighter-rouge">v1 = v1.Controller()</code>表示，当访问的是<em>GET /v1</em>或者<em>GET /v1/…</em>时，请求由一个<code class="highlighter-rouge">v1.Controller</code>实例来处理。</li>
+</ul>
+
+<p>为了加深大家的理解，我们再来看下<code class="highlighter-rouge">v1.Controller</code>的实现：</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">Controller</span><span class="p">(</span><span class="n">rest</span><span class="o">.</span><span class="n">RestController</span><span class="p">):</span>
+    <span class="s">"""Version 1 API controller root."""</span>
+
+    <span class="n">bays</span> <span class="o">=</span> <span class="n">bay</span><span class="o">.</span><span class="n">BaysController</span><span class="p">()</span>
+    <span class="n">baymodels</span> <span class="o">=</span> <span class="n">baymodel</span><span class="o">.</span><span class="n">BayModelsController</span><span class="p">()</span>
+    <span class="n">containers</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">ContainersController</span><span class="p">()</span>
+    <span class="n">nodes</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">NodesController</span><span class="p">()</span>
+    <span class="n">pods</span> <span class="o">=</span> <span class="n">pod</span><span class="o">.</span><span class="n">PodsController</span><span class="p">()</span>
+    <span class="n">rcs</span> <span class="o">=</span> <span class="n">rc</span><span class="o">.</span><span class="n">ReplicationControllersController</span><span class="p">()</span>
+    <span class="n">services</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="n">ServicesController</span><span class="p">()</span>
+    <span class="n">x509keypairs</span> <span class="o">=</span> <span class="n">x509keypair</span><span class="o">.</span><span class="n">X509KeyPairController</span><span class="p">()</span>
+    <span class="n">certificates</span> <span class="o">=</span> <span class="n">certificate</span><span class="o">.</span><span class="n">CertificateController</span><span class="p">()</span>
+
+    <span class="nd">@expose.expose</span><span class="p">(</span><span class="n">V1</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">V1</span><span class="o">.</span><span class="n">convert</span><span class="p">()</span>
+
+    <span class="o">...</span></code></pre></figure>
+
+<p>上面这个Controller也是继承自<em>rest.RestController</em>。所以它的<em>get</em>函数表示，当访问的是<em>GET /v1</em>的时候，要做的处理。然后，它还有很多类属性，这些属性分别表示不同URL路径的控制器：</p>
+
+<ul>
+  <li>/v1/bays 由bays处理</li>
+  <li>/v1/baymodels 由baymodels处理</li>
+  <li>/v1/containers 由containers处理</li>
+</ul>
+
+<p>其他的都是类似的。我们再继续看<code class="highlighter-rouge">bay.BaysController</code>的代码：</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">BaysController</span><span class="p">(</span><span class="n">rest</span><span class="o">.</span><span class="n">RestController</span><span class="p">):</span>
+    <span class="s">"""REST controller for Bays."""</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">BaysController</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+
+    <span class="n">_custom_actions</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'detail'</span><span class="p">:</span> <span class="p">[</span><span class="s">'GET'</span><span class="p">],</span>
+    <span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">get_all</span><span class="p">(</span><span class="o">...</span><span class="p">):</span>
+    
+    <span class="k">def</span> <span class="nf">detail</span><span class="p">(</span><span class="o">...</span><span class="p">):</span>
+    
+    <span class="k">def</span> <span class="nf">get_one</span><span class="p">(</span><span class="o">...</span><span class="p">):</span>
+    
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="o">...</span><span class="p">):</span>
+    
+    <span class="k">def</span> <span class="nf">patch</span><span class="p">(</span><span class="o">...</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="o">...</span><span class="p">):</span></code></pre></figure>
+
+<p>这个controller中只有函数，没有任何类属性，而且没有实现任何特殊方法，所以<em>/v1/bays</em>开头的URL处理都在这个controller中终结。这个类会处理如下请求：</p>
+
+<ul>
+  <li>GET /v1/bays</li>
+  <li>GET /v1/bays/{UUID}</li>
+  <li>POST /v1/bays</li>
+  <li>PATCH /v1/bays/{UUID}</li>
+  <li>DELETE /v1/bays/{UUID}</li>
+  <li>GET /v1/bays/detail/{UUID}</li>
+</ul>
+
+<p>看了上面的3个controller之后，你应该能大概明白Pecan是如何对URL进行路由的。这种路由方式就是对象分发：<strong>根据类属性，包括数据属性和方法属性来决定如何路由一个HTTP请求</strong>。Pecan的文档中对请求的路由有专门的描述，要想掌握Pecan的路由还是要完整的看一下官方文档。</p>
+
+<h2 id="内置restful支持">内置RESTful支持</h2>
+
+<p>我们上面举例的controller都是继承自<code class="highlighter-rouge">pecan.rest.RestController</code>，这种controller称为<strong>RESTful controller</strong>，专门用于实现RESTful API的，因此在OpenStack中使用特别多。Pecan还支持普通的controller，称为<strong>Generic controller</strong>。Generic controller继承自object对象，默认没有实现对RESTful请求的方法。简单的说，RESTful controller帮我们规定好了<code class="highlighter-rouge">get_one()</code>, <code class="highlighter-rouge">get_all()</code>, <code class="highlighter-rouge">get()</code>, <code class="highlighter-rouge">post()</code>等方法对应的HTTP请求，而Generic controller则没有。关于这两种controller的区别，可以看官方文档<a href="https://pecan.readthedocs.org/en/latest/rest.html">Writing RESTful Web Services with Generic Controllers</a>，有很清楚的示例。</p>
+
+<p>对于RestController中没有预先定义好的方法，我们可以通过控制器的<code class="highlighter-rouge">_custom_actions</code>属性来指定其能处理的方法。</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">RootController</span><span class="p">(</span><span class="n">rest</span><span class="o">.</span><span class="n">RestController</span><span class="p">):</span>
+    <span class="n">_custom_actions</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'test'</span><span class="p">:</span> <span class="p">[</span><span class="s">'GET'</span><span class="p">],</span>
+    <span class="p">}</span>
+
+    <span class="nd">@expose</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">'hello'</span></code></pre></figure>
+
+<p>上面这个控制器是一个根控制器，指定了/test路径支持GET方法，效果如下：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> $ curl http://localhost:8080/test
+hello% 
+</code></pre></div></div>
+
+<h2 id="那么http请求和http响应呢">那么HTTP请求和HTTP响应呢？</h2>
+
+<p>上面讲了这么多，我们都没有说明在Pecan中如何处理请求和如何返回响应。这个将在下一章中说明，同时我们会引入一个新的库<strong>WSME</strong>。</p>
+
+<h1 id="wsme">WSME</h1>
+
+<h2 id="pecan对请求和响应的处理">Pecan对请求和响应的处理</h2>
+
+<p>在开始提到WSME之前，我们先来看下Pecan自己对HTTP请求和响应的处理。这样你能更好的理解为什么会再引入一个WSME库。</p>
+
+<p>Pecan框架为每个线程维护了单独的请求和响应对象，你可以直接在请求处理函数中访问。<strong>pecan.request</strong>和<strong>pecan.response</strong>分别代表当前需要处理的请求和响应对象。你可以直接操作这两个对象，比如指定响应的状态码，就像下面这个例子一样（例子来自官方文档）：</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="nd">@pecan.expose</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">login</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="n">pecan</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">path</span> <span class="o">==</span> <span class="s">'/login'</span>
+    <span class="n">username</span> <span class="o">=</span> <span class="n">pecan</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">'username'</span><span class="p">)</span>
+    <span class="n">password</span> <span class="o">=</span> <span class="n">pecan</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">'password'</span><span class="p">)</span>
+
+    <span class="n">pecan</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="mi">403</span>
+    <span class="n">pecan</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="s">'Bad Login!'</span></code></pre></figure>
+
+<p>这个例子演示了访问POST请求的参数以及返回403。你也可以重新构造一个<code class="highlighter-rouge">pecan.Response</code>对象作为返回值（例子来自官方文档）：</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">pecan</span> <span class="kn">import</span> <span class="n">expose</span><span class="p">,</span> <span class="n">Response</span>
+
+<span class="k">class</span> <span class="nc">RootController</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="nd">@expose</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">hello</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="s">'Hello, World!'</span><span class="p">,</span> <span class="mi">202</span><span class="p">)</span></code></pre></figure>
+
+<p>另外，HTTP请求的参数也会可以作为控制器方法的参数，还是来看几个官方文档的例子：</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">RootController</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="nd">@expose</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">arg</span>
+
+    <span class="nd">@expose</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span></code></pre></figure>
+
+<p>这个控制器中的方法直接返回了参数，演示了对GET请求参数的处理，效果是这样的：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl http://localhost:8080/?arg=foo
+foo
+$ curl http://localhost:8080/kwargs?a=1&amp;b=2&amp;c=3
+{u'a': u'1', u'c': u'3', u'b': u'2'}
+</code></pre></div></div>
+
+<p>有时候，参数也可能是URL的一部分，比如最后的一段path作为参数，就像下面这样：</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">RootController</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="nd">@expose</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">args</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">','</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="p">)</span></code></pre></figure>
+
+<p>效果是这样的：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl http://localhost:8080/args/one/two/three
+one,two,three
+</code></pre></div></div>
+
+<p>另外，我们还要看一下POST方法的参数如何处理（例子来自官方文档）：</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">RootController</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="nd">@expose</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">arg</span></code></pre></figure>
+
+<p>效果如下，就是把HTTP body解析成了控制器方法的参数：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -X POST "http://localhost:8080/" -H "Content-Type: application/x-www-form-urlencoded" -d "arg=foo"
+foo
+</code></pre></div></div>
+
+<h2 id="返回json还是html">返回JSON还是HTML？</h2>
+
+<p>如果你不是明确的返回一个Response对象，那么Pecan中方法的返回内容类型就是由<code class="highlighter-rouge">expose()</code>装饰器决定的。默认情况下，控制器的方法返回的content-type是HTML。</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">RootController</span><span class="p">(</span><span class="n">rest</span><span class="o">.</span><span class="n">RestController</span><span class="p">):</span>
+    <span class="n">_custom_actions</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'test'</span><span class="p">:</span> <span class="p">[</span><span class="s">'GET'</span><span class="p">],</span>
+    <span class="p">}</span>
+
+    <span class="nd">@expose</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">'hello'</span></code></pre></figure>
+
+<p>效果如下：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> $ curl -v http://localhost:8080/test
+* Hostname was NOT found in DNS cache
+*   Trying 127.0.0.1...
+* Connected to localhost (127.0.0.1) port 8080 (#0)
+&gt; GET /test HTTP/1.1
+&gt; User-Agent: curl/7.38.0
+&gt; Host: localhost:8080
+&gt; Accept: */*
+&gt;
+* HTTP 1.0, assume close after body
+&lt; HTTP/1.0 200 OK
+&lt; Date: Tue, 15 Sep 2015 14:31:28 GMT
+&lt; Server: WSGIServer/0.1 Python/2.7.9
+&lt; Content-Length: 5
+&lt; Content-Type: text/html; charset=UTF-8
+&lt;
+* Closing connection 0
+hello% 
+</code></pre></div></div>
+
+<p>也可以让它返回JSON：</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">RootController</span><span class="p">(</span><span class="n">rest</span><span class="o">.</span><span class="n">RestController</span><span class="p">):</span>
+    <span class="n">_custom_actions</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'test'</span><span class="p">:</span> <span class="p">[</span><span class="s">'GET'</span><span class="p">],</span>
+    <span class="p">}</span>
+
+    <span class="nd">@expose</span><span class="p">(</span><span class="s">'json'</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">'hello'</span></code></pre></figure>
+
+<p>效果如下：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> curl -v http://localhost:8080/test
+* Hostname was NOT found in DNS cache
+*   Trying 127.0.0.1...
+* Connected to localhost (127.0.0.1) port 8080 (#0)
+&gt; GET /test HTTP/1.1
+&gt; User-Agent: curl/7.38.0
+&gt; Host: localhost:8080
+&gt; Accept: */*
+&gt;
+* HTTP 1.0, assume close after body
+&lt; HTTP/1.0 200 OK
+&lt; Date: Tue, 15 Sep 2015 14:33:27 GMT
+&lt; Server: WSGIServer/0.1 Python/2.7.9
+&lt; Content-Length: 18
+&lt; Content-Type: application/json; charset=UTF-8
+&lt;
+* Closing connection 0
+{"hello": "world"}% 
+</code></pre></div></div>
+
+<p>甚至，你还可以让一个控制器方法根据URL path的来决定是返回HTML还是JSON：</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">RootController</span><span class="p">(</span><span class="n">rest</span><span class="o">.</span><span class="n">RestController</span><span class="p">):</span>
+    <span class="n">_custom_actions</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'test'</span><span class="p">:</span> <span class="p">[</span><span class="s">'GET'</span><span class="p">],</span>
+    <span class="p">}</span>
+
+    <span class="nd">@expose</span><span class="p">()</span>
+    <span class="nd">@expose</span><span class="p">(</span><span class="s">'json'</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s">'hello'</span><span class="p">:</span> <span class="s">'world'</span><span class="p">})</span></code></pre></figure>
+
+<p>返回JSON：</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> $ curl -v http://localhost:8080/test.json
+* Hostname was NOT found in DNS cache
+*   Trying 127.0.0.1...
+* Connected to localhost (127.0.0.1) port 8080 (#0)
+&gt; GET /test.json HTTP/1.1
+&gt; User-Agent: curl/7.38.0
+&gt; Host: localhost:8080
+&gt; Accept: */*
+&gt;
+* HTTP 1.0, assume close after body
+&lt; HTTP/1.0 200 OK
+&lt; Date: Wed, 16 Sep 2015 14:26:27 GMT
+&lt; Server: WSGIServer/0.1 Python/2.7.9
+&lt; Content-Length: 24
+&lt; Content-Type: application/json; charset=UTF-8
+&lt;
+* Closing connection 0
+"{\"hello\": \"world\"}"% 
+</code></pre></div></div>
+
+<p>返回HTML：</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> $ curl -v http://localhost:8080/test.html
+* Hostname was NOT found in DNS cache
+*   Trying 127.0.0.1...
+* Connected to localhost (127.0.0.1) port 8080 (#0)
+&gt; GET /test.html HTTP/1.1
+&gt; User-Agent: curl/7.38.0
+&gt; Host: localhost:8080
+&gt; Accept: */*
+&gt;
+* HTTP 1.0, assume close after body
+&lt; HTTP/1.0 200 OK
+&lt; Date: Wed, 16 Sep 2015 14:26:24 GMT
+&lt; Server: WSGIServer/0.1 Python/2.7.9
+&lt; Content-Length: 18
+&lt; Content-Type: text/html; charset=UTF-8
+&lt;
+* Closing connection 0
+{"hello": "world"}% 
+</code></pre></div></div>
+
+<p>这里要注意一下：</p>
+
+<ol>
+  <li>同一个字符串作为JSON返回和作为HTML返回是不一样的，仔细看一下HTTP响应的内容。</li>
+  <li>我们的例子中在URL的最后加上了<strong>.html</strong>后缀或者<strong>.json</strong>后缀，请尝试一下不加后缀的化是返回什么？然后，调换一下两个<code class="highlighter-rouge">expose()</code>的顺序再试一下。</li>
+</ol>
+
+<p>从上面的例子可以看出，决定响应类型的主要是传递给<code class="highlighter-rouge">expose()</code>函数的参数，我们看下<code class="highlighter-rouge">expose()</code>函数的完整声明：</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">pecan</span><span class="o">.</span><span class="n">decorators</span><span class="o">.</span><span class="n">expose</span><span class="p">(</span><span class="n">template</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                        <span class="n">content_type</span><span class="o">=</span><span class="s">'text/html'</span><span class="p">,</span>
+                        <span class="n">generic</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span></code></pre></figure>
+
+<ul>
+  <li><strong>template</strong>参数用来指定返回值的模板，如果是’json’就会返回JSON内容，这里可以指定一个HTML文件，或者指定一个mako模板。</li>
+  <li><strong>content_type</strong>指定响应的content-type，默认值是’text/html’。</li>
+  <li><strong>generic</strong>参数表明该方法是一个“泛型”方法，可以指定多个不同的函数对应同一个路径的不同的HTTP方法。</li>
+</ul>
+
+<p>看过参数的解释后，你应该能大概了解<code class="highlighter-rouge">expose()</code>函数是如何控制HTTP响应的内容和类型的。</p>
+
+<h2 id="用wsme来做什么">用WSME来做什么？</h2>
+
+<p>上面两节已经说明了Pecan可以比较好的处理HTTP请求中的参数以及控制HTTP返回值。那么为什么我们还需要WSME呢？因为Pecan在做下面这个事情的时候比较麻烦：<strong>请求参数和响应内容的类型检查</strong>（英文简称就是<strong>typing</strong>）。当然，做是可以做的，不过你需要自己访问pecan.request和pecan.response，然后检查指定的值的类型。WSME就是为解决这个问题而生的，而且适用场景就是RESTful API。</p>
+
+<h2 id="wsme简介">WSME简介</h2>
+
+<p>WSME的全称是<strong>Web Service Made Easy</strong>，是专门用于实现REST服务的typing库，让你不需要直接操作请求和响应，而且刚好和Pecan结合得非常好，所以OpenStack的很多项目都使用了Pecan + WSME的组合来实现API（好吧，我看过的项目，用了Pecan的都用了WSME）。WSME的理念是：在大部分情况下，Web服务的输入和输出对数据类型的要求都是严格的。所以它就专门解决了这个事情，然后把其他事情都交给其他框架去实现。因此，一般WSME都是和其他框架配合使用的，支持Pecan、Flask等。WSME的文档地址是<a href="http://wsme.readthedocs.org/en/latest/index.html">http://wsme.readthedocs.org/en/latest/index.html</a>。</p>
+
+<h2 id="wsme的使用">WSME的使用</h2>
+
+<p>用了WSME后的好处是什么呢？WSME会自动帮你检查HTTP请求和响应中的数据是否符合预先设定好的要求。WSME的主要方式是通过装饰器来控制controller方法的输入和输出。WSME中主要使用两个控制器：</p>
+
+<ul>
+  <li><strong>@signature</strong>: 这个装饰器用来描述一个函数的输入和输出。</li>
+  <li><strong>@wsexpose</strong>: 这个装饰器包含@signature的功能，同时会把函数的路由信息暴露给Web框架，效果就像Pecan的expose装饰器。</li>
+</ul>
+
+<p>这里我们结合Pecan来讲解WSME的使用。先来看一个原始类型的例子：</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">wsmeext.pecan</span> <span class="kn">import</span> <span class="n">wsexpose</span>
+
+<span class="k">class</span> <span class="nc">RootController</span><span class="p">(</span><span class="n">rest</span><span class="o">.</span><span class="n">RestController</span><span class="p">):</span>
+    <span class="n">_custom_actions</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'test'</span><span class="p">:</span> <span class="p">[</span><span class="s">'GET'</span><span class="p">],</span>
+    <span class="p">}</span>
+
+    <span class="nd">@wsexpose</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">number</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">number</span></code></pre></figure>
+
+<p>如果不提供参数，访问会失败：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl http://localhost:8080/test
+{"debuginfo": null, "faultcode": "Client", "faultstring": "Missing argument: \"number\""}% 
+</code></pre></div></div>
+
+<p>如果提供的参数不是整型，访问也会失败：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl http://localhost:8080/test\?number\=a
+{"debuginfo": null, "faultcode": "Client", "faultstring": "Invalid input for field/attribute number. Value: 'a'. unable to convert to int"}% 
+</code></pre></div></div>
+
+<p>上面这些错误信息都是由WSME框架直接返回的，还没有执行到你写的方法。如果请求正确，那么会是这样的：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -v http://localhost:8080/test\?number\=1
+* Hostname was NOT found in DNS cache
+*   Trying 127.0.0.1...
+* Connected to localhost (127.0.0.1) port 8080 (#0)
+&gt; GET /test?number=1 HTTP/1.1
+&gt; User-Agent: curl/7.38.0
+&gt; Host: localhost:8080
+&gt; Accept: */*
+&gt;
+* HTTP 1.0, assume close after body
+&lt; HTTP/1.0 200 OK
+&lt; Date: Wed, 16 Sep 2015 15:06:35 GMT
+&lt; Server: WSGIServer/0.1 Python/2.7.9
+&lt; Content-Length: 1
+&lt; Content-Type: application/json; charset=UTF-8
+&lt;
+* Closing connection 0
+1% 
+</code></pre></div></div>
+
+<p>请注意返回的content-type,这里返回JSON是因为我们使用的<code class="highlighter-rouge">wsexpose</code>设置的返回类型是XML和JSON，并且JSON是默认值。上面这个例子就是WSME最简单的应用了。</p>
+
+<p>那么现在有下面这些问题需要思考一下：</p>
+
+<ul>
+  <li>如果想用POST的方式来传递参数，要怎么做呢？提示：要阅读WSME中@signature装饰器的文档。</li>
+  <li>如果我希望使用<em>/test/1</em>这种方式来传递参数要怎么做呢？提示：要阅读Pecan文档中关于路由的部分。</li>
+  <li>WSME中支持对哪些类型的检查呢？WSME支持整型、浮点型、字符串、布尔型、日期时间等，甚至还支持用户自定义类型。提示：要阅读WSME文档中关于类型的部分。</li>
+  <li>WSME支持数组类型么？支持。</li>
+</ul>
+
+<p>上面的问题其实也是很多人使用WSME的时候经常问的问题。我们将在下一篇文章中使用Pecan + WSME来继续开发我们的demo，并且用代码来回答上面所有的问题。</p>
+
+
+    <br />
+
+    <div>
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议</a>进行许可。
+    </div>
+
+    <br />
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+    <div class="addthis_inline_share_toolbox"></div>
+  </div>
+  <div class="post-comment">
+    
+<div id="disqus_thread"></div>
+<script>
+var disqus_config = function () {
+  this.page.url = "http://diabloneo.github.io/2015/09/30/learn-openstack-dev-skill-by-demo-04/"; // <--- use canonical URL
+  this.page.identifier = "/2015/09/30/learn-openstack-dev-skill-by-demo-04";
+};
+(function() { // DON'T EDIT BELOW THIS LINE
+  var d = document, s = d.createElement('script');
+
+  s.src = 'https://coffee-coke-and-code.disqus.com/embed.js';
+
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+  </div>
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Coffee, Coke and Code</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>Coffee, Coke and Code</li>
+          <li><a href="mailto:diabloneo@gmail.com">diabloneo@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <i class="fa fa-github"></i>
+            <a href="https://github.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <i class="fa fa-twitter"></i>
+            <a href="https://twitter.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <i class="fa fa-weibo"></i>
+            <a href="https://weibo.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Archive diabloneo's articles.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+    
+      <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-78067453-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+    
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+  </body>
+
+</html>
