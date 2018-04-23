@@ -6,13 +6,50 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 15 Apr 2018 21:58:07 +0800</pubDate>
-    <lastBuildDate>Sun, 15 Apr 2018 21:58:07 +0800</lastBuildDate>
+    <pubDate>Mon, 23 Apr 2018 22:21:30 +0800</pubDate>
+    <lastBuildDate>Mon, 23 Apr 2018 22:21:30 +0800</lastBuildDate>
     <generator>Jekyll v3.7.3</generator>
     
       <item>
-        <title>想到什么写什么周报 第24期 - 2018-04-08</title>
-        <description>&lt;h1 id=&quot;amazon-s3-update-new-storage-class-and-general-availability-of-s3-select&quot;&gt;Amazon S3 Update: New Storage Class and General Availability of S3 Select&lt;/h1&gt;
+        <title>想到什么写什么周报 第26期 - 2018-04-23</title>
+        <description>&lt;h2 id=&quot;whats-new-in-mysql-80-generally-available&quot;&gt;What’s New in MySQL 8.0? (Generally Available)&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://mysqlserverteam.com/whats-new-in-mysql-8-0-generally-available/&quot;&gt;https://mysqlserverteam.com/whats-new-in-mysql-8-0-generally-available/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;MySQL 8.0已经GA了。&lt;/p&gt;
+
+&lt;h2 id=&quot;apple开源了foundationdb&quot;&gt;Apple开源了FoundationDB&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.foundationdb.org/blog/&quot;&gt;https://www.foundationdb.org/blog/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;FoundationDB是一个分布式的ACID数据库，github地址：https://github.com/apple/foundationdb&lt;/p&gt;
+
+&lt;h2 id=&quot;100tb-capacity-and-6x-performance-improvement-with-alibaba-cloud-polardb&quot;&gt;100TB Capacity and 6x Performance Improvement with Alibaba Cloud PolarDB&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://medium.com/@Alibaba_Cloud/100tb-capacity-and-6x-performance-improvement-with-alibaba-cloud-polardb-79b270c1a481&quot;&gt;https://medium.com/@Alibaba_Cloud/100tb-capacity-and-6x-performance-improvement-with-alibaba-cloud-polardb-79b270c1a481&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Alibaba官方blog介绍自己的PolarDB的架构，说明如何做到MySQL 5.6的6倍性能。&lt;/p&gt;
+
+&lt;h2 id=&quot;cloud-sql-for-postgresql-now-generally-available-and-ready-for-your-production-workloads&quot;&gt;Cloud SQL for PostgreSQL now generally available and ready for your production workloads&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://cloudplatform.googleblog.com/2018/04/Cloud-SQL-for-PostgreSQL-now-generally-available-and-ready-for-your-production-workloads.html&quot;&gt;https://cloudplatform.googleblog.com/2018/04/Cloud-SQL-for-PostgreSQL-now-generally-available-and-ready-for-your-production-workloads.html&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Google Cloud SQL的PostgreSQL支持现在GA了。版本是9.6，最大支持416G内存、64CPU和10TB空间。&lt;/p&gt;
+</description>
+        <pubDate>Mon, 23 Apr 2018 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2018/04/23/write-what-i-have-026/</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2018/04/23/write-what-i-have-026/</guid>
+        
+        <category>database</category>
+        
+        <category>cloud</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>想到什么写什么周报 第25期 - 2018-04-15</title>
+        <description>&lt;h2 id=&quot;amazon-s3-update-new-storage-class-and-general-availability-of-s3-select&quot;&gt;Amazon S3 Update: New Storage Class and General Availability of S3 Select&lt;/h2&gt;
 
 &lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://aws.amazon.com/cn/blogs/aws/amazon-s3-update-new-storage-class-general-availability-of-s3-select/&quot;&gt;https://aws.amazon.com/cn/blogs/aws/amazon-s3-update-new-storage-class-general-availability-of-s3-select/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 
@@ -21,13 +58,13 @@
   &lt;li&gt;另外，S3 select已经GA了，国区也有。&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h1 id=&quot;edgedb-a-new-beginning&quot;&gt;EdgeDB: A New Beginning&lt;/h1&gt;
+&lt;h2 id=&quot;edgedb-a-new-beginning&quot;&gt;EdgeDB: A New Beginning&lt;/h2&gt;
 
 &lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://edgedb.com/blog/edgedb-a-new-beginning/&quot;&gt;https://edgedb.com/blog/edgedb-a-new-beginning/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 
 &lt;p&gt;一个新的数据库EdgeDB，这是一种对象关系数据库，和之前的数据库模型都不太一样，使用一种特殊的查询语言EdgeQL。官方说这个是开源的，但是github项目还没有建立，可能还没放上去。&lt;/p&gt;
 
-&lt;h1 id=&quot;一个很有新意的磁盘监控图设计&quot;&gt;一个很有新意的磁盘监控图设计&lt;/h1&gt;
+&lt;h2 id=&quot;一个很有新意的磁盘监控图设计&quot;&gt;一个很有新意的磁盘监控图设计&lt;/h2&gt;
 
 &lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://bvckup2.com/wip/10042018&quot;&gt;https://bvckup2.com/wip/10042018&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 
@@ -319,13 +356,13 @@
     
       <item>
         <title>想到什么写什么周报 第24期 - 2018-04-08</title>
-        <description>&lt;h1 id=&quot;go-talk-recordings-from-meetups-and-conferences-during-q4-2017&quot;&gt;Go Talk recordings from meetups and conferences during Q4 2017&lt;/h1&gt;
+        <description>&lt;h2 id=&quot;go-talk-recordings-from-meetups-and-conferences-during-q4-2017&quot;&gt;Go Talk recordings from meetups and conferences during Q4 2017&lt;/h2&gt;
 
 &lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.meetupfeed.com/go-talk-recordings-meetups-conferences-q4-2017/&quot;&gt;https://blog.meetupfeed.com/go-talk-recordings-meetups-conferences-q4-2017/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 
 &lt;p&gt;@MeetupFeed 收集的2017年Q4的Go相关的演讲和文章。&lt;/p&gt;
 
-&lt;h1 id=&quot;kernel-recipes-2017---understanding-the-linux-kernel-via-ftrace---steven-rostedt&quot;&gt;Kernel Recipes 2017 - Understanding the Linux Kernel via Ftrace - Steven Rostedt&lt;/h1&gt;
+&lt;h2 id=&quot;kernel-recipes-2017---understanding-the-linux-kernel-via-ftrace---steven-rostedt&quot;&gt;Kernel Recipes 2017 - Understanding the Linux Kernel via Ftrace - Steven Rostedt&lt;/h2&gt;
 
 &lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=2ff-7UTg5rE&quot;&gt;https://www.youtube.com/watch?v=2ff-7UTg5rE&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 
@@ -333,7 +370,7 @@
 
 &lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://events.static.linuxfound.org/slides/2010/linuxcon_japan/linuxcon_jp2010_rostedt.pdf&quot;&gt;https://events.static.linuxfound.org/slides/2010/linuxcon_japan/linuxcon_jp2010_rostedt.pdf&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 
-&lt;h1 id=&quot;fun-with-sql-generate_series-in-postgres&quot;&gt;Fun with SQL: generate_series in Postgres&lt;/h1&gt;
+&lt;h2 id=&quot;fun-with-sql-generate_series-in-postgres&quot;&gt;Fun with SQL: generate_series in Postgres&lt;/h2&gt;
 
 &lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.citusdata.com/blog/2018/03/14/fun-with-sql-generate-sql/&quot;&gt;https://www.citusdata.com/blog/2018/03/14/fun-with-sql-generate-sql/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 
@@ -354,13 +391,13 @@
     
       <item>
         <title>想到什么写什么周报 第23期 - 2018-04-01</title>
-        <description>&lt;h1 id=&quot;cloud-native-computing-foundation-welcomes-the-nats-messaging-protocol-into-the-fold&quot;&gt;Cloud Native Computing Foundation Welcomes the NATS Messaging Protocol into the Fold&lt;/h1&gt;
+        <description>&lt;h2 id=&quot;cloud-native-computing-foundation-welcomes-the-nats-messaging-protocol-into-the-fold&quot;&gt;Cloud Native Computing Foundation Welcomes the NATS Messaging Protocol into the Fold&lt;/h2&gt;
 
 &lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://thenewstack.io/cloud-native-computing-foundation-welcomes-nats-messaging-fold/&quot;&gt;https://thenewstack.io/cloud-native-computing-foundation-welcomes-nats-messaging-fold/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 
 &lt;p&gt;NATS是一个消息系统，最近加入了CNCF，是CNCF的第17个项目。&lt;/p&gt;
 
-&lt;h1 id=&quot;scraping-the-web-in-golang-with-colly-and-goquery&quot;&gt;Scraping the Web in Golang with Colly and Goquery&lt;/h1&gt;
+&lt;h2 id=&quot;scraping-the-web-in-golang-with-colly-and-goquery&quot;&gt;Scraping the Web in Golang with Colly and Goquery&lt;/h2&gt;
 
 &lt;p&gt;&lt;em&gt;&lt;a href=&quot;http://benjamincongdon.me/blog/2018/03/01/Scraping-the-Web-in-Golang-with-Colly-and-Goquery/&quot;&gt;http://benjamincongdon.me/blog/2018/03/01/Scraping-the-Web-in-Golang-with-Colly-and-Goquery/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 
@@ -371,19 +408,19 @@
   &lt;li&gt;github.com/gocolly/colly&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h1 id=&quot;warehouse-all-new-pypi-is-now-in-beta&quot;&gt;Warehouse: All New PyPI is now in beta&lt;/h1&gt;
+&lt;h2 id=&quot;warehouse-all-new-pypi-is-now-in-beta&quot;&gt;Warehouse: All New PyPI is now in beta&lt;/h2&gt;
 
 &lt;p&gt;&lt;em&gt;&lt;a href=&quot;http://pyfound.blogspot.com/2018/03/warehouse-all-new-pypi-is-now-in-beta.html&quot;&gt;http://pyfound.blogspot.com/2018/03/warehouse-all-new-pypi-is-now-in-beta.html&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 
 &lt;p&gt;Python社区用于替代PyPI的warehouse已经beta了，提供了更好用的软件仓库功能，对于Linux用户来说，依旧使用pip命令。&lt;/p&gt;
 
-&lt;h1 id=&quot;object-storage-aws-s3-vs-google-cloud-storage-vs-azure-storage-vs-digitalocean-spaces&quot;&gt;Object Storage: AWS s3 vs. Google Cloud Storage vs. Azure Storage vs. DigitalOcean Spaces&lt;/h1&gt;
+&lt;h2 id=&quot;object-storage-aws-s3-vs-google-cloud-storage-vs-azure-storage-vs-digitalocean-spaces&quot;&gt;Object Storage: AWS s3 vs. Google Cloud Storage vs. Azure Storage vs. DigitalOcean Spaces&lt;/h2&gt;
 
 &lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.chooseacloud.com/objectstorage?ref=stackshare&quot;&gt;https://www.chooseacloud.com/objectstorage?ref=stackshare&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 
 &lt;p&gt;公有云对象存储的价格对比：Google &amp;gt; AWS &amp;gt; Azure »&amp;gt; DigitalOcean&lt;/p&gt;
 
-&lt;h1 id=&quot;distributed-transactions-and-why-you-should-care&quot;&gt;Distributed transactions and why you should care&lt;/h1&gt;
+&lt;h2 id=&quot;distributed-transactions-and-why-you-should-care&quot;&gt;Distributed transactions and why you should care&lt;/h2&gt;
 
 &lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://towardsdatascience.com/distributed-transactions-and-why-you-should-care-116b6da8d72&quot;&gt;https://towardsdatascience.com/distributed-transactions-and-why-you-should-care-116b6da8d72&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 
@@ -410,25 +447,25 @@
     
       <item>
         <title>想到什么写什么周报 第22期 - 2018-03-18</title>
-        <description>&lt;h1 id=&quot;running-a-free-twitter-bot-on-aws-lambda&quot;&gt;Running a free Twitter bot on AWS Lambda&lt;/h1&gt;
+        <description>&lt;h2 id=&quot;running-a-free-twitter-bot-on-aws-lambda&quot;&gt;Running a free Twitter bot on AWS Lambda&lt;/h2&gt;
 
 &lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://dev.to/hivickylai/running-a-free-twitter-bot-on-aws-lambda--2pik?ref=stackshare&quot;&gt;https://dev.to/hivickylai/running-a-free-twitter-bot-on-aws-lambda--2pik?ref=stackshare&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 
 &lt;p&gt;用AWS Lambda写一个解析RSS然后发tweet的bot，使用CloudWatch来做定时器，挺容易的。&lt;/p&gt;
 
-&lt;h1 id=&quot;the-postgres-10-feature-you-didnt-know-about-create-statistics&quot;&gt;The Postgres 10 feature you didn’t know about: CREATE STATISTICS&lt;/h1&gt;
+&lt;h2 id=&quot;the-postgres-10-feature-you-didnt-know-about-create-statistics&quot;&gt;The Postgres 10 feature you didn’t know about: CREATE STATISTICS&lt;/h2&gt;
 
 &lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.citusdata.com/blog/2018/03/06/postgres-planner-and-its-usage-of-statistics/?ref=stackshare&quot;&gt;https://www.citusdata.com/blog/2018/03/06/postgres-planner-and-its-usage-of-statistics/?ref=stackshare&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 
 &lt;p&gt;Postgres 10引入了一个新的特性: CREATE STATISTICS，可以让planner更准确的收集统计信息，以便做出更好的plan。&lt;/p&gt;
 
-&lt;h1 id=&quot;postgresql-10-a-great-new-version-for-a-great-database&quot;&gt;PostgreSQL 10: a Great New Version for a Great Database&lt;/h1&gt;
+&lt;h2 id=&quot;postgresql-10-a-great-new-version-for-a-great-database&quot;&gt;PostgreSQL 10: a Great New Version for a Great Database&lt;/h2&gt;
 
 &lt;p&gt;&lt;em&gt;&lt;a href=&quot;http://www.linuxjournal.com/content/postgresql-10-great-new-version-great-database&quot;&gt;http://www.linuxjournal.com/content/postgresql-10-great-new-version-great-database&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 
 &lt;p&gt;举例子描述了Postgres 10新增的两个主要特性：logical replication, table partitioning.&lt;/p&gt;
 
-&lt;h1 id=&quot;a-quick-comparison-between-different-go-file-walk-implementations&quot;&gt;A quick comparison between different Go file walk implementations&lt;/h1&gt;
+&lt;h2 id=&quot;a-quick-comparison-between-different-go-file-walk-implementations&quot;&gt;A quick comparison between different Go file walk implementations&lt;/h2&gt;
 
 &lt;p&gt;&lt;em&gt;&lt;a href=&quot;http://www.boyter.org/2018/03/quick-comparison-go-file-walk-implementations/&quot;&gt;http://www.boyter.org/2018/03/quick-comparison-go-file-walk-implementations/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 
@@ -449,11 +486,11 @@
     
       <item>
         <title>想到什么写什么周报 第21期 - 2018-03-12</title>
-        <description>&lt;h1 id=&quot;book-go-internals&quot;&gt;Book: go-internals&lt;/h1&gt;
+        <description>&lt;h2 id=&quot;book-go-internals&quot;&gt;Book: go-internals&lt;/h2&gt;
 
 &lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://github.com/teh-cmc/go-internals&quot;&gt;https://github.com/teh-cmc/go-internals&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 
-&lt;h1 id=&quot;go--package-versioning&quot;&gt;Go += Package Versioning&lt;/h1&gt;
+&lt;h2 id=&quot;go--package-versioning&quot;&gt;Go += Package Versioning&lt;/h2&gt;
 
 &lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://research.swtch.com/vgo-intro&quot;&gt;https://research.swtch.com/vgo-intro&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 </description>
@@ -494,25 +531,25 @@
     
       <item>
         <title>想到什么写什么周报 第20期 - 2018-03-04</title>
-        <description>&lt;h1 id=&quot;gerritbot&quot;&gt;GerritBot&lt;/h1&gt;
+        <description>&lt;h2 id=&quot;gerritbot&quot;&gt;GerritBot&lt;/h2&gt;
 
 &lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://github.com/golang/go/wiki/GerritBot&quot;&gt;https://github.com/golang/go/wiki/GerritBot&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 
 &lt;p&gt;Go社区开始接收Github的pr，不过是通过GerritBot自动映射为一个Gerrit change，review和comment也是在gerrit里完成。&lt;/p&gt;
 
-&lt;h1 id=&quot;github-shouldnt-allow-username-reuse&quot;&gt;GitHub Shouldn’t Allow Username Reuse&lt;/h1&gt;
+&lt;h2 id=&quot;github-shouldnt-allow-username-reuse&quot;&gt;GitHub Shouldn’t Allow Username Reuse&lt;/h2&gt;
 
 &lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://donatstudios.com/GithubsTotalSecurityFacepalm&quot;&gt;https://donatstudios.com/GithubsTotalSecurityFacepalm&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 
 &lt;p&gt;最近go-bindata的作者从网络上消失了，顺便把自己的github账号删除了。这个做法导致了很多依赖go-bindata的项目无法编译。于是有人重建了原作者的账号，同步了一份最新的代码，同时也声明他们使用这种无奈举措的原因。本文的作者提出的观点是，这种做法有安全问题，github账号不应该被重用，否则会导致信任问题。&lt;/p&gt;
 
-&lt;h1 id=&quot;this-week-in-elasticsearch-and-apache-lucene---2018-02-05&quot;&gt;This Week in Elasticsearch and Apache Lucene - 2018-02-05&lt;/h1&gt;
+&lt;h2 id=&quot;this-week-in-elasticsearch-and-apache-lucene---2018-02-05&quot;&gt;This Week in Elasticsearch and Apache Lucene - 2018-02-05&lt;/h2&gt;
 
 &lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.elastic.co/blog/this-week-in-elasticsearch-and-apache-lucene-2018-02-05&quot;&gt;https://www.elastic.co/blog/this-week-in-elasticsearch-and-apache-lucene-2018-02-05&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 
 &lt;p&gt;ES也要支持sql了。&lt;/p&gt;
 
-&lt;h1 id=&quot;how-google-cloud-storage-offers-strongly-consistent-object-listing-thanks-to-spanner&quot;&gt;How Google Cloud Storage offers strongly consistent object listing thanks to Spanner&lt;/h1&gt;
+&lt;h2 id=&quot;how-google-cloud-storage-offers-strongly-consistent-object-listing-thanks-to-spanner&quot;&gt;How Google Cloud Storage offers strongly consistent object listing thanks to Spanner&lt;/h2&gt;
 
 &lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://cloudplatform.googleblog.com/2018/02/how-Google-Cloud-Storage-offers-strongly-consistent-object-listing-thanks-to-Spanner.html&quot;&gt;https://cloudplatform.googleblog.com/2018/02/how-Google-Cloud-Storage-offers-strongly-consistent-object-listing-thanks-to-Spanner.html&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 
@@ -523,25 +560,25 @@
   &lt;li&gt;&lt;em&gt;&lt;a href=&quot;https://docs.aws.amazon.com/AmazonS3/latest/dev/Introduction.html#ConsistencyModel。&quot;&gt;https://docs.aws.amazon.com/AmazonS3/latest/dev/Introduction.html#ConsistencyModel。&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h1 id=&quot;go-2017-survey-results&quot;&gt;Go 2017 Survey Results&lt;/h1&gt;
+&lt;h2 id=&quot;go-2017-survey-results&quot;&gt;Go 2017 Survey Results&lt;/h2&gt;
 
 &lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.golang.org/survey2017-results&quot;&gt;https://blog.golang.org/survey2017-results&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 
 &lt;p&gt;Go 2017年的用户调查报告。&lt;/p&gt;
 
-&lt;h1 id=&quot;defer-internals&quot;&gt;Defer Internals&lt;/h1&gt;
+&lt;h2 id=&quot;defer-internals&quot;&gt;Defer Internals&lt;/h2&gt;
 
 &lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.learngoprogramming.com/yeah-semantically-after-is-the-right-word-fad1d5181891&quot;&gt;https://blog.learngoprogramming.com/yeah-semantically-after-is-the-right-word-fad1d5181891&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 
 &lt;p&gt;快速介绍了下defer的内部实现，是在return语句之前。&lt;/p&gt;
 
-&lt;h1 id=&quot;postgresql-rocks-except-when-it-blocks-understanding-locks&quot;&gt;PostgreSQL rocks, except when it blocks: Understanding locks&lt;/h1&gt;
+&lt;h2 id=&quot;postgresql-rocks-except-when-it-blocks-understanding-locks&quot;&gt;PostgreSQL rocks, except when it blocks: Understanding locks&lt;/h2&gt;
 
 &lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.citusdata.com/blog/2018/02/15/when-postgresql-blocks/&quot;&gt;https://www.citusdata.com/blog/2018/02/15/when-postgresql-blocks/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 
 &lt;p&gt;CitusData发布的一篇关于Postgres的lock介绍文章，里面有两张表格，可以方便的查询pg的lock级别。&lt;/p&gt;
 
-&lt;h1 id=&quot;a-gophers-reading-list&quot;&gt;A Gopher’s Reading List&lt;/h1&gt;
+&lt;h2 id=&quot;a-gophers-reading-list&quot;&gt;A Gopher’s Reading List&lt;/h2&gt;
 
 &lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://github.com/enocom/gopher-reading-list&quot;&gt;https://github.com/enocom/gopher-reading-list&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 
@@ -564,7 +601,7 @@
         <title>Go 1.10中Go的build cache和test cache</title>
         <description>&lt;p&gt;最近Go发布了1.10版本，引入了cache等重要特性。Russ Cox去年11月份的时候在邮件列表golang-dev里发了一篇帖子说明了这几个变化。帖子的地址是： &lt;em&gt;&lt;a href=&quot;https://groups.google.com/forum/#!topic/golang-dev/qfa3mHN4ZPA&quot;&gt;https://groups.google.com/forum/#!topic/golang-dev/qfa3mHN4ZPA&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 
-&lt;h1 id=&quot;build-cache&quot;&gt;Build Cache&lt;/h1&gt;
+&lt;h2 id=&quot;build-cache&quot;&gt;Build Cache&lt;/h2&gt;
 
 &lt;p&gt;意思就是会把编译过程的中间结果cache下来，从而实现增量编译。原来需要通过&lt;code class=&quot;highlighter-rouge&quot;&gt;go build -i&lt;/code&gt;命令来实现，现在go build命令默认启用了cache。启用cache后的效果是很明显的，我司的一个大程序的编译时间如下：&lt;/p&gt;
 
@@ -573,7 +610,7 @@
   &lt;li&gt;修改一个文件后，再次编译，耗时22秒。&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h1 id=&quot;test-cache&quot;&gt;Test Cache&lt;/h1&gt;
+&lt;h2 id=&quot;test-cache&quot;&gt;Test Cache&lt;/h2&gt;
 
 &lt;p&gt;测试现在也默认启用了cache，在内容没有变化的情况下，对于同样的参数的测试，会直接使用cache的测试结果，也就是同样的测试不会重复跑。当使用cache的结果时，go test命令最后会显示 &lt;code class=&quot;highlighter-rouge&quot;&gt;(cached)&lt;/code&gt; 的字样:&lt;/p&gt;
 
@@ -581,7 +618,7 @@
 ok      project/dp/master    &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;cached&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;h1 id=&quot;cache-path-and-clean-cache&quot;&gt;Cache Path and Clean Cache&lt;/h1&gt;
+&lt;h2 id=&quot;cache-path-and-clean-cache&quot;&gt;Cache Path and Clean Cache&lt;/h2&gt;
 
 &lt;p&gt;cache默认的存储路径是操作系统所确定的用户缓存目录，但是可以通过GOCACHE环境变量修改。在Ubuntu下的默认cache路径是 &lt;em&gt;~/.cache/go-build&lt;/em&gt;&lt;/p&gt;
 
@@ -597,49 +634,6 @@ ok      project/dp/master    &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;cache
         <guid isPermaLink="true">http://diabloneo.github.io//2018/03/04/go-1.10-cache/</guid>
         
         <category>golang</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>想到什么写什么周报 第19期 - 2018-02-13</title>
-        <description>&lt;h1 id=&quot;prometheus原理和源码分析&quot;&gt;Prometheus原理和源码分析&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;http://www.infoq.com/cn/articles/Prometheus-theory-source-code&quot;&gt;http://www.infoq.com/cn/articles/Prometheus-theory-source-code&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;go-walkthrough-fmt&quot;&gt;Go Walkthrough: fmt&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://medium.com/go-walkthrough/go-walkthrough-fmt-55a14bbbfc53&quot;&gt;https://medium.com/go-walkthrough/go-walkthrough-fmt-55a14bbbfc53&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;关于Go的fmt库的介绍，最后有关于fmt.Formatter接口实现的例子。&lt;/p&gt;
-
-&lt;h1 id=&quot;github-introduces-multiple-commit-authors&quot;&gt;GitHub Introduces Multiple Commit Authors&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.infoq.com/news/2018/01/github-multiple-author-commit&quot;&gt;https://www.infoq.com/news/2018/01/github-multiple-author-commit&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Github引入联合提交提交者功能。通过在commit message中添加 Co-authored-by 字段来实现。&lt;/p&gt;
-
-&lt;h1 id=&quot;两篇关于nmi中断的文章&quot;&gt;两篇关于NMI中断的文章&lt;/h1&gt;
-
-&lt;p&gt;&lt;strong&gt;NMI是什么&lt;/strong&gt; &lt;em&gt;&lt;a href=&quot;http://linuxperf.com/?p=72&quot;&gt;http://linuxperf.com/?p=72&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;内核如何检测SOFT LOCKUP与HARD LOCKUP？&lt;/strong&gt; &lt;em&gt;&lt;a href=&quot;http://linuxperf.com/?p=83&quot;&gt;http://linuxperf.com/?p=83&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;介绍了NMI以及Linux如何实现LOCKUP检测。&lt;/p&gt;
-</description>
-        <pubDate>Tue, 13 Feb 2018 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2018/02/13/write-what-i-have-019/</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2018/02/13/write-what-i-have-019/</guid>
-        
-        <category>cloud</category>
-        
-        <category>database</category>
-        
-        <category>golang</category>
-        
-        <category>linux</category>
-        
-        <category>kernel</category>
         
         
       </item>

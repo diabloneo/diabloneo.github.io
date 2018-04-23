@@ -10,6 +10,7 @@
   <meta name="description" content="为什么写这个系列">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/pygments.css">
   <link rel="canonical" href="http://diabloneo.github.io//2016/11/01/understanding-golang-internals-1/">
   <link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
 </head>
@@ -61,8 +62,8 @@
         
           
         
-        <a href="/tags">Tags</a>
-        <a href="/feed.xml">RSS</a>
+        <a class="page-link" href="/tags">Tags</a>
+        <a class="page-link" href="/feed.xml">RSS</a>
       </div>
     </nav>
 
@@ -91,14 +92,16 @@
   </div>
 
   <div class="post-content" itemprop="articleBody">
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <div class="addthis_inline_share_toolbox"></div>
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
     <br />
-    <h1 id="为什么写这个系列">为什么写这个系列</h1>
+      <h2 id="为什么写这个系列">为什么写这个系列</h2>
 
 <p>这个系列的文章是希望能帮助读者从Go汇编的层面更好的理解一个Golang程序。笔者刚工作的时候用的是C语言，深刻的感到理解一个程序的汇编代码对于编程的是非常有帮助的（这个也是读了<a href="http://product.china-pub.com/216981">深入理解计算机系统</a>之后才意识到这个问题）。所以，笔者觉得，要想更好的使用Golang，也应该理解其汇编层面的东西（这里说的汇编是指Golang工具链使用的汇编格式）。<!--more--></p>
 
-<h1 id="环境">环境</h1>
+<h2 id="环境">环境</h2>
 
 <p>Golang自带的工具就能够帮助我们理解其汇编代码了，我们只需要建立一个简单的编程环境即可。 <strong>Golang上个月刚刚发布了1.7版本</strong>，所以本系列也会使用go1.7。主要的环境设置如下：</p>
 
@@ -125,7 +128,7 @@ go version go1.7 linux/amd64
 
 <p>后面的实验代码都会存放在 <em>${GOPATH}/goexamples/src</em>这个目录下。</p>
 
-<h1 id="编译和反汇编">编译和反汇编</h1>
+<h2 id="编译和反汇编">编译和反汇编</h2>
 
 <p>编译Golang程序，一般是用 <strong>go build</strong>工具，不过为了查看汇编代码，我们需要使用 <strong>go tool compile</strong>工具。其实 <strong>go build</strong>也是使用了 <strong>go tool compile</strong>和 <strong>go tool link</strong>工具，一个负责编译，一个负责链接。</p>
 
@@ -313,11 +316,11 @@ type..importpath.fmt. t=9 dupok size=6
 
 <p>可以看出，无优化的代码更长，包含了函数完整的栈帧操作。后续我们会一步一步的研究Golang的代码和无优化的汇编代码之间的关系，以帮助读者更好的理解Golang。</p>
 
-<h1 id="golang汇编基础">Golang汇编基础</h1>
+<h2 id="golang汇编基础">Golang汇编基础</h2>
 
 <p>Golang的汇编器采用的是Plan 9的汇编语法，官方有一篇关于Golang汇编器的快速入门：<a href="https://golang.org/doc/asm">A Quick Guide to Go’s Assembler</a>，其中介绍了一些简单的语法。在开始研究Golang的汇编代码之前，我们也需要先了解一下基本的语法。</p>
 
-<h2 id="伪寄存器">伪寄存器</h2>
+<h3 id="伪寄存器">伪寄存器</h3>
 
 <p>Golang汇编中有4个伪寄存器，这些伪寄存器是由Golang工具链维护的。这4个伪寄存器是：</p>
 
@@ -353,7 +356,7 @@ type..importpath.fmt. t=9 dupok size=6
 
 <p>注意，这里的两个不同语法。在有 <strong>SP</strong>寄存器的机器上，带有一个名称前缀的语法表示访问Golang虚拟的SP寄存器，而不带名称前缀的则是访问硬件的SP寄存器。</p>
 
-<h2 id="寻址模式">寻址模式</h2>
+<h3 id="寻址模式">寻址模式</h3>
 
 <p>说到汇编，就不得不提到寻址模式。Plan 9汇编的寻址模式挺多的，具体的可以看<a href="https://9p.io/sys/doc/asm.html">A Manual for Plan 9 assembler</a>。这里我们列举一些常用的：</p>
 
@@ -369,7 +372,7 @@ type..importpath.fmt. t=9 dupok size=6
 
 <p><em>o</em>表示整数偏移量。</p>
 
-<h2 id="指令">指令</h2>
+<h3 id="指令">指令</h3>
 
 <p>下面来介绍一下上文代码中的<code class="highlighter-rouge">foo()</code>函数的汇编代码中用到的汇编指令：</p>
 
@@ -442,11 +445,15 @@ ADDQ $16, SP
     </div>
 
     <br />
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <div class="addthis_inline_share_toolbox"></div>
-  </div>
-  <div class="post-comment">
     
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+  </div>
+
+  
+    <div class="post-comment">
+      
 <div id="disqus_thread"></div>
 <script>
 var disqus_config = function () {
@@ -465,7 +472,8 @@ var disqus_config = function () {
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 
 
-  </div>
+    </div>
+  
 
 </article>
 
@@ -540,8 +548,10 @@ var disqus_config = function () {
 </script>
 
     
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
   </body>
 
 </html>

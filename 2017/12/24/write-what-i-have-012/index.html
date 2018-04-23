@@ -10,6 +10,7 @@
   <meta name="description" content="gRPC Go: Beyond the basics">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/pygments.css">
   <link rel="canonical" href="http://diabloneo.github.io//2017/12/24/write-what-i-have-012/">
   <link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
 </head>
@@ -61,8 +62,8 @@
         
           
         
-        <a href="/tags">Tags</a>
-        <a href="/feed.xml">RSS</a>
+        <a class="page-link" href="/tags">Tags</a>
+        <a class="page-link" href="/feed.xml">RSS</a>
       </div>
     </nav>
 
@@ -87,44 +88,46 @@
   </div>
 
   <div class="post-content" itemprop="articleBody">
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <div class="addthis_inline_share_toolbox"></div>
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
     <br />
-    <h1 id="grpc-go-beyond-the-basics">gRPC Go: Beyond the basics</h1>
+      <h2 id="grpc-go-beyond-the-basics">gRPC Go: Beyond the basics</h2>
 
 <p><em><a href="https://blog.gopheracademy.com/advent-2017/go-grpc-beyond-basics/">https://blog.gopheracademy.com/advent-2017/go-grpc-beyond-basics/</a></em></p>
 
 <p>介绍了gRPC的高级应用：使用TLS，开发插件，以及相关生态项目。</p>
 
-<h1 id="keynote-cncf-project-updates---michelle-noorali-senior-software-engineer-microsoft-azure">Keynote: CNCF Project Updates - Michelle Noorali, Senior Software Engineer, Microsoft Azure</h1>
+<h2 id="keynote-cncf-project-updates---michelle-noorali-senior-software-engineer-microsoft-azure">Keynote: CNCF Project Updates - Michelle Noorali, Senior Software Engineer, Microsoft Azure</h2>
 
 <p><em><a href="https://www.youtube.com/watch?v=zPOlDe-J9ZA&amp;index=2&amp;list=PLj6h78yzYM2P-3-xqvmWaZbbI1sW-ulZb">https://www.youtube.com/watch?v=zPOlDe-J9ZA&amp;index=2&amp;list=PLj6h78yzYM2P-3-xqvmWaZbbI1sW-ulZb</a></em></p>
 
 <p>KubeCon的Keynote，介绍了CNCF旗下的14个项目目前的状况。</p>
 
-<h1 id="amazon-linux-2">Amazon Linux 2</h1>
+<h2 id="amazon-linux-2">Amazon Linux 2</h2>
 
 <p><em><a href="https://aws.amazon.com/amazon-linux-2/">https://aws.amazon.com/amazon-linux-2/</a></em></p>
 
 <p>AWS推出了新一代的Linux系统，目前还是LTS candidate状态。</p>
 
-<h1 id="kubernetes-19-and-a-look-inside-the-kubernetes-project">Kubernetes 1.9 and a look inside the Kubernetes project</h1>
+<h2 id="kubernetes-19-and-a-look-inside-the-kubernetes-project">Kubernetes 1.9 and a look inside the Kubernetes project</h2>
 
 <p><em><a href="https://coreos.com/blog/kubernetes-19-and-a-look-inside-the-project">https://coreos.com/blog/kubernetes-19-and-a-look-inside-the-project</a></em></p>
 
 <p>介绍了k8s 1.9版本周期做的一些拆分项目的事情，Kubernetes已经是个巨大的项目了，为了将来的扩展，社区正在将这个项目进行必要的拆分，以便于整个生态进行扩展。另外也介绍了兼容性认证以及接下来会做的一些事情：cloud-controller-manager, CSI for external storage, and the longstanding goal of moving kubeadm to its own repo等。</p>
 
-<h1 id="kubernetes-and-containers-in-2018-buckle-your-seatbelts">Kubernetes and containers in 2018: Buckle your seatbelts</h1>
+<h2 id="kubernetes-and-containers-in-2018-buckle-your-seatbelts">Kubernetes and containers in 2018: Buckle your seatbelts</h2>
 
 <p><em><a href="https://coreos.com/blog/kubernetes-and-containers-in-2018">https://coreos.com/blog/kubernetes-and-containers-in-2018</a></em></p>
 
 <p>Alex Polvi展望了Kubernetes以及相关生态在2018年的发展。</p>
 
-<h1 id="许式伟我与go语言的这十年">许式伟：我与Go语言的这十年</h1>
+<h2 id="许式伟我与go语言的这十年">许式伟：我与Go语言的这十年</h2>
 
 <p><em><a href="https://mp.weixin.qq.com/s/iU7gaZNgCsU3DHaHa5PZ_Q">https://mp.weixin.qq.com/s/iU7gaZNgCsU3DHaHa5PZ_Q</a></em></p>
 
-<h1 id="error-handling-in-upspin">Error handling in Upspin</h1>
+<h2 id="error-handling-in-upspin">Error handling in Upspin</h2>
 
 <p><em><a href="https://commandcenter.blogspot.com/2017/12/error-handling-in-upspin.html">https://commandcenter.blogspot.com/2017/12/error-handling-in-upspin.html</a></em></p>
 
@@ -137,11 +140,15 @@
     </div>
 
     <br />
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <div class="addthis_inline_share_toolbox"></div>
-  </div>
-  <div class="post-comment">
     
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+  </div>
+
+  
+    <div class="post-comment">
+      
 <div id="disqus_thread"></div>
 <script>
 var disqus_config = function () {
@@ -160,7 +167,8 @@ var disqus_config = function () {
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 
 
-  </div>
+    </div>
+  
 
 </article>
 
@@ -235,8 +243,10 @@ var disqus_config = function () {
 </script>
 
     
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
   </body>
 
 </html>

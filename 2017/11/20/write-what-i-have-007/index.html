@@ -10,6 +10,7 @@
   <meta name="description" content="“Caching at Netflix: The Hidden Microservice” by Scott Mansfield">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/pygments.css">
   <link rel="canonical" href="http://diabloneo.github.io//2017/11/20/write-what-i-have-007/">
   <link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
 </head>
@@ -61,8 +62,8 @@
         
           
         
-        <a href="/tags">Tags</a>
-        <a href="/feed.xml">RSS</a>
+        <a class="page-link" href="/tags">Tags</a>
+        <a class="page-link" href="/feed.xml">RSS</a>
       </div>
     </nav>
 
@@ -87,10 +88,12 @@
   </div>
 
   <div class="post-content" itemprop="articleBody">
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <div class="addthis_inline_share_toolbox"></div>
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
     <br />
-    <h1 id="caching-at-netflix-the-hidden-microservice-by-scott-mansfield">“Caching at Netflix: The Hidden Microservice” by Scott Mansfield</h1>
+      <h2 id="caching-at-netflix-the-hidden-microservice-by-scott-mansfield">“Caching at Netflix: The Hidden Microservice” by Scott Mansfield</h2>
 
 <p><em><a href="https://www.youtube.com/watch?v=Rzdxgx3RC0Q">https://www.youtube.com/watch?v=Rzdxgx3RC0Q</a></em></p>
 
@@ -101,7 +104,7 @@
   <li>Mnemnic 管理SSD上的数据，底层使用rocksdb，上层复用了部分rend项目的代码。</li>
 </ul>
 
-<h1 id="announcing-prometheus-20">Announcing Prometheus 2.0</h1>
+<h2 id="announcing-prometheus-20">Announcing Prometheus 2.0</h2>
 
 <p><em><a href="https://prometheus.io/blog/2017/11/08/announcing-prometheus-2-0/">https://prometheus.io/blog/2017/11/08/announcing-prometheus-2-0/</a></em></p>
 
@@ -111,7 +114,7 @@
 
 <p>除了性能，我看到这次还增加了一个snapshot的功能，允许对整个数据库进行备份和恢复，相当实用。视频地址：<em><a href="https://www.youtube.com/watch?v=15uc8oTMgPY">https://www.youtube.com/watch?v=15uc8oTMgPY</a></em></p>
 
-<h1 id="best-practices-for-go-grpc-services">Best Practices for (Go) gRPC Services</h1>
+<h2 id="best-practices-for-go-grpc-services">Best Practices for (Go) gRPC Services</h2>
 
 <p><em><a href="https://www.youtube.com/watch?v=Z_yD7YPL2oE">https://www.youtube.com/watch?v=Z_yD7YPL2oE</a></em></p>
 
@@ -125,7 +128,7 @@
   <li>Monitoring</li>
 </ul>
 
-<h1 id="influxdb-14-now-available-influxql-enhancements-prometheus-readwrite-better-compaction-and-a-lot-more">InfluxDB 1.4 Now Available: InfluxQL Enhancements, Prometheus Read/Write, Better Compaction and a lot more!</h1>
+<h2 id="influxdb-14-now-available-influxql-enhancements-prometheus-readwrite-better-compaction-and-a-lot-more">InfluxDB 1.4 Now Available: InfluxQL Enhancements, Prometheus Read/Write, Better Compaction and a lot more!</h2>
 
 <p><em><a href="https://www.influxdata.com/blog/whats-new-influxdb-oss-1-4/">https://www.influxdata.com/blog/whats-new-influxdb-oss-1-4/</a></em></p>
 
@@ -133,7 +136,7 @@
 
 <p>同时，InfluxData宣布加入CNCF <em><a href="https://www.influxdata.com/blog/press-release-influxdata-joins-cloud-native-computing-foundation/">https://www.influxdata.com/blog/press-release-influxdata-joins-cloud-native-computing-foundation/</a></em></p>
 
-<h1 id="new-amazon-s3-encryption--security-features">New Amazon S3 Encryption &amp; Security Features</h1>
+<h2 id="new-amazon-s3-encryption--security-features">New Amazon S3 Encryption &amp; Security Features</h2>
 
 <p><em><a href="https://aws.amazon.com/blogs/aws/new-amazon-s3-encryption-security-features/">https://aws.amazon.com/blogs/aws/new-amazon-s3-encryption-security-features/</a></em></p>
 
@@ -146,11 +149,15 @@
     </div>
 
     <br />
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <div class="addthis_inline_share_toolbox"></div>
-  </div>
-  <div class="post-comment">
     
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+  </div>
+
+  
+    <div class="post-comment">
+      
 <div id="disqus_thread"></div>
 <script>
 var disqus_config = function () {
@@ -169,7 +176,8 @@ var disqus_config = function () {
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 
 
-  </div>
+    </div>
+  
 
 </article>
 
@@ -244,8 +252,10 @@ var disqus_config = function () {
 </script>
 
     
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
   </body>
 
 </html>

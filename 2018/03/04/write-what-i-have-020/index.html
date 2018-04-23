@@ -10,6 +10,7 @@
   <meta name="description" content="GerritBot">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/pygments.css">
   <link rel="canonical" href="http://diabloneo.github.io//2018/03/04/write-what-i-have-020/">
   <link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
 </head>
@@ -61,8 +62,8 @@
         
           
         
-        <a href="/tags">Tags</a>
-        <a href="/feed.xml">RSS</a>
+        <a class="page-link" href="/tags">Tags</a>
+        <a class="page-link" href="/feed.xml">RSS</a>
       </div>
     </nav>
 
@@ -99,28 +100,30 @@
   </div>
 
   <div class="post-content" itemprop="articleBody">
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <div class="addthis_inline_share_toolbox"></div>
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
     <br />
-    <h1 id="gerritbot">GerritBot</h1>
+      <h2 id="gerritbot">GerritBot</h2>
 
 <p><em><a href="https://github.com/golang/go/wiki/GerritBot">https://github.com/golang/go/wiki/GerritBot</a></em></p>
 
 <p>Go社区开始接收Github的pr，不过是通过GerritBot自动映射为一个Gerrit change，review和comment也是在gerrit里完成。</p>
 
-<h1 id="github-shouldnt-allow-username-reuse">GitHub Shouldn’t Allow Username Reuse</h1>
+<h2 id="github-shouldnt-allow-username-reuse">GitHub Shouldn’t Allow Username Reuse</h2>
 
 <p><em><a href="https://donatstudios.com/GithubsTotalSecurityFacepalm">https://donatstudios.com/GithubsTotalSecurityFacepalm</a></em></p>
 
 <p>最近go-bindata的作者从网络上消失了，顺便把自己的github账号删除了。这个做法导致了很多依赖go-bindata的项目无法编译。于是有人重建了原作者的账号，同步了一份最新的代码，同时也声明他们使用这种无奈举措的原因。本文的作者提出的观点是，这种做法有安全问题，github账号不应该被重用，否则会导致信任问题。</p>
 
-<h1 id="this-week-in-elasticsearch-and-apache-lucene---2018-02-05">This Week in Elasticsearch and Apache Lucene - 2018-02-05</h1>
+<h2 id="this-week-in-elasticsearch-and-apache-lucene---2018-02-05">This Week in Elasticsearch and Apache Lucene - 2018-02-05</h2>
 
 <p><em><a href="https://www.elastic.co/blog/this-week-in-elasticsearch-and-apache-lucene-2018-02-05">https://www.elastic.co/blog/this-week-in-elasticsearch-and-apache-lucene-2018-02-05</a></em></p>
 
 <p>ES也要支持sql了。</p>
 
-<h1 id="how-google-cloud-storage-offers-strongly-consistent-object-listing-thanks-to-spanner">How Google Cloud Storage offers strongly consistent object listing thanks to Spanner</h1>
+<h2 id="how-google-cloud-storage-offers-strongly-consistent-object-listing-thanks-to-spanner">How Google Cloud Storage offers strongly consistent object listing thanks to Spanner</h2>
 
 <p><em><a href="https://cloudplatform.googleblog.com/2018/02/how-Google-Cloud-Storage-offers-strongly-consistent-object-listing-thanks-to-Spanner.html">https://cloudplatform.googleblog.com/2018/02/how-Google-Cloud-Storage-offers-strongly-consistent-object-listing-thanks-to-Spanner.html</a></em></p>
 
@@ -131,25 +134,25 @@
   <li><em><a href="https://docs.aws.amazon.com/AmazonS3/latest/dev/Introduction.html#ConsistencyModel。">https://docs.aws.amazon.com/AmazonS3/latest/dev/Introduction.html#ConsistencyModel。</a></em></li>
 </ul>
 
-<h1 id="go-2017-survey-results">Go 2017 Survey Results</h1>
+<h2 id="go-2017-survey-results">Go 2017 Survey Results</h2>
 
 <p><em><a href="https://blog.golang.org/survey2017-results">https://blog.golang.org/survey2017-results</a></em></p>
 
 <p>Go 2017年的用户调查报告。</p>
 
-<h1 id="defer-internals">Defer Internals</h1>
+<h2 id="defer-internals">Defer Internals</h2>
 
 <p><em><a href="https://blog.learngoprogramming.com/yeah-semantically-after-is-the-right-word-fad1d5181891">https://blog.learngoprogramming.com/yeah-semantically-after-is-the-right-word-fad1d5181891</a></em></p>
 
 <p>快速介绍了下defer的内部实现，是在return语句之前。</p>
 
-<h1 id="postgresql-rocks-except-when-it-blocks-understanding-locks">PostgreSQL rocks, except when it blocks: Understanding locks</h1>
+<h2 id="postgresql-rocks-except-when-it-blocks-understanding-locks">PostgreSQL rocks, except when it blocks: Understanding locks</h2>
 
 <p><em><a href="https://www.citusdata.com/blog/2018/02/15/when-postgresql-blocks/">https://www.citusdata.com/blog/2018/02/15/when-postgresql-blocks/</a></em></p>
 
 <p>CitusData发布的一篇关于Postgres的lock介绍文章，里面有两张表格，可以方便的查询pg的lock级别。</p>
 
-<h1 id="a-gophers-reading-list">A Gopher’s Reading List</h1>
+<h2 id="a-gophers-reading-list">A Gopher’s Reading List</h2>
 
 <p><em><a href="https://github.com/enocom/gopher-reading-list">https://github.com/enocom/gopher-reading-list</a></em></p>
 
@@ -162,11 +165,15 @@
     </div>
 
     <br />
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <div class="addthis_inline_share_toolbox"></div>
-  </div>
-  <div class="post-comment">
     
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+  </div>
+
+  
+    <div class="post-comment">
+      
 <div id="disqus_thread"></div>
 <script>
 var disqus_config = function () {
@@ -185,7 +192,8 @@ var disqus_config = function () {
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 
 
-  </div>
+    </div>
+  
 
 </article>
 
@@ -260,8 +268,10 @@ var disqus_config = function () {
 </script>
 
     
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
   </body>
 
 </html>

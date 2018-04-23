@@ -10,6 +10,7 @@
   <meta name="description" content="本周Ubuntu 17.10已经正式发布，我在周末进行了升级，遇到了一些问题。">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/pygments.css">
   <link rel="canonical" href="http://diabloneo.github.io//2017/10/22/ubuntu-17.10-upgrade/">
   <link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
 </head>
@@ -61,8 +62,8 @@
         
           
         
-        <a href="/tags">Tags</a>
-        <a href="/feed.xml">RSS</a>
+        <a class="page-link" href="/tags">Tags</a>
+        <a class="page-link" href="/feed.xml">RSS</a>
       </div>
     </nav>
 
@@ -87,12 +88,14 @@
   </div>
 
   <div class="post-content" itemprop="articleBody">
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <div class="addthis_inline_share_toolbox"></div>
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
     <br />
-    <p>本周Ubuntu 17.10已经正式发布，我在周末进行了升级，遇到了一些问题。</p>
+      <p>本周Ubuntu 17.10已经正式发布，我在周末进行了升级，遇到了一些问题。</p>
 
-<h1 id="tmux配置有错">tmux配置有错</h1>
+<h2 id="tmux配置有错">tmux配置有错</h2>
 
 <p>tmux版本升级到2.5版本，我原来使用的配置如下几行有问题：</p>
 
@@ -101,11 +104,11 @@ bind-key -t vi-copy 'y' copy-selection
 bind-key -t vi-copy Escape cancel
 </code></pre></div></div>
 
-<h1 id="synaptic无法启动">synaptic无法启动</h1>
+<h2 id="synaptic无法启动">synaptic无法启动</h2>
 
 <p>Bug: <a href="https://bugs.launchpad.net/ubuntu/+source/synaptic/+bug/1551951">https://bugs.launchpad.net/ubuntu/+source/synaptic/+bug/1551951</a></p>
 
-<h1 id="virtualbox虚拟机无法启动">virtualbox虚拟机无法启动</h1>
+<h2 id="virtualbox虚拟机无法启动">virtualbox虚拟机无法启动</h2>
 
 <p>升级后有内核兼容性问题，我的解决办法如下：</p>
 
@@ -115,11 +118,11 @@ bind-key -t vi-copy Escape cancel
   <li>然后执行 /sbin/vboxconfig</li>
 </ol>
 
-<h1 id="sougou输入法不能用">sougou输入法不能用</h1>
+<h2 id="sougou输入法不能用">sougou输入法不能用</h2>
 
 <p>没办法解决，只能等更新了，可以先用ibus。</p>
 
-<h1 id="dns解析问题">dns解析问题</h1>
+<h2 id="dns解析问题">dns解析问题</h2>
 
 <p>Bug: <a href="https://bugs.launchpad.net/ubuntu/+source/netcfg/+bug/1712283">https://bugs.launchpad.net/ubuntu/+source/netcfg/+bug/1712283</a></p>
 
@@ -130,7 +133,7 @@ bind-key -t vi-copy Escape cancel
 sudo ln -s /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf</p>
 </blockquote>
 
-<h1 id="网易云音乐无法打开">网易云音乐无法打开</h1>
+<h2 id="网易云音乐无法打开">网易云音乐无法打开</h2>
 
 <p>和synaptic无法打开可能是一样的问题。</p>
 
@@ -141,11 +144,15 @@ sudo ln -s /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf</p>
     </div>
 
     <br />
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <div class="addthis_inline_share_toolbox"></div>
-  </div>
-  <div class="post-comment">
     
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+  </div>
+
+  
+    <div class="post-comment">
+      
 <div id="disqus_thread"></div>
 <script>
 var disqus_config = function () {
@@ -164,7 +171,8 @@ var disqus_config = function () {
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 
 
-  </div>
+    </div>
+  
 
 </article>
 
@@ -239,8 +247,10 @@ var disqus_config = function () {
 </script>
 
     
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
   </body>
 
 </html>

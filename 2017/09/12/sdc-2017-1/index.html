@@ -10,6 +10,7 @@
   <meta name="description" content="">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/pygments.css">
   <link rel="canonical" href="http://diabloneo.github.io//2017/09/12/sdc-2017-1/">
   <link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
 </head>
@@ -61,8 +62,8 @@
         
           
         
-        <a href="/tags">Tags</a>
-        <a href="/feed.xml">RSS</a>
+        <a class="page-link" href="/tags">Tags</a>
+        <a class="page-link" href="/feed.xml">RSS</a>
       </div>
     </nav>
 
@@ -87,14 +88,16 @@
   </div>
 
   <div class="post-content" itemprop="articleBody">
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <div class="addthis_inline_share_toolbox"></div>
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
     <br />
-    <p><img src="http://diabloneo.github.io//assets/imgs/00013_sdc2017_day1.jpg" alt="Day1" /></p>
+      <p><img src="http://diabloneo.github.io//assets/imgs/00013_sdc2017_day1.jpg" alt="Day1" /></p>
 
 <p>9月11日到14日，SNIA SDC (Storage Developer Conference) 2017在美国圣何塞召开。我把今天听的几个演讲分享一下。给出的链接可以下载演讲的幻灯片。</p>
 
-<h1 id="causally-ordering-distributed-file-system-events">Causally Ordering Distributed File System Events</h1>
+<h2 id="causally-ordering-distributed-file-system-events">Causally Ordering Distributed File System Events</h2>
 
 <p><em>Dell EMC Isilon</em></p>
 
@@ -102,7 +105,7 @@
 
 <p>讲了一种在Isilon中使用的高效的分布式文件系统的事件排序方法。基本思路是，Isilon中的每个inode都有编号以及版本号，通过组合文件操作中的inode信息来表示一个事件。将所有的事件发送到一个排序节点上，构建一个有向无环图，然后使用拓扑排序得到一个事件序列。这个事件序列可以用于写入log文件，用于实现文件系统的快照功能。</p>
 
-<h1 id="container-native-storage---solving-the-persistent-storage-challenge-with-gluster">Container Native Storage - Solving the Persistent Storage Challenge With Gluster</h1>
+<h2 id="container-native-storage---solving-the-persistent-storage-challenge-with-gluster">Container Native Storage - Solving the Persistent Storage Challenge With Gluster</h2>
 
 <p><em>RedHat</em></p>
 
@@ -110,7 +113,7 @@
 
 <p>使用Gluster来为容器K8s的容器提供存储。</p>
 
-<h1 id="breaking-the-cloud-storage-chains">Breaking the Cloud Storage Chains</h1>
+<h2 id="breaking-the-cloud-storage-chains">Breaking the Cloud Storage Chains</h2>
 
 <p><em>INFINIDAT</em></p>
 
@@ -118,7 +121,7 @@
 
 <p>介绍了InfiniBox产品，这个产品可以帮助拜托公有云的存储绑定问题。将这个存储放在私有云中，然后通过共有云的VPC网络和公有云连接起来，使得公有云的计算资源可以访问到私有云的存储。这种方法的好处包括：省钱、不会有公有云绑定问题，数据安全等。至于性能问题，在网络延迟为2ms的情况下，对于文件系统，Infinibox比公有云性能好；对于块存储，在带宽方面比公有云好。</p>
 
-<h1 id="universal-hybrid-cloud-connector-for-seamless-data-migration">Universal Hybrid Cloud Connector for Seamless Data Migration</h1>
+<h2 id="universal-hybrid-cloud-connector-for-seamless-data-migration">Universal Hybrid Cloud Connector for Seamless Data Migration</h2>
 
 <p><em>Veritas Technologies</em></p>
 
@@ -126,7 +129,7 @@
 
 <p>基于VxFS之上，实现了一种Mutti-Volume filesystem + SmartTier的文件系统，可以通过配置文件把文件系统的数据分布到不同的本地磁盘或者公有云对象存储上。类似AWS Storage Gateway。</p>
 
-<h1 id="providing-efficient-storage-operations-for-both-data-centers-and-hyperscale-applications">Providing Efficient Storage Operations for Both Data Centers and Hyperscale Applications</h1>
+<h2 id="providing-efficient-storage-operations-for-both-data-centers-and-hyperscale-applications">Providing Efficient Storage Operations for Both Data Centers and Hyperscale Applications</h2>
 
 <p><em>Samsung</em></p>
 
@@ -134,7 +137,7 @@
 
 <p>为了发挥出SSD的性能，需要应用或者host控制SSD的更多方面。探讨了Open Channel和IO Determinism。</p>
 
-<h1 id="andromeda-building-the-next-generation-high-density-storage-interface-for-successful-adoption">Andromeda: Building the Next-Generation High-Density Storage Interface for Successful Adoption</h1>
+<h2 id="andromeda-building-the-next-generation-high-density-storage-interface-for-successful-adoption">Andromeda: Building the Next-Generation High-Density Storage Interface for Successful Adoption</h2>
 
 <p><em>Microsoft</em></p>
 
@@ -142,7 +145,7 @@
 
 <p>介绍了微软在SSD应用方面的一些进展。微软的不同应用有不同的SSD性能需求，为了在一个节点上同时运行不同的应用，需要应用和host来控制SSD的运行时配置。采用了Open Channel的方案，正在尝试将log manager和media manager分开，log manager放在host中，media manager放在硬盘中，从让不同应用都可以把SSD的性能发挥出来。</p>
 
-<h1 id="dynamic-reliability-methods-for-a-clustered-task-server">Dynamic Reliability Methods for a Clustered-task Server</h1>
+<h2 id="dynamic-reliability-methods-for-a-clustered-task-server">Dynamic Reliability Methods for a Clustered-task Server</h2>
 
 <p><em>Dell EMC</em></p>
 
@@ -157,11 +160,15 @@
     </div>
 
     <br />
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <div class="addthis_inline_share_toolbox"></div>
-  </div>
-  <div class="post-comment">
     
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+  </div>
+
+  
+    <div class="post-comment">
+      
 <div id="disqus_thread"></div>
 <script>
 var disqus_config = function () {
@@ -180,7 +187,8 @@ var disqus_config = function () {
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 
 
-  </div>
+    </div>
+  
 
 </article>
 
@@ -255,8 +263,10 @@ var disqus_config = function () {
 </script>
 
     
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
   </body>
 
 </html>

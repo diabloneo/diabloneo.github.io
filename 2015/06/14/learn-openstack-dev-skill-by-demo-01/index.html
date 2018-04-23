@@ -10,6 +10,7 @@
   <meta name="description" content="为什么写这个系列OpenStack是目前我所知的最大最复杂的基于Python项目。整个OpenStack项目包含了数十个主要的子项目，每个子项目所用到的库也不尽相同。因此，对于Python初学者和未接触过OpenStack项目的人来说，入门的难度相当大。">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/pygments.css">
   <link rel="canonical" href="http://diabloneo.github.io//2015/06/14/learn-openstack-dev-skill-by-demo-01/">
   <link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
 </head>
@@ -61,8 +62,8 @@
         
           
         
-        <a href="/tags">Tags</a>
-        <a href="/feed.xml">RSS</a>
+        <a class="page-link" href="/tags">Tags</a>
+        <a class="page-link" href="/feed.xml">RSS</a>
       </div>
     </nav>
 
@@ -95,10 +96,12 @@
   </div>
 
   <div class="post-content" itemprop="articleBody">
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <div class="addthis_inline_share_toolbox"></div>
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
     <br />
-    <h1 id="为什么写这个系列">为什么写这个系列</h1>
+      <h2 id="为什么写这个系列">为什么写这个系列</h2>
 <p>OpenStack是目前我所知的最大最复杂的基于Python项目。整个OpenStack项目包含了数十个主要的子项目，每个子项目所用到的库也不尽相同。因此，对于Python初学者和未接触过OpenStack项目的人来说，入门的难度相当大。<!--more--></p>
 
 <p>幸运的是，OpenStack中的项目有很多共同点。比如，它们有相同的代码库结构，都尽可能是用同样的库，配置文件和单元测试的规范也都几乎一样。因此，通过学习这些共通的部分，我们就可以快速掌握多个OpenStack项目。但是，万事开头难，学习这些基础知识总是痛苦的。不过，学习的难点并不在于这些知识点本身有多难理解，而是这些基础知识的应用场景和应用效果对初学者来说都是模糊的。这个系列文章的目的就是帮助有需要的人了解OpenStack中一些常见的知识点。理解过程就是通过动手做一个web application demo来实现的。</p>
@@ -119,7 +122,7 @@
   <li>git</li>
 </ul>
 
-<h1 id="软件包管理">软件包管理</h1>
+<h2 id="软件包管理">软件包管理</h2>
 
 <p>软件包管理是每个OpenStack项目的基础，其目的是用来将项目代码打包成源码包或者二进制包进行分发。一个项目的代码可能会被打包放到PyPI上，这样你可以通过<strong>pip</strong>命令安装这个包；也可能会被打包放到项目的软件仓库里，这样你可以通过<strong>apt-get install</strong>或者<strong>yum install</strong>来安装这个软件包。</p>
 
@@ -128,11 +131,11 @@
 <p>##软件打包工具的历史
 这里我会讲一下我知道的Python的软件打包工具的历史，我们按照历史顺序来叙述。</p>
 
-<h3 id="distutils-before-2000">distutils (before 2000)</h3>
+<h4 id="distutils-before-2000">distutils (before 2000)</h4>
 <p>disutils自从1998年起就是Python标准库的一部分了，不过它在2000年就停止了开发。disutils是最早的Python打包工具和标准，也奠定了对Python软件进行打包的一个基本工作方式：<em>使用setup.py文件</em>。来看一个setup.py文件的例子：</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/usr/bin/env python</span>
-<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="c">## -*- coding: utf-8 -*-</span>
 
 <span class="kn">from</span> <span class="nn">disutils.core</span> <span class="kn">import</span> <span class="n">setup</span>
 
@@ -152,26 +155,26 @@ LICENSE  README.md  setup.py  webdemo
 
 <p>然后你就可以使用命令<code class="highlighter-rouge">python setup.py build</code>来编译包，可以使用<code class="highlighter-rouge">python setup.py install</code>来安装这个项目。如果需要帮助，可以通过<code class="highlighter-rouge">python setup.py --help-commands</code>来查看支持的命令。</p>
 
-<h3 id="setuptools">setuptools</h3>
+<h4 id="setuptools">setuptools</h4>
 <p>disutils停止开发后，setuptools成了继任者。setuptools提供了很多高级功能，包括自动依赖处理、Egg分发格式以及easy_install命令。setuptools的使用方式和disutils差不多，也是以一个setup函数作为入口，只不过该函数来自于setuptools模块，而且支持更多的参数，比如classifiers, setup_requires等，参数更多意味着功能更多。</p>
 
 <p>后来有一段时间setuptools项目发展开始变得缓慢了，就有人从setuptools项目创建了<strong>distribute</strong>项目。distribute开始支持Python 3等新特性。不过一段时间后，distribute项目又和setuptools项目合并了（2013年3月）。因此，现在已经不存在distribute项目了。</p>
 
 <p>到目前为止，setuptools还是使用最多的打包工具，而且开发很活跃，2015年6月刚刚发布了18.0版本。setuptools项目的文档在：<a href="http://pythonhosted.org/setuptools/">http://pythonhosted.org/setuptools/</a>。OpenStack目前也是使用setuptools库来执行打包操作，我们下面会详细点介绍setuptools工具。</p>
 
-<h3 id="disutils2">disutils2</h3>
+<h4 id="disutils2">disutils2</h4>
 
 <p>在setuptools项目发展的过程中，有一个叫disutils2的项目也在并行开发中，其目的是全面取代Python标准库中的distutils。disutils2的最大改进是将setup函数的参数单独放到一个setup.cfg的文件中（这些成为包的元数据）。不够disutils2这个项目缺点很多，而且没有功能上还不如setuptools项目，所以在2012年的时候，这个项目被废弃了。</p>
 
-<h3 id="distlib">distlib</h3>
+<h4 id="distlib">distlib</h4>
 
 <p>这个是一个新的打包工具，目标也是取代disutils。不过这个项目的开发进展也不快，到2015年才发布了0.2.0版本。目前还未能并入到Python的标准库中。不过可以保持关注。项目文档地址：<a href="https://readthedocs.org/projects/distlib/">https://readthedocs.org/projects/distlib/</a></p>
 
-<h2 id="在openstack中使用打包工具">在OpenStack中使用打包工具</h2>
+<h3 id="在openstack中使用打包工具">在OpenStack中使用打包工具</h3>
 
 <p>前面已经提到了，OpenStack也是使用setuptools工具来进行打包，不过为了满足OpenStack项目的需求，引入了一个辅助工具<strong>pbr</strong>来配合setuptools完成打包工作。</p>
 
-<h3 id="pbr-python-build-reasonableness">pbr (Python Build Reasonableness)</h3>
+<h4 id="pbr-python-build-reasonableness">pbr (Python Build Reasonableness)</h4>
 
 <p>pbr是一个setuptools的扩展工具，被开发出来的主要目的是为了方便使用setuptools，其项目文档地址也在OpenStack官网内：<a href="http://docs.openstack.org/developer/pbr/">http://docs.openstack.org/developer/pbr/</a>。</p>
 
@@ -195,7 +198,7 @@ setuptools.setup(setup_requires=['pbr'], pbr=True)
   <li>基于<em>git tags</em>的版本号管理。</li>
 </ol>
 
-<h4 id="pbr的版本推导">pbr的版本推导</h4>
+<h5 id="pbr的版本推导">pbr的版本推导</h5>
 
 <p>这里重点说明一下<em>基于git tag的版本号管理</em>这个功能。当使用pbr的时候，版本号有两种方式：<strong>postversioning</strong>和<strong>preversioning</strong>，postversioning是默认方式。要是用preversioning的方式，则需要设置setup.cfg文件中的<em>[metadata]段的version字段的值</em>。无论采用哪种方式，版本号都是从git的历史推理得到的。pbr使用的版本号标准是<a href="http://docs.openstack.org/developer/pbr/semver.html">Linux/Python Compatible Semantic Versioning 3.0.0</a>，简单的说就是下面这个标准：</p>
 
@@ -233,9 +236,9 @@ setuptools.setup(setup_requires=['pbr'], pbr=True)
 
 <p>总的来说，从上面的规则计算出来的版本号只有两种形式，一种是发布版本号（对应到某个tag），另一种是开发版本号。<strong>注意：pbr要求tag都是要签名的</strong>，也就是打tag时要使用<code class="highlighter-rouge">git tag -a -s X.Y.Z</code>的形式。</p>
 
-<h3 id="setupcfg和requirementstxt">setup.cfg和requirements.txt</h3>
+<h4 id="setupcfg和requirementstxt">setup.cfg和requirements.txt</h4>
 
-<h4 id="setupcfg">setup.cfg</h4>
+<h5 id="setupcfg">setup.cfg</h5>
 
 <p>由于OpenStack项目都使用了setuptools和pbr来执行打包工作，因此项目的元数据都放在<em>setup.cfg</em>文件中。我们以<em>keystone</em>项目的setup.cfg文件为例来说明这个文件里一般会包含什么内容。以下是写这篇文章时最新的keystone项目的setup.cfg文件的内容（以<strong>#</strong>开头的是我加的注释）：</p>
 
@@ -293,8 +296,8 @@ output_file = keystone/locale/keystone.pot
 copyright_holder = OpenStack Foundation
 msgid_bugs_address = https://bugs.launchpad.net/keystone
 
-# NOTE(dstanek): Uncomment the [pbr] section below and remove the ext.apidoc
-# Sphinx extension when https://launchpad.net/bugs/1260495 is fixed.
+## NOTE(dstanek): Uncomment the [pbr] section below and remove the ext.apidoc
+## Sphinx extension when https://launchpad.net/bugs/1260495 is fixed.
 [pbr]  # pbr本身的配置
 warnerrors = True
 autodoc_tree_index_modules = True
@@ -304,7 +307,7 @@ console_scripts =  # 指定要生成的可执行文件
     keystone-all = keystone.cmd.all:main
     keystone-manage = keystone.cmd.manage:main
 
-# 下面是其他entry_points内容，主要用于指定不同功能的扩展，和打包无关。
+## 下面是其他entry_points内容，主要用于指定不同功能的扩展，和打包无关。
 ...
 </code></pre></div></div>
 
@@ -314,13 +317,13 @@ console_scripts =  # 指定要生成的可执行文件
 
 <p>你可以在PyPI上找到完整的classifier值列表，地址是：<a href="https://pypi.python.org/pypi?:action=list_classifiers">https://pypi.python.org/pypi?%3Aaction=list_classifiers</a>。另外，你也可以通过setuptools的命令来获取这个列表，在项目根目录下执行：<code class="highlighter-rouge">python setup.py register --list-classifiers</code>。</p>
 
-<h4 id="requirementstxt">requirements.txt</h4>
+<h5 id="requirementstxt">requirements.txt</h5>
 
 <p>这个文件指定了一个项目依赖的包有哪些，并且支出了依赖的包的版本需求，可以看看keystone项目的requirements.txt：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># The order of packages is significant, because pip processes them in the order
-# of appearance. Changing the order has an impact on the overall integration
-# process, which may cause wedges in the gate later.
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## The order of packages is significant, because pip processes them in the order
+## of appearance. Changing the order has an impact on the overall integration
+## process, which may cause wedges in the gate later.
 
 pbr&lt;2.0,&gt;=0.11
 WebOb&gt;=1.2.3
@@ -356,7 +359,7 @@ pycadf&gt;=0.8.0
 msgpack-python&gt;=0.4.0
 </code></pre></div></div>
 
-<h2 id="软件包归档格式">软件包归档格式</h2>
+<h3 id="软件包归档格式">软件包归档格式</h3>
 
 <p>Python的软件包一开始是没有官方的标准分发格式的。比如Java有jar包或者war包作为分发格式，Python则什么都没有。后来不同的工具都开始引入一些比较通用的归档格式。比如，setuptools引入了Egg格式。但是，这些都不是官方支持的，存在元数据和包结构彼此不兼容的问题。因此，为了解决这个问题，<strong>PEP 427</strong>定义了新的分发包标准，名为<strong>Wheel</strong>。目前pip和setuptools工具都支持Wheel格式。这里我们简单总结一下常用的分发格式：</p>
 
@@ -366,19 +369,19 @@ msgpack-python&gt;=0.4.0
   <li><strong>.whl</strong>格式：这个是Wheel包，也是一个压缩文件，只是扩展名换了，里面也包含了项目元数据和代码，还支持免安装直接运行。whl分发包内的元数据和egg包是有些不同的。这个格式是由PEP 427引入的。可以通过命令<code class="highlighter-rouge">python setup.py bdist_wheel</code>生成。</li>
 </ul>
 
-<h3 id="egg-info和dist-info目录">.egg-info和.dist-info目录</h3>
+<h4 id="egg-info和dist-info目录">.egg-info和.dist-info目录</h4>
 
 <p>如果你到系统中安装Python库的路径下看看，就能看到很多名称以<em>.egg-info</em>或者以<em>.dist-info</em>结尾的目录。这些目录的内容就是这个库的元数据，是从库的分发包中拷贝出来的。其中<em>.egg-info</em>类型的目录来自于Egg格式的分发包，<em>.dist-info</em>类型的目录来自于Wheel格式的分发包。</p>
 
-<h2 id="软件包的安装">软件包的安装</h2>
+<h3 id="软件包的安装">软件包的安装</h3>
 
-<h3 id="安装工具">安装工具</h3>
+<h4 id="安装工具">安装工具</h4>
 
 <p>上面已经提到了，setuptools项目提供了一个软件包安装工具<em>*esay_install</em>。easy_install支持从软件归档文件中或者从PyPI上安装软件包，不过这个工具并不好用，比如缺少卸载功能等，因此并不流行，现在更多的都是使用pip工具。</p>
 
 <p><strong>pip</strong>项目提供了很好的软件包安装方式，并且已经被包含到Python 3.4中，可以从PyPI、tarball或者Wheel归档中安装和卸载软件按包。关于pip常见的用法，这里就不赘述了(<em>pip install, pip uninstall, pip search, …</em>)。</p>
 
-<h3 id="安装路径">安装路径</h3>
+<h4 id="安装路径">安装路径</h4>
 
 <p>软件包的安装路径依赖于操作系统、Python版本和安装方式。</p>
 
@@ -416,15 +419,15 @@ msgpack-python&gt;=0.4.0
   </li>
 </ul>
 
-<h3 id="以开发模式安装">以开发模式安装</h3>
+<h4 id="以开发模式安装">以开发模式安装</h4>
 
 <p>pip的安装命令可以使用<strong>-e</strong>选项，用来从本地代码目录或者版本库URL来安装一个开发版本的库。采用这种方式的时候，在安装目录下只会创建一个包含软件包信息的文件，真正的代码不会安装到系统目录下。</p>
 
-<h1 id="webdemo的打包管理">webdemo的打包管理</h1>
+<h2 id="webdemo的打包管理">webdemo的打包管理</h2>
 
 <p>学习过包管理相关的知识后，我们就要以OpenStack的方法来创建一个我们自己的项目。这个项目的名称是<strong>webdemo</strong>，就是一个简单的web服务器。这个项目会贯穿这个系列文章。在本文中，我们首先要创建webdemo的项目框架并添加软件包管理相关的内容。</p>
 
-<h2 id="项目目录结构">项目目录结构</h2>
+<h3 id="项目目录结构">项目目录结构</h3>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>➜ ~/programming/python/webdemo git:(master) ✗ $ tree .
 .
@@ -447,19 +450,19 @@ msgpack-python&gt;=0.4.0
   <li>LICENSE和README</li>
 </ul>
 
-<h3 id="软件包管理相关">软件包管理相关</h3>
+<h4 id="软件包管理相关">软件包管理相关</h4>
 
 <p>首先是setup.py，就是这么简单：</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/usr/bin/env python</span>
-<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="c">## -*- coding: utf-8 -*-</span>
 
 <span class="kn">import</span> <span class="nn">setuptools</span>
 
 
-<span class="c"># In python &lt; 2.7.4, a lazy loading of package `pbr` will break</span>
-<span class="c"># setuptools if some other modules registered functions in `atexit`.</span>
-<span class="c"># solution from: http://bugs.python.org/issue15881#msg170215</span>
+<span class="c">## In python &lt; 2.7.4, a lazy loading of package `pbr` will break</span>
+<span class="c">## setuptools if some other modules registered functions in `atexit`.</span>
+<span class="c">## solution from: http://bugs.python.org/issue15881#msg170215</span>
 <span class="k">try</span><span class="p">:</span>
         <span class="kn">import</span> <span class="nn">multiprocessing</span>  <span class="c"># noqa</span>
 <span class="k">except</span> <span class="nb">ImportError</span><span class="p">:</span>
@@ -503,9 +506,9 @@ console_scripts =
 
 <p>只包含最基本的信息。接下来是requirements.txt文件：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># The order of packages is significant, because pip processes them in the order
-# of appearance. Changing the order has an impact on the overall integration
-# process, which may cause wedges in the gate later.
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## The order of packages is significant, because pip processes them in the order
+## of appearance. Changing the order has an impact on the overall integration
+## process, which may cause wedges in the gate later.
 
 pbr&lt;2.0,&gt;=0.11
 </code></pre></div></div>
@@ -582,11 +585,15 @@ AUTHORS  ChangeLog  dist  LICENSE  README.md  requirement.txt  setup.cfg  setup.
     </div>
 
     <br />
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <div class="addthis_inline_share_toolbox"></div>
-  </div>
-  <div class="post-comment">
     
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+  </div>
+
+  
+    <div class="post-comment">
+      
 <div id="disqus_thread"></div>
 <script>
 var disqus_config = function () {
@@ -605,7 +612,8 @@ var disqus_config = function () {
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 
 
-  </div>
+    </div>
+  
 
 </article>
 
@@ -680,8 +688,10 @@ var disqus_config = function () {
 </script>
 
     
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
   </body>
 
 </html>

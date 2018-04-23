@@ -10,6 +10,7 @@
   <meta name="description" content="本文将进入单元测试的部分，这也是基础知识中最后一个大块。本文将重点讲述Python和OpenStack中的单元测试的生态环境。">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/pygments.css">
   <link rel="canonical" href="http://diabloneo.github.io//2016/03/13/learn-openstack-dev-skill-by-demo-08/">
   <link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
 </head>
@@ -61,8 +62,8 @@
         
           
         
-        <a href="/tags">Tags</a>
-        <a href="/feed.xml">RSS</a>
+        <a class="page-link" href="/tags">Tags</a>
+        <a class="page-link" href="/feed.xml">RSS</a>
       </div>
     </nav>
 
@@ -95,12 +96,14 @@
   </div>
 
   <div class="post-content" itemprop="articleBody">
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <div class="addthis_inline_share_toolbox"></div>
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
     <br />
-    <p>本文将进入单元测试的部分，这也是基础知识中最后一个大块。本文将重点讲述Python和OpenStack中的单元测试的生态环境。</p>
+      <p>本文将进入单元测试的部分，这也是基础知识中最后一个大块。本文将重点讲述Python和OpenStack中的单元测试的生态环境。</p>
 
-<h1 id="单元测试的重要性">单元测试的重要性</h1>
+<h2 id="单元测试的重要性">单元测试的重要性</h2>
 
 <p>github上有个人画了一些不同语言的学习曲线图：<a href="https://github.com/dobiasd/articles/blob/master/programming_language_learning_curves.md">Learning Curves (for different programming languages)</a>，虽然有些恶搞的倾向，不过确实说明了问题。这里贴一下Python的部分：</p>
 
@@ -108,11 +111,11 @@
 
 <p>这个图说明了，会单元测试对于提高Python生产力的重要性，这主要是因为Python是个动态语言，很多问题都无法通过静态编译检查来发现，因此单元测试就成了一个重要的确保质量的手段。OpenStack的核心项目都对单元测试有极高的要求，以保证项目的高质量。</p>
 
-<h1 id="单元测试工具">单元测试工具</h1>
+<h2 id="单元测试工具">单元测试工具</h2>
 
 <p>Python的单元测试工具很多，为单元测试提供不同方面的功能。OpenStack的项目也基本把现在流行的单元测试工具都用全了。单元测试可以说是入门OpenStack开发的最难的部分，也是最后一公里。本章，我们就介绍一下在OpenStack中会用到的单元测试的工具。由于数量很多，不可能详细介绍，因此主要做一些概念和用途上的介绍。</p>
 
-<h2 id="unittest">unittest</h2>
+<h3 id="unittest">unittest</h3>
 
 <p>unittest是Python的标准库，提供了最基本的单元测试功能，包括单元测试运行器（简称runner）和单元测试框架。项目的单元测试代码的测试类可以继承<code class="highlighter-rouge">unittest.TestCase</code>类，这样这个类就能够被runner发现并且执行。同时，<code class="highlighter-rouge">unittest.TestCase</code>这个类还定义了<code class="highlighter-rouge">setUp()</code>，<code class="highlighter-rouge">tearDown()</code>，<code class="highlighter-rouge">setUpClass()</code>和<code class="highlighter-rouge">tearDownClass()</code>方法，是用来运行单元测试前的设置工作代码和单元测试后的清理工作代码，这个也是所有Python代码遵守的规范，所以第三方的单元测试库和框架也都遵循这个规范。</p>
 
@@ -120,19 +123,19 @@
 
 <p>unittest是学习Python单元测试最基本也最重要的一个库，完整的说明请查看官方文档：<a href="https://docs.python.org/2.7/library/unittest.html">https://docs.python.org/2.7/library/unittest.html</a>。</p>
 
-<h2 id="mock">mock</h2>
+<h3 id="mock">mock</h3>
 
 <p>mock也是另一个重要的单元测试库，在Python 2中是作为一个第三方库被使用的，到Python 3时，就被纳入了标准库，可见这个库的重要性。简单的说，mock就是用来模拟对象的行为，这样在进行单元测试的时候，可以指定任何对象的返回值，便于测试对外部接口有依赖的代码。关于mock的使用，可以查看我之前写的这篇文章<a href="https://segmentfault.com/a/1190000002965620">Python Mock的入门</a></p>
 
-<h2 id="testtools">testtools</h2>
+<h3 id="testtools">testtools</h3>
 
 <p>testtools是个unittest的扩展框架，主要是在unittest的基础上提供了更好的assert功能，使得写单元测试更加方便。具体可以查看文档：<a href="http://testtools.readthedocs.org/en/latest/">http://testtools.readthedocs.org/en/latest/</a>。</p>
 
-<h2 id="fixtures">fixtures</h2>
+<h3 id="fixtures">fixtures</h3>
 
 <p>fixture的意思是固定装置，在Python的单元测试中，是指某段可以复用的单元测试<code class="highlighter-rouge">setUp</code>和<code class="highlighter-rouge">tearDown</code>代码组合。一个fixture一般用来实现某个组件的setUp和tearDown逻辑，比如测试前要先创建好某些数据，测试后要删掉这些数据，这些操作就可以封装到一个fixture中。这样不同的测试用例就不用重复写这些代码，只要使用fixture即可。fixtures模块是一个第三方模块，提供了一种简单的创建fixture类和对象的机制，并且也提供了一些内置的fixture。具体的使用方法可以查看官方文档：<a href="https://pypi.python.org/pypi/fixtures/">https://pypi.python.org/pypi/fixtures/</a>。</p>
 
-<h2 id="testscenarios">testscenarios</h2>
+<h3 id="testscenarios">testscenarios</h3>
 
 <p>testscenarios模块满足了场景测试的需求。它的基本用法是在测试类中添加一个类属性<code class="highlighter-rouge">scenarios</code>，该属性是一个元组，定义了每一种场景下不同的变量的值。比如说你测试一段数据访问代码，你需要测试该代码在使用不同的驱动时，比如MongoDB、SQL、File，是否都能正常工作。我们有三种办法：</p>
 
@@ -144,11 +147,11 @@
 
 <p>testscenarios模块在OpenStack Ceilometer中被大量使用。更多的信息可以查看文档：<a href="https://pypi.python.org/pypi/testscenarios/">https://pypi.python.org/pypi/testscenarios/</a></p>
 
-<h2 id="subunit">subunit</h2>
+<h3 id="subunit">subunit</h3>
 
 <p>subunit是一个用于传输单元测试结果的流协议。一般来说，运行单元测试的时候是把单元测试的结果直接输出到标准输出，但是如果运行大量的测试用例，这些测试结果就很难被分析。因此就可以使用python-subunit模块来运行测试用例，并且把测试用例通过subunit协议输出，这样测试结果就可以被分析工具聚合以及分析。python-subunit模块自带了一些工具用来解析subunit协议，比如你可以这样运行测试用例：<code class="highlighter-rouge">$ python -m subunit.run test_module | subunit2pyunit</code>，<code class="highlighter-rouge">subunit2pyunit</code>命令会解析subunit协议，并且输出到标准输出。关于subunit的更多信息，请查看官方文档：<a href="https://pypi.python.org/pypi/python-subunit/">https://pypi.python.org/pypi/python-subunit/</a>。</p>
 
-<h2 id="testrepository">testrepository</h2>
+<h3 id="testrepository">testrepository</h3>
 
 <p>OpenStack中使用testrepository模块管理单元测试用例。当一个项目中的测试用例很多时，如何更有效的处理单元测试用例的结果就变得很重要。testrepository的出现就是为了解决这个问题。testrepository使用python-subunit模块来运行测试用例，然后分析subunit的输出并对测试结果进行记录（记录到本地文件）。举例来说，testrepository允许你做这样的事情：</p>
 
@@ -160,15 +163,15 @@
 
 <p>testrepository的更多信息，请查看官方文档：<a href="http://testrepository.readthedocs.org/en/latest/">http://testrepository.readthedocs.org/en/latest/</a>。</p>
 
-<h2 id="coverage">coverage</h2>
+<h3 id="coverage">coverage</h3>
 
 <p>coverage是用来计算代码运行时的覆盖率的，也就是统计多少代码被执行了。它可以和testrepository一起使用，用来统计单元测试的覆盖率，在运行完单元测试之后，输出覆盖率报告。具体的使用方法可以查看官方文档：<a href="http://coverage.readthedocs.org/en/latest/">http://coverage.readthedocs.org/en/latest/</a>。</p>
 
-<h2 id="tox">tox</h2>
+<h3 id="tox">tox</h3>
 
 <p>tox是用来管理和构建虚拟环境(virtualenv)的。对于一个项目，我们需要运行Python 2.7的单元测试，也需要运行Python 3.4的单元测试，还需要运行PEP8的代码检查。这些不同的任务需要依赖不同的库，所以需要使用不同的虚拟环境。使用tox的时候，我们会在tox的配置文件<strong>tox.ini</strong>中指定不同任务的虚拟环境名称，该任务在虚拟环境中需要安装哪些包，以及该任务执行的时候需要运行哪些命令。更多信息，请查看官方文档：<a href="https://testrun.org/tox/latest/">https://testrun.org/tox/latest/</a></p>
 
-<h2 id="单元测试工具小结">单元测试工具小结</h2>
+<h3 id="单元测试工具小结">单元测试工具小结</h3>
 
 <p>本章介绍了OpenStack中常用的单元测试工具的基本用途，希望大家对这些工具有个大概的认识。这里我们可以按照类别总结一下这些工具：</p>
 
@@ -183,11 +186,11 @@ testrepository调用subunit来执行测试用例，对测试结果进行聚合�
 
 <p>在<em>The Hacker’s Guide to Python</em>（《Python高手之路》）一书中，也有专门的一章介绍了各种单元测试工具及其用法，读者也可以参考一下。下一章，我们来分析Keystone项目的单元测试框架，可以让你看到在OpenStack的实际项目中，这些工具是如何被使用的。</p>
 
-<h1 id="keystone的单元测试框架">Keystone的单元测试框架</h1>
+<h2 id="keystone的单元测试框架">Keystone的单元测试框架</h2>
 
 <p>现在，我们以Keystone项目为例，来看下真实项目中的单元测试是如何架构的。我们采用自顶向下的方式，先从最上层的部分介绍起。</p>
 
-<h2 id="使用tox进行测试环境管理">使用tox进行测试环境管理</h2>
+<h3 id="使用tox进行测试环境管理">使用tox进行测试环境管理</h3>
 
 <p>大部分情况下，我们都是通过<strong>tox</strong>命令来执行单元测试的，并且传递环境名称给tox命令：</p>
 
@@ -252,7 +255,7 @@ bandit =
   bandit&gt;=0.17.3 # Apache-2.0
 </code></pre></div></div>
 
-<h2 id="使用testrepository管理测试的运行">使用testrepository管理测试的运行</h2>
+<h3 id="使用testrepository管理测试的运行">使用testrepository管理测试的运行</h3>
 
 <p>上面我们看到<em>tox.ini</em>文件中的<code class="highlighter-rouge">commands</code>参数中执行的是<em>tools/pretty_tox.sh</em>命令。这个脚本的内容如下：</p>
 
@@ -305,7 +308,7 @@ test_run_concurrency=echo ${TEST_RUN_CONCURRENCY:-0}
 
 <p>每个OpenStack项目基本上也都是这样。如果你自己在开发一个Python项目，你也可以参考这个架构。</p>
 
-<h2 id="单元测试用例的代码架构">单元测试用例的代码架构</h2>
+<h3 id="单元测试用例的代码架构">单元测试用例的代码架构</h3>
 
 <p>下面我们来看一下Keystone的单元测试代码是如何写的，主要是看一下其层次结构。每个OpenStack项目的单元测试代码结构可能都不一样，不过你了解完Keystone的结构之后，看其他项目的就会比较快了。</p>
 
@@ -329,11 +332,11 @@ unit.test_v3_assignment.RoleAssignmentBaseTestCase
 
 <p>从上面的层次结构可以看出，OpenStack中的大项目，由于单元测试用例很多（Keystone现在有超过6200个单元测试用例），所以其单元测试架构也会比较复杂。要写好单元测试，需要先了解一下整个测试代码的架构。</p>
 
-<h1 id="总结">总结</h1>
+<h2 id="总结">总结</h2>
 
 <p>本文我们了解了Python中的单元测试的概念和工具，并且通过Keystone项目了解了实际项目中的单元测试的架构，希望有助于各位读者更好的掌握OpenStack项目的单元测试基础。<a href="https://github.com/diabloneo/webdemo">webdemo项目</a>目前没有单元测试的代码，有兴趣的读者可以自己fork然后参考Keystone的架构为其增加完整的单元测试架构。</p>
 
-<h1 id="系列后记">系列后记</h1>
+<h2 id="系列后记">系列后记</h2>
 
 <p>这个系列我打算就此结束，到目前为止一共写了8篇文章，写写停停，前后写了9个月。这里也做个小结。</p>
 
@@ -356,11 +359,15 @@ unit.test_v3_assignment.RoleAssignmentBaseTestCase
     </div>
 
     <br />
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <div class="addthis_inline_share_toolbox"></div>
-  </div>
-  <div class="post-comment">
     
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+  </div>
+
+  
+    <div class="post-comment">
+      
 <div id="disqus_thread"></div>
 <script>
 var disqus_config = function () {
@@ -379,7 +386,8 @@ var disqus_config = function () {
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 
 
-  </div>
+    </div>
+  
 
 </article>
 
@@ -454,8 +462,10 @@ var disqus_config = function () {
 </script>
 
     
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
   </body>
 
 </html>

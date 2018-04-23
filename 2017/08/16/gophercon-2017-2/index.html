@@ -10,6 +10,7 @@
   <meta name="description" content="GopherConf 2017于7月13日到15日在美国丹佛举行，我在youtube上看了一些视频，本文是一些视频的观后感。">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/pygments.css">
   <link rel="canonical" href="http://diabloneo.github.io//2017/08/16/gophercon-2017-2/">
   <link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
 </head>
@@ -61,8 +62,8 @@
         
           
         
-        <a href="/tags">Tags</a>
-        <a href="/feed.xml">RSS</a>
+        <a class="page-link" href="/tags">Tags</a>
+        <a class="page-link" href="/feed.xml">RSS</a>
       </div>
     </nav>
 
@@ -87,24 +88,26 @@
   </div>
 
   <div class="post-content" itemprop="articleBody">
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <div class="addthis_inline_share_toolbox"></div>
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
     <br />
-    <p>GopherConf 2017于7月13日到15日在美国丹佛举行，我在youtube上看了一些视频，本文是一些视频的观后感。</p>
+      <p>GopherConf 2017于7月13日到15日在美国丹佛举行，我在youtube上看了一些视频，本文是一些视频的观后感。</p>
 
-<h1 id="ian-schenck---operability-in-go">Ian Schenck - Operability in Go</h1>
+<h2 id="ian-schenck---operability-in-go">Ian Schenck - Operability in Go</h2>
 
 <p><a href="https://www.youtube.com/watch?v=SIl3wi1iWPE">https://www.youtube.com/watch?v=SIl3wi1iWPE</a></p>
 
 <p>介绍使用 stuct log（github.com/Sirupsen/logrus）和 expvar库来增强互操作性，其实和互操作性没什么关系，就是讲增强导出log的可读性，并且通过expvar来暴露程序运行时的内部状态。不推荐看。</p>
 
-<h1 id="jon-bodner---runtime-generated-typesafe-and-declarative-pick-any-three">Jon Bodner - Runtime Generated, Typesafe, and Declarative: Pick Any Three</h1>
+<h2 id="jon-bodner---runtime-generated-typesafe-and-declarative-pick-any-three">Jon Bodner - Runtime Generated, Typesafe, and Declarative: Pick Any Three</h2>
 
 <p><a href="https://www.youtube.com/watch?v=hz6d7rzqJ6Q">https://www.youtube.com/watch?v=hz6d7rzqJ6Q</a></p>
 
 <p>介绍了https://github.com/jonbodner/proteus 项目。这个项目通过使用sturct tag, function generation, reflect和template来实现了一个DAO层。这个DAO层可以用来实现把一种DSL转换成对存储系统的访问。演讲中描述了如何使用这个方法来实现SQL的访问。另外，大家都认为大量使用reflect会很慢，但是作者还现场跑了benchmark，说明对于存储访问这种重IO的操作，reflect带来的影响可以接受，速度是足够快的。</p>
 
-<h1 id="david-crawshaw---go-build-modes">David Crawshaw - Go Build Modes</h1>
+<h2 id="david-crawshaw---go-build-modes">David Crawshaw - Go Build Modes</h2>
 
 <p><a href="https://www.youtube.com/watch?v=x-LhC-J2Vbk">https://www.youtube.com/watch?v=x-LhC-J2Vbk</a></p>
 
@@ -121,13 +124,13 @@
 最后介绍了go plugin的一种应用场景。Plugin的模式正在被慢慢改进，不过短期内还不会进入生产ready。</li>
 </ol>
 
-<h1 id="edward-muller---go-anti-patterns">Edward Muller - Go Anti-Patterns</h1>
+<h2 id="edward-muller---go-anti-patterns">Edward Muller - Go Anti-Patterns</h2>
 
 <p><a href="https://www.youtube.com/watch?v=ltqV6pDKZD8">https://www.youtube.com/watch?v=ltqV6pDKZD8</a></p>
 
 <p>介绍了go的一些反模式，也就是非常规编码模式。不过，这种事情见仁见智，可以参考，不一定全部接受。</p>
 
-<h1 id="mitchell-hashimoto---advanced-testing-with-go">Mitchell Hashimoto - Advanced Testing with Go</h1>
+<h2 id="mitchell-hashimoto---advanced-testing-with-go">Mitchell Hashimoto - Advanced Testing with Go</h2>
 
 <p><a href="https://www.youtube.com/watch?v=8hQG7QlcLBk">https://www.youtube.com/watch?v=8hQG7QlcLBk</a></p>
 
@@ -140,11 +143,15 @@
     </div>
 
     <br />
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <div class="addthis_inline_share_toolbox"></div>
-  </div>
-  <div class="post-comment">
     
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+  </div>
+
+  
+    <div class="post-comment">
+      
 <div id="disqus_thread"></div>
 <script>
 var disqus_config = function () {
@@ -163,7 +170,8 @@ var disqus_config = function () {
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 
 
-  </div>
+    </div>
+  
 
 </article>
 
@@ -238,8 +246,10 @@ var disqus_config = function () {
 </script>
 
     
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
   </body>
 
 </html>

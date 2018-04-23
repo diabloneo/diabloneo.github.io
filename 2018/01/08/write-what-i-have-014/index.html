@@ -10,6 +10,7 @@
   <meta name="description" content="Go Experience Report: Generics in Kubernetes">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/pygments.css">
   <link rel="canonical" href="http://diabloneo.github.io//2018/01/08/write-what-i-have-014/">
   <link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
 </head>
@@ -61,8 +62,8 @@
         
           
         
-        <a href="/tags">Tags</a>
-        <a href="/feed.xml">RSS</a>
+        <a class="page-link" href="/tags">Tags</a>
+        <a class="page-link" href="/feed.xml">RSS</a>
       </div>
     </nav>
 
@@ -95,22 +96,24 @@
   </div>
 
   <div class="post-content" itemprop="articleBody">
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <div class="addthis_inline_share_toolbox"></div>
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
     <br />
-    <h1 id="go-experience-report-generics-in-kubernetes">Go Experience Report: Generics in Kubernetes</h1>
+      <h2 id="go-experience-report-generics-in-kubernetes">Go Experience Report: Generics in Kubernetes</h2>
 
 <p><em><a href="https://medium.com/@arschles/go-experience-report-generics-in-kubernetes-25da87430301">https://medium.com/@arschles/go-experience-report-generics-in-kubernetes-25da87430301</a></em></p>
 
 <p>Kubernetes自己内建了一套部分替代泛型的runtime系统，你可以看到类似runtime.Object这样的对象以及相关的处理。由于Go不支持泛型，k8s这也是不得以而为之，不过这种做法在目前的情况下很好的解决了需求。作者还讨论了自动生成代码替代这套自定义的runtime是否可行的问题，答案是可行，但是会生成太多的代码，以至于项目过于庞大而变得不合适。</p>
 
-<h1 id="how-to-improve-iot-application-performance-with-multi-row-dml">How to Improve IoT Application Performance with Multi-Row DML</h1>
+<h2 id="how-to-improve-iot-application-performance-with-multi-row-dml">How to Improve IoT Application Performance with Multi-Row DML</h2>
 
 <p><em><a href="https://www.cockroachlabs.com/blog/multi-row-dml/">https://www.cockroachlabs.com/blog/multi-row-dml/</a></em></p>
 
 <p>讲解了数据库的多行DML如何帮助提升性能，尤其是CockroachDB这种分布式的数据库，随着节点数的增加，可以支持更高的DML批处理大小。</p>
 
-<h1 id="managing-goroutine-lifecycles-with-rungroup">Managing goroutine lifecycles with run.Group</h1>
+<h2 id="managing-goroutine-lifecycles-with-rungroup">Managing goroutine lifecycles with run.Group</h2>
 
 <p><em><a href="https://blog.gopheracademy.com/advent-2017/run-group/">https://blog.gopheracademy.com/advent-2017/run-group/</a></em></p>
 
@@ -123,11 +126,15 @@
     </div>
 
     <br />
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <div class="addthis_inline_share_toolbox"></div>
-  </div>
-  <div class="post-comment">
     
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+  </div>
+
+  
+    <div class="post-comment">
+      
 <div id="disqus_thread"></div>
 <script>
 var disqus_config = function () {
@@ -146,7 +153,8 @@ var disqus_config = function () {
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 
 
-  </div>
+    </div>
+  
 
 </article>
 
@@ -221,8 +229,10 @@ var disqus_config = function () {
 </script>
 
     
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
   </body>
 
 </html>

@@ -10,6 +10,7 @@
   <meta name="description" content="go build命令用来构建一个go package，最常用的就是构建一个package得到一个可执行文件。build命令接受很多参数用来控制构建过程。本文使用的Golang源码的版本是1.7.5，这个版本的Go是自举的，也就是说Go构建器本身也是Go写的。">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/pygments.css">
   <link rel="canonical" href="http://diabloneo.github.io//2017/02/26/golang-code-reading-notes-1/">
   <link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
 </head>
@@ -61,8 +62,8 @@
         
           
         
-        <a href="/tags">Tags</a>
-        <a href="/feed.xml">RSS</a>
+        <a class="page-link" href="/tags">Tags</a>
+        <a class="page-link" href="/feed.xml">RSS</a>
       </div>
     </nav>
 
@@ -87,10 +88,12 @@
   </div>
 
   <div class="post-content" itemprop="articleBody">
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <div class="addthis_inline_share_toolbox"></div>
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
     <br />
-    <p><strong>go build</strong>命令用来构建一个go package，最常用的就是构建一个package得到一个可执行文件。<strong>build</strong>命令接受很多参数用来控制构建过程。本文使用的<strong>Golang</strong>源码的版本是<strong>1.7.5</strong>，这个版本的Go是自举的，也就是说Go构建器本身也是Go写的。</p>
+      <p><strong>go build</strong>命令用来构建一个go package，最常用的就是构建一个package得到一个可执行文件。<strong>build</strong>命令接受很多参数用来控制构建过程。本文使用的<strong>Golang</strong>源码的版本是<strong>1.7.5</strong>，这个版本的Go是自举的，也就是说Go构建器本身也是Go写的。</p>
 
 <p><strong>代码路径约定</strong>: <strong>Golang</strong>的仓库中所有的代码在子目录<em>src/</em>下，所以下面提到代码路径时，会把前缀<em>src/</em>去掉，避免表述过于冗长。</p>
 
@@ -98,7 +101,7 @@
 
 <p>另外，因为<strong>go build</strong>命令的参数很多，支持的操作系统和架构平台也很多，这里只描述最简单的参数的情况下的代码路径。操作系统是<strong>Linux</strong>，架构平台是<strong>x86_64</strong>，在Golang源码里称为<strong>amd64</strong>。</p>
 
-<h1 id="go-build命令入口"><strong>go build</strong>命令入口</h1>
+<h2 id="go-build命令入口"><strong>go build</strong>命令入口</h2>
 
 <p>Golang的源码中，<strong>go build</strong>命令的入口在<em>cmd/go/build.go</em>的<code class="highlighter-rouge">runBuild(cmd *Command, args []string)</code>函数。该函数会在<em>cmd/go/main.go</em>的<strong>main()</strong>函数中被调用。调用前，会先解析所有的命令行参数，解析的参数会设置到<em>cmd/go/build.go</em>文件的全局变量中，比如<code class="highlighter-rouge">buildA</code>、<code class="highlighter-rouge">buildN</code>等。其他的非参数部分，就会通过<code class="highlighter-rouge">runBuild()</code>函数的<code class="highlighter-rouge">args</code>参数传递进来。</p>
 
@@ -111,13 +114,13 @@
 
 <p>接下来，<code class="highlighter-rouge">runBuild()</code>函数会调用<code class="highlighter-rouge">packagesForBuild(args)</code>获得需要构建的pkg的信息。</p>
 
-<h1 id="packagesforbuild函数"><code class="highlighter-rouge">packagesForBuild</code>函数</h1>
+<h2 id="packagesforbuild函数"><code class="highlighter-rouge">packagesForBuild</code>函数</h2>
 
 <p><code class="highlighter-rouge">packagesForBuild(args []string) []*Package</code>函数位于<em>cmd/go/pkg.go</em>文件中。它的功能是载入参数<code class="highlighter-rouge">args</code>指定的packages以及这些packages的依赖，生成一个<code class="highlighter-rouge">Package</code>对象列表，这个列表随后会被用于构建。</p>
 
 <p><code class="highlighter-rouge">packagesForBuild()</code>本身并不执行载入packages的工作，而是调用<code class="highlighter-rouge">packagesAndErrors()</code>函数来载入packages，然后检查载入的packages是否有错误，有错的话就让<code class="highlighter-rouge">go build</code>命令报错并返回。</p>
 
-<h1 id="packagesanderrors函数"><code class="highlighter-rouge">packagesAndErrors</code>函数</h1>
+<h2 id="packagesanderrors函数"><code class="highlighter-rouge">packagesAndErrors</code>函数</h2>
 
 <p><code class="highlighter-rouge">packagesAndErrors(args []string) []*Package</code>函数也是位于<em>cmd/go/pkg.go</em>文件中，它开始执行载入packages的操作。分为两种情况：</p>
 
@@ -136,7 +139,7 @@
 
 <p>从上面的流程可以看出，载入一个package的主要工作都是在<code class="highlighter-rouge">loadPackage()</code>函数中完成的。</p>
 
-<h1 id="loadpackage函数"><code class="highlighter-rouge">loadPackage</code>函数</h1>
+<h2 id="loadpackage函数"><code class="highlighter-rouge">loadPackage</code>函数</h2>
 
 <p><code class="highlighter-rouge">loadPackage(arg string, stk *importStack) *Package</code>位于<em>cmd/go/pkg.go</em>文件中，它载入一个命令行参数指定的package。<code class="highlighter-rouge">stk</code>参数是用于记录import路径的一个栈。</p>
 
@@ -151,11 +154,11 @@
 
 <p>对于我们的简单例子，在这里会直接走到最后的<code class="highlighter-rouge">loadImport</code>调用。</p>
 
-<h2 id="importstack"><code class="highlighter-rouge">importStack</code></h2>
+<h3 id="importstack"><code class="highlighter-rouge">importStack</code></h3>
 
 <p>这个是一个简单的栈实现，用来在载入一个package的过程中，记录import的路径，栈底是命令行指定要载入的package，栈顶是当前正在处理的ImportPath。</p>
 
-<h2 id="loadimport函数"><code class="highlighter-rouge">loadImport</code>函数</h2>
+<h3 id="loadimport函数"><code class="highlighter-rouge">loadImport</code>函数</h3>
 
 <p><code class="highlighter-rouge">loadImport(path, srcDir string, parent *Package, stk *importStack, importPos []token.Position, mode int) *Package</code>位于<em>cmd/go/pkg.go</em>文件中。几个参数的含义如下：</p>
 
@@ -203,7 +206,7 @@
 
 <p>现在回过头来看<code class="highlighter-rouge">loadImport</code>的流程。 上面已经列出了这个流程的主要步骤，这里的关键点在于步骤4和步骤5。步骤4的<code class="highlighter-rouge">buildContext.Import(path, srcDir, mode)</code>是把这个<code class="highlighter-rouge">path</code>目录中的package的信息收集起来；而步骤5则是载入这个package相关的依赖。这两个步骤的内容就非常多了，在后面的文章独立说明。</p>
 
-<h1 id="总结">总结</h1>
+<h2 id="总结">总结</h2>
 
 <p>我们现在知道了<code class="highlighter-rouge">go build</code>命令的入口，并且知道当要构建一个package的时候，要先载入这个package的信息。这个主要是在<code class="highlighter-rouge">loadPackage</code>这个函数中完成的，载入的是通过调用<code class="highlighter-rouge">loadImport</code>函数进行的，要分别载入这个package自己的信息，然后再载入它的依赖信息。这个过程说明了，载入一个命令行指定的package和载入一个<code class="highlighter-rouge">import</code>语句指定的package是差不多的。</p>
 
@@ -216,11 +219,15 @@
     </div>
 
     <br />
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <div class="addthis_inline_share_toolbox"></div>
-  </div>
-  <div class="post-comment">
     
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+  </div>
+
+  
+    <div class="post-comment">
+      
 <div id="disqus_thread"></div>
 <script>
 var disqus_config = function () {
@@ -239,7 +246,8 @@ var disqus_config = function () {
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 
 
-  </div>
+    </div>
+  
 
 </article>
 
@@ -314,8 +322,10 @@ var disqus_config = function () {
 </script>
 
     
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
   </body>
 
 </html>

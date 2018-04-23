@@ -10,6 +10,7 @@
   <meta name="description" content="由于Golang不支持泛型，所以我们会使用Golang的interface{]和reflect来实现语言的动态特性。但是，这个也会带来很严重的性能下降问题。但是，到底有多慢呢？我们可以通过Golang的testing库的Benchmark来测试一下。">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/pygments.css">
   <link rel="canonical" href="http://diabloneo.github.io//2016/11/05/how-slow-is-golang-reflect/">
   <link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
 </head>
@@ -61,8 +62,8 @@
         
           
         
-        <a href="/tags">Tags</a>
-        <a href="/feed.xml">RSS</a>
+        <a class="page-link" href="/tags">Tags</a>
+        <a class="page-link" href="/feed.xml">RSS</a>
       </div>
     </nav>
 
@@ -91,12 +92,14 @@
   </div>
 
   <div class="post-content" itemprop="articleBody">
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <div class="addthis_inline_share_toolbox"></div>
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
     <br />
-    <p>由于Golang不支持泛型，所以我们会使用Golang的<code class="highlighter-rouge">interface{]</code>和<code class="highlighter-rouge">reflect</code>来实现语言的动态特性。但是，这个也会带来很严重的性能下降问题。但是，到底有多慢呢？我们可以通过Golang的<code class="highlighter-rouge">testing</code>库的<code class="highlighter-rouge">Benchmark</code>来测试一下。</p>
+      <p>由于Golang不支持泛型，所以我们会使用Golang的<code class="highlighter-rouge">interface{]</code>和<code class="highlighter-rouge">reflect</code>来实现语言的动态特性。但是，这个也会带来很严重的性能下降问题。但是，到底有多慢呢？我们可以通过Golang的<code class="highlighter-rouge">testing</code>库的<code class="highlighter-rouge">Benchmark</code>来测试一下。</p>
 
-<h1 id="测试程序">测试程序</h1>
+<h2 id="测试程序">测试程序</h2>
 
 <p><em>bench.go</em>的代码如下：</p>
 
@@ -300,7 +303,7 @@
 	</span><span class="p">}</span><span class="x">
 </span><span class="p">}</span></pre></td></tr></tbody></table></code></pre></figure>
 
-<h1 id="测试结果">测试结果</h1>
+<h2 id="测试结果">测试结果</h2>
 
 <p>执行<code class="highlighter-rouge">go test -bench-.</code>来运行测试：</p>
 
@@ -331,11 +334,15 @@ ok      goexamples/bench        11.742s</code></pre></figure>
     </div>
 
     <br />
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <div class="addthis_inline_share_toolbox"></div>
-  </div>
-  <div class="post-comment">
     
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+  </div>
+
+  
+    <div class="post-comment">
+      
 <div id="disqus_thread"></div>
 <script>
 var disqus_config = function () {
@@ -354,7 +361,8 @@ var disqus_config = function () {
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 
 
-  </div>
+    </div>
+  
 
 </article>
 
@@ -429,8 +437,10 @@ var disqus_config = function () {
 </script>
 
     
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
   </body>
 
 </html>

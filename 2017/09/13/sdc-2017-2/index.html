@@ -10,6 +10,7 @@
   <meta name="description" content="">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/pygments.css">
   <link rel="canonical" href="http://diabloneo.github.io//2017/09/13/sdc-2017-2/">
   <link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
 </head>
@@ -61,8 +62,8 @@
         
           
         
-        <a href="/tags">Tags</a>
-        <a href="/feed.xml">RSS</a>
+        <a class="page-link" href="/tags">Tags</a>
+        <a class="page-link" href="/feed.xml">RSS</a>
       </div>
     </nav>
 
@@ -87,14 +88,16 @@
   </div>
 
   <div class="post-content" itemprop="articleBody">
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <div class="addthis_inline_share_toolbox"></div>
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
     <br />
-    <p><img src="http://diabloneo.github.io//assets/imgs/00014_sdc2017_day2.jpg" alt="Day2" /></p>
+      <p><img src="http://diabloneo.github.io//assets/imgs/00014_sdc2017_day2.jpg" alt="Day2" /></p>
 
 <p>今天会议的第二天，上午是General Session。从现场看，参会人数大约150人。整个General Session包括4个Keynote。</p>
 
-<h1 id="snia-20-years-of-storage-innovation-and-predictions-for-the-next-20-years">SNIA: 20 Years of Storage Innovation and Predictions for the Next 20 Years</h1>
+<h2 id="snia-20-years-of-storage-innovation-and-predictions-for-the-next-20-years">SNIA: 20 Years of Storage Innovation and Predictions for the Next 20 Years</h2>
 
 <p><a href="https://sniasdc17.pathable.com/meetings/549880">https://sniasdc17.pathable.com/meetings/549880</a></p>
 
@@ -102,19 +105,19 @@
 
 <p>Michael Qros特别强调了标准化的重要性，他举了供电系统作为例子。供电系统刚出现的时候没有标准话，而且建设之后很难再推倒重来，所以长期下来，现在供电系统就有2种不同的电压标准以及两种不同的频率标准（4种组合），以及15种不同的接口标准。这种缺失标准化的做法，导致解决供电问题的成本上升。所以SNIA在过去20年在存储方面做了很多标准化工作，将来也会继续推进存储的标准化工作。他也分享了SNIA在接下来的主要方向，包括：storage management, flash, persistent memory, cloud, green, object drives, security。</p>
 
-<h1 id="memories-of-tomorrow">Memories of Tomorrow</h1>
+<h2 id="memories-of-tomorrow">Memories of Tomorrow</h2>
 
 <p><a href="https://sniasdc17.pathable.com/meetings/549938">https://sniasdc17.pathable.com/meetings/549938</a></p>
 
 <p>介绍了非易失性内存，作者称为storage class memory的最新进展。目前内存和存储的主要问题是：内存数据是易失的，存储的时延则太高。persistent memory（非易失存储内存）是目前被看好的解决方案。但是PM的推广和应用属于架构改变，需要这个计算机系统的严禁来配合，从BIOS到CPU到操作系统到应用软件都需要做出修改，才能充分发挥这种新技术的优势。作者认为SSD的推广和普及也是有类似的过程，不断改进的SATA，以及新出现的NVMe都是为了更好的发挥出SSD的能力。因为PM方面还有很多工作需要去做。</p>
 
-<h1 id="goodbye-xfs-building-a-new-faster-storage-backend-for-ceph">Goodbye, XFS: Building a new, faster storage backend for Ceph</h1>
+<h2 id="goodbye-xfs-building-a-new-faster-storage-backend-for-ceph">Goodbye, XFS: Building a new, faster storage backend for Ceph</h2>
 
 <p><a href="https://sniasdc17.pathable.com/meetings/550621">https://sniasdc17.pathable.com/meetings/550621</a></p>
 
 <p>Sage Weil回顾了Ceph在store方面的历史。他最开始的直觉是要做一个文件系统，绕过POSIX，这样可以更好的作为存储的底层，所以在2008年之前，Ceph使用的是FakeStore + EBOFS。但是那个时候资源有限，Ceph的其他方面需要更多的投入，自己的文件系统无法做好，所以后来Ceph就转到了大家熟悉的FileStore + XFS + LevelDB的模式，利用已经成熟的解决方案来实现底层的数据存储。FileStore的主要问题是POSIX操作无法实现事务，所以就采用了double write的解决方案，也就有了double write的问题。他还分享了好几个FileStore的问题，都是由于POSIX接口并不适用于OSD的操作需求导致的。所以，Sage觉得实际上一开始自己做文件系统的方向是对的，现在Ceph项目壮大，开始有能力重新回到这个轨道上来，所以从2016年开始，BlueStore的研发就开始了，直到最近L版中正式product ready。最后Sage介绍了BlueStore中解决的几个主要问题，以及和FileStore的性能对比数据，BlueStore相对FileStore来说有很大的性能提升。</p>
 
-<h1 id="recent-developments-in-the-linux-io-stack">Recent Developments in The Linux I/O Stack</h1>
+<h2 id="recent-developments-in-the-linux-io-stack">Recent Developments in The Linux I/O Stack</h2>
 
 <p><a href="https://sniasdc17.pathable.com/meetings/550618">https://sniasdc17.pathable.com/meetings/550618</a></p>
 
@@ -142,11 +145,15 @@
     </div>
 
     <br />
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <div class="addthis_inline_share_toolbox"></div>
-  </div>
-  <div class="post-comment">
     
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+  </div>
+
+  
+    <div class="post-comment">
+      
 <div id="disqus_thread"></div>
 <script>
 var disqus_config = function () {
@@ -165,7 +172,8 @@ var disqus_config = function () {
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 
 
-  </div>
+    </div>
+  
 
 </article>
 
@@ -240,8 +248,10 @@ var disqus_config = function () {
 </script>
 
     
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
   </body>
 
 </html>

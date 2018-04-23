@@ -10,6 +10,7 @@
   <meta name="description" content="Tmux的buffer是一个非常使用的功能，我们可以通过bind-key [进入copy-mode来选择要保存到buffer中的数据，随后再通过bind-key ]来粘贴一个buffer。">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/pygments.css">
   <link rel="canonical" href="http://diabloneo.github.io//2015/01/17/choose-buffer-and-delete-buffer-in-tmux/">
   <link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
 </head>
@@ -61,8 +62,8 @@
         
           
         
-        <a href="/tags">Tags</a>
-        <a href="/feed.xml">RSS</a>
+        <a class="page-link" href="/tags">Tags</a>
+        <a class="page-link" href="/feed.xml">RSS</a>
       </div>
     </nav>
 
@@ -87,10 +88,12 @@
   </div>
 
   <div class="post-content" itemprop="articleBody">
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <div class="addthis_inline_share_toolbox"></div>
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
     <br />
-    <p><strong>Tmux</strong>的buffer是一个非常使用的功能，我们可以通过<strong>bind-key [</strong>进入copy-mode来选择要保存到buffer中的数据，随后再通过<strong>bind-key ]</strong>来粘贴一个buffer。<!--more--></p>
+      <p><strong>Tmux</strong>的buffer是一个非常使用的功能，我们可以通过<strong>bind-key [</strong>进入copy-mode来选择要保存到buffer中的数据，随后再通过<strong>bind-key ]</strong>来粘贴一个buffer。<!--more--></p>
 
 <p>除了上面两个常用的功能之外，还有一个非常使用的功能：<strong>choose-buffer</strong>，快捷键是<strong>bind-key =</strong>，该命令的作用是显示出之前保存的buffers，并且可以通过序号选择本地要粘贴的哪个buffer中的内容。样子如下：</p>
 
@@ -106,11 +109,15 @@
     </div>
 
     <br />
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <div class="addthis_inline_share_toolbox"></div>
-  </div>
-  <div class="post-comment">
     
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+  </div>
+
+  
+    <div class="post-comment">
+      
 <div id="disqus_thread"></div>
 <script>
 var disqus_config = function () {
@@ -129,7 +136,8 @@ var disqus_config = function () {
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 
 
-  </div>
+    </div>
+  
 
 </article>
 
@@ -204,8 +212,10 @@ var disqus_config = function () {
 </script>
 
     
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
   </body>
 
 </html>

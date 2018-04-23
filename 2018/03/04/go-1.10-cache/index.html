@@ -10,6 +10,7 @@
   <meta name="description" content="最近Go发布了1.10版本，引入了cache等重要特性。Russ Cox去年11月份的时候在邮件列表golang-dev里发了一篇帖子说明了这几个变化。帖子的地址是： https://groups.google.com/forum/#!topic/golang-dev/qfa3mHN4ZPA">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/pygments.css">
   <link rel="canonical" href="http://diabloneo.github.io//2018/03/04/go-1.10-cache/">
   <link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
 </head>
@@ -61,8 +62,8 @@
         
           
         
-        <a href="/tags">Tags</a>
-        <a href="/feed.xml">RSS</a>
+        <a class="page-link" href="/tags">Tags</a>
+        <a class="page-link" href="/feed.xml">RSS</a>
       </div>
     </nav>
 
@@ -91,12 +92,14 @@
   </div>
 
   <div class="post-content" itemprop="articleBody">
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <div class="addthis_inline_share_toolbox"></div>
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
     <br />
-    <p>最近Go发布了1.10版本，引入了cache等重要特性。Russ Cox去年11月份的时候在邮件列表golang-dev里发了一篇帖子说明了这几个变化。帖子的地址是： <em><a href="https://groups.google.com/forum/#!topic/golang-dev/qfa3mHN4ZPA">https://groups.google.com/forum/#!topic/golang-dev/qfa3mHN4ZPA</a></em></p>
+      <p>最近Go发布了1.10版本，引入了cache等重要特性。Russ Cox去年11月份的时候在邮件列表golang-dev里发了一篇帖子说明了这几个变化。帖子的地址是： <em><a href="https://groups.google.com/forum/#!topic/golang-dev/qfa3mHN4ZPA">https://groups.google.com/forum/#!topic/golang-dev/qfa3mHN4ZPA</a></em></p>
 
-<h1 id="build-cache">Build Cache</h1>
+<h2 id="build-cache">Build Cache</h2>
 
 <p>意思就是会把编译过程的中间结果cache下来，从而实现增量编译。原来需要通过<code class="highlighter-rouge">go build -i</code>命令来实现，现在go build命令默认启用了cache。启用cache后的效果是很明显的，我司的一个大程序的编译时间如下：</p>
 
@@ -105,7 +108,7 @@
   <li>修改一个文件后，再次编译，耗时22秒。</li>
 </ul>
 
-<h1 id="test-cache">Test Cache</h1>
+<h2 id="test-cache">Test Cache</h2>
 
 <p>测试现在也默认启用了cache，在内容没有变化的情况下，对于同样的参数的测试，会直接使用cache的测试结果，也就是同样的测试不会重复跑。当使用cache的结果时，go test命令最后会显示 <code class="highlighter-rouge">(cached)</code> 的字样:</p>
 
@@ -113,7 +116,7 @@
 ok      project/dp/master    <span class="o">(</span>cached<span class="o">)</span>
 </code></pre></div></div>
 
-<h1 id="cache-path-and-clean-cache">Cache Path and Clean Cache</h1>
+<h2 id="cache-path-and-clean-cache">Cache Path and Clean Cache</h2>
 
 <p>cache默认的存储路径是操作系统所确定的用户缓存目录，但是可以通过GOCACHE环境变量修改。在Ubuntu下的默认cache路径是 <em>~/.cache/go-build</em></p>
 
@@ -131,11 +134,15 @@ ok      project/dp/master    <span class="o">(</span>cached<span class="o">)</sp
     </div>
 
     <br />
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <div class="addthis_inline_share_toolbox"></div>
-  </div>
-  <div class="post-comment">
     
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+  </div>
+
+  
+    <div class="post-comment">
+      
 <div id="disqus_thread"></div>
 <script>
 var disqus_config = function () {
@@ -154,7 +161,8 @@ var disqus_config = function () {
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 
 
-  </div>
+    </div>
+  
 
 </article>
 
@@ -229,8 +237,10 @@ var disqus_config = function () {
 </script>
 
     
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
   </body>
 
 </html>

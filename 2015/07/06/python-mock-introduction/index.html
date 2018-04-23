@@ -10,6 +10,7 @@
   <meta name="description" content="Mock是什么">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/pygments.css">
   <link rel="canonical" href="http://diabloneo.github.io//2015/07/06/python-mock-introduction/">
   <link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
 </head>
@@ -61,8 +62,8 @@
         
           
         
-        <a href="/tags">Tags</a>
-        <a href="/feed.xml">RSS</a>
+        <a class="page-link" href="/tags">Tags</a>
+        <a class="page-link" href="/feed.xml">RSS</a>
       </div>
     </nav>
 
@@ -91,10 +92,12 @@
   </div>
 
   <div class="post-content" itemprop="articleBody">
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <div class="addthis_inline_share_toolbox"></div>
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
     <br />
-    <h1 id="mock是什么">Mock是什么</h1>
+      <h2 id="mock是什么">Mock是什么</h2>
 
 <p>Mock这个词在英语中有<em>模拟的</em>这个意思，因此我们可以猜测出这个库的主要功能是模拟一些东西。准确的说，<strong>Mock是Python中一个用于支持单元测试的库，它的主要功能是使用mock对象替代掉指定的Python对象，以达到模拟对象的行为</strong>。简单的说，mock库用于如下的场景：</p>
 
@@ -120,7 +123,7 @@ def c(url):
 
 <p>如果利用mock模块，那么就可以达到这样的效果：<strong>使用一个mock对象替换掉上面的requests.get函数，然后执行函数c时，c调用requests.get的返回值就能够由我们的mock对象来决定，而不需要服务器的参与</strong>。简单的说，就是我们用一个mock对象替换掉c函数和服务器交互的过程。你一定很好奇这个功能是如何实现的，这个是mock模块内部的实现机制，不在本文的讨论范围。本文主要讨论如何用mock模块来解决上面提到的这种单元测试场景。</p>
 
-<h1 id="mock的安装和导入">Mock的安装和导入</h1>
+<h2 id="mock的安装和导入">Mock的安装和导入</h2>
 
 <p>在Python 3.3以前的版本中，需要另外安装mock模块，可以使用pip命令来安装：</p>
 
@@ -137,9 +140,9 @@ def c(url):
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from unittest import mock
 </code></pre></div></div>
 
-<h1 id="mock对象">Mock对象</h1>
+<h2 id="mock对象">Mock对象</h2>
 
-<h2 id="基本用法">基本用法</h2>
+<h3 id="基本用法">基本用法</h3>
 
 <p>Mock对象是mock模块中最重要的概念。Mock对象就是mock模块中的一个类的实例，这个类的实例可以用来替换其他的Python对象，来达到模拟的效果。Mock类的定义如下：</p>
 
@@ -160,7 +163,7 @@ def c(url):
 <p>举个例子来说：我们有一个简单的客户端实现，用来访问一个URL，当访问正常时，需要返回状态码200，不正常时，需要返回状态码404。首先，我们的客户端代码实现如下：</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/usr/bin/env python</span>
-<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="c">## -*- coding: utf-8 -*-</span>
 
 <span class="kn">import</span> <span class="nn">requests</span>
 
@@ -177,7 +180,7 @@ def c(url):
 <p>外部模块调用<code class="highlighter-rouge">visit_ustack()</code>来访问<strong>UnitedStack</strong>的官网。下面我们使用mock对象在单元测试中分别测试访问正常和访问不正常的情况。</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/usr/bin/env python</span>
-<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="c">## -*- coding: utf-8 -*-</span>
 
 <span class="kn">import</span> <span class="nn">unittest</span>
 
@@ -208,9 +211,9 @@ def c(url):
 
 <p>上面这个就是使用mock对象的基本步骤了。在上面的例子中我们替换了自己写的模块的对象，其实也可以替换标准库和第三方模块的对象，方法是一样的：先import进来，然后替换掉指定的对象就可以了。</p>
 
-<h2 id="稍微高级点的用法">稍微高级点的用法</h2>
+<h3 id="稍微高级点的用法">稍微高级点的用法</h3>
 
-<h3 id="class-mock的参数">class Mock的参数</h3>
+<h4 id="class-mock的参数">class Mock的参数</h4>
 
 <p>上面讲的是mock对象最基本的用法。下面来看看mock对象的稍微高级点的用法（并不是很高级啊，最完整最高级的直接去看mock的文档即可，后面给出）。</p>
 
@@ -224,7 +227,7 @@ def c(url):
 
 <p>其他的参数请参考官方文档。</p>
 
-<h3 id="mock对象的自动创建">mock对象的自动创建</h3>
+<h4 id="mock对象的自动创建">mock对象的自动创建</h4>
 
 <p>当访问一个mock对象中不存在的属性时，mock会自动建立一个子mock对象，并且把正在访问的属性指向它，这个功能对于实现多级属性的mock很方便。</p>
 
@@ -236,7 +239,7 @@ client.v2_client.get.return_value = '200'
 
 <p>从上面的例子中还可以看到，指定mock对象的<em>return_value</em>还可以使用属性赋值的方法。</p>
 
-<h3 id="对方法调用进行检查">对方法调用进行检查</h3>
+<h4 id="对方法调用进行检查">对方法调用进行检查</h4>
 
 <p>mock对象有一些方法可以用来检查该对象是否被调用过、被调用时的参数如何、被调用了几次等。实现这些功能可以调用mock对象的方法，具体的可以查看mock的文档。这里我们举个例子。</p>
 
@@ -264,7 +267,7 @@ client.v2_client.get.return_value = '200'
   <li>调用的参数是一个字符串</li>
 </ol>
 
-<h1 id="patch和patchobject">patch和patch.object</h1>
+<h2 id="patch和patchobject">patch和patch.object</h2>
 
 <p>在了解了mock对象之后，我们来看两个方便测试的函数：<code class="highlighter-rouge">patch</code>和<code class="highlighter-rouge">patch.object</code>。这两个函数都会返回一个mock内部的类实例，这个类是<code class="highlighter-rouge">class _patch</code>。返回的这个类实例既可以作为函数的装饰器，也可以作为类的装饰器，也可以作为上下文管理器。使用<code class="highlighter-rouge">patch</code>或者<code class="highlighter-rouge">patch.object</code>的目的是为了控制mock的范围，意思就是在一个函数范围内，或者一个类的范围内，或者<code class="highlighter-rouge">with</code>语句的范围内mock掉一个对象。我们看个代码例子即可：</p>
 
@@ -299,7 +302,7 @@ client.v2_client.get.return_value = '200'
 
 <p>就是替换掉一个对象的指定名称的属性，用法和<code class="highlighter-rouge">setattr</code>类似。</p>
 
-<h1 id="如何学习使用mock">如何学习使用mock？</h1>
+<h2 id="如何学习使用mock">如何学习使用mock？</h2>
 
 <p>你肯定很奇怪，本文不就是教人使用mock的么？其实不是的，我发现自己在学习mock的过程中遇到的主要困难是不清楚mock能做什么，而不是mock对象到底有哪些函数。因此写这篇文章的主要目的是为了说明mock能做什么。</p>
 
@@ -307,15 +310,15 @@ client.v2_client.get.return_value = '200'
 
 <p>最后，学习mock技能你应该要能够感受到一种<strong>控制的快感</strong>，就是你能享受控制外部服务的快乐。当你感受到这种快感的时候，你的mock应该就达到熟练使用的水平了。</p>
 
-<h1 id="官方文档">官方文档</h1>
+<h2 id="官方文档">官方文档</h2>
 
-<h2 id="python-27">Python 2.7</h2>
+<h3 id="python-27">Python 2.7</h3>
 
 <p>mock还未加入标准库。</p>
 
 <p><a href="http://www.voidspace.org.uk/python/mock/index.html">http://www.voidspace.org.uk/python/mock/index.html</a></p>
 
-<h2 id="python-34">Python 3.4</h2>
+<h3 id="python-34">Python 3.4</h3>
 
 <p>mock已经加入了标准库。</p>
 
@@ -330,11 +333,15 @@ client.v2_client.get.return_value = '200'
     </div>
 
     <br />
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <div class="addthis_inline_share_toolbox"></div>
-  </div>
-  <div class="post-comment">
     
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+  </div>
+
+  
+    <div class="post-comment">
+      
 <div id="disqus_thread"></div>
 <script>
 var disqus_config = function () {
@@ -353,7 +360,8 @@ var disqus_config = function () {
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 
 
-  </div>
+    </div>
+  
 
 </article>
 
@@ -428,8 +436,10 @@ var disqus_config = function () {
 </script>
 
     
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
   </body>
 
 </html>

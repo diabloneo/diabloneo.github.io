@@ -10,6 +10,7 @@
   <meta name="description" content="50 Shades of Go: Traps, Gotchas, and Common Mistakes for New Golang Devs 中有一个关于循环变量的例子，这个例子提出了一个很有意思的问题。">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/pygments.css">
   <link rel="canonical" href="http://diabloneo.github.io//2018/04/15/golang-iteration-variables-and-goroutines-in-range-loop/">
   <link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
 </head>
@@ -61,8 +62,8 @@
         
           
         
-        <a href="/tags">Tags</a>
-        <a href="/feed.xml">RSS</a>
+        <a class="page-link" href="/tags">Tags</a>
+        <a class="page-link" href="/feed.xml">RSS</a>
       </div>
     </nav>
 
@@ -91,10 +92,12 @@
   </div>
 
   <div class="post-content" itemprop="articleBody">
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <div class="addthis_inline_share_toolbox"></div>
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
     <br />
-    <p><a href="http://devs.cloudimmunity.com/gotchas-and-common-mistakes-in-go-golang/index.html">50 Shades of Go: Traps, Gotchas, and Common Mistakes for New Golang Devs</a> 中有一个关于循环变量的<a href="http://devs.cloudimmunity.com/gotchas-and-common-mistakes-in-go-golang/index.html#closure_for_it_vars">例子</a>，这个例子提出了一个很有意思的问题。</p>
+      <p><a href="http://devs.cloudimmunity.com/gotchas-and-common-mistakes-in-go-golang/index.html">50 Shades of Go: Traps, Gotchas, and Common Mistakes for New Golang Devs</a> 中有一个关于循环变量的<a href="http://devs.cloudimmunity.com/gotchas-and-common-mistakes-in-go-golang/index.html#closure_for_it_vars">例子</a>，这个例子提出了一个很有意思的问题。</p>
 
 <p>我们知道Go在 <em>for range</em> 循环中使用同一个变量来存放循环的数据，所以在 range loop中使用goroutine时，需要注意是否引用了同一个变量。当loop range的元素是一个struct类型时，会变得更复杂。</p>
 
@@ -361,11 +364,15 @@
     </div>
 
     <br />
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <div class="addthis_inline_share_toolbox"></div>
-  </div>
-  <div class="post-comment">
     
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+  </div>
+
+  
+    <div class="post-comment">
+      
 <div id="disqus_thread"></div>
 <script>
 var disqus_config = function () {
@@ -384,7 +391,8 @@ var disqus_config = function () {
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 
 
-  </div>
+    </div>
+  
 
 </article>
 
@@ -459,8 +467,10 @@ var disqus_config = function () {
 </script>
 
     
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
   </body>
 
 </html>

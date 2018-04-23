@@ -6,12 +6,12 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>SDC 2017 Day 3 General Session</title>
-  <meta name="description" content="">
+  <title>想到什么写什么周报 第26期 - 2018-04-23</title>
+  <meta name="description" content="What’s New in MySQL 8.0? (Generally Available)">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="/css/main.css">
   <link rel="stylesheet" href="/css/pygments.css">
-  <link rel="canonical" href="http://diabloneo.github.io//2017/09/14/sdc-2017-3/">
+  <link rel="canonical" href="http://diabloneo.github.io//2018/04/23/write-what-i-have-026/">
   <link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
 </head>
 
@@ -77,12 +77,20 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">SDC 2017 Day 3 General Session</h1>
-    <p class="post-meta"><time datetime="2017-09-14T00:00:00+08:00" itemprop="datePublished">Sep 14, 2017</time></p>
+    <h1 class="post-title" itemprop="name headline">想到什么写什么周报 第26期 - 2018-04-23</h1>
+    <p class="post-meta"><time datetime="2018-04-23T00:00:00+08:00" itemprop="datePublished">Apr 23, 2018</time></p>
   </header>
 
   <div class="post-tags">
     <ul>
+      
+      <li>
+        <a href="/tags/database/">database</a>
+      </li>
+      
+      <li>
+        <a href="/tags/cloud/">cloud</a>
+      </li>
       
     </ul>
   </div>
@@ -93,47 +101,29 @@
       <div class="addthis_inline_share_toolbox"></div>
     
     <br />
-      <p><img src="http://diabloneo.github.io//assets/imgs/00016_sdc2017_day3.jpg" alt="Day3" /></p>
+      <h2 id="whats-new-in-mysql-80-generally-available">What’s New in MySQL 8.0? (Generally Available)</h2>
 
-<p>今天SDC 2017进入第三天，早上还是General Session。</p>
+<p><em><a href="https://mysqlserverteam.com/whats-new-in-mysql-8-0-generally-available/">https://mysqlserverteam.com/whats-new-in-mysql-8-0-generally-available/</a></em></p>
 
-<h2 id="impact-of-persistent-memory-on-ssds-and-fabrics">Impact of Persistent Memory on SSDs and Fabrics</h2>
+<p>MySQL 8.0已经GA了。</p>
 
-<p><a href="https://sniasdc17.pathable.com/meetings/549928">https://sniasdc17.pathable.com/meetings/549928</a></p>
+<h2 id="apple开源了foundationdb">Apple开源了FoundationDB</h2>
 
-<p>是一个联合介绍PM的session，三个公司分别介绍了他们在PM上的产品，具体的可以到他们官网上查看</p>
+<p><em><a href="https://www.foundationdb.org/blog/">https://www.foundationdb.org/blog/</a></em></p>
 
-<ul>
-  <li>
-    <p><a href="https://www.everspin.com/">https://www.everspin.com/</a></p>
-  </li>
-  <li>
-    <p><a href="http://www.newisys.com/">http://www.newisys.com/</a></p>
-  </li>
-  <li>
-    <p><a href="http://www.mobiveil.com/">http://www.mobiveil.com/</a></p>
-  </li>
-</ul>
+<p>FoundationDB是一个分布式的ACID数据库，github地址：https://github.com/apple/foundationdb</p>
 
-<h2 id="linux-optimizations-for-low-latency-block-devices">Linux Optimizations for Low Latency Block Devices</h2>
+<h2 id="100tb-capacity-and-6x-performance-improvement-with-alibaba-cloud-polardb">100TB Capacity and 6x Performance Improvement with Alibaba Cloud PolarDB</h2>
 
-<p><a href="https://sniasdc17.pathable.com/meetings/549964">https://sniasdc17.pathable.com/meetings/549964</a></p>
+<p><em><a href="https://medium.com/@Alibaba_Cloud/100tb-capacity-and-6x-performance-improvement-with-alibaba-cloud-polardb-79b270c1a481">https://medium.com/@Alibaba_Cloud/100tb-capacity-and-6x-performance-improvement-with-alibaba-cloud-polardb-79b270c1a481</a></em></p>
 
-<p><strong>Througput is easy, latency is hard</strong>。存储的性能在不断的提升，但是软件层面要提高latency是很困难的。</p>
+<p>Alibaba官方blog介绍自己的PolarDB的架构，说明如何做到MySQL 5.6的6倍性能。</p>
 
-<p>SPDK带来的latency降低有限，代价不小，不适用于普通的应用，比较适合专门做硬件的使用。kernel的I/O增加了polling机制，可以有效降低延迟，同时不增加应用的复杂度。一开始做的是不断的polling，会导致CPU 100%，后来增加了hybrid polling机制，cpu降低到58%的同时，I/O延迟和不断的polling是一样的。后续会继续改进，会在需要I/O结果时再做polling，可以进一步降低CPU。</p>
+<h2 id="cloud-sql-for-postgresql-now-generally-available-and-ready-for-your-production-workloads">Cloud SQL for PostgreSQL now generally available and ready for your production workloads</h2>
 
-<h2 id="data-and-intelligence-in-storage">Data and Intelligence in Storage</h2>
+<p><em><a href="https://cloudplatform.googleblog.com/2018/04/Cloud-SQL-for-PostgreSQL-now-generally-available-and-ready-for-your-production-workloads.html">https://cloudplatform.googleblog.com/2018/04/Cloud-SQL-for-PostgreSQL-now-generally-available-and-ready-for-your-production-workloads.html</a></em></p>
 
-<p><a href="https://sniasdc17.pathable.com/meetings/549932">https://sniasdc17.pathable.com/meetings/549932</a></p>
-
-<p>Intel的广告，介绍了Intel Rack Scale Design。</p>
-
-<h2 id="persistent-memory-new-tier-or-storage-replacement">Persistent Memory: New Tier or Storage Replacement?</h2>
-
-<p><a href="https://sniasdc17.pathable.com/meetings/549982">https://sniasdc17.pathable.com/meetings/549982</a></p>
-
-<p>这个没听。</p>
+<p>Google Cloud SQL的PostgreSQL支持现在GA了。版本是9.6，最大支持416G内存、64CPU和10TB空间。</p>
 
     <br />
 
@@ -154,8 +144,8 @@
 <div id="disqus_thread"></div>
 <script>
 var disqus_config = function () {
-  this.page.url = "http://diabloneo.github.io/2017/09/14/sdc-2017-3/"; // <--- use canonical URL
-  this.page.identifier = "/2017/09/14/sdc-2017-3";
+  this.page.url = "http://diabloneo.github.io/2018/04/23/write-what-i-have-026/"; // <--- use canonical URL
+  this.page.identifier = "/2018/04/23/write-what-i-have-026";
 };
 (function() { // DON'T EDIT BELOW THIS LINE
   var d = document, s = d.createElement('script');

@@ -10,6 +10,7 @@
   <meta name="description" content="WSGI是什么">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/pygments.css">
   <link rel="canonical" href="http://diabloneo.github.io//2015/08/09/wsgi-introduction/">
   <link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
 </head>
@@ -61,8 +62,8 @@
         
           
         
-        <a href="/tags">Tags</a>
-        <a href="/feed.xml">RSS</a>
+        <a class="page-link" href="/tags">Tags</a>
+        <a class="page-link" href="/feed.xml">RSS</a>
       </div>
     </nav>
 
@@ -91,16 +92,18 @@
   </div>
 
   <div class="post-content" itemprop="articleBody">
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <div class="addthis_inline_share_toolbox"></div>
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
     <br />
-    <h1 id="wsgi是什么">WSGI是什么</h1>
+      <h2 id="wsgi是什么">WSGI是什么</h2>
 
 <p>WSGI的全称是<em>Web Server Gateway Interface</em>，翻译过来就是<em>Web服务器网关接口</em>。具体的来说，<strong>WSGI是一个规范，定义了Web服务器如何与Python应用程序进行交互，使得使用Python写的Web应用程序可以和Web服务器对接起来</strong>。WSGI一开始是在<a href="https://www.python.org/dev/peps/pep-0333/">PEP-0333</a>中定义的，最新版本是在Python的<a href="https://www.python.org/dev/peps/pep-3333/">PEP-3333</a>定义的。</p>
 
 <p>对于初学者来说，上面那段就是废话，说了跟没说一样。本文的主要内容就是说清楚，WSGI到底是如何工作的。</p>
 
-<h2 id="为什么需要wsgi这个规范">为什么需要WSGI这个规范</h2>
+<h3 id="为什么需要wsgi这个规范">为什么需要WSGI这个规范</h3>
 
 <p>在Web部署的方案上，有一个方案是目前应用最广泛的：</p>
 
@@ -111,7 +114,7 @@
 
 <p>那么，要采用这种方案，Web服务器和应用程序之间就要知道如何进行交互。为了定义Web服务器和应用程序之间的交互过程，就形成了很多不同的规范。这种规范里最早的一个是<a href="https://zh.wikipedia.org/wiki/%E9%80%9A%E7%94%A8%E7%BD%91%E5%85%B3%E6%8E%A5%E5%8F%A3">CGI</a>(Common Gateway Interface)，1993年开发的。后来又出现了很多这样的规范。比如改进CGI性能的FasgCGI，Java专用的Servlet规范，还有Python专用的WSGI规范等。提出这些规范的目的就是为了定义统一的标准，提升程序的可移植性。在WSGI规范的最开始的PEP-333中一开始就描述了为什么需要WSGI规范。</p>
 
-<h1 id="wsgi如何工作">WSGI如何工作</h1>
+<h2 id="wsgi如何工作">WSGI如何工作</h2>
 
 <p>从上文可以知道，WSGI相当于是Web服务器和Python应用程序之间的桥梁。那么这个桥梁是如何工作的呢？首先，我们明确桥梁的作用，WSGI存在的目的有两个：</p>
 
@@ -120,7 +123,7 @@
   <li>让Python应用程序知道用户的具体请求是什么，以及如何返回结果给Web服务器。</li>
 </ol>
 
-<h2 id="wsgi中的角色">WSGI中的角色</h2>
+<h3 id="wsgi中的角色">WSGI中的角色</h3>
 
 <p>在WSGI中定义了两个角色，Web服务器端称为<strong>server</strong>或者<strong>gateway</strong>，应用程序端称为<strong>application</strong>或者<strong>framework</strong>（因为WSGI的应用程序端的规范一般都是由具体的框架来实现的）。我们下面统一使用server和application这两个术语。</p>
 
@@ -130,7 +133,7 @@
 
 <p>调用的结果会被封装成HTTP响应后再发送给客户端。</p>
 
-<h2 id="server如何调用application">server如何调用application</h2>
+<h3 id="server如何调用application">server如何调用application</h3>
 
 <p>首先，每个application的入口只有一个，也就是所有的客户端请求都同一个入口进入到应用程序。</p>
 
@@ -170,7 +173,7 @@ application = web.application(urls, globals()).wsgifunc()
 
 <p>因为application对象是唯一的入口，所以不管客户端请求的路径和数据是什么，server都是调用这个application对象，具体的客户端请求的处理有application对象完成。</p>
 
-<h2 id="application对象需要做什么">application对象需要做什么</h2>
+<h3 id="application对象需要做什么">application对象需要做什么</h3>
 
 <p>上面已经提到了，application对象需要是一个可调用对象，而且其定义需要满足如下形式：</p>
 
@@ -180,7 +183,7 @@ application = web.application(urls, globals()).wsgifunc()
 
 <p>当server按照WSGI的规范调用了application之后，application就可以开始处理客户端的请求了，处理请求之后，application对象需要返回处理结果给server端。处理请求和返回结果这两个事情，都和server调用application对象时传递的两个参数有关。</p>
 
-<h3 id="environ参数">environ参数</h3>
+<h4 id="environ参数">environ参数</h4>
 
 <p>environ参数是一个Python的字典，里面存放了所有和客户端相关的信息，这样application对象就能知道客户端请求的资源是什么，请求中带了什么数据等。environ字典包含了一些CGI规范要求的数据，以及WSGI规范新增的数据，还可能包含一些操作系统的环境变量以及Web服务器相关的环境变量。我们来看一些environ中常用的成员：</p>
 
@@ -212,7 +215,7 @@ application = web.application(urls, globals()).wsgifunc()
 
 <p>上面列出的这些内容已经包括了客户端请求的所有数据，足够application对象处理客户端请求了。</p>
 
-<h3 id="start_resposne参数">start_resposne参数</h3>
+<h4 id="start_resposne参数">start_resposne参数</h4>
 
 <p>start_response是一个可调用对象，接收两个必选参数和一个可选参数：</p>
 
@@ -224,11 +227,11 @@ application = web.application(urls, globals()).wsgifunc()
 
 <p>当application对象根据environ参数的内容执行完业务逻辑后，就需要返回结果给server端。我们知道HTTP的响应需要包含status，headers和body，所以在application对象将body作为返回值return之前，需要先调用<code class="highlighter-rouge">start_response()</code>，将status和headers的内容返回给server，这同时也是告诉server，application对象要开始返回body了。</p>
 
-<h3 id="application对象的返回值">application对象的返回值</h3>
+<h4 id="application对象的返回值">application对象的返回值</h4>
 
 <p>application对象的返回值用于为HTTP响应提供body，如果没有body，那么可以返回None。如果有body的化，那么需要返回一个可迭代的对象。server端通过遍历这个可迭代对象可以获得body的全部内容。</p>
 
-<h3 id="application-demo">application demo</h3>
+<h4 id="application-demo">application demo</h4>
 
 <p>PEP-3333中有一个application的实现demo，我把它再简化之后如下：</p>
 
@@ -241,11 +244,11 @@ application = web.application(urls, globals()).wsgifunc()
 
 <p>可以将这段代码和前面的说明对照起来理解。</p>
 
-<h2 id="再谈server如何调用application">再谈server如何调用application</h2>
+<h3 id="再谈server如何调用application">再谈server如何调用application</h3>
 
 <p>前面已经知道server如何定位到application的入口了，也知道了application的入口的形式以及application对象内部需要完成的工作。那么，我们还需要再说一下，<code class="highlighter-rouge">environ</code>和<code class="highlighter-rouge">start_response()</code>是需要在server端的生成和定义的，其中关于<code class="highlighter-rouge">start_response()</code>的部分在规范中也有明确的要求。这部分内容太长了，不适合放在本文中，有兴趣的读者可以去看下PEP-3333，里面有一段server端的demo实现。</p>
 
-<h1 id="wsgi中间件">WSGI中间件</h1>
+<h2 id="wsgi中间件">WSGI中间件</h2>
 
 <p><strong>WSGI Middleware</strong>（中间件）也是WSGI规范的一部分。上一章我们已经说明了WSGI的两个角色：server和application。那么middleware是一种运行在server和application中间的应用（一般都是Python应用）。middleware同时具备server和application角色，对于server来说，它是一个application；对于application来说，它是一个server。middleware并不修改server端和application端的规范，只是同时实现了这两个角色的功能而已。</p>
 
@@ -273,7 +276,7 @@ application = web.application(urls, globals()).wsgifunc()
 
 <p>因为Middleware能过处理所有经过的request和response，所以要做什么都可以，没有限制。比如可以检查request是否有非法内容，检查response是否有非法内容，为request加上特定的HTTP header等，这些都是可以的。</p>
 
-<h1 id="wsgi的实现和部署">WSGI的实现和部署</h1>
+<h2 id="wsgi的实现和部署">WSGI的实现和部署</h2>
 
 <p>要使用WSGI，需要分别实现server角色和application角色。</p>
 
@@ -289,11 +292,15 @@ application = web.application(urls, globals()).wsgifunc()
     </div>
 
     <br />
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <div class="addthis_inline_share_toolbox"></div>
-  </div>
-  <div class="post-comment">
     
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+  </div>
+
+  
+    <div class="post-comment">
+      
 <div id="disqus_thread"></div>
 <script>
 var disqus_config = function () {
@@ -312,7 +319,8 @@ var disqus_config = function () {
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 
 
-  </div>
+    </div>
+  
 
 </article>
 
@@ -387,8 +395,10 @@ var disqus_config = function () {
 </script>
 
     
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
   </body>
 
 </html>

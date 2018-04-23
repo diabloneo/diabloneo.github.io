@@ -10,6 +10,7 @@
   <meta name="description" content="OpenStack中的关系型数据库应用">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/pygments.css">
   <link rel="canonical" href="http://diabloneo.github.io//2016/01/06/learn-openstack-dev-skill-by-demo-06/">
   <link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
 </head>
@@ -61,8 +62,8 @@
         
           
         
-        <a href="/tags">Tags</a>
-        <a href="/feed.xml">RSS</a>
+        <a class="page-link" href="/tags">Tags</a>
+        <a class="page-link" href="/feed.xml">RSS</a>
       </div>
     </nav>
 
@@ -95,46 +96,48 @@
   </div>
 
   <div class="post-content" itemprop="articleBody">
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <div class="addthis_inline_share_toolbox"></div>
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
     <br />
-    <h1 id="openstack中的关系型数据库应用">OpenStack中的关系型数据库应用</h1>
+      <h2 id="openstack中的关系型数据库应用">OpenStack中的关系型数据库应用</h2>
 
 <p>OpenStack中的数据库应用主要是关系型数据库，主要使用的是MySQL数据库。当然也有一些NoSQL的应用，比如Ceilometer项目。就SQL数据库本身的应用而言，OpenStack的项目和其他项目并没有什么区别，也是采用ORM技术对数据进行增删改查而已。</p>
 
 <p>本文的重点是讲解OpenStack项目中对关系型数据库的应用的基础知识，更多的是涉及ORM库的使用。对于数据库的安装和配置，需要读者自己查找一下MySQL的教程，如果只是为了验证ORM的相关知识，也可以使用sqlite数据库。</p>
 
-<h2 id="数据库的选择">数据库的选择</h2>
+<h3 id="数据库的选择">数据库的选择</h3>
 
 <p>OpenStack官方推荐的保存生产数据的是MySQL数据库，在devstack项目（这个项目用于快速搭建OpenStack开发环境）中也是安装了MySQL数据库。不过，因为OpenStack的项目中没有使用特定的只有在MySQL上才能用的功能，而且所采用的ORM库SQLAlchemy也支持多种数据库，所以理论上选择PostgreSQL之类的数据库来替代MySQL也是可行的。</p>
 
 <p>另外，OpenStack项目在单元测试中使用的是sqlite的内存数据库，这样开发者运行单元测试的时候不需要安装和配置复杂的MySQL数据库，只要安装好sqlite3就可以了。而且，数据库是保存在内存中的，会提高单元测试的速度。</p>
 
-<h2 id="orm的选择">ORM的选择</h2>
+<h3 id="orm的选择">ORM的选择</h3>
 
-<h3 id="什么是orm">什么是ORM</h3>
+<h4 id="什么是orm">什么是ORM</h4>
 
 <p>ORM的全称是<strong>Object-Relational Mapping</strong>，即<strong>对象关系映射</strong>，是一种利用编程语言的对象来表示关系数据库中的数据的技术，其更形式化的定义可以参考<a href="https://en.wikipedia.org/wiki/Object-relational_mapping">Wiki页面Orject-relational mapping</a>。简单的说，ORM就是把数据库的一张表和编程语言中的一个对象对应起来，这样我们在编程语言中操作一个对象的时候，实际上就是在操作这张表，ORM（一般是一个库）负责把我们对一个对象的操作转换成对数据库的操作。</p>
 
-<h3 id="python中的orm实现">Python中的ORM实现</h3>
+<h4 id="python中的orm实现">Python中的ORM实现</h4>
 
 <p>一般来说，各种主流语言都有自己的ORM实现，一般来说也不只一种，比较出名的有Java的Hibernate，Ruby on Rails的ORM，C++的ODB等。<strong>在Python中也存在多种ORM的实现，最著名的两种是Django的Model层的ORM实现，以及SQLAlchemy库</strong>。这两种ORM实现基本上是Python中ORM的事实上的标准，如果你写Django应用，那么你就用Django自带的实现；不然，你就可以选择SQLAlchemy库。</p>
 
 <p>OpenStack基本上都是Python项目，所以在OpenStack中，ORM主要是使用了SQLAlchemy库（Keystone, Nova, Neutron等）；不过使用了Django的Horizon项目（面板）还是使用了Django自带的ORM实现。本文主要是讲解OpenStack中如何使用SQLAlchemy库，这个也是开发OpenStack项目的最基本知识。</p>
 
-<h1 id="sqlalchemy">SQLAlchemy</h1>
+<h2 id="sqlalchemy">SQLAlchemy</h2>
 
-<h2 id="sqlalchemy简介">SQLAlchemy简介</h2>
+<h3 id="sqlalchemy简介">SQLAlchemy简介</h3>
 
 <p>SQLAlchemy项目是Python中最著名的ORM实现，不仅在Python项目中也得到了广泛的应用，而且对其他语言的ORM有很大的影响。OpenStack一开始选择这个库，也是看中了它足够稳定、足够强大的特点。</p>
 
 <p>SQLAlchemy项目的官网是<a href="http://www.sqlalchemy.org/">http://www.sqlalchemy.org/</a>，目前该项目最新的版本是<strong>1.0.11</strong>，<strong>1.0</strong>系列是今年刚发的，<strong>0.9</strong>系列应该还是应用最广泛的版本。对于一般的应用来说，0.9系列和1.0系列差别不大。</p>
 
-<h2 id="关于sqlalchemy的学习">关于SQLAlchemy的学习</h2>
+<h3 id="关于sqlalchemy的学习">关于SQLAlchemy的学习</h3>
 
 <p>我个人觉得SQLAlchemy的学习难度会比Django的Model层难一些，因为一个最简单的例子也会有一些不太直观的地方，对于没用过的人来说，会比较难以理解。不过SQLAlchemy官网整理了一些比较不错的入门教程，是一个比较好的学习起点：<a href="http://www.sqlalchemy.org/library.html#tutorials">Tutorials</a>。另外，官方的Reference其实是一个很好的教程，讲了很多基本的概念，有助于理解SQLAlchemy的库的使用。Reference的地址是：<a href="http://docs.sqlalchemy.org/en/rel_1_0/">http://docs.sqlalchemy.org/en/rel_1_0/</a>，还可以直接下载PDF版本。我个人建议大家直接阅读Reference即可，阅读顺序就按照PDF文件的章节编排顺序进行。虽然这个文档很长，但是我最后发现这么做是最节约时间的。</p>
 
-<h2 id="sqlalchemy的架构">SQLAlchemy的架构</h2>
+<h3 id="sqlalchemy的架构">SQLAlchemy的架构</h3>
 
 <p>先让我们来看一下SQLAlchemy这个库的总体架构，如下图（图来自官网）所示：</p>
 
@@ -162,11 +165,11 @@
 
 <p>上面简单的总结了SQLAlchemy的架构，希望大家能够大概了解一下SQLAlchemy，在后面介绍一些相关概念时，能够知道这个概念是属于整个架构的哪个部分。</p>
 
-<h3 id="dialect和数据库客户端">Dialect和数据库客户端</h3>
+<h4 id="dialect和数据库客户端">Dialect和数据库客户端</h4>
 
 <p>上面提到了Dialect是用来对接不同的数据库驱动的，它主要负责将SQLAlchemy最后生成的数据库操作转换成对数据库驱动的调用，其中会处理一些不同数据库和不同DBAPI实现的差别。这个部分一般是SQLAlchemy的开发者关心的内容，如果你只是使用SQLAlchemy来操作数据库，那么可以不用关心这个部分。不过我们还是要来了解一下SQLAlchemy支持的和OpenStack相关的数据库驱动。</p>
 
-<h4 id="mysql">MySQL</h4>
+<h5 id="mysql">MySQL</h5>
 
 <p>OpenStack项目主要是使用MySQL，之前一直都在使用<a href="https://pypi.python.org/pypi/MySQL-python/"><strong>MySQL-Python</strong></a>驱动，因为这个驱动足够成熟和稳定。不过这个情况正在转变，有如下两个原因：</p>
 
@@ -177,19 +180,19 @@
 
 <p>为了解决这个问题，社区发起了一次对新驱动的评估，主要是评估<a href="https://pypi.python.org/pypi/PyMySQL/"><strong>PyMySQL</strong></a>驱动：<a href="https://wiki.openstack.org/wiki/PyMySQL_evaluation">PyMySQL Evaluation</a>。这个评估还在社区的邮件列表发起了好几次讨论，到目前为止的结果是：<strong>如果使用Python 2.7，那么继续使用MySQL-Python这个驱动，否则就使用PyMySQL这个驱动</strong>。<strong>PyMySQL</strong>驱动是使用纯Python写的，不仅支持Python3而且可以支持eventlet的异步。</p>
 
-<h4 id="sqlite3">SQLite3</h4>
+<h5 id="sqlite3">SQLite3</h5>
 
 <p>OpenStack项目一般会使用SQLite3数据库来运行单元测试。OpenStack在Python2.7下会使用<a href="https://pypi.python.org/pypi/pysqlite/"><strong>pysqlite</strong></a>驱动，不过这个驱动和标准库中的<strong>sqlite3</strong>模块是一样的，也就是Python内置了SQLite3的驱动，你无需选择其他的驱动。</p>
 
-<h2 id="sqlalchemy的基本概念和使用">SQLAlchemy的基本概念和使用</h2>
+<h3 id="sqlalchemy的基本概念和使用">SQLAlchemy的基本概念和使用</h3>
 
 <p>使用SQLAlchemy大体上分为三个步骤：连接到数据库，定义数据模型，执行数据操作。</p>
 
-<h3 id="连接到数据库">连接到数据库</h3>
+<h4 id="连接到数据库">连接到数据库</h4>
 
 <p>在你的应用可以使用数据库前，你要先定义好数据库的连接，包括数据库在哪里，用什么账号访问等。所有的这些工作都是通过Engine对象来进行的（记得上面提到的Engine了么？）。</p>
 
-<h4 id="数据库url">数据库URL</h4>
+<h5 id="数据库url">数据库URL</h5>
 
 <p>SQLAlchemy使用URL的方式来指定要访问的数据库，整个URL的具体格式如下：</p>
 
@@ -198,7 +201,7 @@
 
 <p>其中，<strong>dialect</strong>就是指DBMS的名称，一般可选的值有：<em>postgresql</em>, <em>mysql</em>, <em>sqlite</em>等。<strong>driver</strong>就是指驱动的名称，如果不指定，SQLAlchemy会使用默认值。<em>database</em>就是指DBMS中的一个数据库，一般是指通过<em>CREATE DATABASE</em>语句创建的数据库。其他的参数就不言而喻了。dialect和driver参数有很多选择，具体的可以参考官方文档：<a href="http://docs.sqlalchemy.org/en/rel_1_0/core/engines.html#database-urls">Database URLs</a></p>
 
-<h4 id="创建engine对象">创建Engine对象</h4>
+<h5 id="创建engine对象">创建Engine对象</h5>
 
 <p>确定了要连接的数据库信息后，就可以通过<code class="highlighter-rouge">create_engine</code>函数来创建一个<strong>Engine</strong>对象了。</p>
 
@@ -219,17 +222,17 @@
 
 <p>一般来说，Engine对象会默认启用连接池，会根据不同的dialect来选择不同的默认值。一般来说，你是不用考虑连接池的配置的，默认情况都配置好了。想了解关于连接池的更多内容，请查看官方文档：<a href="http://docs.sqlalchemy.org/en/rel_1_0/core/pooling.html">Connection Pooling</a>。</p>
 
-<h4 id="使用engine对象">使用Engine对象</h4>
+<h5 id="使用engine对象">使用Engine对象</h5>
 
 <p>一般来说，应用程序的代码是不直接使用Engine对象的，而是把Engine对象交给ORM去使用，或者创建session对象来使用。不过，我们还是来简单看一下Engine对象能做什么事情。</p>
 
 <p>应用程序可以调用Engine对象的<code class="highlighter-rouge">connect()</code>方法来获得一个到数据库的连接对象；然后可以在这个连接对象上调用<code class="highlighter-rouge">execute()</code>来执行SQL语句，调用<code class="highlighter-rouge">begin()</code>、<code class="highlighter-rouge">commit()</code>、<code class="highlighter-rouge">rollback()</code>来执行事务操作；调用<code class="highlighter-rouge">close()</code>来关闭连接。Engine对象也有一些快捷方法来直接执行上述操作，避免了每次都要调用<code class="highlighter-rouge">connect()</code>来获取连接这种繁琐的代码，比如<code class="highlighter-rouge">engine.execute()</code>, <code class="highlighter-rouge">with engine.begin()</code>等。</p>
 
-<h3 id="定义数据模型">定义数据模型</h3>
+<h4 id="定义数据模型">定义数据模型</h4>
 
 <p>有了数据库连接后，我们就可以来定义数据模型了，也就是定义映射数据库表的Python类。在SQLAlchemy中，这是通过<strong>Declarative</strong>的系统来完成的。</p>
 
-<h4 id="declarative系统">Declarative系统</h4>
+<h5 id="declarative系统">Declarative系统</h5>
 
 <p>根据官方文档的描述，SQLAlchemy一开始是采用下面这种方式来定义ORM的：</p>
 
@@ -247,13 +250,13 @@
 
 <span class="n">Base</span> <span class="o">=</span> <span class="n">declarative_base</span><span class="p">()</span></code></pre></figure>
 
-<h4 id="定义映射类">定义映射类</h4>
+<h5 id="定义映射类">定义映射类</h5>
 
 <p>现在我们可以开始创建映射类了。假设我们在数据库中有一个表Person，这个表有两个列，分别是id和name，那么我们创建的映射类如下：</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Column</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">String</span>
 
-<span class="c"># 这里的基类Base是上面我们通过declarative_base函数生成的</span>
+<span class="c">## 这里的基类Base是上面我们通过declarative_base函数生成的</span>
 <span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
     <span class="n">__tablename__</span> <span class="o">=</span> <span class="s">'person'</span>
 
@@ -272,7 +275,7 @@ Out[6]: Table('person', MetaData(bind=None),
 
 <p>定义映射类是我们使用ORM的最主要的功能之一，不仅可以指定单表的映射，还能够指定表之间的关系。由于篇幅限制，我们在本文就不展开讲了。</p>
 
-<h3 id="schema和metadata">Schema和Metadata</h3>
+<h4 id="schema和metadata">Schema和Metadata</h4>
 
 <p>关于Table对象，我们上面也提到了，它属于SQLAlchemy的core层的<strong>Schema/Types</strong>这个部分。SQLAlchemy中的Schema可以理解为和DDL相关的一套体系，它告诉SQLAlchemy的其他部分，数据库中的表是如何定义的。这个相当于我们在MySQL中使用<code class="highlighter-rouge">describe</code>命令，或者在PostgreSQL中使用<code class="highlighter-rouge">\d</code>命令。</p>
 
@@ -288,7 +291,7 @@ Out[6]: Table('person', MetaData(bind=None),
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">Base</span> <span class="o">=</span> <span class="n">declarative_base</span><span class="p">()</span>
 
-<span class="c"># 基于Base定义映射类</span>
+<span class="c">## 基于Base定义映射类</span>
 
 <span class="n">Base</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span></code></pre></figure>
 
@@ -333,7 +336,7 @@ CREATE TABLE person <span class="o">(</span>
 
 <p>关于Metadata的更多信息，请查看官方文档：<a href="http://docs.sqlalchemy.org/en/rel_1_0/core/schema.html">Schema Definition Language</a>。</p>
 
-<h3 id="会话">会话</h3>
+<h4 id="会话">会话</h4>
 
 <p>会话(<strong>session</strong>)是我们通过SQLAlchemy来操作数据库的入口。我们前面有介绍过SQLAlchemy的架构，session是属于ORM层的。Session的功能是管理我们的程序和数据库之间的会话，它利用Engine的连接管理功能来实现会话。我们在上文有提到，我们创建了Engine对象，但是一般不直接使用它，而是把它交给ORM去使用。其中，通过session来使用Engine就是一个常用的方式。</p>
 
@@ -346,11 +349,11 @@ CREATE TABLE person <span class="o">(</span>
 
 <p>我们通过<code class="highlighter-rouge">sessionmaker</code>的<em>bind</em>参数把Engine对象传递给<code class="highlighter-rouge">DBSession</code>去管理。然后，<code class="highlighter-rouge">DBSession</code>实例化的对象<code class="highlighter-rouge">session</code>就能被我们使用了。</p>
 
-<h3 id="crud">CRUD</h3>
+<h4 id="crud">CRUD</h4>
 
 <p><strong>CRUD</strong>就是CREATE, READ, UPDATE, DELETE，增删改查。这个也是SQLAlchemy中最常用的功能，而且都是通过上一小节中的<code class="highlighter-rouge">session</code>对象来使用的。我们这简单的介绍一下这四个操作，后面会给出官方文档的位置。</p>
 
-<h4 id="create">Create</h4>
+<h5 id="create">Create</h5>
 
 <p>在数据库中插入一条记录，是通过session的<code class="highlighter-rouge">add()</code>方法来实现的，你需要先创建一个映射类的实例，然后调用<code class="highlighter-rouge">session.add()</code>方法，然后调用<code class="highlighter-rouge">session.commit()</code>方法提交你的事务（关于事务，我们下面会专门讲解）：</p>
 
@@ -358,23 +361,23 @@ CREATE TABLE person <span class="o">(</span>
 <span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">new_person</span><span class="p">)</span>
 <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></code></pre></figure>
 
-<h4 id="delete">Delete</h4>
+<h5 id="delete">Delete</h5>
 
 <p>删除操作和创建操作差不多，是把一个映射类实例传递给<code class="highlighter-rouge">session.delete()</code>方法。</p>
 
-<h4 id="update">Update</h4>
+<h5 id="update">Update</h5>
 
 <p>更新一条记录需要先使用查询操作获得一条记录对应的对象，然后修改对象的属性，再通过<code class="highlighter-rouge">session.add()</code>方法来完成更新操作。</p>
 
-<h4 id="read">Read</h4>
+<h5 id="read">Read</h5>
 
 <p>查询操作，一般称为query，在SQLAlchemy中一般是通过<strong>Query</strong>对象来完成的。我们可以通过<code class="highlighter-rouge">session.query()</code>方法来创建一个Query对象，然后调用Query对象的众多方法来完成查询操作。</p>
 
-<h3 id="事务">事务</h3>
+<h4 id="事务">事务</h4>
 
 <p>使用session，就会涉及到事务，我们的应用程序也会有很多事务操作的要求。当你调用一个session的方法，导致session执行一条SQL语句时，它会自动开始一个事务，直到你下次调用<code class="highlighter-rouge">session.commit()</code>或者<code class="highlighter-rouge">session.rollback()</code>，它就会结束这个事务。你也可以显示的调用<code class="highlighter-rouge">session.begin()</code>来开始一个事务，并且<code class="highlighter-rouge">session.begin()</code>还可以配合Python的with来使用。</p>
 
-<h3 id="会话-crud-事务的小结">会话, CRUD, 事务的小结</h3>
+<h4 id="会话-crud-事务的小结">会话, CRUD, 事务的小结</h4>
 
 <p>上面关于session, CRUD和事务的内容写的比较少，因为这些功能的内容很多，而且官方文档也写得很全面，本文就不做一些重复说明了。我们会在下一篇文章中通过webdemo的代码来看看如何使用这些功能。</p>
 
@@ -384,7 +387,7 @@ CREATE TABLE person <span class="o">(</span>
   <li><a href="http://docs.sqlalchemy.org/en/rel_1_0/orm/session_transaction.html">Session中的事务管理</a></li>
 </ul>
 
-<h1 id="总结">总结</h1>
+<h2 id="总结">总结</h2>
 
 <p>本文介绍了OpenStack中和数据库相关的一些知识，重点讲解了SQLAlchemy这个库的基本概念和架构。下一篇文章，我们会通过demo来实际项目中如何使用SQLAlchemy。</p>
 
@@ -396,11 +399,15 @@ CREATE TABLE person <span class="o">(</span>
     </div>
 
     <br />
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <div class="addthis_inline_share_toolbox"></div>
-  </div>
-  <div class="post-comment">
     
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+  </div>
+
+  
+    <div class="post-comment">
+      
 <div id="disqus_thread"></div>
 <script>
 var disqus_config = function () {
@@ -419,7 +426,8 @@ var disqus_config = function () {
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 
 
-  </div>
+    </div>
+  
 
 </article>
 
@@ -494,8 +502,10 @@ var disqus_config = function () {
 </script>
 
     
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
   </body>
 
 </html>

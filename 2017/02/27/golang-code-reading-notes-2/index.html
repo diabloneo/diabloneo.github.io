@@ -10,6 +10,7 @@
   <meta name="description" content="在上一篇文章go build(1)中，我们已经来到了cmd/go/pkg.go文件的loadImport函数中，在这个函数里，会调用buildContext.Import()方法来载入一个package的信息。本文会深入的看一下这个buildContext.Import()中的逻辑。">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/pygments.css">
   <link rel="canonical" href="http://diabloneo.github.io//2017/02/27/golang-code-reading-notes-2/">
   <link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
 </head>
@@ -61,8 +62,8 @@
         
           
         
-        <a href="/tags">Tags</a>
-        <a href="/feed.xml">RSS</a>
+        <a class="page-link" href="/tags">Tags</a>
+        <a class="page-link" href="/feed.xml">RSS</a>
       </div>
     </nav>
 
@@ -87,12 +88,14 @@
   </div>
 
   <div class="post-content" itemprop="articleBody">
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <div class="addthis_inline_share_toolbox"></div>
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
     <br />
-    <p>在<a href="/2017/02/26/golang-code-reading-notes-1/">上一篇文章go build(1)</a>中，我们已经来到了<em>cmd/go/pkg.go</em>文件的<code class="highlighter-rouge">loadImport</code>函数中，在这个函数里，会调用<code class="highlighter-rouge">buildContext.Import()</code>方法来载入一个package的信息。本文会深入的看一下这个<code class="highlighter-rouge">buildContext.Import()</code>中的逻辑。</p>
+      <p>在<a href="/2017/02/26/golang-code-reading-notes-1/">上一篇文章go build(1)</a>中，我们已经来到了<em>cmd/go/pkg.go</em>文件的<code class="highlighter-rouge">loadImport</code>函数中，在这个函数里，会调用<code class="highlighter-rouge">buildContext.Import()</code>方法来载入一个package的信息。本文会深入的看一下这个<code class="highlighter-rouge">buildContext.Import()</code>中的逻辑。</p>
 
-<h1 id="gobuildcontext的import方法"><code class="highlighter-rouge">go/build.Context</code>的<code class="highlighter-rouge">Import</code>方法</h1>
+<h2 id="gobuildcontext的import方法"><code class="highlighter-rouge">go/build.Context</code>的<code class="highlighter-rouge">Import</code>方法</h2>
 
 <p>这个方法位于<em>go/build/build.go</em>文件中，是<code class="highlighter-rouge">Context</code>对象的一个导出接口。该接口的声明是</p>
 
@@ -117,7 +120,7 @@
 
 <p><code class="highlighter-rouge">Import</code>方法工作就是生产一个<code class="highlighter-rouge">go/build.Package</code>对象（在本文中我们简称为<code class="highlighter-rouge">Package</code>对象，在上一篇文章中还有一个<code class="highlighter-rouge">cmd/go.Package</code>对象，不要弄混了）。<code class="highlighter-rouge">Import</code>方法的逻辑主要分为几块，我们分别来看。</p>
 
-<h2 id="设置构建结果的目标路径">设置构建结果的目标路径</h2>
+<h3 id="设置构建结果的目标路径">设置构建结果的目标路径</h3>
 
 <p>当要构建一个package的时候，就要知道构建结果的存放位置，包括最终结果和中间结果。这里首先会设置设置两个变量的值。</p>
 
@@ -129,7 +132,7 @@
 
 <p>最后，当<code class="highlighter-rouge">Import</code>返回前，会把这些路径设置到<code class="highlighter-rouge">Package</code>对象中。其中<code class="highlighter-rouge">PkgObj</code>成员用来存放package构建结果的完整存放路径，类似<em>GOPATH/pkg/linux_amd64/goexample/hello.a</em>。</p>
 
-<h2 id="查找package的位置">查找package的位置</h2>
+<h3 id="查找package的位置">查找package的位置</h3>
 
 <p>接下来，<code class="highlighter-rouge">Import</code>方法会根据是否是local import来查找package的位置，这里我们只看非local import的情况。按照下面的顺序来查找：</p>
 
@@ -142,7 +145,7 @@
 
 <p>找到了之后，设置<code class="highlighter-rouge">package</code>对象的<code class="highlighter-rouge">Root</code>为包含这个package的GOROOT或者GOPATH的路径，设置<code class="highlighter-rouge">package</code>对象的<code class="highlighter-rouge">Dir</code>为这个package的完整路径（绝对路径）。</p>
 
-<h2 id="found标签下的处理"><code class="highlighter-rouge">Found</code>标签下的处理</h2>
+<h3 id="found标签下的处理"><code class="highlighter-rouge">Found</code>标签下的处理</h3>
 
 <p>现在，已经找到了package所在的位置。接下来就要处理package的内容。在<code class="highlighter-rouge">Found</code>标签开始的地方，先读取package目录下的所有文件，然后针对每个文件进行一段复杂的处理。所有的文件都处理过后，就收集了这个package的绝大部分信息，然后再进行一些汇总处理。这里的重点是针对每个文件的处理过程。</p>
 
@@ -208,7 +211,7 @@
 
 <p>针对每个文件的处理流程结束后，就把记录的信息设置到要返回的<code class="highlighter-rouge">Package</code>对象中。经过这些处理，我们得到的<code class="highlighter-rouge">Package</code>对象中记录了这个package的基本信息，包括这个package中包含哪些文件、package名称以及这个package的依赖等。</p>
 
-<h2 id="小结">小结</h2>
+<h3 id="小结">小结</h3>
 
 <p>经过上面这些处理，当<code class="highlighter-rouge">go/build.Context</code>的<code class="highlighter-rouge">Import</code>方法成功返回时，会给调用者一个<code class="highlighter-rouge">go/build.Package</code>对象，这个对象会包含这个package的基本信息，以及这个package的依赖信息。</p>
 
@@ -219,11 +222,15 @@
     </div>
 
     <br />
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <div class="addthis_inline_share_toolbox"></div>
-  </div>
-  <div class="post-comment">
     
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+  </div>
+
+  
+    <div class="post-comment">
+      
 <div id="disqus_thread"></div>
 <script>
 var disqus_config = function () {
@@ -242,7 +249,8 @@ var disqus_config = function () {
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 
 
-  </div>
+    </div>
+  
 
 </article>
 
@@ -317,8 +325,10 @@ var disqus_config = function () {
 </script>
 
     
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
   </body>
 
 </html>

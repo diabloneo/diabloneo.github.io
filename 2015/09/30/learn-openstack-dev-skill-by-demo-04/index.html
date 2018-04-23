@@ -10,6 +10,7 @@
   <meta name="description" content="上一篇文章我们了解了一个巨啰嗦的框架：Paste + PasteDeploy + Routes + WebOb。后来OpenStack社区的人受不了这么啰嗦的代码了，决定换一个框架，他们最终选中了Pecan。Pecan框架相比上一篇文章的啰嗦框架有如下好处：">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/pygments.css">
   <link rel="canonical" href="http://diabloneo.github.io//2015/09/30/learn-openstack-dev-skill-by-demo-04/">
   <link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
 </head>
@@ -61,8 +62,8 @@
         
           
         
-        <a href="/tags">Tags</a>
-        <a href="/feed.xml">RSS</a>
+        <a class="page-link" href="/tags">Tags</a>
+        <a class="page-link" href="/feed.xml">RSS</a>
       </div>
     </nav>
 
@@ -95,10 +96,12 @@
   </div>
 
   <div class="post-content" itemprop="articleBody">
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <div class="addthis_inline_share_toolbox"></div>
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
     <br />
-    <p>上一篇文章我们了解了一个巨啰嗦的框架：Paste + PasteDeploy + Routes + WebOb。后来OpenStack社区的人受不了这么啰嗦的代码了，决定换一个框架，他们最终选中了<strong>Pecan</strong>。Pecan框架相比上一篇文章的啰嗦框架有如下好处：</p>
+      <p>上一篇文章我们了解了一个巨啰嗦的框架：Paste + PasteDeploy + Routes + WebOb。后来OpenStack社区的人受不了这么啰嗦的代码了，决定换一个框架，他们最终选中了<strong>Pecan</strong>。Pecan框架相比上一篇文章的啰嗦框架有如下好处：</p>
 
 <ul>
   <li>不用自己写WSGI application了</li>
@@ -107,11 +110,11 @@
 
 <p>总的来说，用上Pecan框架以后，很多重复的代码不用写了，开发人员可以专注于业务，也就是实现每个API的功能。</p>
 
-<h1 id="pecan">Pecan</h1>
+<h2 id="pecan">Pecan</h2>
 
 <p>Pecan框架的目标是实现一个采用对象分发方式进行URL路由的轻量级Web框架。它非常专注于自己的目标，它的大部分功能都和URL路由以及请求和响应的处理相关，而不去实现模板、安全以及数据库层，这些东西都可以通过其他的库来实现。关于Pecan的更多信息，可以查看文档：<a href="https://pecan.readthedocs.org/en/latest/index.html">https://pecan.readthedocs.org/en/latest/index.html</a>。本文以OpenStack的magnum项目为例来说明Pecan项目在实际中的应用，但是本文不会详细讲解Pecan的各个方面，一些细节请读者阅读Pecan的文档。</p>
 
-<h2 id="项目中的代码结构">项目中的代码结构</h2>
+<h3 id="项目中的代码结构">项目中的代码结构</h3>
 
 <p>使用Pecan框架时，OpenStack项目一般会把API服务的实现都放在一个<strong>api</strong>目录下，比如magnum项目是这样的：</p>
 
@@ -162,7 +165,7 @@ magnum/api
   <li>controllers/v1/   这个目录对应v1版本的API的控制器。如果有多个版本的API，你一般能看到v2等目录。</li>
 </ul>
 
-<h2 id="代码变少了application的配置">代码变少了：application的配置</h2>
+<h3 id="代码变少了application的配置">代码变少了：application的配置</h3>
 
 <p>Pecan的配置很容易，通过一个Python源码式的配置文件就可以完成基本的配置。这个配置的主要目的是指定应用程序的root，然后用于生成WSGI application。我们来看Magnum项目的例子。Magnum项目有个API服务是用Pecan实现的，在<em>magnum/api/config.py</em>文件中可以找到这个文件，主要内容如下：</p>
 
@@ -211,7 +214,7 @@ magnum/api
 
 <p>从Magnum这个实际的例子可以看出，使用了Pecan之后，我们不再需要自己写那些冗余的WSGI application代码了，直接调用Pecan的<code class="highlighter-rouge">make_app()</code>函数就能完成这些工作。另外，对于之前使用PasteDeploy时用到的很多WSGI中间件，可以选择使用Pecan的hooks机制来实现，也选择使用WSGI中间件的方式来实现。在Magnum的API服务就同时使用了这两种方式。其实，Pecan还可以和PasteDeploy一起使用，Ceilometer项目就是这么做的，大家可以看看。</p>
 
-<h2 id="确定路由变得容易了对象分发式的路由">确定路由变得容易了：对象分发式的路由</h2>
+<h3 id="确定路由变得容易了对象分发式的路由">确定路由变得容易了：对象分发式的路由</h3>
 
 <p>Pecan不仅缩减了生成WSGI application的代码，而且也让开发人员更容易的指定一个application的路由。Pecan采用了一种对象分发风格（<strong>object-dispatch style</strong>）的路由模式。我们直接通过例子来解释这种路由模式，还是以Magnum项目为例。</p>
 
@@ -326,7 +329,7 @@ magnum/api
 
 <p>看了上面的3个controller之后，你应该能大概明白Pecan是如何对URL进行路由的。这种路由方式就是对象分发：<strong>根据类属性，包括数据属性和方法属性来决定如何路由一个HTTP请求</strong>。Pecan的文档中对请求的路由有专门的描述，要想掌握Pecan的路由还是要完整的看一下官方文档。</p>
 
-<h2 id="内置restful支持">内置RESTful支持</h2>
+<h3 id="内置restful支持">内置RESTful支持</h3>
 
 <p>我们上面举例的controller都是继承自<code class="highlighter-rouge">pecan.rest.RestController</code>，这种controller称为<strong>RESTful controller</strong>，专门用于实现RESTful API的，因此在OpenStack中使用特别多。Pecan还支持普通的controller，称为<strong>Generic controller</strong>。Generic controller继承自object对象，默认没有实现对RESTful请求的方法。简单的说，RESTful controller帮我们规定好了<code class="highlighter-rouge">get_one()</code>, <code class="highlighter-rouge">get_all()</code>, <code class="highlighter-rouge">get()</code>, <code class="highlighter-rouge">post()</code>等方法对应的HTTP请求，而Generic controller则没有。关于这两种controller的区别，可以看官方文档<a href="https://pecan.readthedocs.org/en/latest/rest.html">Writing RESTful Web Services with Generic Controllers</a>，有很清楚的示例。</p>
 
@@ -347,13 +350,13 @@ magnum/api
 hello% 
 </code></pre></div></div>
 
-<h2 id="那么http请求和http响应呢">那么HTTP请求和HTTP响应呢？</h2>
+<h3 id="那么http请求和http响应呢">那么HTTP请求和HTTP响应呢？</h3>
 
 <p>上面讲了这么多，我们都没有说明在Pecan中如何处理请求和如何返回响应。这个将在下一章中说明，同时我们会引入一个新的库<strong>WSME</strong>。</p>
 
-<h1 id="wsme">WSME</h1>
+<h2 id="wsme">WSME</h2>
 
-<h2 id="pecan对请求和响应的处理">Pecan对请求和响应的处理</h2>
+<h3 id="pecan对请求和响应的处理">Pecan对请求和响应的处理</h3>
 
 <p>在开始提到WSME之前，我们先来看下Pecan自己对HTTP请求和响应的处理。这样你能更好的理解为什么会再引入一个WSME库。</p>
 
@@ -423,7 +426,7 @@ one,two,three
 foo
 </code></pre></div></div>
 
-<h2 id="返回json还是html">返回JSON还是HTML？</h2>
+<h3 id="返回json还是html">返回JSON还是HTML？</h3>
 
 <p>如果你不是明确的返回一个Response对象，那么Pecan中方法的返回内容类型就是由<code class="highlighter-rouge">expose()</code>装饰器决定的。默认情况下，控制器的方法返回的content-type是HTML。</p>
 
@@ -566,15 +569,15 @@ hello%
 
 <p>看过参数的解释后，你应该能大概了解<code class="highlighter-rouge">expose()</code>函数是如何控制HTTP响应的内容和类型的。</p>
 
-<h2 id="用wsme来做什么">用WSME来做什么？</h2>
+<h3 id="用wsme来做什么">用WSME来做什么？</h3>
 
 <p>上面两节已经说明了Pecan可以比较好的处理HTTP请求中的参数以及控制HTTP返回值。那么为什么我们还需要WSME呢？因为Pecan在做下面这个事情的时候比较麻烦：<strong>请求参数和响应内容的类型检查</strong>（英文简称就是<strong>typing</strong>）。当然，做是可以做的，不过你需要自己访问pecan.request和pecan.response，然后检查指定的值的类型。WSME就是为解决这个问题而生的，而且适用场景就是RESTful API。</p>
 
-<h2 id="wsme简介">WSME简介</h2>
+<h3 id="wsme简介">WSME简介</h3>
 
 <p>WSME的全称是<strong>Web Service Made Easy</strong>，是专门用于实现REST服务的typing库，让你不需要直接操作请求和响应，而且刚好和Pecan结合得非常好，所以OpenStack的很多项目都使用了Pecan + WSME的组合来实现API（好吧，我看过的项目，用了Pecan的都用了WSME）。WSME的理念是：在大部分情况下，Web服务的输入和输出对数据类型的要求都是严格的。所以它就专门解决了这个事情，然后把其他事情都交给其他框架去实现。因此，一般WSME都是和其他框架配合使用的，支持Pecan、Flask等。WSME的文档地址是<a href="http://wsme.readthedocs.org/en/latest/index.html">http://wsme.readthedocs.org/en/latest/index.html</a>。</p>
 
-<h2 id="wsme的使用">WSME的使用</h2>
+<h3 id="wsme的使用">WSME的使用</h3>
 
 <p>用了WSME后的好处是什么呢？WSME会自动帮你检查HTTP请求和响应中的数据是否符合预先设定好的要求。WSME的主要方式是通过装饰器来控制controller方法的输入和输出。WSME中主要使用两个控制器：</p>
 
@@ -651,11 +654,15 @@ hello%
     </div>
 
     <br />
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <div class="addthis_inline_share_toolbox"></div>
-  </div>
-  <div class="post-comment">
     
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+  </div>
+
+  
+    <div class="post-comment">
+      
 <div id="disqus_thread"></div>
 <script>
 var disqus_config = function () {
@@ -674,7 +681,8 @@ var disqus_config = function () {
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 
 
-  </div>
+    </div>
+  
 
 </article>
 
@@ -749,8 +757,10 @@ var disqus_config = function () {
 </script>
 
     
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
   </body>
 
 </html>
