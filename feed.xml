@@ -6,8 +6,8 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 23 Apr 2018 22:21:30 +0800</pubDate>
-    <lastBuildDate>Mon, 23 Apr 2018 22:21:30 +0800</lastBuildDate>
+    <pubDate>Mon, 23 Apr 2018 22:47:46 +0800</pubDate>
+    <lastBuildDate>Mon, 23 Apr 2018 22:47:46 +0800</lastBuildDate>
     <generator>Jekyll v3.7.3</generator>
     
       <item>
@@ -16,13 +16,13 @@
 
 &lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://mysqlserverteam.com/whats-new-in-mysql-8-0-generally-available/&quot;&gt;https://mysqlserverteam.com/whats-new-in-mysql-8-0-generally-available/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 
-&lt;p&gt;MySQL 8.0已经GA了。&lt;/p&gt;
+&lt;p&gt;MySQL 8.0 已经 GA 了。&lt;/p&gt;
 
 &lt;h2 id=&quot;apple开源了foundationdb&quot;&gt;Apple开源了FoundationDB&lt;/h2&gt;
 
 &lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.foundationdb.org/blog/&quot;&gt;https://www.foundationdb.org/blog/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 
-&lt;p&gt;FoundationDB是一个分布式的ACID数据库，github地址：https://github.com/apple/foundationdb&lt;/p&gt;
+&lt;p&gt;FoundationDB 是一个分布式的 ACID 数据库，github 地址：&lt;em&gt;&lt;a href=&quot;https://github.com/apple/foundationdb&quot;&gt;https://github.com/apple/foundationdb&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;100tb-capacity-and-6x-performance-improvement-with-alibaba-cloud-polardb&quot;&gt;100TB Capacity and 6x Performance Improvement with Alibaba Cloud PolarDB&lt;/h2&gt;
 
@@ -34,7 +34,7 @@
 
 &lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://cloudplatform.googleblog.com/2018/04/Cloud-SQL-for-PostgreSQL-now-generally-available-and-ready-for-your-production-workloads.html&quot;&gt;https://cloudplatform.googleblog.com/2018/04/Cloud-SQL-for-PostgreSQL-now-generally-available-and-ready-for-your-production-workloads.html&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 
-&lt;p&gt;Google Cloud SQL的PostgreSQL支持现在GA了。版本是9.6，最大支持416G内存、64CPU和10TB空间。&lt;/p&gt;
+&lt;p&gt;Google Cloud SQL 的 PostgreSQL 支持现在 GA 了。版本是 9.6，最大支持 416G 内存、64CPU 和 10TB 空间。&lt;/p&gt;
 </description>
         <pubDate>Mon, 23 Apr 2018 00:00:00 +0800</pubDate>
         <link>http://diabloneo.github.io//2018/04/23/write-what-i-have-026/</link>
