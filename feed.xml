@@ -6,9 +6,211 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 24 Apr 2018 22:50:12 +0800</pubDate>
-    <lastBuildDate>Tue, 24 Apr 2018 22:50:12 +0800</lastBuildDate>
+    <pubDate>Mon, 14 May 2018 23:36:25 +0800</pubDate>
+    <lastBuildDate>Mon, 14 May 2018 23:36:25 +0800</lastBuildDate>
     <generator>Jekyll v3.7.3</generator>
+    
+      <item>
+        <title>XFS BTree</title>
+        <description>&lt;p&gt;代码版本： &lt;strong&gt;v4.15.1&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;术语：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;block&lt;/strong&gt;：表示4KB的block。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;BB&lt;/strong&gt;：表示XFS的basic block概念，长度一般是512B。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;节点&lt;/strong&gt;：表示btree中的一个节点，存储在一个block中。节点分为叶子节点和非叶子节点。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;level&lt;/strong&gt;：表示一个节点在btree中的层级，第0级是叶子节点，第N级节点的父节点是N+1级。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;record&lt;/strong&gt;：表示叶子节点中存储的数据。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;key&lt;/strong&gt;：非叶子节点中用来进行查找的key。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;ptr&lt;/strong&gt;：非叶子节点中存储的节点指针，用来表示一个节点的位置，因为一个节点就是一个block，所以节点指针的值是block number。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;btree的数据组织&quot;&gt;BTree的数据组织&lt;/h2&gt;
+
+&lt;p&gt;XFS的btree的每个节点保存在一个block中，每个节点可以包含多个记录。节点分为叶子节点和非叶子节点。&lt;/p&gt;
+
+&lt;h3 id=&quot;叶子节点&quot;&gt;叶子节点&lt;/h3&gt;
+
+&lt;p&gt;BTree的叶子节点只需要保存数据。不同类型的btree的数据格式不一样，本文以BNO btree和CNT btree为例，所以叶子节点保存的数据的数据结构为&lt;code class=&quot;highlighter-rouge&quot;&gt;xfs_alloc_rec_t&lt;/code&gt;。一个叶子节点的数据存储方式如下：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;   header             data1                   dataN
++-----------------+-----------------+-----+-----------------+
+| xfs_btree_block | xfs_alloc_rec_t | ... | xfs_alloc_rec_t |
++-----------------+-----------------+-----+-----------------+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;叶子节点使用&lt;code class=&quot;highlighter-rouge&quot;&gt;xfs_alloc_rec_t&lt;/code&gt;类型存储数据，因为是用来管理文件系统的block的，所以其内容就是代表一定数量的连续的block：&lt;/p&gt;
+
+&lt;h3 id=&quot;非叶子节点&quot;&gt;非叶子节点&lt;/h3&gt;
+
+&lt;p&gt;BTree的非叶子节点保存key和节点指针。在BNO btree和CNT btree中，key的类型为&lt;code class=&quot;highlighter-rouge&quot;&gt;xfs_alloc_key_t&lt;/code&gt;，节点指针的类型为&lt;code class=&quot;highlighter-rouge&quot;&gt;xfs_alloc_ptr_t&lt;/code&gt;。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;   header             key1                   keyN              ptr1                    ptrN
++-----------------+-----------------+-----+-----------------+-----------------+-----+-----------------+
+| xfs_btree_block | xfs_alloc_key_t | ... | xfs_alloc_key_t | xfs_alloc_ptr_t | ... | xfs_alloc_ptr_t |
++-----------------+-----------------+-----+-----------------+-----------------+-----+-----------------+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;在非叶子节点，header之后，先存储一定数量的key，这些key用于比较查找一个值在下一级节点的位置；key之后，存储和key数量一样多的ptr，每个ptr存储对应key所指向的下一级节点的block number。&lt;/p&gt;
+
+&lt;h3 id=&quot;节点header&quot;&gt;节点header&lt;/h3&gt;
+
+&lt;p&gt;不论是叶子节点还是非叶子节点，其header都是&lt;code class=&quot;highlighter-rouge&quot;&gt;struc xfs_btree_block&lt;/code&gt;类型：&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xfs_btree_block&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;__be32&lt;/span&gt;		&lt;span class=&quot;n&quot;&gt;bb_magic&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;	&lt;span class=&quot;cm&quot;&gt;/* magic number for block type */&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;__be16&lt;/span&gt;		&lt;span class=&quot;n&quot;&gt;bb_level&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;	&lt;span class=&quot;cm&quot;&gt;/* 0 is a leaf */&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;__be16&lt;/span&gt;		&lt;span class=&quot;n&quot;&gt;bb_numrecs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;	&lt;span class=&quot;cm&quot;&gt;/* current # of data records */&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;union&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xfs_btree_block_shdr&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xfs_btree_block_lhdr&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bb_u&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;				&lt;span class=&quot;cm&quot;&gt;/* rest */&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h2 id=&quot;重要数据结构&quot;&gt;重要数据结构&lt;/h2&gt;
+
+&lt;h3 id=&quot;xfs_btree_cur&quot;&gt;xfs_btree_cur&lt;/h3&gt;
+
+&lt;p&gt;这个数据结构表示一个btree的游标，在btree进行搜索和修改操作时，需要用游标来跟踪当前节点在btree的路径。&lt;/p&gt;
+
+&lt;h3 id=&quot;xfs_btree_rec&quot;&gt;xfs_btree_rec&lt;/h3&gt;
+
+&lt;p&gt;这是一个 &lt;strong&gt;union&lt;/strong&gt;，表示一个record，根据不同类型的btree访问不同的成员。&lt;/p&gt;
+
+&lt;h3 id=&quot;xfs_btree_key&quot;&gt;xfs_btree_key&lt;/h3&gt;
+
+&lt;p&gt;这是一个 &lt;strong&gt;union&lt;/strong&gt;，表示一个key，根据不通类型的btree访问不同的成员。&lt;/p&gt;
+
+&lt;h3 id=&quot;xfs_btree_ptr&quot;&gt;xfs_btree_ptr&lt;/h3&gt;
+
+&lt;p&gt;这是一个 &lt;strong&gt;union&lt;/strong&gt;，表示一个节点指针，可能是32位或者64位整数。一般是32位的。&lt;/p&gt;
+
+&lt;h2 id=&quot;xfs_btree_lookupcur-dir-stat&quot;&gt;xfs_btree_lookup(cur, dir, stat)&lt;/h2&gt;
+
+&lt;p&gt;这个函数用于在btree中查找满足&lt;code class=&quot;highlighter-rouge&quot;&gt;dir&lt;/code&gt;条件的记录，查找的值存放在&lt;code class=&quot;highlighter-rouge&quot;&gt;cur-&amp;gt;bc_rec&lt;/code&gt;中。&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;dir&lt;/code&gt;表示查找的方向，有三个值：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;XFS_LOOKUP_LE&lt;/code&gt;：查找小于&lt;code class=&quot;highlighter-rouge&quot;&gt;bc_rec&lt;/code&gt;中的值的记录。&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;XFS_LOOKUP_EQ&lt;/code&gt;：查找等于&lt;code class=&quot;highlighter-rouge&quot;&gt;bc_rec&lt;/code&gt;中的值的记录。&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;XFS_LOOKUP_GE&lt;/code&gt;：查找大于&lt;code class=&quot;highlighter-rouge&quot;&gt;bc_rec&lt;/code&gt;中的值的记录。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;查找是要进行到叶子节点的，最后的查找结果会存放在&lt;code class=&quot;highlighter-rouge&quot;&gt;cur-&amp;gt;bc_ptrs[0]&lt;/code&gt;中，表示叶子节点的哪个record满足查找的条件，是否查找成功则通过&lt;code class=&quot;highlighter-rouge&quot;&gt;stat&lt;/code&gt;参数返回。&lt;/p&gt;
+
+&lt;h3 id=&quot;xfs_btree_lookup_get_blockcur-level-pp-blkp&quot;&gt;xfs_btree_lookup_get_block(cur, level, pp, blkp)&lt;/h3&gt;
+
+&lt;p&gt;这个函数读取&lt;code class=&quot;highlighter-rouge&quot;&gt;pp&lt;/code&gt;指向的block，作为&lt;code class=&quot;highlighter-rouge&quot;&gt;cur&lt;/code&gt;的第&lt;code class=&quot;highlighter-rouge&quot;&gt;level&lt;/code&gt;级的节点，主要操作如下：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;xfs_btree_read_buf_block(cur, ptr, ..)&lt;/code&gt;读取当前&lt;code class=&quot;highlighter-rouge&quot;&gt;cur&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;ptr&lt;/code&gt;所指向的block。&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;xfs_btree_setbuf(cur, lev, bp)&lt;/code&gt;函数将&lt;code class=&quot;highlighter-rouge&quot;&gt;bp&lt;/code&gt;设置到&lt;code class=&quot;highlighter-rouge&quot;&gt;cur&lt;/code&gt;的&lt;code class=&quot;highlighter-rouge&quot;&gt;lev&lt;/code&gt;层，表示&lt;code class=&quot;highlighter-rouge&quot;&gt;cur&lt;/code&gt;的第&lt;code class=&quot;highlighter-rouge&quot;&gt;lev&lt;/code&gt;层读取的是&lt;code class=&quot;highlighter-rouge&quot;&gt;bp&lt;/code&gt;指向的节点。如果&lt;code class=&quot;highlighter-rouge&quot;&gt;bp&lt;/code&gt;的左兄弟或者右兄弟不存在，那么设置&lt;code class=&quot;highlighter-rouge&quot;&gt;cur-&amp;gt;bc_ra[lev]&lt;/code&gt;的相应位。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;xfs_lookup_get_search_keycur-level-keyno-block-kp&quot;&gt;xfs_lookup_get_search_key(cur, level, keyno, block, kp)&lt;/h3&gt;
+
+&lt;p&gt;这个函数获取由&lt;code class=&quot;highlighter-rouge&quot;&gt;block&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;keyno&lt;/code&gt;确定的key。如果是叶子节点，即&lt;code class=&quot;highlighter-rouge&quot;&gt;level == 0&lt;/code&gt;，那么这个函数返回的其实是record的内容，因为叶子节点没有key。&lt;/p&gt;
+
+&lt;h3 id=&quot;lookup的算法&quot;&gt;Lookup的算法&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;从btree的根节点这一层开始&lt;/li&gt;
+  &lt;li&gt;在每一层内执行二分查找：
+    &lt;ol&gt;
+      &lt;li&gt;如果该层内有key是匹配的，记录keyno，跳出二分查找。&lt;/li&gt;
+      &lt;li&gt;如果该层内没有key是匹配的，则在搜索完该层的所有key后，记录最后的keyno，跳出二分查找。&lt;/li&gt;
+      &lt;li&gt;如果当前层不是叶子节点，那么进入下一层继续搜索；如果当前层是叶子节点，那么结束对树的搜索。&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;根据最后一次比较的&lt;code class=&quot;highlighter-rouge&quot;&gt;diff&lt;/code&gt;结果，以及参数&lt;code class=&quot;highlighter-rouge&quot;&gt;dir&lt;/code&gt;，调整结果，并且返回查找是否成功。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;xfs_btree_incrementcur-level-stat&quot;&gt;xfs_btree_increment(cur, level, stat)&lt;/h2&gt;
+
+&lt;p&gt;在&lt;code class=&quot;highlighter-rouge&quot;&gt;(cur, level)&lt;/code&gt;指向的节点增加一个record，即在这个btree中查找指定record在同一级的右边的record，查找的过程可能需要调整每一级的节点。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;首先处理最简单的情况，就是&lt;code class=&quot;highlighter-rouge&quot;&gt;++cur-&amp;gt;bc_ptrs[level] &amp;lt;= xfs_btree_get_numrecs(block)&lt;/code&gt;，即增加的record还在block的有效范围内，此时可以直接返回。&lt;/li&gt;
+  &lt;li&gt;接下来获取当前节点的右兄弟。如果右兄弟不存在，那么说明我们已经处于这一层的最右侧节点，无法再继续increment操作。&lt;/li&gt;
+  &lt;li&gt;然后开始向上层节点遍历，直到找到一个节点，右移一个record后还在节点内。找不到说明increment失败。&lt;/li&gt;
+  &lt;li&gt;从上面找到的节点开始，向下遍历，调整每一层的节点，把ptr的位置指向新节点的第一个key。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;理论上，这个函数也可以用于非叶子节点。&lt;/p&gt;
+
+&lt;h2 id=&quot;xfs_btree_decrementcur-level-stat&quot;&gt;xfs_btree_decrement(cur, level, stat)&lt;/h2&gt;
+
+&lt;p&gt;这个函数和increment操作差不多，只是方向相反，查找的是同一级左边的record。&lt;/p&gt;
+
+&lt;h2 id=&quot;xfs_btree_insertcur-stat&quot;&gt;xfs_btree_insert(cur, stat)&lt;/h2&gt;
+
+&lt;p&gt;将一个record插入到&lt;code class=&quot;highlighter-rouge&quot;&gt;cur&lt;/code&gt;指定的位置。&lt;/p&gt;
+
+&lt;p&gt;这个函数循环调用&lt;code class=&quot;highlighter-rouge&quot;&gt;xfs_btree_insrec()&lt;/code&gt;函数插入一个record，然后判断是否发生了分裂，如果发生了分裂（此时key和父节点的ptr都已经被修改），那么就将游标向上移动一层，然后继续循环，直到不再发生分裂为止。&lt;/p&gt;
+
+&lt;h3 id=&quot;xfs_btree_insreccur-level-ptrp-rec-key-curp-stat&quot;&gt;xfs_btree_insrec(cur, level, ptrp, rec, key, curp, stat)&lt;/h3&gt;
+
+&lt;p&gt;将&lt;code class=&quot;highlighter-rouge&quot;&gt;rec&lt;/code&gt;插入到&lt;code class=&quot;highlighter-rouge&quot;&gt;(cur, level)&lt;/code&gt;指向的节点。因为插入一个记录可能导致节点的数据被移动，或者节点被分裂，所以这个函数会返回插入的物理位置。&lt;/p&gt;
+
+&lt;p&gt;当当前的节点空间不够时，会调用&lt;code class=&quot;highlighter-rouge&quot;&gt;xfs_btree_make_block_unfull()&lt;/code&gt;函数来获得新的空间用于插入新的record。如果调用这个函数导致节点分裂，那么会产生新的游标，会通过&lt;code class=&quot;highlighter-rouge&quot;&gt;curp&lt;/code&gt;返回。在分裂的情况下，这个函数并不会更新父节点的内容，但是会更新游标，以及指向新节点的key，由调用者负责更新父节点。&lt;/p&gt;
+
+&lt;h4 id=&quot;xfs_btree_make_block_unfullcur-level-numrecs-oindex-index-nptr-ncur-key-stat&quot;&gt;xfs_btree_make_block_unfull(cur, level, numrecs, oindex, index, nptr, ncur, key, stat)&lt;/h4&gt;
+
+&lt;p&gt;通过移动数据或者分裂节点的方式，使得&lt;code class=&quot;highlighter-rouge&quot;&gt;(cur, level)&lt;/code&gt;指向的节点有空间存放一个新的记录，这个操作会顺序尝试三个操作：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;尝试将当前节点的最后一个记录右移一个节点：&lt;code class=&quot;highlighter-rouge&quot;&gt;xfs_btree_rshift()&lt;/code&gt;。&lt;/li&gt;
+  &lt;li&gt;如果右移不成功，则尝试将当前节点的第一个记录左移一个节点：&lt;code class=&quot;highlighter-rouge&quot;&gt;xfs_btree_lshift()&lt;/code&gt;。&lt;/li&gt;
+  &lt;li&gt;如果左右移动都不成功，则分裂当前节点为两个节点，即创建当前节点的右兄弟，然后把记录平分存储在两个节点中。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h5 id=&quot;xfs_btree_rshiftcur-level-stat&quot;&gt;xfs_btree_rshift(cur, level, stat)&lt;/h5&gt;
+
+&lt;p&gt;将&lt;code class=&quot;highlighter-rouge&quot;&gt;cur&lt;/code&gt;指向的节点的最右侧record移动到右侧的节点，这样可以给当&lt;code class=&quot;highlighter-rouge&quot;&gt;cur&lt;/code&gt;指向的节点空出一个位置。&lt;/p&gt;
+
+&lt;h5 id=&quot;xfs_btree_update_keyscur-level&quot;&gt;xfs_btree_update_keys(cur, level)&lt;/h5&gt;
+
+&lt;p&gt;更新从&lt;code class=&quot;highlighter-rouge&quot;&gt;level + 1&lt;/code&gt;层往上的每个节点的key。只有当当前level的第一个位置（record或者key）发生变化时才需要更新，原因是btree节点的第一个位置的值是其父节点中的key，所以当第一个位置的值变化之后，需要更新父节点中对应的key，这样才能保证搜索可以正确执行。更新key的操作如下图所示：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://diabloneo.github.io//assets/imgs/00020_xfs_btree_update_keys.jpg&quot; alt=&quot;update-keys&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;xfs_btree_splitcur-level-ptrp-key-curp-stat&quot;&gt;xfs_btree_split(cur, level, ptrp, key, curp, stat)&lt;/h5&gt;
+
+&lt;p&gt;实际调用的是&lt;code class=&quot;highlighter-rouge&quot;&gt;__xfs_btree_split()&lt;/code&gt;，将&lt;code class=&quot;highlighter-rouge&quot;&gt;(cur, level)&lt;/code&gt;指向的节点分裂为两个节点。分裂之后，&lt;code class=&quot;highlighter-rouge&quot;&gt;cur&lt;/code&gt;可能指向新节点，也可能指向旧节点，取决于原来的ptr落在哪个节点。&lt;/p&gt;
+
+&lt;p&gt;如果发生了分裂，那么有两个事情需要注意：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;如果分裂前&lt;code class=&quot;highlighter-rouge&quot;&gt;cur&lt;/code&gt;指向的位置现在位于新的block中，那么就需要更新&lt;code class=&quot;highlighter-rouge&quot;&gt;cur-&amp;gt;bc_bufs&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;cur-&amp;gt;bc_ptrs&lt;/code&gt;对应内容。&lt;/li&gt;
+  &lt;li&gt;如果&lt;code class=&quot;highlighter-rouge&quot;&gt;cur&lt;/code&gt;当前指向的节点还有父节点，那么会复制一个游标到&lt;code class=&quot;highlighter-rouge&quot;&gt;curp&lt;/code&gt;，并且把父节点的ptr右移一个记录，这个位置需要插入一个指针指向这次创建的节点。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;该函数会通过&lt;code class=&quot;highlighter-rouge&quot;&gt;ptrp&lt;/code&gt;返回新增的block的number，通过&lt;code class=&quot;highlighter-rouge&quot;&gt;key&lt;/code&gt;返回新增的block的第一个record。&lt;/p&gt;
+
+&lt;h2 id=&quot;xfs_btree_deletecur-stat&quot;&gt;xfs_btree_delete(cur, stat)&lt;/h2&gt;
+
+&lt;h3 id=&quot;xfs_btree_delreccur-level-stat&quot;&gt;xfs_btree_delrec(cur, level, stat)&lt;/h3&gt;
+
+&lt;p&gt;先从当前节点删除ptr位置的数据，然后重平衡整棵树。这个函数会被&lt;code class=&quot;highlighter-rouge&quot;&gt;xfs_btree_delete()&lt;/code&gt;调用多次，从level 0开始往上，直到不再需要重平衡为止。&lt;/p&gt;
+
+&lt;h2 id=&quot;xfs_btree_updatecur-rec&quot;&gt;xfs_btree_update(cur, rec)&lt;/h2&gt;
+
+&lt;p&gt;更新当前&lt;code class=&quot;highlighter-rouge&quot;&gt;cur&lt;/code&gt;指向的记录的值为&lt;code class=&quot;highlighter-rouge&quot;&gt;rec&lt;/code&gt;的值。更新指定的记录之后，会调用函数&lt;code class=&quot;highlighter-rouge&quot;&gt;xfs_btree_needs_key_update()&lt;/code&gt;判断是否需要更新父节点的key，对于标准的btree，只有当更新的是节点的第一个位置的记录的时候，才需要更新父节点的key。如果需要更新，则调用&lt;code class=&quot;highlighter-rouge&quot;&gt;xfs_btree_update_keys()&lt;/code&gt;执行更新。&lt;/p&gt;
+
+&lt;p&gt;需要注意的是，这个函数并不检查更新后的数据是否满足btree的搜索正确性，这点由调用者保证。&lt;/p&gt;
+</description>
+        <pubDate>Mon, 14 May 2018 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2018/05/14/xfs-progs-btree/</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2018/05/14/xfs-progs-btree/</guid>
+        
+        <category>storage</category>
+        
+        <category>linux</category>
+        
+        
+      </item>
     
       <item>
         <title>想到什么写什么周报 第26期 - 2018-04-23</title>
@@ -591,47 +793,6 @@
         <category>cloud</category>
         
         <category>database</category>
-        
-        <category>golang</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Go 1.10中Go的build cache和test cache</title>
-        <description>&lt;p&gt;最近Go发布了1.10版本，引入了cache等重要特性。Russ Cox去年11月份的时候在邮件列表golang-dev里发了一篇帖子说明了这几个变化。帖子的地址是： &lt;em&gt;&lt;a href=&quot;https://groups.google.com/forum/#!topic/golang-dev/qfa3mHN4ZPA&quot;&gt;https://groups.google.com/forum/#!topic/golang-dev/qfa3mHN4ZPA&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;build-cache&quot;&gt;Build Cache&lt;/h2&gt;
-
-&lt;p&gt;意思就是会把编译过程的中间结果cache下来，从而实现增量编译。原来需要通过&lt;code class=&quot;highlighter-rouge&quot;&gt;go build -i&lt;/code&gt;命令来实现，现在go build命令默认启用了cache。启用cache后的效果是很明显的，我司的一个大程序的编译时间如下：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;全新编译，耗时107秒。&lt;/li&gt;
-  &lt;li&gt;修改一个文件后，再次编译，耗时22秒。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;test-cache&quot;&gt;Test Cache&lt;/h2&gt;
-
-&lt;p&gt;测试现在也默认启用了cache，在内容没有变化的情况下，对于同样的参数的测试，会直接使用cache的测试结果，也就是同样的测试不会重复跑。当使用cache的结果时，go test命令最后会显示 &lt;code class=&quot;highlighter-rouge&quot;&gt;(cached)&lt;/code&gt; 的字样:&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;➜ ~/go/src/project git:&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;feature&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; ✗  &lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;go &lt;span class=&quot;nb&quot;&gt;test &lt;/span&gt;project/dp/master
-ok      project/dp/master    &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;cached&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;cache-path-and-clean-cache&quot;&gt;Cache Path and Clean Cache&lt;/h2&gt;
-
-&lt;p&gt;cache默认的存储路径是操作系统所确定的用户缓存目录，但是可以通过GOCACHE环境变量修改。在Ubuntu下的默认cache路径是 &lt;em&gt;~/.cache/go-build&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;如果要清除cache，可以使用如下两个命令:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;go clean -cache&lt;/code&gt; 清除build cache。&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;go clean -testcache&lt;/code&gt; 清除test cache。&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Sun, 04 Mar 2018 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2018/03/04/go-1.10-cache/</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2018/03/04/go-1.10-cache/</guid>
         
         <category>golang</category>
         

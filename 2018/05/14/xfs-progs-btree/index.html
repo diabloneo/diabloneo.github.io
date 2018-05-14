@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>XFS BTree</title>
+  <meta name="description" content="代码版本： v4.15.1">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/pygments-rainbow_dash.css">
+  <link rel="canonical" href="http://diabloneo.github.io//2018/05/14/xfs-progs-btree/">
+  <link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
+</head>
+
+
+  <body>
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">Coffee, Coke and Code</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <a class="page-link" href="/tags">Tags</a>
+        <a class="page-link" href="/feed.xml">RSS</a>
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">XFS BTree</h1>
+    <p class="post-meta"><time datetime="2018-05-14T00:00:00+08:00" itemprop="datePublished">May 14, 2018</time></p>
+  </header>
+
+  <div class="post-tags">
+    <ul>
+      
+      <li>
+        <a href="/tags/storage/">storage</a>
+      </li>
+      
+      <li>
+        <a href="/tags/linux/">linux</a>
+      </li>
+      
+    </ul>
+  </div>
+
+  <div class="post-content" itemprop="articleBody">
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+    <br />
+      <p>代码版本： <strong>v4.15.1</strong></p>
+
+<p>术语：</p>
+
+<ul>
+  <li><strong>block</strong>：表示4KB的block。</li>
+  <li><strong>BB</strong>：表示XFS的basic block概念，长度一般是512B。</li>
+  <li><strong>节点</strong>：表示btree中的一个节点，存储在一个block中。节点分为叶子节点和非叶子节点。</li>
+  <li><strong>level</strong>：表示一个节点在btree中的层级，第0级是叶子节点，第N级节点的父节点是N+1级。</li>
+  <li><strong>record</strong>：表示叶子节点中存储的数据。</li>
+  <li><strong>key</strong>：非叶子节点中用来进行查找的key。</li>
+  <li><strong>ptr</strong>：非叶子节点中存储的节点指针，用来表示一个节点的位置，因为一个节点就是一个block，所以节点指针的值是block number。</li>
+</ul>
+
+<h2 id="btree的数据组织">BTree的数据组织</h2>
+
+<p>XFS的btree的每个节点保存在一个block中，每个节点可以包含多个记录。节点分为叶子节点和非叶子节点。</p>
+
+<h3 id="叶子节点">叶子节点</h3>
+
+<p>BTree的叶子节点只需要保存数据。不同类型的btree的数据格式不一样，本文以BNO btree和CNT btree为例，所以叶子节点保存的数据的数据结构为<code class="highlighter-rouge">xfs_alloc_rec_t</code>。一个叶子节点的数据存储方式如下：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   header             data1                   dataN
++-----------------+-----------------+-----+-----------------+
+| xfs_btree_block | xfs_alloc_rec_t | ... | xfs_alloc_rec_t |
++-----------------+-----------------+-----+-----------------+
+</code></pre></div></div>
+
+<p>叶子节点使用<code class="highlighter-rouge">xfs_alloc_rec_t</code>类型存储数据，因为是用来管理文件系统的block的，所以其内容就是代表一定数量的连续的block：</p>
+
+<h3 id="非叶子节点">非叶子节点</h3>
+
+<p>BTree的非叶子节点保存key和节点指针。在BNO btree和CNT btree中，key的类型为<code class="highlighter-rouge">xfs_alloc_key_t</code>，节点指针的类型为<code class="highlighter-rouge">xfs_alloc_ptr_t</code>。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   header             key1                   keyN              ptr1                    ptrN
++-----------------+-----------------+-----+-----------------+-----------------+-----+-----------------+
+| xfs_btree_block | xfs_alloc_key_t | ... | xfs_alloc_key_t | xfs_alloc_ptr_t | ... | xfs_alloc_ptr_t |
++-----------------+-----------------+-----+-----------------+-----------------+-----+-----------------+
+</code></pre></div></div>
+
+<p>在非叶子节点，header之后，先存储一定数量的key，这些key用于比较查找一个值在下一级节点的位置；key之后，存储和key数量一样多的ptr，每个ptr存储对应key所指向的下一级节点的block number。</p>
+
+<h3 id="节点header">节点header</h3>
+
+<p>不论是叶子节点还是非叶子节点，其header都是<code class="highlighter-rouge">struc xfs_btree_block</code>类型：</p>
+
+<figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="k">struct</span> <span class="n">xfs_btree_block</span> <span class="p">{</span>
+	<span class="n">__be32</span>		<span class="n">bb_magic</span><span class="p">;</span>	<span class="cm">/* magic number for block type */</span>
+	<span class="n">__be16</span>		<span class="n">bb_level</span><span class="p">;</span>	<span class="cm">/* 0 is a leaf */</span>
+	<span class="n">__be16</span>		<span class="n">bb_numrecs</span><span class="p">;</span>	<span class="cm">/* current # of data records */</span>
+	<span class="k">union</span> <span class="p">{</span>
+		<span class="k">struct</span> <span class="n">xfs_btree_block_shdr</span> <span class="n">s</span><span class="p">;</span>
+		<span class="k">struct</span> <span class="n">xfs_btree_block_lhdr</span> <span class="n">l</span><span class="p">;</span>
+	<span class="p">}</span> <span class="n">bb_u</span><span class="p">;</span>				<span class="cm">/* rest */</span>
+<span class="p">};</span></code></pre></figure>
+
+<h2 id="重要数据结构">重要数据结构</h2>
+
+<h3 id="xfs_btree_cur">xfs_btree_cur</h3>
+
+<p>这个数据结构表示一个btree的游标，在btree进行搜索和修改操作时，需要用游标来跟踪当前节点在btree的路径。</p>
+
+<h3 id="xfs_btree_rec">xfs_btree_rec</h3>
+
+<p>这是一个 <strong>union</strong>，表示一个record，根据不同类型的btree访问不同的成员。</p>
+
+<h3 id="xfs_btree_key">xfs_btree_key</h3>
+
+<p>这是一个 <strong>union</strong>，表示一个key，根据不通类型的btree访问不同的成员。</p>
+
+<h3 id="xfs_btree_ptr">xfs_btree_ptr</h3>
+
+<p>这是一个 <strong>union</strong>，表示一个节点指针，可能是32位或者64位整数。一般是32位的。</p>
+
+<h2 id="xfs_btree_lookupcur-dir-stat">xfs_btree_lookup(cur, dir, stat)</h2>
+
+<p>这个函数用于在btree中查找满足<code class="highlighter-rouge">dir</code>条件的记录，查找的值存放在<code class="highlighter-rouge">cur-&gt;bc_rec</code>中。</p>
+
+<p><code class="highlighter-rouge">dir</code>表示查找的方向，有三个值：</p>
+
+<ul>
+  <li><code class="highlighter-rouge">XFS_LOOKUP_LE</code>：查找小于<code class="highlighter-rouge">bc_rec</code>中的值的记录。</li>
+  <li><code class="highlighter-rouge">XFS_LOOKUP_EQ</code>：查找等于<code class="highlighter-rouge">bc_rec</code>中的值的记录。</li>
+  <li><code class="highlighter-rouge">XFS_LOOKUP_GE</code>：查找大于<code class="highlighter-rouge">bc_rec</code>中的值的记录。</li>
+</ul>
+
+<p>查找是要进行到叶子节点的，最后的查找结果会存放在<code class="highlighter-rouge">cur-&gt;bc_ptrs[0]</code>中，表示叶子节点的哪个record满足查找的条件，是否查找成功则通过<code class="highlighter-rouge">stat</code>参数返回。</p>
+
+<h3 id="xfs_btree_lookup_get_blockcur-level-pp-blkp">xfs_btree_lookup_get_block(cur, level, pp, blkp)</h3>
+
+<p>这个函数读取<code class="highlighter-rouge">pp</code>指向的block，作为<code class="highlighter-rouge">cur</code>的第<code class="highlighter-rouge">level</code>级的节点，主要操作如下：</p>
+
+<ol>
+  <li><code class="highlighter-rouge">xfs_btree_read_buf_block(cur, ptr, ..)</code>读取当前<code class="highlighter-rouge">cur</code>和<code class="highlighter-rouge">ptr</code>所指向的block。</li>
+  <li><code class="highlighter-rouge">xfs_btree_setbuf(cur, lev, bp)</code>函数将<code class="highlighter-rouge">bp</code>设置到<code class="highlighter-rouge">cur</code>的<code class="highlighter-rouge">lev</code>层，表示<code class="highlighter-rouge">cur</code>的第<code class="highlighter-rouge">lev</code>层读取的是<code class="highlighter-rouge">bp</code>指向的节点。如果<code class="highlighter-rouge">bp</code>的左兄弟或者右兄弟不存在，那么设置<code class="highlighter-rouge">cur-&gt;bc_ra[lev]</code>的相应位。</li>
+</ol>
+
+<h3 id="xfs_lookup_get_search_keycur-level-keyno-block-kp">xfs_lookup_get_search_key(cur, level, keyno, block, kp)</h3>
+
+<p>这个函数获取由<code class="highlighter-rouge">block</code>和<code class="highlighter-rouge">keyno</code>确定的key。如果是叶子节点，即<code class="highlighter-rouge">level == 0</code>，那么这个函数返回的其实是record的内容，因为叶子节点没有key。</p>
+
+<h3 id="lookup的算法">Lookup的算法</h3>
+
+<ol>
+  <li>从btree的根节点这一层开始</li>
+  <li>在每一层内执行二分查找：
+    <ol>
+      <li>如果该层内有key是匹配的，记录keyno，跳出二分查找。</li>
+      <li>如果该层内没有key是匹配的，则在搜索完该层的所有key后，记录最后的keyno，跳出二分查找。</li>
+      <li>如果当前层不是叶子节点，那么进入下一层继续搜索；如果当前层是叶子节点，那么结束对树的搜索。</li>
+    </ol>
+  </li>
+  <li>根据最后一次比较的<code class="highlighter-rouge">diff</code>结果，以及参数<code class="highlighter-rouge">dir</code>，调整结果，并且返回查找是否成功。</li>
+</ol>
+
+<h2 id="xfs_btree_incrementcur-level-stat">xfs_btree_increment(cur, level, stat)</h2>
+
+<p>在<code class="highlighter-rouge">(cur, level)</code>指向的节点增加一个record，即在这个btree中查找指定record在同一级的右边的record，查找的过程可能需要调整每一级的节点。</p>
+
+<ol>
+  <li>首先处理最简单的情况，就是<code class="highlighter-rouge">++cur-&gt;bc_ptrs[level] &lt;= xfs_btree_get_numrecs(block)</code>，即增加的record还在block的有效范围内，此时可以直接返回。</li>
+  <li>接下来获取当前节点的右兄弟。如果右兄弟不存在，那么说明我们已经处于这一层的最右侧节点，无法再继续increment操作。</li>
+  <li>然后开始向上层节点遍历，直到找到一个节点，右移一个record后还在节点内。找不到说明increment失败。</li>
+  <li>从上面找到的节点开始，向下遍历，调整每一层的节点，把ptr的位置指向新节点的第一个key。</li>
+</ol>
+
+<p>理论上，这个函数也可以用于非叶子节点。</p>
+
+<h2 id="xfs_btree_decrementcur-level-stat">xfs_btree_decrement(cur, level, stat)</h2>
+
+<p>这个函数和increment操作差不多，只是方向相反，查找的是同一级左边的record。</p>
+
+<h2 id="xfs_btree_insertcur-stat">xfs_btree_insert(cur, stat)</h2>
+
+<p>将一个record插入到<code class="highlighter-rouge">cur</code>指定的位置。</p>
+
+<p>这个函数循环调用<code class="highlighter-rouge">xfs_btree_insrec()</code>函数插入一个record，然后判断是否发生了分裂，如果发生了分裂（此时key和父节点的ptr都已经被修改），那么就将游标向上移动一层，然后继续循环，直到不再发生分裂为止。</p>
+
+<h3 id="xfs_btree_insreccur-level-ptrp-rec-key-curp-stat">xfs_btree_insrec(cur, level, ptrp, rec, key, curp, stat)</h3>
+
+<p>将<code class="highlighter-rouge">rec</code>插入到<code class="highlighter-rouge">(cur, level)</code>指向的节点。因为插入一个记录可能导致节点的数据被移动，或者节点被分裂，所以这个函数会返回插入的物理位置。</p>
+
+<p>当当前的节点空间不够时，会调用<code class="highlighter-rouge">xfs_btree_make_block_unfull()</code>函数来获得新的空间用于插入新的record。如果调用这个函数导致节点分裂，那么会产生新的游标，会通过<code class="highlighter-rouge">curp</code>返回。在分裂的情况下，这个函数并不会更新父节点的内容，但是会更新游标，以及指向新节点的key，由调用者负责更新父节点。</p>
+
+<h4 id="xfs_btree_make_block_unfullcur-level-numrecs-oindex-index-nptr-ncur-key-stat">xfs_btree_make_block_unfull(cur, level, numrecs, oindex, index, nptr, ncur, key, stat)</h4>
+
+<p>通过移动数据或者分裂节点的方式，使得<code class="highlighter-rouge">(cur, level)</code>指向的节点有空间存放一个新的记录，这个操作会顺序尝试三个操作：</p>
+
+<ol>
+  <li>尝试将当前节点的最后一个记录右移一个节点：<code class="highlighter-rouge">xfs_btree_rshift()</code>。</li>
+  <li>如果右移不成功，则尝试将当前节点的第一个记录左移一个节点：<code class="highlighter-rouge">xfs_btree_lshift()</code>。</li>
+  <li>如果左右移动都不成功，则分裂当前节点为两个节点，即创建当前节点的右兄弟，然后把记录平分存储在两个节点中。</li>
+</ol>
+
+<h5 id="xfs_btree_rshiftcur-level-stat">xfs_btree_rshift(cur, level, stat)</h5>
+
+<p>将<code class="highlighter-rouge">cur</code>指向的节点的最右侧record移动到右侧的节点，这样可以给当<code class="highlighter-rouge">cur</code>指向的节点空出一个位置。</p>
+
+<h5 id="xfs_btree_update_keyscur-level">xfs_btree_update_keys(cur, level)</h5>
+
+<p>更新从<code class="highlighter-rouge">level + 1</code>层往上的每个节点的key。只有当当前level的第一个位置（record或者key）发生变化时才需要更新，原因是btree节点的第一个位置的值是其父节点中的key，所以当第一个位置的值变化之后，需要更新父节点中对应的key，这样才能保证搜索可以正确执行。更新key的操作如下图所示：</p>
+
+<p><img src="http://diabloneo.github.io//assets/imgs/00020_xfs_btree_update_keys.jpg" alt="update-keys" /></p>
+
+<h5 id="xfs_btree_splitcur-level-ptrp-key-curp-stat">xfs_btree_split(cur, level, ptrp, key, curp, stat)</h5>
+
+<p>实际调用的是<code class="highlighter-rouge">__xfs_btree_split()</code>，将<code class="highlighter-rouge">(cur, level)</code>指向的节点分裂为两个节点。分裂之后，<code class="highlighter-rouge">cur</code>可能指向新节点，也可能指向旧节点，取决于原来的ptr落在哪个节点。</p>
+
+<p>如果发生了分裂，那么有两个事情需要注意：</p>
+
+<ol>
+  <li>如果分裂前<code class="highlighter-rouge">cur</code>指向的位置现在位于新的block中，那么就需要更新<code class="highlighter-rouge">cur-&gt;bc_bufs</code>和<code class="highlighter-rouge">cur-&gt;bc_ptrs</code>对应内容。</li>
+  <li>如果<code class="highlighter-rouge">cur</code>当前指向的节点还有父节点，那么会复制一个游标到<code class="highlighter-rouge">curp</code>，并且把父节点的ptr右移一个记录，这个位置需要插入一个指针指向这次创建的节点。</li>
+</ol>
+
+<p>该函数会通过<code class="highlighter-rouge">ptrp</code>返回新增的block的number，通过<code class="highlighter-rouge">key</code>返回新增的block的第一个record。</p>
+
+<h2 id="xfs_btree_deletecur-stat">xfs_btree_delete(cur, stat)</h2>
+
+<h3 id="xfs_btree_delreccur-level-stat">xfs_btree_delrec(cur, level, stat)</h3>
+
+<p>先从当前节点删除ptr位置的数据，然后重平衡整棵树。这个函数会被<code class="highlighter-rouge">xfs_btree_delete()</code>调用多次，从level 0开始往上，直到不再需要重平衡为止。</p>
+
+<h2 id="xfs_btree_updatecur-rec">xfs_btree_update(cur, rec)</h2>
+
+<p>更新当前<code class="highlighter-rouge">cur</code>指向的记录的值为<code class="highlighter-rouge">rec</code>的值。更新指定的记录之后，会调用函数<code class="highlighter-rouge">xfs_btree_needs_key_update()</code>判断是否需要更新父节点的key，对于标准的btree，只有当更新的是节点的第一个位置的记录的时候，才需要更新父节点的key。如果需要更新，则调用<code class="highlighter-rouge">xfs_btree_update_keys()</code>执行更新。</p>
+
+<p>需要注意的是，这个函数并不检查更新后的数据是否满足btree的搜索正确性，这点由调用者保证。</p>
+
+    <br />
+
+    <div>
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议</a>进行许可。
+    </div>
+
+    <br />
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+  </div>
+
+  
+    <div class="post-comment">
+      
+<div id="disqus_thread"></div>
+<script>
+var disqus_config = function () {
+  this.page.url = "http://diabloneo.github.io/2018/05/14/xfs-progs-btree/"; // <--- use canonical URL
+  this.page.identifier = "/2018/05/14/xfs-progs-btree";
+};
+(function() { // DON'T EDIT BELOW THIS LINE
+  var d = document, s = d.createElement('script');
+
+  s.src = 'https://coffee-coke-and-code.disqus.com/embed.js';
+
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+    </div>
+  
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Coffee, Coke and Code</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>Coffee, Coke and Code</li>
+          <li><a href="mailto:diabloneo@gmail.com">diabloneo@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <i class="fa fa-github"></i>
+            <a href="https://github.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <i class="fa fa-twitter"></i>
+            <a href="https://twitter.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <i class="fa fa-weibo"></i>
+            <a href="https://weibo.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Archive diabloneo's articles.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+    
+      <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-78067453-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+    
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
+  </body>
+
+</html>
