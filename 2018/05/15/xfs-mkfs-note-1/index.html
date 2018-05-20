@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>XFS mkfs解析(1) - 参数的生成和校验</title>
+  <meta name="description" content="XFS的 mkfs 命令属于仓库https://git.kernel.org/pub/scm/fs/xfs/xfsprogs-dev.git，入口代码在 mkfs/xfs_mkfs.c文件的main函数。">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/pygments-rainbow_dash.css">
+  <link rel="canonical" href="http://diabloneo.github.io//2018/05/15/xfs-mkfs-note-1/">
+  <link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
+</head>
+
+
+  <body>
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">Coffee, Coke and Code</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <a class="page-link" href="/tags">Tags</a>
+        <a class="page-link" href="/feed.xml">RSS</a>
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">XFS mkfs解析(1) - 参数的生成和校验</h1>
+    <p class="post-meta"><time datetime="2018-05-15T00:00:00+08:00" itemprop="datePublished">May 15, 2018</time></p>
+  </header>
+
+  <div class="post-tags">
+    <ul>
+      
+      <li>
+        <a href="/tags/storage/">storage</a>
+      </li>
+      
+      <li>
+        <a href="/tags/linux/">linux</a>
+      </li>
+      
+    </ul>
+  </div>
+
+  <div class="post-content" itemprop="articleBody">
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+    <br />
+      <p><strong>XFS</strong>的 <em>mkfs</em> 命令属于仓库<em><a href="https://git.kernel.org/pub/scm/fs/xfs/xfsprogs-dev.git">https://git.kernel.org/pub/scm/fs/xfs/xfsprogs-dev.git</a></em>，入口代码在 <em>mkfs/xfs_mkfs.c</em>文件的<code class="highlighter-rouge">main</code>函数。</p>
+
+<p>mkfs代码的第一部分主要用来生成和校验mkfs过程的参数，这些参数会保存在 <code class="highlighter-rouge">struct mkfs_params cfg</code>中。</p>
+
+<h2 id="默认参数">默认参数</h2>
+
+<p>变量<code class="highlighter-rouge">struct mkfs_default_params dft</code>保存了mkfs的一些默认参数，其中有几个最常用的参数：</p>
+
+<ul>
+  <li>sectorsize: 512B</li>
+  <li>blocksize: 4096B</li>
+  <li>crcs_enabled: true</li>
+</ul>
+
+<p>还有一个变量<code class="highlighter-rouge">struct libxfs_xinit xi</code>保存了libxfs初始化的配置。</p>
+
+<h2 id="cli参数">CLI参数</h2>
+
+<p>命令行传递进来的参数会存放在变量<code class="highlighter-rouge">struct cli_params cli</code>。<code class="highlighter-rouge">cli</code>变量首先会设置两个成员：</p>
+
+<ul>
+  <li>xi: 指向上面的<code class="highlighter-rouge">xi</code>变量的指针</li>
+  <li>loginternal: 表示是否使用独立的设备记录journal log，默认是在当前设备内部记录，所以这个默认值为1。</li>
+</ul>
+
+<p>在最简单的情况下，mkfs命令只接收一个设备名称，这个设备名称会保存在<code class="highlighter-rouge">xi.volname</code>。</p>
+
+<h2 id="setup-proto">Setup Proto</h2>
+
+<p>默认情况下是不指定proto文件的，所以默认的proto值是：<code class="highlighter-rouge">d--755 0 0 $</code>。</p>
+
+<h2 id="validate_blocksize">validate_blocksize</h2>
+
+<p><code class="highlighter-rouge">validate_blocksize()</code>函数会校验blocksize，并且设置到<code class="highlighter-rouge">cfg</code>中。默认情况下<code class="highlighter-rouge">cfg.blocksize</code>的值是4096B（上面的默认参数），<code class="highlighter-rouge">cfg.blocklog</code>的值是12（4096的log指数，也就是2的12次方）。</p>
+
+<p><strong>注：xfsprogs中都使用log来表示一个变量保存的是另一个值的log指数，后面不再赘述。</strong></p>
+
+<h2 id="validate_sectorsize">validate_sectorsize</h2>
+
+<p>默认情况下，这个函数会设置<code class="highlighter-rouge">cfg.sectorsize</code>的值为512（上面的默认值），<code class="highlighter-rouge">cfg.sectorlog</code>的值为9。</p>
+
+<p>另外，这个函数还会调用<code class="highlighter-rouge">get_topology()</code>函数来获取设备的一些信息：</p>
+
+<ul>
+  <li>lsectorsize：logical sector size</li>
+  <li>psectorsize：physical sector size</li>
+  <li>sunit: 最小io size，一般是512B，单位是BB（见下文）的情况下，值为0。</li>
+  <li>swidth：最优io size，可能为0，单位是BB。</li>
+</ul>
+
+<p><code class="highlighter-rouge">get_topolocy()</code>通过调用 <em>libblkid</em>的接口来获取的这些信息，并且保存在一个<code class="highlighter-rouge">struct fs_topology</code>变量中，并且会赋值给<code class="highlighter-rouge">cfg.sectorsize</code>（一般使用psectorsize）。</p>
+
+<h2 id="validate_log_sectorsize">validate_log_sectorsize</h2>
+
+<p>设置并验证log的sector size。默认情况下，<code class="highlighter-rouge">cli-&gt;loginternal</code>为true，所以<code class="highlighter-rouge">cfg.lsectorsize</code>的值等于<code class="highlighter-rouge">cfg.sectorsize</code>，也就是512B，<code class="highlighter-rouge">cfg.lsectorlog</code>为对应值9。</p>
+
+<h2 id="validate_sb_features">validate_sb_features</h2>
+
+<p>检查feature的设置是否相互矛盾，feature设置保存在<code class="highlighter-rouge">cfg.sb_feat</code>中。</p>
+
+<h2 id="validate_dirblocksize">validate_dirblocksize</h2>
+
+<p>默认情况下根据 <em>blocksize</em>来设置 <em>dirblocksize</em>，当 <em>blocksize</em>小于4KB时， <em>dirblocksize</em>设置为4KB，否则设置为 <em>blocksize</em>的值。</p>
+
+<h2 id="validate_inodesize">validate_inodesize</h2>
+
+<p>默认情况下crc是开启的，所以<code class="highlighter-rouge">cfg.inodesize</code>的值是512B。<code class="highlighter-rouge">cfg.inopblock</code>表示一个block里可以存放多少个inode，等于<code class="highlighter-rouge">cfg.blocksize / cfg-&gt;inodesize</code>。</p>
+
+<h2 id="calc_dev_size">calc_dev_size</h2>
+
+<p>计算data, log和realtime分区的block数量。默认情况下，这些都不从命令行指定，表示使用整个设备。所以<code class="highlighter-rouge">cfg.dblocks</code>, <code class="highlighter-rouge">cfg.logblocks</code>和<code class="highlighter-rouge">cfg.rtblocks</code>的值都为0。</p>
+
+<h2 id="calc_stripe_factors">calc_stripe_factors</h2>
+
+<p>计算条带参数。一般是使用前面<code class="highlighter-rouge">get_topolocy()</code>得到的数据，最后会赋值给<code class="highlighter-rouge">cfg.dsunit</code>等。一般情况下，<code class="highlighter-rouge">cfg.dsunit</code>的值为0。</p>
+
+<h2 id="open_devices">open_devices</h2>
+
+<p>打开设备以便校验mkfs参数是否有效，默认情况下支持 <strong>discard</strong>操作。</p>
+
+<h3 id="libxfs_init">libxfs_init</h3>
+
+<p><code class="highlighter-rouge">open_devices()</code>函数首先调用<code class="highlighter-rouge">libxfs_init(libxfs_init_t *a)</code>函数来打开设备并做一些初始化工作。</p>
+
+<h4 id="初始化radix-tree">初始化Radix Tree</h4>
+
+<p>调用<code class="highlighter-rouge">radix_tree_init()</code>初始化一个全局的radix tree。</p>
+
+<h4 id="打开设备">打开设备</h4>
+
+<p>正常情况下，在这里时，<code class="highlighter-rouge">a-&gt;volname</code>不为空，是一个指向设备的路径。确定设备路径可以打开后，调用<code class="highlighter-rouge">open(rawfile, O_RDONLY)</code>打开设备，得到<code class="highlighter-rouge">fd</code>。打开后，设置<code class="highlighter-rouge">a-&gt;volname = NULL</code>。</p>
+
+<p>接下来执行<code class="highlighter-rouge">a-&gt;ddev = libxfs_device_open()</code>来打开data分区的设备，这个函数返回设备号。一般情况下，data设备就是我们上面打开的<code class="highlighter-rouge">a-&gt;volname</code>。<code class="highlighter-rouge">libxfs_device_open()</code>打开设备后，会把<code class="highlighter-rouge">fd</code>记录下全局变量中。另外，<code class="highlighter-rouge">libxfs_device_open()</code>还会尝试设置设备的blocksize，通过ioctl的BLKBSZSET实现。设备打开后的<code class="highlighter-rouge">fd</code>会记录在<code class="highlighter-rouge">a-&gt;dfd</code>。最后，会调用<code class="highlighter-rouge">platform_findsizes()</code>函数来获得设备的block size（保存在<code class="highlighter-rouge">a-&gt;dbsize</code>）和size（设备大小，保存在<code class="highlighter-rouge">a-&gt;dsize</code>）。 <strong>注意</strong>，这里的<code class="highlighter-rouge">dbsize</code>和<code class="highlighter-rouge">dsize</code>的大小是basic block，见下文介绍。</p>
+
+<p>默认情况下，只有data设备，没有log和realtime设备，不需要在打开和获取响应的值。</p>
+
+<h4 id="初始化cache">初始化cache</h4>
+
+<p>初始化hash桶的数量为1K，保存在<code class="highlighter-rouge">libxfs_bhash_size</code>。</p>
+
+<p>然后调用<code class="highlighter-rouge">cache_init</code>初始化全局cache <code class="highlighter-rouge">libxfs_bcache</code>。这里需要注意一个重要的参数<code class="highlighter-rouge">libxfs_bcache_operations</code>，这个参数表示cache操作会调用的方法，包括磁盘读写操作。</p>
+
+<figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="k">struct</span> <span class="n">cache_operations</span> <span class="n">libxfs_bcache_operations</span> <span class="o">=</span> <span class="p">{</span>
+	<span class="p">.</span><span class="n">hash</span>		<span class="o">=</span> <span class="n">libxfs_bhash</span><span class="p">,</span>
+	<span class="p">.</span><span class="n">alloc</span>		<span class="o">=</span> <span class="n">libxfs_balloc</span><span class="p">,</span>
+	<span class="p">.</span><span class="n">flush</span>		<span class="o">=</span> <span class="n">libxfs_bflush</span><span class="p">,</span>
+	<span class="p">.</span><span class="n">relse</span>		<span class="o">=</span> <span class="n">libxfs_brelse</span><span class="p">,</span>
+	<span class="p">.</span><span class="n">compare</span>	<span class="o">=</span> <span class="n">libxfs_bcompare</span><span class="p">,</span>
+	<span class="p">.</span><span class="n">bulkrelse</span>	<span class="o">=</span> <span class="n">libxfs_bulkrelse</span>
+<span class="p">};</span></code></pre></figure>
+
+<h4 id="manage_zones">manage_zones</h4>
+
+<p>初始化内存分配zone，每个zone对应一种用途，不过zone其实只是用来跟踪分配了多少该类型的内存而已。</p>
+
+<h3 id="basic-block">Basic Block</h3>
+
+<p>插入介绍一下 <strong>Basic Block</strong>的概念。在XFS中，这个概念表示物理设备的一个块，代码中有下面这么一段：</p>
+
+<figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="cm">/*
+ Block I/O parameterization.	A basic block (BB) is the lowest size of
+ filesystem allocation, and must equal 512.  Length units given to bio
+ routines are in BB's.
+ */</span>
+<span class="cp">#define BBSHIFT		9
+#define BBSIZE		(1&lt;&lt;BBSHIFT)
+#define BBMASK		(BBSIZE-1)
+#define BTOBB(bytes)	(((__u64)(bytes) + BBSIZE - 1) &gt;&gt; BBSHIFT)
+#define BTOBBT(bytes)	((__u64)(bytes) &gt;&gt; BBSHIFT)
+#define BBTOB(bbs)	((bbs) &lt;&lt; BBSHIFT)</span></code></pre></figure>
+
+<p>Basic Block简称为BB，在代码中看到变量、函数或者宏有 <strong>bb</strong>或者 <strong>BB</strong>缩写的，就是指这个。BB的大小固定为512B，XFS的很多地方在表示size或者length时，会有以BB为单位的，例如上面的 <code class="highlighter-rouge">platform_findsizes()</code>获得的<code class="highlighter-rouge">dbsize</code>和<code class="highlighter-rouge">dsize</code>，就是以BB为单位。</p>
+
+<h3 id="discard-blocks">Discard Blocks</h3>
+
+<p><code class="highlighter-rouge">open_devices()</code>执行完<code class="highlighter-rouge">libxfs_init()</code>之后，如果允许执行discard操作（默认允许），就会执行discard操作。因为默认情况下只有data设备，所以只会对data设备执行discard操作。</p>
+
+<h2 id="validate_datadev">validate_datadev</h2>
+
+<p>默认情况下，<code class="highlighter-rouge">xi-&gt;dsize == 1</code>， 而<code class="highlighter-rouge">cfg-&gt;dblocks == 0</code>，所以会执行<code class="highlighter-rouge">cfg-&gt;dblocks = DTOBT(xi-&gt;dsize, cfg-&gt;blocklog)</code>，这个会将设备大小转换成文件系统block数量(每个block大小是4KB)存储在<code class="highlighter-rouge">cfg-&gt;dblocks</code>里。</p>
+
+<p>默认情况下不会有log和realtime device，如果有也执行同样的操作。</p>
+
+<h2 id="calculate_initial_ag_geometry">calculate_initial_ag_geometry</h2>
+
+<p>计算Allocation Group的分布。默认情况下，用户不会从CLI设置<code class="highlighter-rouge">agsize</code>和<code class="highlighter-rouge">agcount</code>，所以会调用<code class="highlighter-rouge">calc_default_ag_geometry()</code>。这个计算是根据设备的大小来确定的：</p>
+
+<ul>
+  <li><code class="highlighter-rouge">size &gt;= 4TB</code>：agsize为1TB。</li>
+  <li><code class="highlighter-rouge">size &lt; 4TB</code>： 整个设备划分为4个AG，每个AG大小相等。</li>
+</ul>
+
+<p>计算后，<code class="highlighter-rouge">cfg.agsize</code>保存一个AG的大小，单位是block，<code class="highlighter-rouge">cfg.agcount</code>保存AG的数量。</p>
+
+<h2 id="calculate_imaxpct">calculate_imaxpct</h2>
+
+<p>计算用多少空间来保存inode信息，也是根据设备的大小来确定：</p>
+
+<ul>
+  <li><code class="highlighter-rouge">size &lt; 1TB</code>：25%的空间</li>
+  <li><code class="highlighter-rouge">1TB &lt;= size &lt; 50TB</code>：5%的空间</li>
+  <li>更大的设备，使用1%的空间。</li>
+</ul>
+
+<p>这个值保存在<code class="highlighter-rouge">cfg.imaxpct</code>中。</p>
+
+    <br />
+
+    <div>
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议</a>进行许可。
+    </div>
+
+    <br />
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+  </div>
+
+  
+    <div class="post-comment">
+      
+<div id="disqus_thread"></div>
+<script>
+var disqus_config = function () {
+  this.page.url = "http://diabloneo.github.io/2018/05/15/xfs-mkfs-note-1/"; // <--- use canonical URL
+  this.page.identifier = "/2018/05/15/xfs-mkfs-note-1";
+};
+(function() { // DON'T EDIT BELOW THIS LINE
+  var d = document, s = d.createElement('script');
+
+  s.src = 'https://coffee-coke-and-code.disqus.com/embed.js';
+
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+    </div>
+  
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Coffee, Coke and Code</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>Coffee, Coke and Code</li>
+          <li><a href="mailto:diabloneo@gmail.com">diabloneo@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <i class="fa fa-github"></i>
+            <a href="https://github.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <i class="fa fa-twitter"></i>
+            <a href="https://twitter.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <i class="fa fa-weibo"></i>
+            <a href="https://weibo.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Archive diabloneo's articles.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+    
+      <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-78067453-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+    
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
+  </body>
+
+</html>

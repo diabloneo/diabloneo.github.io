@@ -6,9 +6,357 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 14 May 2018 23:36:25 +0800</pubDate>
-    <lastBuildDate>Mon, 14 May 2018 23:36:25 +0800</lastBuildDate>
+    <pubDate>Sun, 20 May 2018 22:17:30 +0800</pubDate>
+    <lastBuildDate>Sun, 20 May 2018 22:17:30 +0800</lastBuildDate>
     <generator>Jekyll v3.7.3</generator>
+    
+      <item>
+        <title>想到什么写什么周报 第27期 - 2018-05-20</title>
+        <description>&lt;h2 id=&quot;colly-goes-10&quot;&gt;Colly goes 1.0&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;http://go-colly.org/articles/first_release/&quot;&gt;http://go-colly.org/articles/first_release/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Go写的爬虫框架Colly发布了1.0版本。&lt;/p&gt;
+
+&lt;h2 id=&quot;how-to-do-math-on-the-linux-command-line&quot;&gt;How to do math on the Linux command line&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.networkworld.com/article/3268964/linux/how-to-do-math-on-the-linux-command-line.html&quot;&gt;https://www.networkworld.com/article/3268964/linux/how-to-do-math-on-the-linux-command-line.html&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;介绍shell中进行数学运算的几个方法。对于我来说，在shell中执行简单的数学运算经常遇到尴尬的情况：用的时候想不起来。所以还是要收藏一篇类似quick start的文章。&lt;/p&gt;
+
+&lt;h2 id=&quot;how-to-start-a-go-project-in-2018&quot;&gt;How to start a Go project in 2018&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://boyter.org/posts/how-to-start-go-project-2018/&quot;&gt;https://boyter.org/posts/how-to-start-go-project-2018/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;介绍了在2018年，一个Go项目中的常用方法，包括GOPATH设置、unit test、依赖管理、命令行入口等。&lt;/p&gt;
+
+&lt;h2 id=&quot;elixir-cross-reference---bootlin&quot;&gt;Elixir Cross Reference - bootlin&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://elixir.bootlin.com/linux/latest/source&quot;&gt;https://elixir.bootlin.com/linux/latest/source&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;一个搜索Linux kernel代码的工具，支持从2.6到最新的版本。&lt;/p&gt;
+</description>
+        <pubDate>Sun, 20 May 2018 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2018/05/20/write-what-i-have-027/</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2018/05/20/write-what-i-have-027/</guid>
+        
+        <category>golang</category>
+        
+        <category>linux</category>
+        
+        <category>shell</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>XFS mkfs解析(1) - 参数的生成和校验</title>
+        <description>&lt;p&gt;&lt;strong&gt;XFS&lt;/strong&gt;的 &lt;em&gt;mkfs&lt;/em&gt; 命令属于仓库&lt;em&gt;&lt;a href=&quot;https://git.kernel.org/pub/scm/fs/xfs/xfsprogs-dev.git&quot;&gt;https://git.kernel.org/pub/scm/fs/xfs/xfsprogs-dev.git&lt;/a&gt;&lt;/em&gt;，入口代码在 &lt;em&gt;mkfs/xfs_mkfs.c&lt;/em&gt;文件的&lt;code class=&quot;highlighter-rouge&quot;&gt;main&lt;/code&gt;函数。&lt;/p&gt;
+
+&lt;p&gt;mkfs代码的第一部分主要用来生成和校验mkfs过程的参数，这些参数会保存在 &lt;code class=&quot;highlighter-rouge&quot;&gt;struct mkfs_params cfg&lt;/code&gt;中。&lt;/p&gt;
+
+&lt;h2 id=&quot;默认参数&quot;&gt;默认参数&lt;/h2&gt;
+
+&lt;p&gt;变量&lt;code class=&quot;highlighter-rouge&quot;&gt;struct mkfs_default_params dft&lt;/code&gt;保存了mkfs的一些默认参数，其中有几个最常用的参数：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;sectorsize: 512B&lt;/li&gt;
+  &lt;li&gt;blocksize: 4096B&lt;/li&gt;
+  &lt;li&gt;crcs_enabled: true&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;还有一个变量&lt;code class=&quot;highlighter-rouge&quot;&gt;struct libxfs_xinit xi&lt;/code&gt;保存了libxfs初始化的配置。&lt;/p&gt;
+
+&lt;h2 id=&quot;cli参数&quot;&gt;CLI参数&lt;/h2&gt;
+
+&lt;p&gt;命令行传递进来的参数会存放在变量&lt;code class=&quot;highlighter-rouge&quot;&gt;struct cli_params cli&lt;/code&gt;。&lt;code class=&quot;highlighter-rouge&quot;&gt;cli&lt;/code&gt;变量首先会设置两个成员：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;xi: 指向上面的&lt;code class=&quot;highlighter-rouge&quot;&gt;xi&lt;/code&gt;变量的指针&lt;/li&gt;
+  &lt;li&gt;loginternal: 表示是否使用独立的设备记录journal log，默认是在当前设备内部记录，所以这个默认值为1。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;在最简单的情况下，mkfs命令只接收一个设备名称，这个设备名称会保存在&lt;code class=&quot;highlighter-rouge&quot;&gt;xi.volname&lt;/code&gt;。&lt;/p&gt;
+
+&lt;h2 id=&quot;setup-proto&quot;&gt;Setup Proto&lt;/h2&gt;
+
+&lt;p&gt;默认情况下是不指定proto文件的，所以默认的proto值是：&lt;code class=&quot;highlighter-rouge&quot;&gt;d--755 0 0 $&lt;/code&gt;。&lt;/p&gt;
+
+&lt;h2 id=&quot;validate_blocksize&quot;&gt;validate_blocksize&lt;/h2&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;validate_blocksize()&lt;/code&gt;函数会校验blocksize，并且设置到&lt;code class=&quot;highlighter-rouge&quot;&gt;cfg&lt;/code&gt;中。默认情况下&lt;code class=&quot;highlighter-rouge&quot;&gt;cfg.blocksize&lt;/code&gt;的值是4096B（上面的默认参数），&lt;code class=&quot;highlighter-rouge&quot;&gt;cfg.blocklog&lt;/code&gt;的值是12（4096的log指数，也就是2的12次方）。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;注：xfsprogs中都使用log来表示一个变量保存的是另一个值的log指数，后面不再赘述。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;validate_sectorsize&quot;&gt;validate_sectorsize&lt;/h2&gt;
+
+&lt;p&gt;默认情况下，这个函数会设置&lt;code class=&quot;highlighter-rouge&quot;&gt;cfg.sectorsize&lt;/code&gt;的值为512（上面的默认值），&lt;code class=&quot;highlighter-rouge&quot;&gt;cfg.sectorlog&lt;/code&gt;的值为9。&lt;/p&gt;
+
+&lt;p&gt;另外，这个函数还会调用&lt;code class=&quot;highlighter-rouge&quot;&gt;get_topology()&lt;/code&gt;函数来获取设备的一些信息：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;lsectorsize：logical sector size&lt;/li&gt;
+  &lt;li&gt;psectorsize：physical sector size&lt;/li&gt;
+  &lt;li&gt;sunit: 最小io size，一般是512B，单位是BB（见下文）的情况下，值为0。&lt;/li&gt;
+  &lt;li&gt;swidth：最优io size，可能为0，单位是BB。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;get_topolocy()&lt;/code&gt;通过调用 &lt;em&gt;libblkid&lt;/em&gt;的接口来获取的这些信息，并且保存在一个&lt;code class=&quot;highlighter-rouge&quot;&gt;struct fs_topology&lt;/code&gt;变量中，并且会赋值给&lt;code class=&quot;highlighter-rouge&quot;&gt;cfg.sectorsize&lt;/code&gt;（一般使用psectorsize）。&lt;/p&gt;
+
+&lt;h2 id=&quot;validate_log_sectorsize&quot;&gt;validate_log_sectorsize&lt;/h2&gt;
+
+&lt;p&gt;设置并验证log的sector size。默认情况下，&lt;code class=&quot;highlighter-rouge&quot;&gt;cli-&amp;gt;loginternal&lt;/code&gt;为true，所以&lt;code class=&quot;highlighter-rouge&quot;&gt;cfg.lsectorsize&lt;/code&gt;的值等于&lt;code class=&quot;highlighter-rouge&quot;&gt;cfg.sectorsize&lt;/code&gt;，也就是512B，&lt;code class=&quot;highlighter-rouge&quot;&gt;cfg.lsectorlog&lt;/code&gt;为对应值9。&lt;/p&gt;
+
+&lt;h2 id=&quot;validate_sb_features&quot;&gt;validate_sb_features&lt;/h2&gt;
+
+&lt;p&gt;检查feature的设置是否相互矛盾，feature设置保存在&lt;code class=&quot;highlighter-rouge&quot;&gt;cfg.sb_feat&lt;/code&gt;中。&lt;/p&gt;
+
+&lt;h2 id=&quot;validate_dirblocksize&quot;&gt;validate_dirblocksize&lt;/h2&gt;
+
+&lt;p&gt;默认情况下根据 &lt;em&gt;blocksize&lt;/em&gt;来设置 &lt;em&gt;dirblocksize&lt;/em&gt;，当 &lt;em&gt;blocksize&lt;/em&gt;小于4KB时， &lt;em&gt;dirblocksize&lt;/em&gt;设置为4KB，否则设置为 &lt;em&gt;blocksize&lt;/em&gt;的值。&lt;/p&gt;
+
+&lt;h2 id=&quot;validate_inodesize&quot;&gt;validate_inodesize&lt;/h2&gt;
+
+&lt;p&gt;默认情况下crc是开启的，所以&lt;code class=&quot;highlighter-rouge&quot;&gt;cfg.inodesize&lt;/code&gt;的值是512B。&lt;code class=&quot;highlighter-rouge&quot;&gt;cfg.inopblock&lt;/code&gt;表示一个block里可以存放多少个inode，等于&lt;code class=&quot;highlighter-rouge&quot;&gt;cfg.blocksize / cfg-&amp;gt;inodesize&lt;/code&gt;。&lt;/p&gt;
+
+&lt;h2 id=&quot;calc_dev_size&quot;&gt;calc_dev_size&lt;/h2&gt;
+
+&lt;p&gt;计算data, log和realtime分区的block数量。默认情况下，这些都不从命令行指定，表示使用整个设备。所以&lt;code class=&quot;highlighter-rouge&quot;&gt;cfg.dblocks&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;cfg.logblocks&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;cfg.rtblocks&lt;/code&gt;的值都为0。&lt;/p&gt;
+
+&lt;h2 id=&quot;calc_stripe_factors&quot;&gt;calc_stripe_factors&lt;/h2&gt;
+
+&lt;p&gt;计算条带参数。一般是使用前面&lt;code class=&quot;highlighter-rouge&quot;&gt;get_topolocy()&lt;/code&gt;得到的数据，最后会赋值给&lt;code class=&quot;highlighter-rouge&quot;&gt;cfg.dsunit&lt;/code&gt;等。一般情况下，&lt;code class=&quot;highlighter-rouge&quot;&gt;cfg.dsunit&lt;/code&gt;的值为0。&lt;/p&gt;
+
+&lt;h2 id=&quot;open_devices&quot;&gt;open_devices&lt;/h2&gt;
+
+&lt;p&gt;打开设备以便校验mkfs参数是否有效，默认情况下支持 &lt;strong&gt;discard&lt;/strong&gt;操作。&lt;/p&gt;
+
+&lt;h3 id=&quot;libxfs_init&quot;&gt;libxfs_init&lt;/h3&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;open_devices()&lt;/code&gt;函数首先调用&lt;code class=&quot;highlighter-rouge&quot;&gt;libxfs_init(libxfs_init_t *a)&lt;/code&gt;函数来打开设备并做一些初始化工作。&lt;/p&gt;
+
+&lt;h4 id=&quot;初始化radix-tree&quot;&gt;初始化Radix Tree&lt;/h4&gt;
+
+&lt;p&gt;调用&lt;code class=&quot;highlighter-rouge&quot;&gt;radix_tree_init()&lt;/code&gt;初始化一个全局的radix tree。&lt;/p&gt;
+
+&lt;h4 id=&quot;打开设备&quot;&gt;打开设备&lt;/h4&gt;
+
+&lt;p&gt;正常情况下，在这里时，&lt;code class=&quot;highlighter-rouge&quot;&gt;a-&amp;gt;volname&lt;/code&gt;不为空，是一个指向设备的路径。确定设备路径可以打开后，调用&lt;code class=&quot;highlighter-rouge&quot;&gt;open(rawfile, O_RDONLY)&lt;/code&gt;打开设备，得到&lt;code class=&quot;highlighter-rouge&quot;&gt;fd&lt;/code&gt;。打开后，设置&lt;code class=&quot;highlighter-rouge&quot;&gt;a-&amp;gt;volname = NULL&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;接下来执行&lt;code class=&quot;highlighter-rouge&quot;&gt;a-&amp;gt;ddev = libxfs_device_open()&lt;/code&gt;来打开data分区的设备，这个函数返回设备号。一般情况下，data设备就是我们上面打开的&lt;code class=&quot;highlighter-rouge&quot;&gt;a-&amp;gt;volname&lt;/code&gt;。&lt;code class=&quot;highlighter-rouge&quot;&gt;libxfs_device_open()&lt;/code&gt;打开设备后，会把&lt;code class=&quot;highlighter-rouge&quot;&gt;fd&lt;/code&gt;记录下全局变量中。另外，&lt;code class=&quot;highlighter-rouge&quot;&gt;libxfs_device_open()&lt;/code&gt;还会尝试设置设备的blocksize，通过ioctl的BLKBSZSET实现。设备打开后的&lt;code class=&quot;highlighter-rouge&quot;&gt;fd&lt;/code&gt;会记录在&lt;code class=&quot;highlighter-rouge&quot;&gt;a-&amp;gt;dfd&lt;/code&gt;。最后，会调用&lt;code class=&quot;highlighter-rouge&quot;&gt;platform_findsizes()&lt;/code&gt;函数来获得设备的block size（保存在&lt;code class=&quot;highlighter-rouge&quot;&gt;a-&amp;gt;dbsize&lt;/code&gt;）和size（设备大小，保存在&lt;code class=&quot;highlighter-rouge&quot;&gt;a-&amp;gt;dsize&lt;/code&gt;）。 &lt;strong&gt;注意&lt;/strong&gt;，这里的&lt;code class=&quot;highlighter-rouge&quot;&gt;dbsize&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;dsize&lt;/code&gt;的大小是basic block，见下文介绍。&lt;/p&gt;
+
+&lt;p&gt;默认情况下，只有data设备，没有log和realtime设备，不需要在打开和获取响应的值。&lt;/p&gt;
+
+&lt;h4 id=&quot;初始化cache&quot;&gt;初始化cache&lt;/h4&gt;
+
+&lt;p&gt;初始化hash桶的数量为1K，保存在&lt;code class=&quot;highlighter-rouge&quot;&gt;libxfs_bhash_size&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;然后调用&lt;code class=&quot;highlighter-rouge&quot;&gt;cache_init&lt;/code&gt;初始化全局cache &lt;code class=&quot;highlighter-rouge&quot;&gt;libxfs_bcache&lt;/code&gt;。这里需要注意一个重要的参数&lt;code class=&quot;highlighter-rouge&quot;&gt;libxfs_bcache_operations&lt;/code&gt;，这个参数表示cache操作会调用的方法，包括磁盘读写操作。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cache_operations&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;libxfs_bcache_operations&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hash&lt;/span&gt;		&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;libxfs_bhash&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;alloc&lt;/span&gt;		&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;libxfs_balloc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;flush&lt;/span&gt;		&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;libxfs_bflush&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;relse&lt;/span&gt;		&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;libxfs_brelse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;compare&lt;/span&gt;	&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;libxfs_bcompare&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bulkrelse&lt;/span&gt;	&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;libxfs_bulkrelse&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h4 id=&quot;manage_zones&quot;&gt;manage_zones&lt;/h4&gt;
+
+&lt;p&gt;初始化内存分配zone，每个zone对应一种用途，不过zone其实只是用来跟踪分配了多少该类型的内存而已。&lt;/p&gt;
+
+&lt;h3 id=&quot;basic-block&quot;&gt;Basic Block&lt;/h3&gt;
+
+&lt;p&gt;插入介绍一下 &lt;strong&gt;Basic Block&lt;/strong&gt;的概念。在XFS中，这个概念表示物理设备的一个块，代码中有下面这么一段：&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span class=&quot;cm&quot;&gt;/*
+ Block I/O parameterization.	A basic block (BB) is the lowest size of
+ filesystem allocation, and must equal 512.  Length units given to bio
+ routines are in BB's.
+ */&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;#define BBSHIFT		9
+#define BBSIZE		(1&amp;lt;&amp;lt;BBSHIFT)
+#define BBMASK		(BBSIZE-1)
+#define BTOBB(bytes)	(((__u64)(bytes) + BBSIZE - 1) &amp;gt;&amp;gt; BBSHIFT)
+#define BTOBBT(bytes)	((__u64)(bytes) &amp;gt;&amp;gt; BBSHIFT)
+#define BBTOB(bbs)	((bbs) &amp;lt;&amp;lt; BBSHIFT)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Basic Block简称为BB，在代码中看到变量、函数或者宏有 &lt;strong&gt;bb&lt;/strong&gt;或者 &lt;strong&gt;BB&lt;/strong&gt;缩写的，就是指这个。BB的大小固定为512B，XFS的很多地方在表示size或者length时，会有以BB为单位的，例如上面的 &lt;code class=&quot;highlighter-rouge&quot;&gt;platform_findsizes()&lt;/code&gt;获得的&lt;code class=&quot;highlighter-rouge&quot;&gt;dbsize&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;dsize&lt;/code&gt;，就是以BB为单位。&lt;/p&gt;
+
+&lt;h3 id=&quot;discard-blocks&quot;&gt;Discard Blocks&lt;/h3&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;open_devices()&lt;/code&gt;执行完&lt;code class=&quot;highlighter-rouge&quot;&gt;libxfs_init()&lt;/code&gt;之后，如果允许执行discard操作（默认允许），就会执行discard操作。因为默认情况下只有data设备，所以只会对data设备执行discard操作。&lt;/p&gt;
+
+&lt;h2 id=&quot;validate_datadev&quot;&gt;validate_datadev&lt;/h2&gt;
+
+&lt;p&gt;默认情况下，&lt;code class=&quot;highlighter-rouge&quot;&gt;xi-&amp;gt;dsize == 1&lt;/code&gt;， 而&lt;code class=&quot;highlighter-rouge&quot;&gt;cfg-&amp;gt;dblocks == 0&lt;/code&gt;，所以会执行&lt;code class=&quot;highlighter-rouge&quot;&gt;cfg-&amp;gt;dblocks = DTOBT(xi-&amp;gt;dsize, cfg-&amp;gt;blocklog)&lt;/code&gt;，这个会将设备大小转换成文件系统block数量(每个block大小是4KB)存储在&lt;code class=&quot;highlighter-rouge&quot;&gt;cfg-&amp;gt;dblocks&lt;/code&gt;里。&lt;/p&gt;
+
+&lt;p&gt;默认情况下不会有log和realtime device，如果有也执行同样的操作。&lt;/p&gt;
+
+&lt;h2 id=&quot;calculate_initial_ag_geometry&quot;&gt;calculate_initial_ag_geometry&lt;/h2&gt;
+
+&lt;p&gt;计算Allocation Group的分布。默认情况下，用户不会从CLI设置&lt;code class=&quot;highlighter-rouge&quot;&gt;agsize&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;agcount&lt;/code&gt;，所以会调用&lt;code class=&quot;highlighter-rouge&quot;&gt;calc_default_ag_geometry()&lt;/code&gt;。这个计算是根据设备的大小来确定的：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;size &amp;gt;= 4TB&lt;/code&gt;：agsize为1TB。&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;size &amp;lt; 4TB&lt;/code&gt;： 整个设备划分为4个AG，每个AG大小相等。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;计算后，&lt;code class=&quot;highlighter-rouge&quot;&gt;cfg.agsize&lt;/code&gt;保存一个AG的大小，单位是block，&lt;code class=&quot;highlighter-rouge&quot;&gt;cfg.agcount&lt;/code&gt;保存AG的数量。&lt;/p&gt;
+
+&lt;h2 id=&quot;calculate_imaxpct&quot;&gt;calculate_imaxpct&lt;/h2&gt;
+
+&lt;p&gt;计算用多少空间来保存inode信息，也是根据设备的大小来确定：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;size &amp;lt; 1TB&lt;/code&gt;：25%的空间&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;1TB &amp;lt;= size &amp;lt; 50TB&lt;/code&gt;：5%的空间&lt;/li&gt;
+  &lt;li&gt;更大的设备，使用1%的空间。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;这个值保存在&lt;code class=&quot;highlighter-rouge&quot;&gt;cfg.imaxpct&lt;/code&gt;中。&lt;/p&gt;
+</description>
+        <pubDate>Tue, 15 May 2018 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2018/05/15/xfs-mkfs-note-1/</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2018/05/15/xfs-mkfs-note-1/</guid>
+        
+        <category>storage</category>
+        
+        <category>linux</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>XFS解析(1) - 注册和mount</title>
+        <description>&lt;p&gt;&lt;strong&gt;XFS&lt;/strong&gt;文件系统的实现位于kernel仓库的 &lt;em&gt;fs/xfs/&lt;/em&gt;目录下，本文基于kernel版本 &lt;strong&gt;3.10&lt;/strong&gt;的代码，也就是CentOS 7.2版本的kernel。&lt;/p&gt;
+
+&lt;h2 id=&quot;module_init&quot;&gt;module_init&lt;/h2&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;module_init()&lt;/code&gt;的调用在&lt;em&gt;fs/xfs/xfs_super.c&lt;/em&gt;文件中，模块初始化函数是&lt;code class=&quot;highlighter-rouge&quot;&gt;init_xfs_fs()&lt;/code&gt;。&lt;/p&gt;
+
+&lt;h3 id=&quot;xfs_dir_startup&quot;&gt;xfs_dir_startup&lt;/h3&gt;
+
+&lt;p&gt;计算两个固定的文件名的hash值：&lt;strong&gt;.&lt;/strong&gt;和&lt;strong&gt;..&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;h3 id=&quot;xfs_init_zones&quot;&gt;xfs_init_zones&lt;/h3&gt;
+
+&lt;p&gt;初始化一些cache，这些cache用于保存不同类型的数据，都是用于后续文件系统操作的内存数据结构。&lt;/p&gt;
+
+&lt;h3 id=&quot;xfs_init_workqueues&quot;&gt;xfs_init_workqueues&lt;/h3&gt;
+
+&lt;p&gt;初始化一个workqueue，名称是&lt;em&gt;xfsalloc&lt;/em&gt;，用于回收内存。&lt;/p&gt;
+
+&lt;h3 id=&quot;xfs_mru_cache_init&quot;&gt;xfs_mru_cache_init&lt;/h3&gt;
+
+&lt;p&gt;初始化一个MRU(Most Recently Used) cache，包括初始化一个kmem zone用于存储&lt;code class=&quot;highlighter-rouge&quot;&gt;xfs_mru_cache_elem_t&lt;/code&gt;，以及一个workqueue &lt;em&gt;xfs_mru_cache&lt;/em&gt;。&lt;/p&gt;
+
+&lt;h3 id=&quot;xfs_filestream_init&quot;&gt;xfs_filestream_init&lt;/h3&gt;
+
+&lt;p&gt;初始化一个kmem zone，用于保存filestream的元素。&lt;/p&gt;
+
+&lt;h3 id=&quot;xfs_buf_init&quot;&gt;xfs_buf_init&lt;/h3&gt;
+
+&lt;p&gt;初始化buf用的cache，包含一个kmem zone，以及一个workqueue &lt;em&gt;xfslogd&lt;/em&gt;。&lt;/p&gt;
+
+&lt;h3 id=&quot;xfs_init_procfs&quot;&gt;xfs_init_procfs&lt;/h3&gt;
+
+&lt;p&gt;初始化几个procfs的文件，都位于目录&lt;em&gt;/proc/fs/xfs&lt;/em&gt;目录下：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;fs/xfs/stat&lt;/strong&gt;：对应函数&lt;code class=&quot;highlighter-rouge&quot;&gt;xfs_stat_proc_fops()&lt;/code&gt;。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;fs/xfs/xqmstat&lt;/strong&gt;：对应函数&lt;code class=&quot;highlighter-rouge&quot;&gt;xqmstat_proc_fops()&lt;/code&gt;。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;fs/xfs/xqm&lt;/strong&gt;：对应函数&lt;code class=&quot;highlighter-rouge&quot;&gt;xqm_proc_fops()&lt;/code&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;xfs_sysctl_register&quot;&gt;xfs_sysctl_register&lt;/h3&gt;
+
+&lt;p&gt;注册sysctl，对应的table是&lt;code class=&quot;highlighter-rouge&quot;&gt;xfs_root_table&lt;/code&gt;。&lt;/p&gt;
+
+&lt;h3 id=&quot;xfs_qm_init&quot;&gt;xfs_qm_init&lt;/h3&gt;
+
+&lt;p&gt;初始化quota相关的kmem zone。&lt;/p&gt;
+
+&lt;h3 id=&quot;register_filesystem&quot;&gt;register_filesystem&lt;/h3&gt;
+
+&lt;p&gt;注册文件系统，参数是&lt;code class=&quot;highlighter-rouge&quot;&gt;xfs_fs_type&lt;/code&gt;：&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;file_system_type&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xfs_fs_type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;owner&lt;/span&gt;			&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;THIS_MODULE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;			&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;xfs&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mount&lt;/span&gt;			&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xfs_fs_mount&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;kill_sb&lt;/span&gt;		&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;kill_block_super&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fs_flags&lt;/span&gt;		&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;FS_REQUIRES_DEV&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;文件系统的注册主要提供一个mount函数和一个kill_sb函数，分别用于文件系统的mount和umount。&lt;/p&gt;
+
+&lt;h2 id=&quot;xfs_fs_mount&quot;&gt;xfs_fs_mount&lt;/h2&gt;
+
+&lt;p&gt;这个函数会调用&lt;code class=&quot;highlighter-rouge&quot;&gt;mount_bdev()&lt;/code&gt;函数，并且传递函数&lt;code class=&quot;highlighter-rouge&quot;&gt;xfs_fs_fill_super()&lt;/code&gt;作为&lt;code class=&quot;highlighter-rouge&quot;&gt;fill_super&lt;/code&gt;参数。&lt;code class=&quot;highlighter-rouge&quot;&gt;mount_udev()&lt;/code&gt;是一个公共函数，挂载文件系统的统一入口，位于&lt;code class=&quot;highlighter-rouge&quot;&gt;fs/super.c&lt;/code&gt;。&lt;/p&gt;
+
+&lt;h3 id=&quot;xfs_fs_fill_super&quot;&gt;xfs_fs_fill_super&lt;/h3&gt;
+
+&lt;p&gt;这个函数完成一个XFS文件系统的mount工作。函数的原型如下：&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span class=&quot;n&quot;&gt;STATIC&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xfs_fs_fill_super&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;super_block&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sb&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;silent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;函数的主要工作如下：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;分配一个&lt;code class=&quot;highlighter-rouge&quot;&gt;struct xfs_mount&lt;/code&gt;结构体，并且初始化字段。&lt;/li&gt;
+  &lt;li&gt;调用&lt;code class=&quot;highlighter-rouge&quot;&gt;xfs_parseargs()&lt;/code&gt;解析参数并且设置mp中对应的字段。&lt;/li&gt;
+  &lt;li&gt;设置&lt;code class=&quot;highlighter-rouge&quot;&gt;sb-&amp;gt;s_blocksize&lt;/code&gt;等字段。&lt;/li&gt;
+  &lt;li&gt;在superblock中设置操作对应的函数
+    &lt;ol&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;sb-&amp;gt;s_xattr = xfs_xattr_handlers&lt;/code&gt;：实现文件扩展属性的函数。&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;sb-&amp;gt;s_export_op = &amp;amp;xfs_export_operations&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;sb-&amp;gt;s_qcop = &amp;amp;xfs_quotactl_operations&lt;/code&gt;：实现配额的函数。&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;sb-&amp;gt;s_op = &amp;amp;xfs_super_operations&lt;/code&gt;：文件级别的操作。&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;调用&lt;code class=&quot;highlighter-rouge&quot;&gt;xfs_open_devices()&lt;/code&gt;，默认情况下我们只有data device。这个函数还会初始化buffer target，是一个&lt;code class=&quot;highlighter-rouge&quot;&gt;xfs_buftarg_t&lt;/code&gt;指针，保存在&lt;code class=&quot;highlighter-rouge&quot;&gt;mp-&amp;gt;m_ddev_targp&lt;/code&gt;。&lt;/li&gt;
+  &lt;li&gt;调用&lt;code class=&quot;highlighter-rouge&quot;&gt;xfs_init_mount_workqueue&lt;/code&gt;。这个函数初始化文件系统mount之后所需要的几个workqueue：
+    &lt;ol&gt;
+      &lt;li&gt;&lt;em&gt;xfs-data&lt;/em&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;em&gt;xfs-conv&lt;/em&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;em&gt;xfs-cli&lt;/em&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;em&gt;xfs-reclaim&lt;/em&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;em&gt;xfs-log&lt;/em&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;em&gt;xfs-eofblocks&lt;/em&gt;&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;调用&lt;code class=&quot;highlighter-rouge&quot;&gt;xfs_icsb_init_counters()&lt;/code&gt;初始化计数器。&lt;/li&gt;
+  &lt;li&gt;调用&lt;code class=&quot;highlighter-rouge&quot;&gt;xfs_readsb()&lt;/code&gt;从设备上读取superblock，并且保存到&lt;code class=&quot;highlighter-rouge&quot;&gt;mp-&amp;gt;m_sb&lt;/code&gt;中。&lt;/li&gt;
+  &lt;li&gt;调用&lt;code class=&quot;highlighter-rouge&quot;&gt;xfs_finish_flags()&lt;/code&gt;，根据mount参数再初始化某些&lt;code class=&quot;highlighter-rouge&quot;&gt;mp&lt;/code&gt;的字段。&lt;/li&gt;
+  &lt;li&gt;调用&lt;code class=&quot;highlighter-rouge&quot;&gt;xfs_setup_devices()&lt;/code&gt;，根据superblock中的block size和sector size来设置buffer target。&lt;/li&gt;
+  &lt;li&gt;调用&lt;code class=&quot;highlighter-rouge&quot;&gt;xfs_filestream_mount()&lt;/code&gt;，创建和filestream相关的MRU cache。&lt;/li&gt;
+  &lt;li&gt;在执行mount操作之前，再设置某些superblock的字段。&lt;/li&gt;
+  &lt;li&gt;调用&lt;code class=&quot;highlighter-rouge&quot;&gt;xfs_mountfs()&lt;/code&gt;。这个函数做了许多操作：
+    &lt;ol&gt;
+      &lt;li&gt;根据superblock的内容继续初始化&lt;code class=&quot;highlighter-rouge&quot;&gt;mp&lt;/code&gt;。&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;xfs_initialize_perag()&lt;/code&gt;，初始化ag的内存表示。&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;xfs_log_mount()&lt;/code&gt;，初始化journaling log，这里还包含recovery的处理逻辑。&lt;/li&gt;
+      &lt;li&gt;读取root inode，也就是文件系统的根目录，保存在&lt;code class=&quot;highlighter-rouge&quot;&gt;mp-&amp;gt;m_rootip&lt;/code&gt;。&lt;/li&gt;
+      &lt;li&gt;初始化quota相关的逻辑。&lt;/li&gt;
+      &lt;li&gt;结束recovery操作。&lt;/li&gt;
+      &lt;li&gt;保留一些空间用于特殊操作。&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;使用root inode创建一个dentry，保存在&lt;code class=&quot;highlighter-rouge&quot;&gt;sb-&amp;gt;s_root&lt;/code&gt;中。&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        <pubDate>Tue, 15 May 2018 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2018/05/15/xfs-kernel-3.10-note-1/</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2018/05/15/xfs-kernel-3.10-note-1/</guid>
+        
+        <category>storage</category>
+        
+        <category>linux</category>
+        
+        
+      </item>
     
       <item>
         <title>XFS BTree</title>
@@ -676,119 +1024,6 @@
         <pubDate>Sun, 18 Mar 2018 00:00:00 +0800</pubDate>
         <link>http://diabloneo.github.io//2018/03/18/write-what-i-have-022/</link>
         <guid isPermaLink="true">http://diabloneo.github.io//2018/03/18/write-what-i-have-022/</guid>
-        
-        <category>cloud</category>
-        
-        <category>database</category>
-        
-        <category>golang</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>想到什么写什么周报 第21期 - 2018-03-12</title>
-        <description>&lt;h2 id=&quot;book-go-internals&quot;&gt;Book: go-internals&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://github.com/teh-cmc/go-internals&quot;&gt;https://github.com/teh-cmc/go-internals&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;go--package-versioning&quot;&gt;Go += Package Versioning&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://research.swtch.com/vgo-intro&quot;&gt;https://research.swtch.com/vgo-intro&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-</description>
-        <pubDate>Mon, 12 Mar 2018 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2018/03/12/write-what-i-have-021/</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2018/03/12/write-what-i-have-021/</guid>
-        
-        <category>golang</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Go终于要引入软件包版本管理了</title>
-        <description>&lt;p&gt;最近Russ Cox发表了篇文章: &lt;a href=&quot;https://research.swtch.com/vgo-intro&amp;gt;*&quot;&gt;&lt;strong&gt;Go += Package Versioning&lt;/strong&gt;&lt;/a&gt;。从这篇文章开始，Go社区算是开始着手处理对待软件包管理问题了。这篇文章也算是为接下来的正式提案预热。&lt;/p&gt;
-
-&lt;p&gt;提案包含4个步骤：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Import Compatiblity Rule: 导入兼容性规则。建议的规则很简单：如果一个新的package和老的package具有同样的import path，那么新的package就需要具备向后兼容性。Russ Cox指出，通过期待包的作者遵循这条规则，新的包管理系统不需要处理兼容性问题，这样会使得整个包管理系统更加简单和健壮。如果你熟悉OpenStack，那么你应该知道每个项目下的requirements有多麻烦，而且不同项目间还需要兼容同一个requirements。&lt;/li&gt;
-  &lt;li&gt;Minimal Version Select: 现在的包管理器一般都采用如下的策略：选择最新的版本。Russ Cox认为这是个错误的默认行为，因为只要上游软件包有更新，那么你的编译结果就会改变，这个不是开发者在大部分情况下所期望的行为。所以他采取的默认策略是选贼最老的版本。这个方案不仅使得编译结果稳定，而且也是软件包管理更加简单。&lt;/li&gt;
-  &lt;li&gt;Defining Go Modules: 一个Go module是一个package集合，这些package共享同样的import path prefix，称为module path。一个module定义在一个新的文件中，称为go.mod。一个module在网络上会存储成一个zip文件，可以通过HTTP协议下载，可以避免通过go get下载时需要安装各种cvs程序，而且也方便走代理。&lt;/li&gt;
-  &lt;li&gt;The go Command: go命令需要修改以支持Go Module。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;基于这个目标，Russ Cox开发了一个新的go命令：vgo。这个新的工具支持版本管理。另一篇文章 https://research.swtch.com/vgo-tour 说明了这个工具的使用。&lt;/p&gt;
-
-&lt;p&gt;现在这个命令还处于开发阶段，但是已经实现了上述4个步骤中的前三个。&lt;/p&gt;
-</description>
-        <pubDate>Mon, 12 Mar 2018 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2018/03/12/versioning-go-command/</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2018/03/12/versioning-go-command/</guid>
-        
-        <category>golang</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>想到什么写什么周报 第20期 - 2018-03-04</title>
-        <description>&lt;h2 id=&quot;gerritbot&quot;&gt;GerritBot&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://github.com/golang/go/wiki/GerritBot&quot;&gt;https://github.com/golang/go/wiki/GerritBot&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Go社区开始接收Github的pr，不过是通过GerritBot自动映射为一个Gerrit change，review和comment也是在gerrit里完成。&lt;/p&gt;
-
-&lt;h2 id=&quot;github-shouldnt-allow-username-reuse&quot;&gt;GitHub Shouldn’t Allow Username Reuse&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://donatstudios.com/GithubsTotalSecurityFacepalm&quot;&gt;https://donatstudios.com/GithubsTotalSecurityFacepalm&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;最近go-bindata的作者从网络上消失了，顺便把自己的github账号删除了。这个做法导致了很多依赖go-bindata的项目无法编译。于是有人重建了原作者的账号，同步了一份最新的代码，同时也声明他们使用这种无奈举措的原因。本文的作者提出的观点是，这种做法有安全问题，github账号不应该被重用，否则会导致信任问题。&lt;/p&gt;
-
-&lt;h2 id=&quot;this-week-in-elasticsearch-and-apache-lucene---2018-02-05&quot;&gt;This Week in Elasticsearch and Apache Lucene - 2018-02-05&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.elastic.co/blog/this-week-in-elasticsearch-and-apache-lucene-2018-02-05&quot;&gt;https://www.elastic.co/blog/this-week-in-elasticsearch-and-apache-lucene-2018-02-05&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;ES也要支持sql了。&lt;/p&gt;
-
-&lt;h2 id=&quot;how-google-cloud-storage-offers-strongly-consistent-object-listing-thanks-to-spanner&quot;&gt;How Google Cloud Storage offers strongly consistent object listing thanks to Spanner&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://cloudplatform.googleblog.com/2018/02/how-Google-Cloud-Storage-offers-strongly-consistent-object-listing-thanks-to-Spanner.html&quot;&gt;https://cloudplatform.googleblog.com/2018/02/how-Google-Cloud-Storage-offers-strongly-consistent-object-listing-thanks-to-Spanner.html&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Google Cloud Storage依靠Spanner服务提升了数据的一致性，在这方面已经超过AWS了。可以对比两个对象存储服务的一致性说明：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;em&gt;&lt;a href=&quot;https://cloud.google.com/storage/docs/consistency&quot;&gt;https://cloud.google.com/storage/docs/consistency&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;&lt;a href=&quot;https://docs.aws.amazon.com/AmazonS3/latest/dev/Introduction.html#ConsistencyModel。&quot;&gt;https://docs.aws.amazon.com/AmazonS3/latest/dev/Introduction.html#ConsistencyModel。&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;go-2017-survey-results&quot;&gt;Go 2017 Survey Results&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.golang.org/survey2017-results&quot;&gt;https://blog.golang.org/survey2017-results&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Go 2017年的用户调查报告。&lt;/p&gt;
-
-&lt;h2 id=&quot;defer-internals&quot;&gt;Defer Internals&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.learngoprogramming.com/yeah-semantically-after-is-the-right-word-fad1d5181891&quot;&gt;https://blog.learngoprogramming.com/yeah-semantically-after-is-the-right-word-fad1d5181891&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;快速介绍了下defer的内部实现，是在return语句之前。&lt;/p&gt;
-
-&lt;h2 id=&quot;postgresql-rocks-except-when-it-blocks-understanding-locks&quot;&gt;PostgreSQL rocks, except when it blocks: Understanding locks&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.citusdata.com/blog/2018/02/15/when-postgresql-blocks/&quot;&gt;https://www.citusdata.com/blog/2018/02/15/when-postgresql-blocks/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;CitusData发布的一篇关于Postgres的lock介绍文章，里面有两张表格，可以方便的查询pg的lock级别。&lt;/p&gt;
-
-&lt;h2 id=&quot;a-gophers-reading-list&quot;&gt;A Gopher’s Reading List&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://github.com/enocom/gopher-reading-list&quot;&gt;https://github.com/enocom/gopher-reading-list&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;一个关于Go语言文章的列表，从初级到高级都有。&lt;/p&gt;
-</description>
-        <pubDate>Sun, 04 Mar 2018 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2018/03/04/write-what-i-have-020/</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2018/03/04/write-what-i-have-020/</guid>
         
         <category>cloud</category>
         
