@@ -6,9 +6,42 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 20 May 2018 22:17:30 +0800</pubDate>
-    <lastBuildDate>Sun, 20 May 2018 22:17:30 +0800</lastBuildDate>
+    <pubDate>Sun, 27 May 2018 21:42:40 +0800</pubDate>
+    <lastBuildDate>Sun, 27 May 2018 21:42:40 +0800</lastBuildDate>
     <generator>Jekyll v3.7.3</generator>
+    
+      <item>
+        <title>想到什么写什么周报 第28期 - 2018-05-27</title>
+        <description>&lt;h2 id=&quot;bazel-buildgo&quot;&gt;bazel build://go&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://mp.weixin.qq.com/s/dSl82PF6LRx7iwVl4BZzZQ&quot;&gt;https://mp.weixin.qq.com/s/dSl82PF6LRx7iwVl4BZzZQ&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;流利说介绍他们如何使用bazel来build项目。&lt;/p&gt;
+
+&lt;h2 id=&quot;algorithms-behind-modern-storage-systems&quot;&gt;Algorithms Behind Modern Storage Systems&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://queue.acm.org/detail.cfm?id=3220266&quot;&gt;https://queue.acm.org/detail.cfm?id=3220266&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;介绍了B-trees和LSM trees的使用。&lt;/p&gt;
+
+&lt;h2 id=&quot;porting-the-sgi-xfs-file-system-to-linux&quot;&gt;Porting the SGI XFS File System to Linux&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://pdfs.semanticscholar.org/0948/ff7fea8440185e5a8117138c0887c878d467.pdf&quot;&gt;https://pdfs.semanticscholar.org/0948/ff7fea8440185e5a8117138c0887c878d467.pdf&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;将XFS文件系统移植到Linux时发表的论文。&lt;/p&gt;
+</description>
+        <pubDate>Sun, 27 May 2018 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2018/05/27/write-what-i-have-028/</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2018/05/27/write-what-i-have-028/</guid>
+        
+        <category>golang</category>
+        
+        <category>linux</category>
+        
+        <category>shell</category>
+        
+        
+      </item>
     
       <item>
         <title>想到什么写什么周报 第27期 - 2018-05-20</title>
@@ -991,45 +1024,6 @@
         <category>python</category>
         
         <category>distributed-computing</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>想到什么写什么周报 第22期 - 2018-03-18</title>
-        <description>&lt;h2 id=&quot;running-a-free-twitter-bot-on-aws-lambda&quot;&gt;Running a free Twitter bot on AWS Lambda&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://dev.to/hivickylai/running-a-free-twitter-bot-on-aws-lambda--2pik?ref=stackshare&quot;&gt;https://dev.to/hivickylai/running-a-free-twitter-bot-on-aws-lambda--2pik?ref=stackshare&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;用AWS Lambda写一个解析RSS然后发tweet的bot，使用CloudWatch来做定时器，挺容易的。&lt;/p&gt;
-
-&lt;h2 id=&quot;the-postgres-10-feature-you-didnt-know-about-create-statistics&quot;&gt;The Postgres 10 feature you didn’t know about: CREATE STATISTICS&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.citusdata.com/blog/2018/03/06/postgres-planner-and-its-usage-of-statistics/?ref=stackshare&quot;&gt;https://www.citusdata.com/blog/2018/03/06/postgres-planner-and-its-usage-of-statistics/?ref=stackshare&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Postgres 10引入了一个新的特性: CREATE STATISTICS，可以让planner更准确的收集统计信息，以便做出更好的plan。&lt;/p&gt;
-
-&lt;h2 id=&quot;postgresql-10-a-great-new-version-for-a-great-database&quot;&gt;PostgreSQL 10: a Great New Version for a Great Database&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;http://www.linuxjournal.com/content/postgresql-10-great-new-version-great-database&quot;&gt;http://www.linuxjournal.com/content/postgresql-10-great-new-version-great-database&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;举例子描述了Postgres 10新增的两个主要特性：logical replication, table partitioning.&lt;/p&gt;
-
-&lt;h2 id=&quot;a-quick-comparison-between-different-go-file-walk-implementations&quot;&gt;A quick comparison between different Go file walk implementations&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;http://www.boyter.org/2018/03/quick-comparison-go-file-walk-implementations/&quot;&gt;http://www.boyter.org/2018/03/quick-comparison-go-file-walk-implementations/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;比较了Go的几个遍历文件的库的性能，可以参考下。内置的path/filepath.Walk是比较慢的。&lt;/p&gt;
-</description>
-        <pubDate>Sun, 18 Mar 2018 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2018/03/18/write-what-i-have-022/</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2018/03/18/write-what-i-have-022/</guid>
-        
-        <category>cloud</category>
-        
-        <category>database</category>
-        
-        <category>golang</category>
         
         
       </item>
