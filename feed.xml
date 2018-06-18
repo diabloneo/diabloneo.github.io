@@ -6,9 +6,56 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 27 May 2018 21:42:40 +0800</pubDate>
-    <lastBuildDate>Sun, 27 May 2018 21:42:40 +0800</lastBuildDate>
+    <pubDate>Mon, 18 Jun 2018 21:38:16 +0800</pubDate>
+    <lastBuildDate>Mon, 18 Jun 2018 21:38:16 +0800</lastBuildDate>
     <generator>Jekyll v3.7.3</generator>
+    
+      <item>
+        <title>想到什么写什么周报 第29期 - 2018-06-18</title>
+        <description>&lt;h2 id=&quot;why-we-chose-ceph-to-build-block-storage&quot;&gt;Why We Chose Ceph to Build Block Storage&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.digitalocean.com/why-we-chose-ceph-to-build-block-storage/&quot;&gt;https://blog.digitalocean.com/why-we-chose-ceph-to-build-block-storage/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;DigitalOcean说他们为什么选择Ceph来提供块存储服务。目前用的是L版，跑在SSD上，三副本。文中也提到了，他们只把Ceph用在块存储上，虚拟机的系统盘本身不存储在Ceph上。&lt;/p&gt;
+
+&lt;h2 id=&quot;a-bright-future-for-github&quot;&gt;A bright future for GitHub&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.github.com/2018-06-04-github-microsoft/&quot;&gt;https://blog.github.com/2018-06-04-github-microsoft/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blogs.microsoft.com/blog/2018/06/04/microsoft-github-empowering-developers/&quot;&gt;https://blogs.microsoft.com/blog/2018/06/04/microsoft-github-empowering-developers/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;GitHub被微软收购了。&lt;/p&gt;
+
+&lt;h2 id=&quot;what-stratis-learned-from-zfs-btrfs-and-linux-volume-manager&quot;&gt;What Stratis learned from ZFS, Btrfs, and Linux Volume Manager&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://opensource.com/article/18/4/stratis-lessons-learned&quot;&gt;https://opensource.com/article/18/4/stratis-lessons-learned&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Stratis文件系统从ZFS，Btrfs和LVM上学习的东西。&lt;/p&gt;
+
+&lt;h2 id=&quot;extending-magic-pocket-innovation-with-the-first-petabyte-scale-smr-drive-deployment&quot;&gt;Extending Magic Pocket Innovation with the first petabyte scale SMR drive deployment&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blogs.dropbox.com/tech/2018/06/extending-magic-pocket-innovation-with-the-first-petabyte-scale-smr-drive-deployment/&quot;&gt;https://blogs.dropbox.com/tech/2018/06/extending-magic-pocket-innovation-with-the-first-petabyte-scale-smr-drive-deployment/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Dropbox在自己的基础架构中开始应用SMR盘，这样可以提升机柜的存储密度，降低成本。但是换成SMR盘也会有一些问题要解决：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;因为SMR盘的写性能不如PMR盘，他们选用了Host Managed SMR盘，自己控制读写。&lt;/li&gt;
+  &lt;li&gt;机器需要加内存，提升CPU。他们把数据索引保存在内存中，因为整个机器的存储空间增加了，所以内存也要加。额外增加的CPU算力用来保证机器的吞吐。&lt;/li&gt;
+  &lt;li&gt;从RAID换到HBA。原来应用RAID 0来提升写性能，并且使用了RAID cache。这样可以降低部署时间，不用再维护RAID的bug和固件版本。&lt;/li&gt;
+  &lt;li&gt;因为去掉了RAID，写cache也没了，所以添加了一个SSD来做写cache。不过，他们发现SATA的性能已经快满了，将来需要换到NVMe盘。&lt;/li&gt;
+  &lt;li&gt;每个机器有100个盘，存储密度从一开始的240TB上升到1.4PB（使用了14TB的SMR盘），为了满足性能需求，需要用50Gbps的网卡。&lt;/li&gt;
+  &lt;li&gt;软件的重新设计，对于SMR，大块写（4 - 5MB）性能更好。元数据频繁修改，会被放在磁盘的conventional area中（板载缓存）。&lt;/li&gt;
+&lt;/ol&gt;
+
+</description>
+        <pubDate>Mon, 18 Jun 2018 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2018/06/18/write-what-i-have-029/</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2018/06/18/write-what-i-have-029/</guid>
+        
+        <category>storage</category>
+        
+        
+      </item>
     
       <item>
         <title>想到什么写什么周报 第28期 - 2018-05-27</title>
@@ -968,62 +1015,6 @@
         <category>golang</category>
         
         <category>kernel</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>想到什么写什么周报 第23期 - 2018-04-01</title>
-        <description>&lt;h2 id=&quot;cloud-native-computing-foundation-welcomes-the-nats-messaging-protocol-into-the-fold&quot;&gt;Cloud Native Computing Foundation Welcomes the NATS Messaging Protocol into the Fold&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://thenewstack.io/cloud-native-computing-foundation-welcomes-nats-messaging-fold/&quot;&gt;https://thenewstack.io/cloud-native-computing-foundation-welcomes-nats-messaging-fold/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;NATS是一个消息系统，最近加入了CNCF，是CNCF的第17个项目。&lt;/p&gt;
-
-&lt;h2 id=&quot;scraping-the-web-in-golang-with-colly-and-goquery&quot;&gt;Scraping the Web in Golang with Colly and Goquery&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;http://benjamincongdon.me/blog/2018/03/01/Scraping-the-Web-in-Golang-with-Colly-and-Goquery/&quot;&gt;http://benjamincongdon.me/blog/2018/03/01/Scraping-the-Web-in-Golang-with-Colly-and-Goquery/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;介绍了使用Go来做爬虫时会用到的两个库：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;github.com/PuerkitoBio/goquery&lt;/li&gt;
-  &lt;li&gt;github.com/gocolly/colly&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;warehouse-all-new-pypi-is-now-in-beta&quot;&gt;Warehouse: All New PyPI is now in beta&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;http://pyfound.blogspot.com/2018/03/warehouse-all-new-pypi-is-now-in-beta.html&quot;&gt;http://pyfound.blogspot.com/2018/03/warehouse-all-new-pypi-is-now-in-beta.html&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Python社区用于替代PyPI的warehouse已经beta了，提供了更好用的软件仓库功能，对于Linux用户来说，依旧使用pip命令。&lt;/p&gt;
-
-&lt;h2 id=&quot;object-storage-aws-s3-vs-google-cloud-storage-vs-azure-storage-vs-digitalocean-spaces&quot;&gt;Object Storage: AWS s3 vs. Google Cloud Storage vs. Azure Storage vs. DigitalOcean Spaces&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.chooseacloud.com/objectstorage?ref=stackshare&quot;&gt;https://www.chooseacloud.com/objectstorage?ref=stackshare&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;公有云对象存储的价格对比：Google &amp;gt; AWS &amp;gt; Azure »&amp;gt; DigitalOcean&lt;/p&gt;
-
-&lt;h2 id=&quot;distributed-transactions-and-why-you-should-care&quot;&gt;Distributed transactions and why you should care&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://towardsdatascience.com/distributed-transactions-and-why-you-should-care-116b6da8d72&quot;&gt;https://towardsdatascience.com/distributed-transactions-and-why-you-should-care-116b6da8d72&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;一篇介绍数据一致性模型的文章。&lt;/p&gt;
-</description>
-        <pubDate>Sun, 01 Apr 2018 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2018/04/01/write-what-i-have-023/</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2018/04/01/write-what-i-have-023/</guid>
-        
-        <category>cloud</category>
-        
-        <category>database</category>
-        
-        <category>golang</category>
-        
-        <category>kernel</category>
-        
-        <category>python</category>
-        
-        <category>distributed-computing</category>
         
         
       </item>
