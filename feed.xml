@@ -6,9 +6,78 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 15 Jul 2018 22:32:30 +0800</pubDate>
-    <lastBuildDate>Sun, 15 Jul 2018 22:32:30 +0800</lastBuildDate>
+    <pubDate>Sat, 04 Aug 2018 15:22:32 +0800</pubDate>
+    <lastBuildDate>Sat, 04 Aug 2018 15:22:32 +0800</lastBuildDate>
     <generator>Jekyll v3.7.3</generator>
+    
+      <item>
+        <title>想到什么写什么周报 第32期 - 2018-08-04</title>
+        <description>&lt;h2 id=&quot;how-the-go-runtime-implements-maps-efficiently-without-generics&quot;&gt;How the Go runtime implements maps efficiently (without generics)&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://dave.cheney.net/2018/05/29/how-the-go-runtime-implements-maps-efficiently-without-generics&quot;&gt;https://dave.cheney.net/2018/05/29/how-the-go-runtime-implements-maps-efficiently-without-generics&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;前半部分介绍了hashmap的基本概念，后半部分介绍了Go的runtime如何实现map key的hash计算。Go没有泛型，也不是用&lt;code class=&quot;highlighter-rouge&quot;&gt;interface{}&lt;/code&gt;来实现。map操作的实现会编译器重写为对runtime函数的调用，比如&lt;code class=&quot;highlighter-rouge&quot;&gt;runtime.mapaccess1()&lt;/code&gt;。然后使用一个结构体maptype来保存key的信息，因为编译的时候就能知道key的类型，所以会为不同类型的key指定好hash函数，在运行的时候直接调用即可。&lt;/p&gt;
+
+&lt;h2 id=&quot;verifying-postgresql-backups-made-easier-with-new-open-source-tool&quot;&gt;Verifying PostgreSQL backups made easier with new open-source tool&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://cloudplatform.googleblog.com/2018/07/verifying-postgresql-backups-made-easier-with-new-open-source-tool.html&quot;&gt;https://cloudplatform.googleblog.com/2018/07/verifying-postgresql-backups-made-easier-with-new-open-source-tool.html&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Google Cloud开源了自己开发的Postgres backup校验工具，使用Postgres的checksum功能来校验一个backup数据是否正确。Checksum功能需要在初始化数据库的时候开启，&lt;code class=&quot;highlighter-rouge&quot;&gt;initdb --data-checksums&lt;/code&gt;。&lt;/p&gt;
+
+&lt;h2 id=&quot;xars-an-efficient-system-for-self-contained-executables&quot;&gt;XARs: An efficient system for self-contained executables&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://code.fb.com/data-infrastructure/xars-a-more-efficient-open-source-system-for-self-contained-executables/&quot;&gt;https://code.fb.com/data-infrastructure/xars-a-more-efficient-open-source-system-for-self-contained-executables/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;基于一种基于FUSE的按需加载文件系统的思想来实现数据包的分发。基本思路是把要打包的应用、依赖以及数据，放到一个squashfs archive中，然后在要运行的时候使用FUSE挂载，然后执行。对于Python来说，这个squashfs中已经包含了virtualenv环境，所以对运行的操作系统没有依赖。基于同样的思路，也可以用来打包Node或者Lua应用。&lt;/p&gt;
+
+&lt;h2 id=&quot;gracefully-scaling-to-10k-postgresql-connections-for-35mo&quot;&gt;Gracefully Scaling to 10k PostgreSQL Connections for $35/mo&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://medium.com/futuretech-industries/ten-thousand-high-availability-postgresql-connections-for-35-mo-part-one-4b7a2d61c51e&quot;&gt;https://medium.com/futuretech-industries/ten-thousand-high-availability-postgresql-connections-for-35-mo-part-one-4b7a2d61c51e&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://medium.com/futuretech-industries/postgres-raffle-10k-connections-35-mo-part-two-b4c2e0c86e37?ref=stackshare&quot;&gt;https://medium.com/futuretech-industries/postgres-raffle-10k-connections-35-mo-part-two-b4c2e0c86e37?ref=stackshare&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;介绍了PgBouncer的使用和配置。&lt;/p&gt;
+
+&lt;h2 id=&quot;do-you-know-the-new-names-for-linux-network-interfaces&quot;&gt;Do You Know the New Names for Linux Network Interfaces?&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.learningtree.com/new-names-linux-network-interfaces/&quot;&gt;https://blog.learningtree.com/new-names-linux-network-interfaces/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;介绍了Linux下的网络设备名称为什么从 eth0变成 enp2s0这种。&lt;/p&gt;
+
+&lt;h2 id=&quot;portable-cloud-programming-with-go-cloud&quot;&gt;Portable Cloud Programming with Go Cloud&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.golang.org/go-cloud&quot;&gt;https://blog.golang.org/go-cloud&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Google推出了Go Cloud。Go Cloud是一套开源框架，目的是帮助用户实现可以跨云的应用程序。基本思路就是用户只有在云服务的设置逻辑上调用不同云的SDK，而使用云资源的时候，则不需要区分是哪个云。这么做的好处是，主要的业务逻辑都是在资源的使用上的，云服务的设置逻辑其实很少。所以能减少用户的重复代码。&lt;/p&gt;
+
+&lt;h2 id=&quot;the-right-way-to-handle-yaml-in-go&quot;&gt;The right way to handle YAML in Go&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;http://ghodss.com/2014/the-right-way-to-handle-yaml-in-golang/&quot;&gt;http://ghodss.com/2014/the-right-way-to-handle-yaml-in-golang/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;原来YAML可以简写成JSON的形式，然后用 &lt;code class=&quot;highlighter-rouge&quot;&gt;json.Unmarshal()&lt;/code&gt;来解析到一个结构体。&lt;/p&gt;
+
+&lt;h2 id=&quot;go-code-refactoring--the-23x-performance-hunt&quot;&gt;Go code refactoring : the 23x performance hunt&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://medium.com/@val_deleplace/go-code-refactoring-the-23x-performance-hunt-156746b522f7&quot;&gt;https://medium.com/@val_deleplace/go-code-refactoring-the-23x-performance-hunt-156746b522f7&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;介绍如何一步一步的优化一个简单的程序，以获得23倍的性能提升。&lt;/p&gt;
+</description>
+        <pubDate>Sat, 04 Aug 2018 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2018/08/04/write-what-i-have-032/</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2018/08/04/write-what-i-have-032/</guid>
+        
+        <category>cloud</category>
+        
+        <category>golang</category>
+        
+        <category>storage</category>
+        
+        <category>database</category>
+        
+        <category>linux</category>
+        
+        
+      </item>
     
       <item>
         <title>想到什么写什么周报 第31期 - 2018-07-15</title>
@@ -800,42 +869,6 @@
         <category>database</category>
         
         <category>cloud</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>想到什么写什么周报 第25期 - 2018-04-15</title>
-        <description>&lt;h2 id=&quot;amazon-s3-update-new-storage-class-and-general-availability-of-s3-select&quot;&gt;Amazon S3 Update: New Storage Class and General Availability of S3 Select&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://aws.amazon.com/cn/blogs/aws/amazon-s3-update-new-storage-class-general-availability-of-s3-select/&quot;&gt;https://aws.amazon.com/cn/blogs/aws/amazon-s3-update-new-storage-class-general-availability-of-s3-select/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;S3增加了一个新的存储类型：One Zone - IA。数据只会保存在一个region的一个zone里，但是价格便宜20%，适合存放不重要的数据。&lt;/li&gt;
-  &lt;li&gt;另外，S3 select已经GA了，国区也有。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;edgedb-a-new-beginning&quot;&gt;EdgeDB: A New Beginning&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://edgedb.com/blog/edgedb-a-new-beginning/&quot;&gt;https://edgedb.com/blog/edgedb-a-new-beginning/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;一个新的数据库EdgeDB，这是一种对象关系数据库，和之前的数据库模型都不太一样，使用一种特殊的查询语言EdgeQL。官方说这个是开源的，但是github项目还没有建立，可能还没放上去。&lt;/p&gt;
-
-&lt;h2 id=&quot;一个很有新意的磁盘监控图设计&quot;&gt;一个很有新意的磁盘监控图设计&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://bvckup2.com/wip/10042018&quot;&gt;https://bvckup2.com/wip/10042018&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;我觉得还挺实用的。&lt;/p&gt;
-</description>
-        <pubDate>Sun, 15 Apr 2018 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2018/04/15/write-what-i-have-025/</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2018/04/15/write-what-i-have-025/</guid>
-        
-        <category>database</category>
-        
-        <category>golang</category>
-        
-        <category>storage</category>
         
         
       </item>
