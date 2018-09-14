@@ -6,12 +6,12 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>想到什么写什么周报 第32期 - 2018-08-04</title>
-  <meta name="description" content="How the Go runtime implements maps efficiently (without generics)">
+  <title>想到什么写什么周报 第33期 - 2018-09-14</title>
+  <meta name="description" content="How a single PostgreSQL config change improved slow query performance by 50x">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="/css/main.css">
   <link rel="stylesheet" href="/css/pygments-rainbow_dash.css">
-  <link rel="canonical" href="http://diabloneo.github.io//2018/08/04/write-what-i-have-032/">
+  <link rel="canonical" href="http://diabloneo.github.io//2018/09/14/write-what-i-have-033/">
   <link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
 </head>
 
@@ -81,8 +81,8 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">想到什么写什么周报 第32期 - 2018-08-04</h1>
-    <p class="post-meta"><time datetime="2018-08-04T00:00:00+08:00" itemprop="datePublished">Aug 4, 2018</time></p>
+    <h1 class="post-title" itemprop="name headline">想到什么写什么周报 第33期 - 2018-09-14</h1>
+    <p class="post-meta"><time datetime="2018-09-14T00:00:00+08:00" itemprop="datePublished">Sep 14, 2018</time></p>
   </header>
 
   <div class="post-tags">
@@ -105,7 +105,7 @@
       </li>
       
       <li>
-        <a href="/tags/linux/">linux</a>
+        <a href="/tags/security/">security</a>
       </li>
       
     </ul>
@@ -117,55 +117,52 @@
       <div class="addthis_inline_share_toolbox"></div>
     
     <br />
-      <h2 id="how-the-go-runtime-implements-maps-efficiently-without-generics">How the Go runtime implements maps efficiently (without generics)</h2>
+      <h2 id="how-a-single-postgresql-config-change-improved-slow-query-performance-by-50x">How a single PostgreSQL config change improved slow query performance by 50x</h2>
 
-<p><em><a href="https://dave.cheney.net/2018/05/29/how-the-go-runtime-implements-maps-efficiently-without-generics">https://dave.cheney.net/2018/05/29/how-the-go-runtime-implements-maps-efficiently-without-generics</a></em></p>
+<p><em><a href="https://amplitude.engineering/how-a-single-postgresql-config-change-improved-slow-query-performance-by-50x-85593b8991b0">https://amplitude.engineering/how-a-single-postgresql-config-change-improved-slow-query-performance-by-50x-85593b8991b0</a></em></p>
 
-<p>前半部分介绍了hashmap的基本概念，后半部分介绍了Go的runtime如何实现map key的hash计算。Go没有泛型，也不是用<code class="highlighter-rouge">interface{}</code>来实现。map操作的实现会编译器重写为对runtime函数的调用，比如<code class="highlighter-rouge">runtime.mapaccess1()</code>。然后使用一个结构体maptype来保存key的信息，因为编译的时候就能知道key的类型，所以会为不同类型的key指定好hash函数，在运行的时候直接调用即可。</p>
+<p>因为默认的配置中，random_page_cost = 4, seq_page_cost = 1，是针对HDD调优的，当你使用SSD时，实际情况并不是这样的。如果不修改配置，就会导致Postgres选择一个更差的计划。</p>
 
-<h2 id="verifying-postgresql-backups-made-easier-with-new-open-source-tool">Verifying PostgreSQL backups made easier with new open-source tool</h2>
+<h2 id="a-one-size-fits-all-database-doesnt-fit-anyone">A one size fits all database doesn’t fit anyone</h2>
 
-<p><em><a href="https://cloudplatform.googleblog.com/2018/07/verifying-postgresql-backups-made-easier-with-new-open-source-tool.html">https://cloudplatform.googleblog.com/2018/07/verifying-postgresql-backups-made-easier-with-new-open-source-tool.html</a></em></p>
+<p><em><a href="https://www.allthingsdistributed.com/2018/06/purpose-built-databases-in-aws.html">https://www.allthingsdistributed.com/2018/06/purpose-built-databases-in-aws.html</a></em></p>
 
-<p>Google Cloud开源了自己开发的Postgres backup校验工具，使用Postgres的checksum功能来校验一个backup数据是否正确。Checksum功能需要在初始化数据库的时候开启，<code class="highlighter-rouge">initdb --data-checksums</code>。</p>
+<p>AWS CTO Werner描述了为什么AWS要提供这么多不同的数据库服务，包括：关系数据库，kv数据库，文档数据库，图数据库，内存数据库和搜索数据库。因为不同的数据库类型用来解决不同的问题，没有一种数据库可以解决所有的问题。AWS的许多客户都已经不再开发一个巨应用了，都改微服务了，每个服务可以选择自己需要的数据库。</p>
 
-<h2 id="xars-an-efficient-system-for-self-contained-executables">XARs: An efficient system for self-contained executables</h2>
+<h2 id="google-titan-security-key-is-now-on-sale-for-50">Google ‘Titan Security Key’ Is Now On Sale For $50</h2>
 
-<p><em><a href="https://code.fb.com/data-infrastructure/xars-a-more-efficient-open-source-system-for-self-contained-executables/">https://code.fb.com/data-infrastructure/xars-a-more-efficient-open-source-system-for-self-contained-executables/</a></em></p>
+<p><em><a href="https://thehackernews.com/2018/08/google-titan-security-key.html">https://thehackernews.com/2018/08/google-titan-security-key.html</a></em></p>
 
-<p>基于一种基于FUSE的按需加载文件系统的思想来实现数据包的分发。基本思路是把要打包的应用、依赖以及数据，放到一个squashfs archive中，然后在要运行的时候使用FUSE挂载，然后执行。对于Python来说，这个squashfs中已经包含了virtualenv环境，所以对运行的操作系统没有依赖。基于同样的思路，也可以用来打包Node或者Lua应用。</p>
+<p>Google 推出了自己的硬件秘钥Titan，售价50美元，支持蓝牙，支持所有usb接口，电脑只要有Chrome就能用。目前尽在没有有售。</p>
 
-<h2 id="gracefully-scaling-to-10k-postgresql-connections-for-35mo">Gracefully Scaling to 10k PostgreSQL Connections for $35/mo</h2>
+<h2 id="influxdb-eventual-consistency">InfluxDB: Eventual Consistency</h2>
 
-<p><em><a href="https://medium.com/futuretech-industries/ten-thousand-high-availability-postgresql-connections-for-35-mo-part-one-4b7a2d61c51e">https://medium.com/futuretech-industries/ten-thousand-high-availability-postgresql-connections-for-35-mo-part-one-4b7a2d61c51e</a></em></p>
+<ul>
+  <li><em><a href="https://www.influxdata.com/blog/eventual-consistency-hhq/">https://www.influxdata.com/blog/eventual-consistency-hhq/</a></em>
+    <ul>
+      <li>使用 Hinted Handoff Queue 来保存失败节点的消息，也就是一个暂存区。</li>
+    </ul>
+  </li>
+  <li><em><a href="https://www.influxdata.com/blog/eventual-consistency-anti-entropy/">https://www.influxdata.com/blog/eventual-consistency-anti-entropy/</a></em>
+    <ul>
+      <li>实现 Anti Entropy，也就是避免数据的不一致性。</li>
+    </ul>
+  </li>
+</ul>
 
-<p><em><a href="https://medium.com/futuretech-industries/postgres-raffle-10k-connections-35-mo-part-two-b4c2e0c86e37?ref=stackshare">https://medium.com/futuretech-industries/postgres-raffle-10k-connections-35-mo-part-two-b4c2e0c86e37?ref=stackshare</a></em></p>
+<p>这两篇其实只是科普文章，用来介绍 InfluxDB Enterprise 如何实现最终一致性的。</p>
 
-<p>介绍了PgBouncer的使用和配置。</p>
+<h2 id="metrics-to-monitor-in-your-postgresql-database">Metrics to Monitor in Your PostgreSQL Database</h2>
 
-<h2 id="do-you-know-the-new-names-for-linux-network-interfaces">Do You Know the New Names for Linux Network Interfaces?</h2>
+<p><em><a href="https://www.influxdata.com/blog/metrics-to-monitor-in-your-postgresql-database/">https://www.influxdata.com/blog/metrics-to-monitor-in-your-postgresql-database/</a></em></p>
 
-<p><em><a href="https://blog.learningtree.com/new-names-linux-network-interfaces/">https://blog.learningtree.com/new-names-linux-network-interfaces/</a></em></p>
+<p>介绍了postgres的几个用于监控的数据以及使用场景。</p>
 
-<p>介绍了Linux下的网络设备名称为什么从 eth0变成 enp2s0这种。</p>
+<h2 id="on-premises-hipchat-replacements-in-2018">On-Premises HipChat Replacements in 2018</h2>
 
-<h2 id="portable-cloud-programming-with-go-cloud">Portable Cloud Programming with Go Cloud</h2>
+<p><em><a href="https://stackshare.io/posts/on-premises-hipchat-replacements-in-2018">https://stackshare.io/posts/on-premises-hipchat-replacements-in-2018</a></em></p>
 
-<p><em><a href="https://blog.golang.org/go-cloud">https://blog.golang.org/go-cloud</a></em></p>
-
-<p>Google推出了Go Cloud。Go Cloud是一套开源框架，目的是帮助用户实现可以跨云的应用程序。基本思路就是用户只有在云服务的设置逻辑上调用不同云的SDK，而使用云资源的时候，则不需要区分是哪个云。这么做的好处是，主要的业务逻辑都是在资源的使用上的，云服务的设置逻辑其实很少。所以能减少用户的重复代码。</p>
-
-<h2 id="the-right-way-to-handle-yaml-in-go">The right way to handle YAML in Go</h2>
-
-<p><em><a href="http://ghodss.com/2014/the-right-way-to-handle-yaml-in-golang/">http://ghodss.com/2014/the-right-way-to-handle-yaml-in-golang/</a></em></p>
-
-<p>原来YAML可以简写成JSON的形式，然后用 <code class="highlighter-rouge">json.Unmarshal()</code>来解析到一个结构体。</p>
-
-<h2 id="go-code-refactoring--the-23x-performance-hunt">Go code refactoring : the 23x performance hunt</h2>
-
-<p><em><a href="https://medium.com/@val_deleplace/go-code-refactoring-the-23x-performance-hunt-156746b522f7">https://medium.com/@val_deleplace/go-code-refactoring-the-23x-performance-hunt-156746b522f7</a></em></p>
-
-<p>介绍如何一步一步的优化一个简单的程序，以获得23倍的性能提升。</p>
+<p>介绍了在2018年，你要搭一个自己的类Slack服务，有哪些选择？忘了HipChat吧，那个过时了，本文推荐了3个：Rocket.Chat, Zulip 和 Mattermost。</p>
 
     <br />
 
@@ -186,8 +183,8 @@
 <div id="disqus_thread"></div>
 <script>
 var disqus_config = function () {
-  this.page.url = "http://diabloneo.github.io/2018/08/04/write-what-i-have-032/"; // <--- use canonical URL
-  this.page.identifier = "/2018/08/04/write-what-i-have-032";
+  this.page.url = "http://diabloneo.github.io/2018/09/14/write-what-i-have-033/"; // <--- use canonical URL
+  this.page.identifier = "/2018/09/14/write-what-i-have-033";
 };
 (function() { // DON'T EDIT BELOW THIS LINE
   var d = document, s = d.createElement('script');
