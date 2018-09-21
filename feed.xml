@@ -6,9 +6,74 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 14 Sep 2018 14:35:46 +0800</pubDate>
-    <lastBuildDate>Fri, 14 Sep 2018 14:35:46 +0800</lastBuildDate>
+    <pubDate>Fri, 21 Sep 2018 13:31:09 +0800</pubDate>
+    <lastBuildDate>Fri, 21 Sep 2018 13:31:09 +0800</lastBuildDate>
     <generator>Jekyll v3.7.3</generator>
+    
+      <item>
+        <title>Postgres的使用 - 2</title>
+        <description>&lt;p&gt;在 Postgres 中，我们可以使用如下的查询来获取长时间执行的查询或者操作，这个语句依赖于 &lt;em&gt;pg_stat_activity&lt;/em&gt; 视图。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sql&quot; data-lang=&quot;sql&quot;&gt;&lt;span class=&quot;k&quot;&gt;SELECT&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;datname&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;usename&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;client_addr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;state&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;backend_start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;xact_start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;xact_duration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;query_start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;query_duration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;query&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;SELECT&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;pgsa&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;datname&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;AS&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;datname&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;pgsa&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;usename&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;AS&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;usename&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;pgsa&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;client_addr&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;AS&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;client_addr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;pgsa&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;state&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;AS&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;state&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;pgsa&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;backend_start&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;AS&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;backend_start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;pgsa&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;xact_start&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;AS&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xact_start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;EXTRACT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;EPOCH&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;now&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pgsa&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;xact_start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;AS&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xact_duration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;pgsa&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;query_start&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;AS&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;query_start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;EXTRACT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;EPOCH&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;now&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pgsa&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;query_start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;AS&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;query_duration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;REGEXP_REPLACE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;REPLACE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pgsa&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;query&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CHR&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;' '&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'^SELECT.*FROM'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'FROM'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'i'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;AS&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;query&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pg_stat_activity&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;AS&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pgsa&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;WHERE&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;pgsa&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;state&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'idle'&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;AND&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pgsa&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;state&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'idle in transaction'&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;AND&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pgsa&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;state&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'idle in transaction (aborted)'&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;idleconnections&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;ORDER&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;BY&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;query_duration&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;DESC&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;LIMIT&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;这个查询用到的字段在 9.2 版本就都支持了，9.6 版本还增加了其他字段，有需要可以自己对比一下文档：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;9.2: &lt;a href=&quot;https://www.postgresql.org/docs/9.2/static/monitoring-stats.html&quot;&gt;https://www.postgresql.org/docs/9.2/static/monitoring-stats.html&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;9.6: &lt;a href=&quot;https://www.postgresql.org/docs/9.6/static/monitoring-stats.html&quot;&gt;https://www.postgresql.org/docs/9.6/static/monitoring-stats.html&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;用到的几个字段的含义如下：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;datname&lt;/code&gt;: 数据库名称。&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;username&lt;/code&gt;: 用户名。&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;client_addr&lt;/code&gt;: 客户端地址。&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;state&lt;/code&gt;: 连接的当前状态，一共有6种，这里需要显示的是其中3种&lt;strong&gt;非空闲&lt;/strong&gt;的。&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;backend_start&lt;/code&gt;: 连接开始时间。&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;xact_start&lt;/code&gt;: 当前事务开始时间。&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;EXTRACT(EPOCH FROM (now() - pgsa.xact_start)) AS xact_duration&lt;/code&gt;: 计算当前事务进行了多久，单位是秒。&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;query_start&lt;/code&gt;: 当前查询开始的时间，一个事务内可能有多个查询。&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;EXTRACT(EPOCH FROM (now() - pgsa.query_start)) AS query_duration&lt;/code&gt;: 计算当前查询进行了多久，单位是秒。&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;REGEXP_REPLACE(REPLACE(pgsa.query, CHR(10), ' '), '^SELECT.*FROM', 'FROM', 'i') AS query&lt;/code&gt;: 查询语句的内容，这里把换行符替换成空格，而且会尝试把 &lt;em&gt;SELECT … FROM&lt;/em&gt; 替换为 &lt;em&gt;FROM&lt;/em&gt;（方便查看查询的是哪个表，不过如果语句过长，原始查询语句只会保留前 1024 个字符，这个是由 &lt;strong&gt;track_activity_query_size&lt;/strong&gt; 参数决定的）。&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Fri, 21 Sep 2018 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2018/09/21/postgres-note-2/</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2018/09/21/postgres-note-2/</guid>
+        
+        <category>database</category>
+        
+        
+      </item>
     
       <item>
         <title>想到什么写什么周报 第33期 - 2018-09-14</title>
@@ -572,185 +637,6 @@ failed&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
         <category>linux</category>
         
         <category>shell</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>XFS mkfs解析(1) - 参数的生成和校验</title>
-        <description>&lt;p&gt;&lt;strong&gt;XFS&lt;/strong&gt;的 &lt;em&gt;mkfs&lt;/em&gt; 命令属于仓库&lt;em&gt;&lt;a href=&quot;https://git.kernel.org/pub/scm/fs/xfs/xfsprogs-dev.git&quot;&gt;https://git.kernel.org/pub/scm/fs/xfs/xfsprogs-dev.git&lt;/a&gt;&lt;/em&gt;，入口代码在 &lt;em&gt;mkfs/xfs_mkfs.c&lt;/em&gt;文件的&lt;code class=&quot;highlighter-rouge&quot;&gt;main&lt;/code&gt;函数。&lt;/p&gt;
-
-&lt;p&gt;mkfs代码的第一部分主要用来生成和校验mkfs过程的参数，这些参数会保存在 &lt;code class=&quot;highlighter-rouge&quot;&gt;struct mkfs_params cfg&lt;/code&gt;中。&lt;/p&gt;
-
-&lt;h2 id=&quot;默认参数&quot;&gt;默认参数&lt;/h2&gt;
-
-&lt;p&gt;变量&lt;code class=&quot;highlighter-rouge&quot;&gt;struct mkfs_default_params dft&lt;/code&gt;保存了mkfs的一些默认参数，其中有几个最常用的参数：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;sectorsize: 512B&lt;/li&gt;
-  &lt;li&gt;blocksize: 4096B&lt;/li&gt;
-  &lt;li&gt;crcs_enabled: true&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;还有一个变量&lt;code class=&quot;highlighter-rouge&quot;&gt;struct libxfs_xinit xi&lt;/code&gt;保存了libxfs初始化的配置。&lt;/p&gt;
-
-&lt;h2 id=&quot;cli参数&quot;&gt;CLI参数&lt;/h2&gt;
-
-&lt;p&gt;命令行传递进来的参数会存放在变量&lt;code class=&quot;highlighter-rouge&quot;&gt;struct cli_params cli&lt;/code&gt;。&lt;code class=&quot;highlighter-rouge&quot;&gt;cli&lt;/code&gt;变量首先会设置两个成员：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;xi: 指向上面的&lt;code class=&quot;highlighter-rouge&quot;&gt;xi&lt;/code&gt;变量的指针&lt;/li&gt;
-  &lt;li&gt;loginternal: 表示是否使用独立的设备记录journal log，默认是在当前设备内部记录，所以这个默认值为1。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;在最简单的情况下，mkfs命令只接收一个设备名称，这个设备名称会保存在&lt;code class=&quot;highlighter-rouge&quot;&gt;xi.volname&lt;/code&gt;。&lt;/p&gt;
-
-&lt;h2 id=&quot;setup-proto&quot;&gt;Setup Proto&lt;/h2&gt;
-
-&lt;p&gt;默认情况下是不指定proto文件的，所以默认的proto值是：&lt;code class=&quot;highlighter-rouge&quot;&gt;d--755 0 0 $&lt;/code&gt;。&lt;/p&gt;
-
-&lt;h2 id=&quot;validate_blocksize&quot;&gt;validate_blocksize&lt;/h2&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;validate_blocksize()&lt;/code&gt;函数会校验blocksize，并且设置到&lt;code class=&quot;highlighter-rouge&quot;&gt;cfg&lt;/code&gt;中。默认情况下&lt;code class=&quot;highlighter-rouge&quot;&gt;cfg.blocksize&lt;/code&gt;的值是4096B（上面的默认参数），&lt;code class=&quot;highlighter-rouge&quot;&gt;cfg.blocklog&lt;/code&gt;的值是12（4096的log指数，也就是2的12次方）。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;注：xfsprogs中都使用log来表示一个变量保存的是另一个值的log指数，后面不再赘述。&lt;/strong&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;validate_sectorsize&quot;&gt;validate_sectorsize&lt;/h2&gt;
-
-&lt;p&gt;默认情况下，这个函数会设置&lt;code class=&quot;highlighter-rouge&quot;&gt;cfg.sectorsize&lt;/code&gt;的值为512（上面的默认值），&lt;code class=&quot;highlighter-rouge&quot;&gt;cfg.sectorlog&lt;/code&gt;的值为9。&lt;/p&gt;
-
-&lt;p&gt;另外，这个函数还会调用&lt;code class=&quot;highlighter-rouge&quot;&gt;get_topology()&lt;/code&gt;函数来获取设备的一些信息：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;lsectorsize：logical sector size&lt;/li&gt;
-  &lt;li&gt;psectorsize：physical sector size&lt;/li&gt;
-  &lt;li&gt;sunit: 最小io size，一般是512B，单位是BB（见下文）的情况下，值为0。&lt;/li&gt;
-  &lt;li&gt;swidth：最优io size，可能为0，单位是BB。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;get_topolocy()&lt;/code&gt;通过调用 &lt;em&gt;libblkid&lt;/em&gt;的接口来获取的这些信息，并且保存在一个&lt;code class=&quot;highlighter-rouge&quot;&gt;struct fs_topology&lt;/code&gt;变量中，并且会赋值给&lt;code class=&quot;highlighter-rouge&quot;&gt;cfg.sectorsize&lt;/code&gt;（一般使用psectorsize）。&lt;/p&gt;
-
-&lt;h2 id=&quot;validate_log_sectorsize&quot;&gt;validate_log_sectorsize&lt;/h2&gt;
-
-&lt;p&gt;设置并验证log的sector size。默认情况下，&lt;code class=&quot;highlighter-rouge&quot;&gt;cli-&amp;gt;loginternal&lt;/code&gt;为true，所以&lt;code class=&quot;highlighter-rouge&quot;&gt;cfg.lsectorsize&lt;/code&gt;的值等于&lt;code class=&quot;highlighter-rouge&quot;&gt;cfg.sectorsize&lt;/code&gt;，也就是512B，&lt;code class=&quot;highlighter-rouge&quot;&gt;cfg.lsectorlog&lt;/code&gt;为对应值9。&lt;/p&gt;
-
-&lt;h2 id=&quot;validate_sb_features&quot;&gt;validate_sb_features&lt;/h2&gt;
-
-&lt;p&gt;检查feature的设置是否相互矛盾，feature设置保存在&lt;code class=&quot;highlighter-rouge&quot;&gt;cfg.sb_feat&lt;/code&gt;中。&lt;/p&gt;
-
-&lt;h2 id=&quot;validate_dirblocksize&quot;&gt;validate_dirblocksize&lt;/h2&gt;
-
-&lt;p&gt;默认情况下根据 &lt;em&gt;blocksize&lt;/em&gt;来设置 &lt;em&gt;dirblocksize&lt;/em&gt;，当 &lt;em&gt;blocksize&lt;/em&gt;小于4KB时， &lt;em&gt;dirblocksize&lt;/em&gt;设置为4KB，否则设置为 &lt;em&gt;blocksize&lt;/em&gt;的值。&lt;/p&gt;
-
-&lt;h2 id=&quot;validate_inodesize&quot;&gt;validate_inodesize&lt;/h2&gt;
-
-&lt;p&gt;默认情况下crc是开启的，所以&lt;code class=&quot;highlighter-rouge&quot;&gt;cfg.inodesize&lt;/code&gt;的值是512B。&lt;code class=&quot;highlighter-rouge&quot;&gt;cfg.inopblock&lt;/code&gt;表示一个block里可以存放多少个inode，等于&lt;code class=&quot;highlighter-rouge&quot;&gt;cfg.blocksize / cfg-&amp;gt;inodesize&lt;/code&gt;。&lt;/p&gt;
-
-&lt;h2 id=&quot;calc_dev_size&quot;&gt;calc_dev_size&lt;/h2&gt;
-
-&lt;p&gt;计算data, log和realtime分区的block数量。默认情况下，这些都不从命令行指定，表示使用整个设备。所以&lt;code class=&quot;highlighter-rouge&quot;&gt;cfg.dblocks&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;cfg.logblocks&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;cfg.rtblocks&lt;/code&gt;的值都为0。&lt;/p&gt;
-
-&lt;h2 id=&quot;calc_stripe_factors&quot;&gt;calc_stripe_factors&lt;/h2&gt;
-
-&lt;p&gt;计算条带参数。一般是使用前面&lt;code class=&quot;highlighter-rouge&quot;&gt;get_topolocy()&lt;/code&gt;得到的数据，最后会赋值给&lt;code class=&quot;highlighter-rouge&quot;&gt;cfg.dsunit&lt;/code&gt;等。一般情况下，&lt;code class=&quot;highlighter-rouge&quot;&gt;cfg.dsunit&lt;/code&gt;的值为0。&lt;/p&gt;
-
-&lt;h2 id=&quot;open_devices&quot;&gt;open_devices&lt;/h2&gt;
-
-&lt;p&gt;打开设备以便校验mkfs参数是否有效，默认情况下支持 &lt;strong&gt;discard&lt;/strong&gt;操作。&lt;/p&gt;
-
-&lt;h3 id=&quot;libxfs_init&quot;&gt;libxfs_init&lt;/h3&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;open_devices()&lt;/code&gt;函数首先调用&lt;code class=&quot;highlighter-rouge&quot;&gt;libxfs_init(libxfs_init_t *a)&lt;/code&gt;函数来打开设备并做一些初始化工作。&lt;/p&gt;
-
-&lt;h4 id=&quot;初始化radix-tree&quot;&gt;初始化Radix Tree&lt;/h4&gt;
-
-&lt;p&gt;调用&lt;code class=&quot;highlighter-rouge&quot;&gt;radix_tree_init()&lt;/code&gt;初始化一个全局的radix tree。&lt;/p&gt;
-
-&lt;h4 id=&quot;打开设备&quot;&gt;打开设备&lt;/h4&gt;
-
-&lt;p&gt;正常情况下，在这里时，&lt;code class=&quot;highlighter-rouge&quot;&gt;a-&amp;gt;volname&lt;/code&gt;不为空，是一个指向设备的路径。确定设备路径可以打开后，调用&lt;code class=&quot;highlighter-rouge&quot;&gt;open(rawfile, O_RDONLY)&lt;/code&gt;打开设备，得到&lt;code class=&quot;highlighter-rouge&quot;&gt;fd&lt;/code&gt;。打开后，设置&lt;code class=&quot;highlighter-rouge&quot;&gt;a-&amp;gt;volname = NULL&lt;/code&gt;。&lt;/p&gt;
-
-&lt;p&gt;接下来执行&lt;code class=&quot;highlighter-rouge&quot;&gt;a-&amp;gt;ddev = libxfs_device_open()&lt;/code&gt;来打开data分区的设备，这个函数返回设备号。一般情况下，data设备就是我们上面打开的&lt;code class=&quot;highlighter-rouge&quot;&gt;a-&amp;gt;volname&lt;/code&gt;。&lt;code class=&quot;highlighter-rouge&quot;&gt;libxfs_device_open()&lt;/code&gt;打开设备后，会把&lt;code class=&quot;highlighter-rouge&quot;&gt;fd&lt;/code&gt;记录下全局变量中。另外，&lt;code class=&quot;highlighter-rouge&quot;&gt;libxfs_device_open()&lt;/code&gt;还会尝试设置设备的blocksize，通过ioctl的BLKBSZSET实现。设备打开后的&lt;code class=&quot;highlighter-rouge&quot;&gt;fd&lt;/code&gt;会记录在&lt;code class=&quot;highlighter-rouge&quot;&gt;a-&amp;gt;dfd&lt;/code&gt;。最后，会调用&lt;code class=&quot;highlighter-rouge&quot;&gt;platform_findsizes()&lt;/code&gt;函数来获得设备的block size（保存在&lt;code class=&quot;highlighter-rouge&quot;&gt;a-&amp;gt;dbsize&lt;/code&gt;）和size（设备大小，保存在&lt;code class=&quot;highlighter-rouge&quot;&gt;a-&amp;gt;dsize&lt;/code&gt;）。 &lt;strong&gt;注意&lt;/strong&gt;，这里的&lt;code class=&quot;highlighter-rouge&quot;&gt;dbsize&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;dsize&lt;/code&gt;的大小是basic block，见下文介绍。&lt;/p&gt;
-
-&lt;p&gt;默认情况下，只有data设备，没有log和realtime设备，不需要在打开和获取响应的值。&lt;/p&gt;
-
-&lt;h4 id=&quot;初始化cache&quot;&gt;初始化cache&lt;/h4&gt;
-
-&lt;p&gt;初始化hash桶的数量为1K，保存在&lt;code class=&quot;highlighter-rouge&quot;&gt;libxfs_bhash_size&lt;/code&gt;。&lt;/p&gt;
-
-&lt;p&gt;然后调用&lt;code class=&quot;highlighter-rouge&quot;&gt;cache_init&lt;/code&gt;初始化全局cache &lt;code class=&quot;highlighter-rouge&quot;&gt;libxfs_bcache&lt;/code&gt;。这里需要注意一个重要的参数&lt;code class=&quot;highlighter-rouge&quot;&gt;libxfs_bcache_operations&lt;/code&gt;，这个参数表示cache操作会调用的方法，包括磁盘读写操作。&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cache_operations&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;libxfs_bcache_operations&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-	&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hash&lt;/span&gt;		&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;libxfs_bhash&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-	&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;alloc&lt;/span&gt;		&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;libxfs_balloc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-	&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;flush&lt;/span&gt;		&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;libxfs_bflush&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-	&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;relse&lt;/span&gt;		&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;libxfs_brelse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-	&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;compare&lt;/span&gt;	&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;libxfs_bcompare&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-	&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bulkrelse&lt;/span&gt;	&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;libxfs_bulkrelse&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;h4 id=&quot;manage_zones&quot;&gt;manage_zones&lt;/h4&gt;
-
-&lt;p&gt;初始化内存分配zone，每个zone对应一种用途，不过zone其实只是用来跟踪分配了多少该类型的内存而已。&lt;/p&gt;
-
-&lt;h3 id=&quot;basic-block&quot;&gt;Basic Block&lt;/h3&gt;
-
-&lt;p&gt;插入介绍一下 &lt;strong&gt;Basic Block&lt;/strong&gt;的概念。在XFS中，这个概念表示物理设备的一个块，代码中有下面这么一段：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span class=&quot;cm&quot;&gt;/*
- Block I/O parameterization.	A basic block (BB) is the lowest size of
- filesystem allocation, and must equal 512.  Length units given to bio
- routines are in BB's.
- */&lt;/span&gt;
-&lt;span class=&quot;cp&quot;&gt;#define BBSHIFT		9
-#define BBSIZE		(1&amp;lt;&amp;lt;BBSHIFT)
-#define BBMASK		(BBSIZE-1)
-#define BTOBB(bytes)	(((__u64)(bytes) + BBSIZE - 1) &amp;gt;&amp;gt; BBSHIFT)
-#define BTOBBT(bytes)	((__u64)(bytes) &amp;gt;&amp;gt; BBSHIFT)
-#define BBTOB(bbs)	((bbs) &amp;lt;&amp;lt; BBSHIFT)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;Basic Block简称为BB，在代码中看到变量、函数或者宏有 &lt;strong&gt;bb&lt;/strong&gt;或者 &lt;strong&gt;BB&lt;/strong&gt;缩写的，就是指这个。BB的大小固定为512B，XFS的很多地方在表示size或者length时，会有以BB为单位的，例如上面的 &lt;code class=&quot;highlighter-rouge&quot;&gt;platform_findsizes()&lt;/code&gt;获得的&lt;code class=&quot;highlighter-rouge&quot;&gt;dbsize&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;dsize&lt;/code&gt;，就是以BB为单位。&lt;/p&gt;
-
-&lt;h3 id=&quot;discard-blocks&quot;&gt;Discard Blocks&lt;/h3&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;open_devices()&lt;/code&gt;执行完&lt;code class=&quot;highlighter-rouge&quot;&gt;libxfs_init()&lt;/code&gt;之后，如果允许执行discard操作（默认允许），就会执行discard操作。因为默认情况下只有data设备，所以只会对data设备执行discard操作。&lt;/p&gt;
-
-&lt;h2 id=&quot;validate_datadev&quot;&gt;validate_datadev&lt;/h2&gt;
-
-&lt;p&gt;默认情况下，&lt;code class=&quot;highlighter-rouge&quot;&gt;xi-&amp;gt;dsize == 1&lt;/code&gt;， 而&lt;code class=&quot;highlighter-rouge&quot;&gt;cfg-&amp;gt;dblocks == 0&lt;/code&gt;，所以会执行&lt;code class=&quot;highlighter-rouge&quot;&gt;cfg-&amp;gt;dblocks = DTOBT(xi-&amp;gt;dsize, cfg-&amp;gt;blocklog)&lt;/code&gt;，这个会将设备大小转换成文件系统block数量(每个block大小是4KB)存储在&lt;code class=&quot;highlighter-rouge&quot;&gt;cfg-&amp;gt;dblocks&lt;/code&gt;里。&lt;/p&gt;
-
-&lt;p&gt;默认情况下不会有log和realtime device，如果有也执行同样的操作。&lt;/p&gt;
-
-&lt;h2 id=&quot;calculate_initial_ag_geometry&quot;&gt;calculate_initial_ag_geometry&lt;/h2&gt;
-
-&lt;p&gt;计算Allocation Group的分布。默认情况下，用户不会从CLI设置&lt;code class=&quot;highlighter-rouge&quot;&gt;agsize&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;agcount&lt;/code&gt;，所以会调用&lt;code class=&quot;highlighter-rouge&quot;&gt;calc_default_ag_geometry()&lt;/code&gt;。这个计算是根据设备的大小来确定的：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;size &amp;gt;= 4TB&lt;/code&gt;：agsize为1TB。&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;size &amp;lt; 4TB&lt;/code&gt;： 整个设备划分为4个AG，每个AG大小相等。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;计算后，&lt;code class=&quot;highlighter-rouge&quot;&gt;cfg.agsize&lt;/code&gt;保存一个AG的大小，单位是block，&lt;code class=&quot;highlighter-rouge&quot;&gt;cfg.agcount&lt;/code&gt;保存AG的数量。&lt;/p&gt;
-
-&lt;h2 id=&quot;calculate_imaxpct&quot;&gt;calculate_imaxpct&lt;/h2&gt;
-
-&lt;p&gt;计算用多少空间来保存inode信息，也是根据设备的大小来确定：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;size &amp;lt; 1TB&lt;/code&gt;：25%的空间&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;1TB &amp;lt;= size &amp;lt; 50TB&lt;/code&gt;：5%的空间&lt;/li&gt;
-  &lt;li&gt;更大的设备，使用1%的空间。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;这个值保存在&lt;code class=&quot;highlighter-rouge&quot;&gt;cfg.imaxpct&lt;/code&gt;中。&lt;/p&gt;
-</description>
-        <pubDate>Tue, 15 May 2018 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2018/05/15/xfs-mkfs-note-1/</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2018/05/15/xfs-mkfs-note-1/</guid>
-        
-        <category>storage</category>
-        
-        <category>linux</category>
         
         
       </item>
