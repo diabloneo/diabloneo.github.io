@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Docker 的 tty size 问题</title>
+  <meta name="description" content="问题由于把 Postgres 运行在 Docker 容器里，所以经常使用如下命令登录到数据库 docker exec -it -u postgres mypg psql mydb。然后在 psql 提示符下执行操作。然后经常会出现输入太长的 sql 语句时，psql 会在还没遇到终端宽度限制之前就开始换行，而且是...">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/pygments-rainbow_dash.css">
+  <link rel="canonical" href="http://diabloneo.github.io//2018/09/22/docker-tty-size-problem/">
+  <link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
+</head>
+
+
+  <body>
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">Coffee, Coke and Code</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <a class="page-link" href="/tags">Tags</a>
+        <a class="page-link" href="/feed.xml">RSS</a>
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Docker 的 tty size 问题</h1>
+    <p class="post-meta"><time datetime="2018-09-22T00:00:00+08:00" itemprop="datePublished">Sep 22, 2018</time></p>
+  </header>
+
+  <div class="post-tags">
+    <ul>
+      
+      <li>
+        <a href="/tags/docker/">docker</a>
+      </li>
+      
+    </ul>
+  </div>
+
+  <div class="post-content" itemprop="articleBody">
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+    <br />
+      <h2 id="问题">问题</h2>
+<p>由于把 Postgres 运行在 Docker 容器里，所以经常使用如下命令登录到数据库 <code class="highlighter-rouge">docker exec -it -u postgres mypg psql mydb</code>。然后在 psql 提示符下执行操作。然后经常会出现输入太长的 sql 语句时，psql 会在还没遇到终端宽度限制之前就开始换行，而且是把把输入回显换行到上面一行。这个行为说明了在容器内的 tty 的配置出现了问题。但是，很奇怪的是，退出 <code class="highlighter-rouge">docker exec</code> 之后，再次进入，就不会遇到这个问题了。</p>
+
+<h2 id="现象分析">现象分析</h2>
+<p>这个问题看起来应该出在是 Docker 容器对于 tty size 的处理上。当出现这个问题的时候，通过 <code class="highlighter-rouge">docker exec</code> 进入容器的 shell，执行 <code class="highlighter-rouge">stty size</code> 会得到如下结果：</p>
+
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>docker <span class="nb">exec</span> <span class="nt">-it</span> <span class="nt">-u</span> postgres postgres bash
+bash-4.3<span class="nv">$ </span><span class="nb">stty </span>size
+<span class="nb">stty</span>: standard input
+bash-4.3<span class="nv">$ </span><span class="nb">stty </span>size 2&gt; /dev/null
+bash-4.3<span class="nv">$ </span><span class="nb">stty </span>size <span class="o">&gt;</span> /dev/null
+<span class="nb">stty</span>: standard input
+bash-4.3<span class="nv">$ </span><span class="nb">stty</span> <span class="nt">-a</span>
+speed 38400 baud<span class="p">;</span><span class="nb">stty</span>: standard input
+ line <span class="o">=</span> 0<span class="p">;</span>
+intr <span class="o">=</span> ^C<span class="p">;</span> quit <span class="o">=</span> ^<span class="se">\;</span> erase <span class="o">=</span> ^?<span class="p">;</span> <span class="nb">kill</span> <span class="o">=</span> ^U<span class="p">;</span> eof <span class="o">=</span> ^D<span class="p">;</span> eol <span class="o">=</span> &lt;undef&gt;<span class="p">;</span>
+eol2 <span class="o">=</span> &lt;undef&gt;<span class="p">;</span> swtch <span class="o">=</span> &lt;undef&gt;<span class="p">;</span> start <span class="o">=</span> ^Q<span class="p">;</span> stop <span class="o">=</span> ^S<span class="p">;</span> susp <span class="o">=</span> ^Z<span class="p">;</span> rprnt <span class="o">=</span> ^R<span class="p">;</span>
+werase <span class="o">=</span> ^W<span class="p">;</span> lnext <span class="o">=</span> ^V<span class="p">;</span> flush <span class="o">=</span> ^O<span class="p">;</span> min <span class="o">=</span> 1<span class="p">;</span> <span class="nb">time</span> <span class="o">=</span> 0<span class="p">;</span>
+<span class="nt">-parenb</span> <span class="nt">-parodd</span> cs8 <span class="nt">-hupcl</span> <span class="nt">-cstopb</span> cread <span class="nt">-clocal</span> <span class="nt">-crtscts</span>
+<span class="nt">-ignbrk</span> <span class="nt">-brkint</span> <span class="nt">-ignpar</span> <span class="nt">-parmrk</span> <span class="nt">-inpck</span> <span class="nt">-istrip</span> <span class="nt">-inlcr</span> <span class="nt">-igncr</span> icrnl ixon <span class="nt">-ixoff</span>
+<span class="nt">-iuclc</span> <span class="nt">-ixany</span> <span class="nt">-imaxbel</span> <span class="nt">-iutf8</span>
+opost <span class="nt">-olcuc</span> <span class="nt">-ocrnl</span> onlcr <span class="nt">-onocr</span> <span class="nt">-onlret</span> <span class="nt">-ofill</span> <span class="nt">-ofdel</span> nl0 cr0 tab0 bs0 vt0 ff0
+isig icanon iexten <span class="nb">echo </span>echoe echok <span class="nt">-echonl</span> <span class="nt">-noflsh</span> <span class="nt">-xcase</span> <span class="nt">-tostop</span> <span class="nt">-echoprt</span>
+echoctl echoke
+bash-4.3<span class="nv">$ </span><span class="nb">echo</span> <span class="nv">$LINES</span>
+24
+bash-4.3<span class="nv">$ </span><span class="nb">echo</span> <span class="nv">$COLUMNS</span>
+80
+bash-4.3<span class="nv">$ </span><span class="nb">stty </span>rows 40 cols 100
+bash-4.3<span class="nv">$ </span><span class="nb">echo</span> <span class="nv">$?</span>
+0
+bash-4.3<span class="nv">$ </span><span class="nb">stty </span>size
+40 100</code></pre></figure>
+
+<p>从上面的命令可以看出，<code class="highlighter-rouge">stty</code> 获取当前终端的窗口大小失败了，所以 <code class="highlighter-rouge">psql</code> 程序的回显就错乱了。不过，这里要注意的是，<code class="highlighter-rouge">stty size</code> 命令没有返回失败（返回值为0）。但是，通过 <code class="highlighter-rouge">stty rows 40 cols 100</code> 命令设置 tty 的参数确实可以成功的，说明问题可能是因为 tty 参数没有被正常初始化造成的。另外需要说明的是，<strong>这个问题不是必现的</strong>。</p>
+
+<p>这个问题在 Docker 项目的 issue 里被提到过，地址是 <a href="https://github.com/moby/moby/issues/33794">https://github.com/moby/moby/issues/33794</a>。根据该 issue 的记录，目前该问题还没有找到原因。</p>
+
+<p>关于这个问题，我不确定是 kernel 引起的，还是 shell 程序引起的，因为 <code class="highlighter-rouge">termio</code> 结构体会从内核拷贝到用户空间。</p>
+
+<h3 id="stty-size-的返回值为什么是0"><code class="highlighter-rouge">stty size</code> 的返回值为什么是0？</h3>
+
+<p>我想知道为什么<code class="highlighter-rouge">stty</code>命令没有返回失败，所以去看了一下代码。我使用的是 Postgres Alpine 的镜像，安装的 shell 环境是 BusyBox，通过查看 BusyBox 的代码可以找到这里：<a href="https://github.com/mirror/busybox/blob/master/coreutils/stty.c#L899">https://github.com/mirror/busybox/blob/master/coreutils/stty.c#L899</a>，对应的代码是：</p>
+
+<figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="k">static</span> <span class="kt">void</span> <span class="nf">display_window_size</span><span class="p">(</span><span class="kt">int</span> <span class="n">fancy</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">fmt_str</span> <span class="o">=</span> <span class="s">"%s</span><span class="se">\0</span><span class="s">%s: no size information for this device"</span><span class="p">;</span>
+	<span class="kt">unsigned</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">;</span>
+
+	<span class="k">if</span> <span class="p">(</span><span class="n">get_terminal_width_height</span><span class="p">(</span><span class="n">STDIN_FILENO</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">width</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">height</span><span class="p">))</span> <span class="p">{</span>
+		<span class="k">if</span> <span class="p">((</span><span class="n">errno</span> <span class="o">!=</span> <span class="n">EINVAL</span><span class="p">)</span> <span class="o">||</span> <span class="p">((</span><span class="n">fmt_str</span> <span class="o">+=</span> <span class="mi">2</span><span class="p">),</span> <span class="o">!</span><span class="n">fancy</span><span class="p">))</span> <span class="p">{</span>
+			<span class="n">perror_on_device</span><span class="p">(</span><span class="n">fmt_str</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+		<span class="n">wrapf</span><span class="p">(</span><span class="n">fancy</span> <span class="o">?</span> <span class="s">"rows %u; columns %u;"</span> <span class="o">:</span> <span class="s">"%u %u</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span>
+				<span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="p">);</span>
+	<span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>这个函数获取当前窗口的大小，<code class="highlighter-rouge">stty size</code>命令会直接调用这个函数。这个函数继续调用了下面这个函数 <a href="https://github.com/mirror/busybox/blob/master/libbb/xfuncs.c#L263">https://github.com/mirror/busybox/blob/master/libbb/xfuncs.c#L263</a>：</p>
+
+<figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="cm">/* It is perfectly ok to pass in a NULL for either width or for
+ * height, in which case that value will not be set.  */</span>
+<span class="kt">int</span> <span class="n">FAST_FUNC</span> <span class="nf">get_terminal_width_height</span><span class="p">(</span><span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="o">*</span><span class="n">width</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="o">*</span><span class="n">height</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="k">struct</span> <span class="n">winsize</span> <span class="n">win</span><span class="p">;</span>
+	<span class="kt">int</span> <span class="n">err</span><span class="p">;</span>
+	<span class="kt">int</span> <span class="n">close_me</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+
+	<span class="k">if</span> <span class="p">(</span><span class="n">fd</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">isatty</span><span class="p">(</span><span class="n">STDOUT_FILENO</span><span class="p">))</span>
+			<span class="n">fd</span> <span class="o">=</span> <span class="n">STDOUT_FILENO</span><span class="p">;</span>
+		<span class="k">else</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">isatty</span><span class="p">(</span><span class="n">STDERR_FILENO</span><span class="p">))</span>
+			<span class="n">fd</span> <span class="o">=</span> <span class="n">STDERR_FILENO</span><span class="p">;</span>
+		<span class="k">else</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">isatty</span><span class="p">(</span><span class="n">STDIN_FILENO</span><span class="p">))</span>
+			<span class="n">fd</span> <span class="o">=</span> <span class="n">STDIN_FILENO</span><span class="p">;</span>
+		<span class="k">else</span>
+			<span class="n">close_me</span> <span class="o">=</span> <span class="n">fd</span> <span class="o">=</span> <span class="n">open</span><span class="p">(</span><span class="s">"/dev/tty"</span><span class="p">,</span> <span class="n">O_RDONLY</span><span class="p">);</span>
+	<span class="p">}</span>
+
+	<span class="n">win</span><span class="p">.</span><span class="n">ws_row</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="n">win</span><span class="p">.</span><span class="n">ws_col</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="cm">/* I've seen ioctl returning 0, but row/col is (still?) 0.
+	 * We treat that as an error too.  */</span>
+	<span class="n">err</span> <span class="o">=</span> <span class="n">ioctl</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">TIOCGWINSZ</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">win</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">win</span><span class="p">.</span><span class="n">ws_row</span> <span class="o">==</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">height</span><span class="p">)</span>
+		<span class="o">*</span><span class="n">height</span> <span class="o">=</span> <span class="n">wh_helper</span><span class="p">(</span><span class="n">win</span><span class="p">.</span><span class="n">ws_row</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="s">"LINES"</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">err</span><span class="p">);</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">width</span><span class="p">)</span>
+		<span class="o">*</span><span class="n">width</span> <span class="o">=</span> <span class="n">wh_helper</span><span class="p">(</span><span class="n">win</span><span class="p">.</span><span class="n">ws_col</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="s">"COLUMNS"</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">err</span><span class="p">);</span>
+
+	<span class="k">if</span> <span class="p">(</span><span class="n">close_me</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
+		<span class="n">close</span><span class="p">(</span><span class="n">close_me</span><span class="p">);</span>
+
+	<span class="k">return</span> <span class="n">err</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>这里的关键点就在于 <code class="highlighter-rouge">get_terminal_width_height</code> 函数的内部注释，即 <code class="highlighter-rouge">ioctl</code> 可能返回0，但是却没有获取到窗口大小。这种情况下，该函数返回 <code class="highlighter-rouge">win.ws_row == 0</code>，即 <code class="highlighter-rouge">1</code>。当 <code class="highlighter-rouge">get_terminal_width_height</code> 函数返回 <code class="highlighter-rouge">1</code>时，调用者 <code class="highlighter-rouge">display_window_size</code> 的处理逻辑如下：因为返回值不等于 <code class="highlighter-rouge">EINVAL</code>，所以直接调用 <code class="highlighter-rouge">perror_on_device</code>，这个函数会调用 <em>libbb/perror_msg.c</em> 中的 <code class="highlighter-rouge">bb_perror_msg</code> 函数，输出一个错误信息，然后就返回了（<strong>并不会导致程序错误退出</strong>）。随后，<code class="highlighter-rouge">display_window_size</code> 函数返回，<code class="highlighter-rouge">stty size</code>命令正常返回。</p>
+
+<p>这个看起来是个 BusyBox 的 bug，所以有点怀疑是否是 Docker 和 BusyBox 的配合有问题，导致了bug。</p>
+
+<h2 id="解决办法">解决办法</h2>
+
+<p>虽然没有找到原因，但是解决办法还是有的，就是在进入 shell 前显示的设定终端窗口的大小，通过指定 <code class="highlighter-rouge">COLUMNS</code> 和 <code class="highlighter-rouge">LINES</code> 两个环境变量的方式，命令如下：</p>
+
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>docker <span class="nb">exec</span> <span class="nt">-it</span> <span class="nt">-u</span> postgres <span class="nt">-e</span> <span class="nv">COLUMNS</span><span class="o">=</span><span class="k">$(</span>tput cols<span class="k">)</span> <span class="nt">-e</span> <span class="nv">LINES</span><span class="o">=</span><span class="k">$(</span>tput lines<span class="k">)</span> postgres bash
+bash-4.3<span class="nv">$ </span><span class="nb">stty </span>size
+47 272</code></pre></figure>
+
+
+    <br />
+
+    <div>
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议</a>进行许可。
+    </div>
+
+    <br />
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+  </div>
+
+  
+    <div class="post-comment">
+      
+<div id="disqus_thread"></div>
+<script>
+var disqus_config = function () {
+  this.page.url = "http://diabloneo.github.io/2018/09/22/docker-tty-size-problem/"; // <--- use canonical URL
+  this.page.identifier = "/2018/09/22/docker-tty-size-problem";
+};
+(function() { // DON'T EDIT BELOW THIS LINE
+  var d = document, s = d.createElement('script');
+
+  s.src = 'https://coffee-coke-and-code.disqus.com/embed.js';
+
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+    </div>
+  
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Coffee, Coke and Code</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>Coffee, Coke and Code</li>
+          <li><a href="mailto:diabloneo@gmail.com">diabloneo@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <i class="fa fa-github"></i>
+            <a href="https://github.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <i class="fa fa-twitter"></i>
+            <a href="https://twitter.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <i class="fa fa-weibo"></i>
+            <a href="https://weibo.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Archive diabloneo's articles.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+    
+      <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-78067453-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+    
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
+  </body>
+
+</html>

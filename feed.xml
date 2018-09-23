@@ -6,9 +6,131 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 21 Sep 2018 13:31:09 +0800</pubDate>
-    <lastBuildDate>Fri, 21 Sep 2018 13:31:09 +0800</lastBuildDate>
+    <pubDate>Sun, 23 Sep 2018 22:28:01 +0800</pubDate>
+    <lastBuildDate>Sun, 23 Sep 2018 22:28:01 +0800</lastBuildDate>
     <generator>Jekyll v3.7.3</generator>
+    
+      <item>
+        <title>Docker 的 tty size 问题</title>
+        <description>&lt;h2 id=&quot;问题&quot;&gt;问题&lt;/h2&gt;
+&lt;p&gt;由于把 Postgres 运行在 Docker 容器里，所以经常使用如下命令登录到数据库 &lt;code class=&quot;highlighter-rouge&quot;&gt;docker exec -it -u postgres mypg psql mydb&lt;/code&gt;。然后在 psql 提示符下执行操作。然后经常会出现输入太长的 sql 语句时，psql 会在还没遇到终端宽度限制之前就开始换行，而且是把把输入回显换行到上面一行。这个行为说明了在容器内的 tty 的配置出现了问题。但是，很奇怪的是，退出 &lt;code class=&quot;highlighter-rouge&quot;&gt;docker exec&lt;/code&gt; 之后，再次进入，就不会遇到这个问题了。&lt;/p&gt;
+
+&lt;h2 id=&quot;现象分析&quot;&gt;现象分析&lt;/h2&gt;
+&lt;p&gt;这个问题看起来应该出在是 Docker 容器对于 tty size 的处理上。当出现这个问题的时候，通过 &lt;code class=&quot;highlighter-rouge&quot;&gt;docker exec&lt;/code&gt; 进入容器的 shell，执行 &lt;code class=&quot;highlighter-rouge&quot;&gt;stty size&lt;/code&gt; 会得到如下结果：&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-shell&quot; data-lang=&quot;shell&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;docker &lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-it&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; postgres postgres bash
+bash-4.3&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;stty &lt;/span&gt;size
+&lt;span class=&quot;nb&quot;&gt;stty&lt;/span&gt;: standard input
+bash-4.3&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;stty &lt;/span&gt;size 2&amp;gt; /dev/null
+bash-4.3&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;stty &lt;/span&gt;size &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /dev/null
+&lt;span class=&quot;nb&quot;&gt;stty&lt;/span&gt;: standard input
+bash-4.3&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;stty&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt;
+speed 38400 baud&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;stty&lt;/span&gt;: standard input
+ line &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+intr &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; ^C&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; quit &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; ^&lt;span class=&quot;se&quot;&gt;\;&lt;/span&gt; erase &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; ^?&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;kill&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; ^U&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; eof &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; ^D&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; eol &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &amp;lt;undef&amp;gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+eol2 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &amp;lt;undef&amp;gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; swtch &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &amp;lt;undef&amp;gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; start &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; ^Q&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; stop &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; ^S&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; susp &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; ^Z&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; rprnt &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; ^R&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+werase &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; ^W&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; lnext &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; ^V&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; flush &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; ^O&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; min &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 1&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;-parenb&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-parodd&lt;/span&gt; cs8 &lt;span class=&quot;nt&quot;&gt;-hupcl&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-cstopb&lt;/span&gt; cread &lt;span class=&quot;nt&quot;&gt;-clocal&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-crtscts&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;-ignbrk&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-brkint&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-ignpar&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-parmrk&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-inpck&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-istrip&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-inlcr&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-igncr&lt;/span&gt; icrnl ixon &lt;span class=&quot;nt&quot;&gt;-ixoff&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;-iuclc&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-ixany&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-imaxbel&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-iutf8&lt;/span&gt;
+opost &lt;span class=&quot;nt&quot;&gt;-olcuc&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-ocrnl&lt;/span&gt; onlcr &lt;span class=&quot;nt&quot;&gt;-onocr&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-onlret&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-ofill&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-ofdel&lt;/span&gt; nl0 cr0 tab0 bs0 vt0 ff0
+isig icanon iexten &lt;span class=&quot;nb&quot;&gt;echo &lt;/span&gt;echoe echok &lt;span class=&quot;nt&quot;&gt;-echonl&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-noflsh&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-xcase&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-tostop&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-echoprt&lt;/span&gt;
+echoctl echoke
+bash-4.3&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$LINES&lt;/span&gt;
+24
+bash-4.3&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$COLUMNS&lt;/span&gt;
+80
+bash-4.3&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;stty &lt;/span&gt;rows 40 cols 100
+bash-4.3&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$?&lt;/span&gt;
+0
+bash-4.3&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;stty &lt;/span&gt;size
+40 100&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;从上面的命令可以看出，&lt;code class=&quot;highlighter-rouge&quot;&gt;stty&lt;/code&gt; 获取当前终端的窗口大小失败了，所以 &lt;code class=&quot;highlighter-rouge&quot;&gt;psql&lt;/code&gt; 程序的回显就错乱了。不过，这里要注意的是，&lt;code class=&quot;highlighter-rouge&quot;&gt;stty size&lt;/code&gt; 命令没有返回失败（返回值为0）。但是，通过 &lt;code class=&quot;highlighter-rouge&quot;&gt;stty rows 40 cols 100&lt;/code&gt; 命令设置 tty 的参数确实可以成功的，说明问题可能是因为 tty 参数没有被正常初始化造成的。另外需要说明的是，&lt;strong&gt;这个问题不是必现的&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;这个问题在 Docker 项目的 issue 里被提到过，地址是 &lt;a href=&quot;https://github.com/moby/moby/issues/33794&quot;&gt;https://github.com/moby/moby/issues/33794&lt;/a&gt;。根据该 issue 的记录，目前该问题还没有找到原因。&lt;/p&gt;
+
+&lt;p&gt;关于这个问题，我不确定是 kernel 引起的，还是 shell 程序引起的，因为 &lt;code class=&quot;highlighter-rouge&quot;&gt;termio&lt;/code&gt; 结构体会从内核拷贝到用户空间。&lt;/p&gt;
+
+&lt;h3 id=&quot;stty-size-的返回值为什么是0&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;stty size&lt;/code&gt; 的返回值为什么是0？&lt;/h3&gt;
+
+&lt;p&gt;我想知道为什么&lt;code class=&quot;highlighter-rouge&quot;&gt;stty&lt;/code&gt;命令没有返回失败，所以去看了一下代码。我使用的是 Postgres Alpine 的镜像，安装的 shell 环境是 BusyBox，通过查看 BusyBox 的代码可以找到这里：&lt;a href=&quot;https://github.com/mirror/busybox/blob/master/coreutils/stty.c#L899&quot;&gt;https://github.com/mirror/busybox/blob/master/coreutils/stty.c#L899&lt;/a&gt;，对应的代码是：&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;display_window_size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fancy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fmt_str&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;%s&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;%s: no size information for this device&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+	&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;width&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;height&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+	&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get_terminal_width_height&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;STDIN_FILENO&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;width&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;height&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;errno&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EINVAL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fmt_str&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fancy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+			&lt;span class=&quot;n&quot;&gt;perror_on_device&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fmt_str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;wrapf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fancy&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;rows %u; columns %u;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;%u %u&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+				&lt;span class=&quot;n&quot;&gt;height&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;width&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;这个函数获取当前窗口的大小，&lt;code class=&quot;highlighter-rouge&quot;&gt;stty size&lt;/code&gt;命令会直接调用这个函数。这个函数继续调用了下面这个函数 &lt;a href=&quot;https://github.com/mirror/busybox/blob/master/libbb/xfuncs.c#L263&quot;&gt;https://github.com/mirror/busybox/blob/master/libbb/xfuncs.c#L263&lt;/a&gt;：&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span class=&quot;cm&quot;&gt;/* It is perfectly ok to pass in a NULL for either width or for
+ * height, in which case that value will not be set.  */&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;FAST_FUNC&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;get_terminal_width_height&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;width&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;height&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;winsize&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;win&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+	&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+	&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;close_me&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+	&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;isatty&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;STDOUT_FILENO&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+			&lt;span class=&quot;n&quot;&gt;fd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;STDOUT_FILENO&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;isatty&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;STDERR_FILENO&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+			&lt;span class=&quot;n&quot;&gt;fd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;STDERR_FILENO&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;isatty&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;STDIN_FILENO&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+			&lt;span class=&quot;n&quot;&gt;fd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;STDIN_FILENO&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;
+			&lt;span class=&quot;n&quot;&gt;close_me&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/dev/tty&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;O_RDONLY&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+	&lt;span class=&quot;n&quot;&gt;win&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ws_row&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;win&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ws_col&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+	&lt;span class=&quot;cm&quot;&gt;/* I've seen ioctl returning 0, but row/col is (still?) 0.
+	 * We treat that as an error too.  */&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;err&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ioctl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;TIOCGWINSZ&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;win&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;win&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ws_row&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;height&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+		&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;height&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;wh_helper&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;win&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ws_row&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;24&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;LINES&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;width&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+		&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;width&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;wh_helper&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;win&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ws_col&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;80&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;COLUMNS&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+	&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;close_me&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;close_me&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+	&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;这里的关键点就在于 &lt;code class=&quot;highlighter-rouge&quot;&gt;get_terminal_width_height&lt;/code&gt; 函数的内部注释，即 &lt;code class=&quot;highlighter-rouge&quot;&gt;ioctl&lt;/code&gt; 可能返回0，但是却没有获取到窗口大小。这种情况下，该函数返回 &lt;code class=&quot;highlighter-rouge&quot;&gt;win.ws_row == 0&lt;/code&gt;，即 &lt;code class=&quot;highlighter-rouge&quot;&gt;1&lt;/code&gt;。当 &lt;code class=&quot;highlighter-rouge&quot;&gt;get_terminal_width_height&lt;/code&gt; 函数返回 &lt;code class=&quot;highlighter-rouge&quot;&gt;1&lt;/code&gt;时，调用者 &lt;code class=&quot;highlighter-rouge&quot;&gt;display_window_size&lt;/code&gt; 的处理逻辑如下：因为返回值不等于 &lt;code class=&quot;highlighter-rouge&quot;&gt;EINVAL&lt;/code&gt;，所以直接调用 &lt;code class=&quot;highlighter-rouge&quot;&gt;perror_on_device&lt;/code&gt;，这个函数会调用 &lt;em&gt;libbb/perror_msg.c&lt;/em&gt; 中的 &lt;code class=&quot;highlighter-rouge&quot;&gt;bb_perror_msg&lt;/code&gt; 函数，输出一个错误信息，然后就返回了（&lt;strong&gt;并不会导致程序错误退出&lt;/strong&gt;）。随后，&lt;code class=&quot;highlighter-rouge&quot;&gt;display_window_size&lt;/code&gt; 函数返回，&lt;code class=&quot;highlighter-rouge&quot;&gt;stty size&lt;/code&gt;命令正常返回。&lt;/p&gt;
+
+&lt;p&gt;这个看起来是个 BusyBox 的 bug，所以有点怀疑是否是 Docker 和 BusyBox 的配合有问题，导致了bug。&lt;/p&gt;
+
+&lt;h2 id=&quot;解决办法&quot;&gt;解决办法&lt;/h2&gt;
+
+&lt;p&gt;虽然没有找到原因，但是解决办法还是有的，就是在进入 shell 前显示的设定终端窗口的大小，通过指定 &lt;code class=&quot;highlighter-rouge&quot;&gt;COLUMNS&lt;/code&gt; 和 &lt;code class=&quot;highlighter-rouge&quot;&gt;LINES&lt;/code&gt; 两个环境变量的方式，命令如下：&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-shell&quot; data-lang=&quot;shell&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;docker &lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-it&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; postgres &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;COLUMNS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;tput cols&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;LINES&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;tput lines&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt; postgres bash
+bash-4.3&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;stty &lt;/span&gt;size
+47 272&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+</description>
+        <pubDate>Sat, 22 Sep 2018 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2018/09/22/docker-tty-size-problem/</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2018/09/22/docker-tty-size-problem/</guid>
+        
+        <category>docker</category>
+        
+        
+      </item>
     
       <item>
         <title>Postgres的使用 - 2</title>
@@ -592,45 +714,6 @@ failed&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
         <pubDate>Sun, 27 May 2018 00:00:00 +0800</pubDate>
         <link>http://diabloneo.github.io//2018/05/27/write-what-i-have-028/</link>
         <guid isPermaLink="true">http://diabloneo.github.io//2018/05/27/write-what-i-have-028/</guid>
-        
-        <category>golang</category>
-        
-        <category>linux</category>
-        
-        <category>shell</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>想到什么写什么周报 第27期 - 2018-05-20</title>
-        <description>&lt;h2 id=&quot;colly-goes-10&quot;&gt;Colly goes 1.0&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;http://go-colly.org/articles/first_release/&quot;&gt;http://go-colly.org/articles/first_release/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Go写的爬虫框架Colly发布了1.0版本。&lt;/p&gt;
-
-&lt;h2 id=&quot;how-to-do-math-on-the-linux-command-line&quot;&gt;How to do math on the Linux command line&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.networkworld.com/article/3268964/linux/how-to-do-math-on-the-linux-command-line.html&quot;&gt;https://www.networkworld.com/article/3268964/linux/how-to-do-math-on-the-linux-command-line.html&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;介绍shell中进行数学运算的几个方法。对于我来说，在shell中执行简单的数学运算经常遇到尴尬的情况：用的时候想不起来。所以还是要收藏一篇类似quick start的文章。&lt;/p&gt;
-
-&lt;h2 id=&quot;how-to-start-a-go-project-in-2018&quot;&gt;How to start a Go project in 2018&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://boyter.org/posts/how-to-start-go-project-2018/&quot;&gt;https://boyter.org/posts/how-to-start-go-project-2018/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;介绍了在2018年，一个Go项目中的常用方法，包括GOPATH设置、unit test、依赖管理、命令行入口等。&lt;/p&gt;
-
-&lt;h2 id=&quot;elixir-cross-reference---bootlin&quot;&gt;Elixir Cross Reference - bootlin&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://elixir.bootlin.com/linux/latest/source&quot;&gt;https://elixir.bootlin.com/linux/latest/source&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;一个搜索Linux kernel代码的工具，支持从2.6到最新的版本。&lt;/p&gt;
-</description>
-        <pubDate>Sun, 20 May 2018 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2018/05/20/write-what-i-have-027/</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2018/05/20/write-what-i-have-027/</guid>
         
         <category>golang</category>
         
