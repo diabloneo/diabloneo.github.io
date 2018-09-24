@@ -6,9 +6,89 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 24 Sep 2018 14:29:50 +0800</pubDate>
-    <lastBuildDate>Mon, 24 Sep 2018 14:29:50 +0800</lastBuildDate>
+    <pubDate>Mon, 24 Sep 2018 17:42:11 +0800</pubDate>
+    <lastBuildDate>Mon, 24 Sep 2018 17:42:11 +0800</lastBuildDate>
     <generator>Jekyll v3.7.3</generator>
+    
+      <item>
+        <title>想到什么写什么周报 第33期 - 2018-09-14</title>
+        <description>&lt;h2 id=&quot;introducing-the-tink-cryptographic-software-library&quot;&gt;Introducing the Tink cryptographic software library&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://opensource.googleblog.com/2018/08/introducing-tink-cryptographic-library.html&quot;&gt;https://opensource.googleblog.com/2018/08/introducing-tink-cryptographic-library.html&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Google开源的Tink密码学库，支持多种语言，设计思想是提供受限的API功能，防止由于误用接口导致的安全问题。&lt;/p&gt;
+
+&lt;h2 id=&quot;helping-go-developers-build-better-cloud-apps-faster&quot;&gt;Helping Go developers build better cloud apps faster&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://azure.microsoft.com/en-us/blog/helping-go-developers-build-better-cloud-apps-faster/&quot;&gt;https://azure.microsoft.com/en-us/blog/helping-go-developers-build-better-cloud-apps-faster/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;微软介绍了自己为了让用户使用Go在Azure上开发云原生应用所作的工作。主要包括：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;2月份开源的Go SDK &lt;a href=&quot;https://github.com/Azure/azure-sdk-for-go&quot;&gt;https://github.com/Azure/azure-sdk-for-go&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;以及针对几个专门服务开发的SDK
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;https://github.com/Azure/azure-service-bus-go&quot;&gt;https://github.com/Azure/azure-service-bus-go&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://github.com/Azure/azure-event-hubs-go&quot;&gt;https://github.com/Azure/azure-event-hubs-go&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://github.com/Azure/azure-storage-blob-go&quot;&gt;https://github.com/Azure/azure-storage-blob-go&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Buffalo项目：&lt;a href=&quot;https://gobuffalo.io/en&quot;&gt;https://gobuffalo.io/en&lt;/a&gt;。用于帮助开发者快速开发web应用，帮你生成不同功能的脚手架代码，帮你部署到Azure上面。
+    &lt;ul&gt;
+      &lt;li&gt;可以查看这个介绍视频：&lt;a href=&quot;https://channel9.msdn.com/shows/azure-friday/Go-on-Azure-Part-7-Build-a-Go-app-with-Buffalo-and-deploy-to-Azure&quot;&gt;https://channel9.msdn.com/shows/azure-friday/Go-on-Azure-Part-7-Build-a-Go-app-with-Buffalo-and-deploy-to-Azure&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;另外，我发现 gobuffalo下，有挺多Go的库。&lt;a href=&quot;https://github.com/gobuffalo&quot;&gt;https://github.com/gobuffalo&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;announcing-project-athens-and-gophersource-for-the-go-community&quot;&gt;Announcing Project Athens and GopherSource for the Go community&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://open.microsoft.com/2018/08/28/announcing-project-athens-gophersource-go-community/&quot;&gt;https://open.microsoft.com/2018/08/28/announcing-project-athens-gophersource-go-community/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;微软发布的Go Module Proxy Server，目前还处在早期阶段。&lt;/p&gt;
+
+&lt;h2 id=&quot;googles-approach-to-observability&quot;&gt;Google’s Approach to Observability&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://medium.com/observability/googles-approach-to-observability-frameworks-c89fc1f0e058&quot;&gt;https://medium.com/observability/googles-approach-to-observability-frameworks-c89fc1f0e058&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;介绍了Google内部对于tracing的使用理念，也就是现在开始流行的opentracing等方案。&lt;/p&gt;
+
+&lt;h2 id=&quot;managing-resources-for-large-scale-testing&quot;&gt;Managing resources for large-scale testing&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://code.fb.com/android/managing-resources-for-large-scale-testing/&quot;&gt;https://code.fb.com/android/managing-resources-for-large-scale-testing/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;介绍了Facebook的One World，一个大规模的测试服务，连接了物理设备和模拟器，为开发人员提供方便的测试环境，设置可以让开发人员把自己的设备接入进来进行测试。&lt;/p&gt;
+
+&lt;h2 id=&quot;postgres-11---a-first-look&quot;&gt;Postgres 11 - a First Look&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;http://www.craigkerstiens.com/2018/09/20/postgresql-11-a-first-look/&quot;&gt;http://www.craigkerstiens.com/2018/09/20/postgresql-11-a-first-look/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;介绍了即将发布的Postgres 11的一些新特性，包括：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;可以使用 exit 或者 quit 退出psql。&lt;/li&gt;
+  &lt;li&gt;add column with default 提升了性能，不用害怕migration的时候导致全表卡住。&lt;/li&gt;
+  &lt;li&gt;性能的提升，包括并发和初步的JIT支持。&lt;/li&gt;
+  &lt;li&gt;继续改进统计功能。&lt;/li&gt;
+  &lt;li&gt;引入了 keeping standbys warm 的功能。&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Mon, 24 Sep 2018 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2018/09/24/write-what-i-have-034/</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2018/09/24/write-what-i-have-034/</guid>
+        
+        <category>cloud</category>
+        
+        <category>golang</category>
+        
+        <category>storage</category>
+        
+        <category>database</category>
+        
+        <category>security</category>
+        
+        
+      </item>
     
       <item>
         <title>Postgres的使用 - 3</title>
@@ -761,53 +841,6 @@ failed&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
         <category>cloud</category>
         
         <category>golang</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>想到什么写什么周报 第29期 - 2018-06-18</title>
-        <description>&lt;h2 id=&quot;why-we-chose-ceph-to-build-block-storage&quot;&gt;Why We Chose Ceph to Build Block Storage&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.digitalocean.com/why-we-chose-ceph-to-build-block-storage/&quot;&gt;https://blog.digitalocean.com/why-we-chose-ceph-to-build-block-storage/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;DigitalOcean说他们为什么选择Ceph来提供块存储服务。目前用的是L版，跑在SSD上，三副本。文中也提到了，他们只把Ceph用在块存储上，虚拟机的系统盘本身不存储在Ceph上。&lt;/p&gt;
-
-&lt;h2 id=&quot;a-bright-future-for-github&quot;&gt;A bright future for GitHub&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.github.com/2018-06-04-github-microsoft/&quot;&gt;https://blog.github.com/2018-06-04-github-microsoft/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blogs.microsoft.com/blog/2018/06/04/microsoft-github-empowering-developers/&quot;&gt;https://blogs.microsoft.com/blog/2018/06/04/microsoft-github-empowering-developers/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;GitHub被微软收购了。&lt;/p&gt;
-
-&lt;h2 id=&quot;what-stratis-learned-from-zfs-btrfs-and-linux-volume-manager&quot;&gt;What Stratis learned from ZFS, Btrfs, and Linux Volume Manager&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://opensource.com/article/18/4/stratis-lessons-learned&quot;&gt;https://opensource.com/article/18/4/stratis-lessons-learned&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Stratis文件系统从ZFS，Btrfs和LVM上学习的东西。&lt;/p&gt;
-
-&lt;h2 id=&quot;extending-magic-pocket-innovation-with-the-first-petabyte-scale-smr-drive-deployment&quot;&gt;Extending Magic Pocket Innovation with the first petabyte scale SMR drive deployment&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blogs.dropbox.com/tech/2018/06/extending-magic-pocket-innovation-with-the-first-petabyte-scale-smr-drive-deployment/&quot;&gt;https://blogs.dropbox.com/tech/2018/06/extending-magic-pocket-innovation-with-the-first-petabyte-scale-smr-drive-deployment/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Dropbox在自己的基础架构中开始应用SMR盘，这样可以提升机柜的存储密度，降低成本。但是换成SMR盘也会有一些问题要解决：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;因为SMR盘的写性能不如PMR盘，他们选用了Host Managed SMR盘，自己控制读写。&lt;/li&gt;
-  &lt;li&gt;机器需要加内存，提升CPU。他们把数据索引保存在内存中，因为整个机器的存储空间增加了，所以内存也要加。额外增加的CPU算力用来保证机器的吞吐。&lt;/li&gt;
-  &lt;li&gt;从RAID换到HBA。原来应用RAID 0来提升写性能，并且使用了RAID cache。这样可以降低部署时间，不用再维护RAID的bug和固件版本。&lt;/li&gt;
-  &lt;li&gt;因为去掉了RAID，写cache也没了，所以添加了一个SSD来做写cache。不过，他们发现SATA的性能已经快满了，将来需要换到NVMe盘。&lt;/li&gt;
-  &lt;li&gt;每个机器有100个盘，存储密度从一开始的240TB上升到1.4PB（使用了14TB的SMR盘），为了满足性能需求，需要用50Gbps的网卡。&lt;/li&gt;
-  &lt;li&gt;软件的重新设计，对于SMR，大块写（4 - 5MB）性能更好。元数据频繁修改，会被放在磁盘的conventional area中（板载缓存）。&lt;/li&gt;
-&lt;/ol&gt;
-
-</description>
-        <pubDate>Mon, 18 Jun 2018 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2018/06/18/write-what-i-have-029/</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2018/06/18/write-what-i-have-029/</guid>
-        
-        <category>storage</category>
         
         
       </item>

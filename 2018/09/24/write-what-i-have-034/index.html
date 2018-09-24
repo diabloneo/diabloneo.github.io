@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>想到什么写什么周报 第33期 - 2018-09-14</title>
+  <meta name="description" content="Introducing the Tink cryptographic software library">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/pygments-rainbow_dash.css">
+  <link rel="canonical" href="http://diabloneo.github.io//2018/09/24/write-what-i-have-034/">
+  <link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
+</head>
+
+
+  <body>
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">Coffee, Coke and Code</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <a class="page-link" href="/tags">Tags</a>
+        <a class="page-link" href="/feed.xml">RSS</a>
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">想到什么写什么周报 第33期 - 2018-09-14</h1>
+    <p class="post-meta"><time datetime="2018-09-24T00:00:00+08:00" itemprop="datePublished">Sep 24, 2018</time></p>
+  </header>
+
+  <div class="post-tags">
+    <ul>
+      
+      <li>
+        <a href="/tags/cloud/">cloud</a>
+      </li>
+      
+      <li>
+        <a href="/tags/golang/">golang</a>
+      </li>
+      
+      <li>
+        <a href="/tags/storage/">storage</a>
+      </li>
+      
+      <li>
+        <a href="/tags/database/">database</a>
+      </li>
+      
+      <li>
+        <a href="/tags/security/">security</a>
+      </li>
+      
+    </ul>
+  </div>
+
+  <div class="post-content" itemprop="articleBody">
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+    <br />
+      <h2 id="introducing-the-tink-cryptographic-software-library">Introducing the Tink cryptographic software library</h2>
+
+<p><em><a href="https://opensource.googleblog.com/2018/08/introducing-tink-cryptographic-library.html">https://opensource.googleblog.com/2018/08/introducing-tink-cryptographic-library.html</a></em></p>
+
+<p>Google开源的Tink密码学库，支持多种语言，设计思想是提供受限的API功能，防止由于误用接口导致的安全问题。</p>
+
+<h2 id="helping-go-developers-build-better-cloud-apps-faster">Helping Go developers build better cloud apps faster</h2>
+
+<p><em><a href="https://azure.microsoft.com/en-us/blog/helping-go-developers-build-better-cloud-apps-faster/">https://azure.microsoft.com/en-us/blog/helping-go-developers-build-better-cloud-apps-faster/</a></em></p>
+
+<p>微软介绍了自己为了让用户使用Go在Azure上开发云原生应用所作的工作。主要包括：</p>
+
+<ul>
+  <li>2月份开源的Go SDK <a href="https://github.com/Azure/azure-sdk-for-go">https://github.com/Azure/azure-sdk-for-go</a></li>
+  <li>以及针对几个专门服务开发的SDK
+    <ul>
+      <li><a href="https://github.com/Azure/azure-service-bus-go">https://github.com/Azure/azure-service-bus-go</a></li>
+      <li><a href="https://github.com/Azure/azure-event-hubs-go">https://github.com/Azure/azure-event-hubs-go</a></li>
+      <li><a href="https://github.com/Azure/azure-storage-blob-go">https://github.com/Azure/azure-storage-blob-go</a></li>
+    </ul>
+  </li>
+  <li>Buffalo项目：<a href="https://gobuffalo.io/en">https://gobuffalo.io/en</a>。用于帮助开发者快速开发web应用，帮你生成不同功能的脚手架代码，帮你部署到Azure上面。
+    <ul>
+      <li>可以查看这个介绍视频：<a href="https://channel9.msdn.com/shows/azure-friday/Go-on-Azure-Part-7-Build-a-Go-app-with-Buffalo-and-deploy-to-Azure">https://channel9.msdn.com/shows/azure-friday/Go-on-Azure-Part-7-Build-a-Go-app-with-Buffalo-and-deploy-to-Azure</a></li>
+      <li>另外，我发现 gobuffalo下，有挺多Go的库。<a href="https://github.com/gobuffalo">https://github.com/gobuffalo</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="announcing-project-athens-and-gophersource-for-the-go-community">Announcing Project Athens and GopherSource for the Go community</h2>
+
+<p><em><a href="https://open.microsoft.com/2018/08/28/announcing-project-athens-gophersource-go-community/">https://open.microsoft.com/2018/08/28/announcing-project-athens-gophersource-go-community/</a></em></p>
+
+<p>微软发布的Go Module Proxy Server，目前还处在早期阶段。</p>
+
+<h2 id="googles-approach-to-observability">Google’s Approach to Observability</h2>
+
+<p><em><a href="https://medium.com/observability/googles-approach-to-observability-frameworks-c89fc1f0e058">https://medium.com/observability/googles-approach-to-observability-frameworks-c89fc1f0e058</a></em></p>
+
+<p>介绍了Google内部对于tracing的使用理念，也就是现在开始流行的opentracing等方案。</p>
+
+<h2 id="managing-resources-for-large-scale-testing">Managing resources for large-scale testing</h2>
+
+<p><em><a href="https://code.fb.com/android/managing-resources-for-large-scale-testing/">https://code.fb.com/android/managing-resources-for-large-scale-testing/</a></em></p>
+
+<p>介绍了Facebook的One World，一个大规模的测试服务，连接了物理设备和模拟器，为开发人员提供方便的测试环境，设置可以让开发人员把自己的设备接入进来进行测试。</p>
+
+<h2 id="postgres-11---a-first-look">Postgres 11 - a First Look</h2>
+
+<p><em><a href="http://www.craigkerstiens.com/2018/09/20/postgresql-11-a-first-look/">http://www.craigkerstiens.com/2018/09/20/postgresql-11-a-first-look/</a></em></p>
+
+<p>介绍了即将发布的Postgres 11的一些新特性，包括：</p>
+
+<ul>
+  <li>可以使用 exit 或者 quit 退出psql。</li>
+  <li>add column with default 提升了性能，不用害怕migration的时候导致全表卡住。</li>
+  <li>性能的提升，包括并发和初步的JIT支持。</li>
+  <li>继续改进统计功能。</li>
+  <li>引入了 keeping standbys warm 的功能。</li>
+</ul>
+
+    <br />
+
+    <div>
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议</a>进行许可。
+    </div>
+
+    <br />
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+  </div>
+
+  
+    <div class="post-comment">
+      
+<div id="disqus_thread"></div>
+<script>
+var disqus_config = function () {
+  this.page.url = "http://diabloneo.github.io/2018/09/24/write-what-i-have-034/"; // <--- use canonical URL
+  this.page.identifier = "/2018/09/24/write-what-i-have-034";
+};
+(function() { // DON'T EDIT BELOW THIS LINE
+  var d = document, s = d.createElement('script');
+
+  s.src = 'https://coffee-coke-and-code.disqus.com/embed.js';
+
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+    </div>
+  
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Coffee, Coke and Code</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>Coffee, Coke and Code</li>
+          <li><a href="mailto:diabloneo@gmail.com">diabloneo@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <i class="fa fa-github"></i>
+            <a href="https://github.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <i class="fa fa-twitter"></i>
+            <a href="https://twitter.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <i class="fa fa-weibo"></i>
+            <a href="https://weibo.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Archive diabloneo's articles.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+    
+      <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-78067453-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+    
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
+  </body>
+
+</html>
