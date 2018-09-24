@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Postgres的使用 - 2</title>
-  <meta name="description" content="在 Postgres 中，我们可以使用如下的查询来获取长时间执行的查询或者操作，这个语句依赖于 pg_stat_activity 视图。">
+  <meta name="description" content="pg_stat_activity 视图">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="/css/main.css">
   <link rel="stylesheet" href="/css/pygments-rainbow_dash.css">
@@ -103,7 +103,9 @@
       <div class="addthis_inline_share_toolbox"></div>
     
     <br />
-      <p>在 Postgres 中，我们可以使用如下的查询来获取长时间执行的查询或者操作，这个语句依赖于 <em>pg_stat_activity</em> 视图。</p>
+      <h2 id="pg_stat_activity-视图"><code class="highlighter-rouge">pg_stat_activity</code> 视图</h2>
+
+<p>在 Postgres 中，<code class="highlighter-rouge">pg_stat_activity</code> 是一个视图，每行对应一个服务器进程，用来显示进程当前活动有关的信息。因此，我们可以使用如下的查询来获取长时间执行的查询或者操作。</p>
 
 <figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">SELECT</span>
 	<span class="n">datname</span><span class="p">,</span>
