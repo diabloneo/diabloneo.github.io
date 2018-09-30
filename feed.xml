@@ -6,12 +6,49 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 24 Sep 2018 17:42:11 +0800</pubDate>
-    <lastBuildDate>Mon, 24 Sep 2018 17:42:11 +0800</lastBuildDate>
+    <pubDate>Sun, 30 Sep 2018 23:27:34 +0800</pubDate>
+    <lastBuildDate>Sun, 30 Sep 2018 23:27:34 +0800</lastBuildDate>
     <generator>Jekyll v3.7.3</generator>
     
       <item>
-        <title>想到什么写什么周报 第33期 - 2018-09-14</title>
+        <title>想到什么写什么周报 第35期 - 2018-09-30</title>
+        <description>&lt;h2 id=&quot;postgresql-10-identity-columns-explained&quot;&gt;PostgreSQL 10 identity columns explained&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.2ndquadrant.com/postgresql-10-identity-columns/&quot;&gt;https://blog.2ndquadrant.com/postgresql-10-identity-columns/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Postgres 10 引入了一个新特性：identity columns。用于生成符合SQL标准的数字递增式 id 列。在这之前postgres的id列一般是使用sequence来实现 id 列，但是这种实现方式引入了两个对象，一个是表本身，另外一个是表所使用的sequence。使用新的 identity column 特性之后，就不存在单独的sequence序列了，对于数据库的管理来说更为简单且不容易出错。文中就举了几个方面的例子说明了改动前后的区别。&lt;/p&gt;
+
+&lt;h2 id=&quot;a-missing-link-in-postgres-11-fast-column-creation-with-defaults&quot;&gt;A Missing Link in Postgres 11: Fast Column Creation with Defaults&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://brandur.org/postgres-default&quot;&gt;https://brandur.org/postgres-default&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Postgres 11 引入了一种新的实现来支持 ALTER TABLE ADD COLUMN NOT NULL DEFAULT 这样的修改。原来这种修改需要使用 EXCLUSIVE LOCK锁住整个表，然后对表执行rewrite。新的实现是在 pg_attribute 中加入两列：atthasmissing 和 attmissingvalue，当数据库要返回一行数据时，如果一个列的值不存在，那么就会检查这两列，返回用户设置的默认值。新插入的行则直接设置指定的默认值。&lt;/p&gt;
+
+&lt;h2 id=&quot;when-should-i-use-amazon-aurora-and-when-should-i-use-rds-mysql&quot;&gt;When Should I Use Amazon Aurora and When Should I use RDS MySQL?&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.percona.com/blog/2018/07/17/when-should-i-use-amazon-aurora-and-when-should-i-use-rds-mysql/&quot;&gt;https://www.percona.com/blog/2018/07/17/when-should-i-use-amazon-aurora-and-when-should-i-use-rds-mysql/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Percona公司写的文章，告诉你什么时候应该选RDS，什么时候应该选Aurora。文章最后有 TL;DR，可以直接看结果。简单的总结一下就是，Aurora属于NewSQL，虽然兼容MySQL协议，但是由于架构不同，所以性能、费用、兼容性，都和RDS MySQL有不一样的地方。你可以认为Aurora 是 TiDB，而RDS就是MySQL。&lt;/p&gt;
+
+&lt;h2 id=&quot;pg_cron-run-periodic-jobs-in-postgresql&quot;&gt;pg_cron: Run periodic jobs in PostgreSQL&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.citusdata.com/blog/2016/09/09/pgcron-run-periodic-jobs-in-postgres/&quot;&gt;https://www.citusdata.com/blog/2016/09/09/pgcron-run-periodic-jobs-in-postgres/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Citus 出的一个支持在pg中执行cron任务的扩展：https://github.com/citusdata/pg_cron 。用起来很方便啊。而且支持备机变成主之后，自动开始运行cron job。&lt;/p&gt;
+</description>
+        <pubDate>Sun, 30 Sep 2018 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2018/09/30/write-what-i-have-035/</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2018/09/30/write-what-i-have-035/</guid>
+        
+        <category>cloud</category>
+        
+        <category>database</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>想到什么写什么周报 第34期 - 2018-09-24</title>
         <description>&lt;h2 id=&quot;introducing-the-tink-cryptographic-software-library&quot;&gt;Introducing the Tink cryptographic software library&lt;/h2&gt;
 
 &lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://opensource.googleblog.com/2018/08/introducing-tink-cryptographic-library.html&quot;&gt;https://opensource.googleblog.com/2018/08/introducing-tink-cryptographic-library.html&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
@@ -787,60 +824,6 @@ failed&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
         <category>golang</category>
         
         <category>storage</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>想到什么写什么周报 第30期 - 2018-07-01</title>
-        <description>&lt;h2 id=&quot;the-next-wave-digitaloceans-new-ceo&quot;&gt;The Next Wave: DigitalOcean’s New CEO&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.digitalocean.com/the-next-wave-digitaloceans-new-ceo/&quot;&gt;https://blog.digitalocean.com/the-next-wave-digitaloceans-new-ceo/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;DigitalOcean’s 聘请了前Citrix CEO Mark Templeton担任新的CEO。&lt;/p&gt;
-
-&lt;h2 id=&quot;benchmarks-serialization-in-go&quot;&gt;Benchmarks!!! Serialization in Go!!!&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;http://www.ugorji.net/blog/benchmarking-serialization-in-go&quot;&gt;http://www.ugorji.net/blog/benchmarking-serialization-in-go&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;比较了Go的几种序列化实现的性能。&lt;/p&gt;
-
-&lt;h2 id=&quot;multiple-ec2-network-interfaces-on-red-hat--centos-7&quot;&gt;Multiple EC2 Network Interfaces on Red Hat / CentOS 7&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.internetstaff.com/multiple-ec2-network-interfaces-on-red-hat-centos-7/&quot;&gt;https://www.internetstaff.com/multiple-ec2-network-interfaces-on-red-hat-centos-7/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;介绍了如何AWS EC2在运行RedHat/CentOS 7时，如何配置多个网卡，也就时一个ec2加入多个subnet后，如何配置多个eni。默认情况下，会有路由问题，导致primary eni网络不通。&lt;/p&gt;
-
-&lt;h2 id=&quot;new--amazon-linux-workspaces&quot;&gt;New – Amazon Linux WorkSpaces&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://aws.amazon.com/cn/blogs/aws/new-amazon-linux-workspaces/&quot;&gt;https://aws.amazon.com/cn/blogs/aws/new-amazon-linux-workspaces/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Amazon Linux 2现在有桌面版了，你可以在WorkSpace运行一个Amazon Linux 2的机器，相当于有了一个公有云Linux桌面。&lt;/li&gt;
-  &lt;li&gt;Amazon Linux 2正式提供LTS支持，到2023年6月30日。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;performance-patches-in-go-111&quot;&gt;Performance patches in Go 1.11&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://docs.google.com/presentation/d/1tpeJZFObkeick4CF-mx0L3CeCgvT15B96aJeRpxEPcE/edit#slide=id.p&quot;&gt;https://docs.google.com/presentation/d/1tpeJZFObkeick4CF-mx0L3CeCgvT15B96aJeRpxEPcE/edit#slide=id.p&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Fasthttp的作者制作的一个幻灯片，说明了Go 1.11中和性能相关的Patch。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;有些是对使用者写代码可感知的，比如现在可以写append(a, make([]a, itemNum))来扩展一个slice。&lt;/li&gt;
-  &lt;li&gt;有一些是对runtime的改进。比如改进循环检查，改进内存分配等。&lt;/li&gt;
-  &lt;li&gt;有一些是改进数学库和数学操作。&lt;/li&gt;
-  &lt;li&gt;改进标准库。&lt;/li&gt;
-  &lt;li&gt;改进arm平台的性能。&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Sun, 01 Jul 2018 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2018/07/01/write-what-i-have-030/</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2018/07/01/write-what-i-have-030/</guid>
-        
-        <category>cloud</category>
-        
-        <category>golang</category>
         
         
       </item>

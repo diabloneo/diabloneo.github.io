@@ -6,12 +6,12 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>想到什么写什么周报 第34期 - 2018-09-24</title>
-  <meta name="description" content="Introducing the Tink cryptographic software library">
+  <title>想到什么写什么周报 第35期 - 2018-09-30</title>
+  <meta name="description" content="PostgreSQL 10 identity columns explained">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="/css/main.css">
   <link rel="stylesheet" href="/css/pygments-rainbow_dash.css">
-  <link rel="canonical" href="http://diabloneo.github.io//2018/09/24/write-what-i-have-034/">
+  <link rel="canonical" href="http://diabloneo.github.io//2018/09/30/write-what-i-have-035/">
   <link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
 </head>
 
@@ -83,8 +83,8 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">想到什么写什么周报 第34期 - 2018-09-24</h1>
-    <p class="post-meta"><time datetime="2018-09-24T00:00:00+08:00" itemprop="datePublished">Sep 24, 2018</time></p>
+    <h1 class="post-title" itemprop="name headline">想到什么写什么周报 第35期 - 2018-09-30</h1>
+    <p class="post-meta"><time datetime="2018-09-30T00:00:00+08:00" itemprop="datePublished">Sep 30, 2018</time></p>
   </header>
 
   <div class="post-tags">
@@ -95,19 +95,7 @@
       </li>
       
       <li>
-        <a href="/tags/golang/">golang</a>
-      </li>
-      
-      <li>
-        <a href="/tags/storage/">storage</a>
-      </li>
-      
-      <li>
         <a href="/tags/database/">database</a>
-      </li>
-      
-      <li>
-        <a href="/tags/security/">security</a>
       </li>
       
     </ul>
@@ -119,66 +107,29 @@
       <div class="addthis_inline_share_toolbox"></div>
     
     <br />
-      <h2 id="introducing-the-tink-cryptographic-software-library">Introducing the Tink cryptographic software library</h2>
+      <h2 id="postgresql-10-identity-columns-explained">PostgreSQL 10 identity columns explained</h2>
 
-<p><em><a href="https://opensource.googleblog.com/2018/08/introducing-tink-cryptographic-library.html">https://opensource.googleblog.com/2018/08/introducing-tink-cryptographic-library.html</a></em></p>
+<p><em><a href="https://blog.2ndquadrant.com/postgresql-10-identity-columns/">https://blog.2ndquadrant.com/postgresql-10-identity-columns/</a></em></p>
 
-<p>Google开源的Tink密码学库，支持多种语言，设计思想是提供受限的API功能，防止由于误用接口导致的安全问题。</p>
+<p>Postgres 10 引入了一个新特性：identity columns。用于生成符合SQL标准的数字递增式 id 列。在这之前postgres的id列一般是使用sequence来实现 id 列，但是这种实现方式引入了两个对象，一个是表本身，另外一个是表所使用的sequence。使用新的 identity column 特性之后，就不存在单独的sequence序列了，对于数据库的管理来说更为简单且不容易出错。文中就举了几个方面的例子说明了改动前后的区别。</p>
 
-<h2 id="helping-go-developers-build-better-cloud-apps-faster">Helping Go developers build better cloud apps faster</h2>
+<h2 id="a-missing-link-in-postgres-11-fast-column-creation-with-defaults">A Missing Link in Postgres 11: Fast Column Creation with Defaults</h2>
 
-<p><em><a href="https://azure.microsoft.com/en-us/blog/helping-go-developers-build-better-cloud-apps-faster/">https://azure.microsoft.com/en-us/blog/helping-go-developers-build-better-cloud-apps-faster/</a></em></p>
+<p><em><a href="https://brandur.org/postgres-default">https://brandur.org/postgres-default</a></em></p>
 
-<p>微软介绍了自己为了让用户使用Go在Azure上开发云原生应用所作的工作。主要包括：</p>
+<p>Postgres 11 引入了一种新的实现来支持 ALTER TABLE ADD COLUMN NOT NULL DEFAULT 这样的修改。原来这种修改需要使用 EXCLUSIVE LOCK锁住整个表，然后对表执行rewrite。新的实现是在 pg_attribute 中加入两列：atthasmissing 和 attmissingvalue，当数据库要返回一行数据时，如果一个列的值不存在，那么就会检查这两列，返回用户设置的默认值。新插入的行则直接设置指定的默认值。</p>
 
-<ul>
-  <li>2月份开源的Go SDK <a href="https://github.com/Azure/azure-sdk-for-go">https://github.com/Azure/azure-sdk-for-go</a></li>
-  <li>以及针对几个专门服务开发的SDK
-    <ul>
-      <li><a href="https://github.com/Azure/azure-service-bus-go">https://github.com/Azure/azure-service-bus-go</a></li>
-      <li><a href="https://github.com/Azure/azure-event-hubs-go">https://github.com/Azure/azure-event-hubs-go</a></li>
-      <li><a href="https://github.com/Azure/azure-storage-blob-go">https://github.com/Azure/azure-storage-blob-go</a></li>
-    </ul>
-  </li>
-  <li>Buffalo项目：<a href="https://gobuffalo.io/en">https://gobuffalo.io/en</a>。用于帮助开发者快速开发web应用，帮你生成不同功能的脚手架代码，帮你部署到Azure上面。
-    <ul>
-      <li>可以查看这个介绍视频：<a href="https://channel9.msdn.com/shows/azure-friday/Go-on-Azure-Part-7-Build-a-Go-app-with-Buffalo-and-deploy-to-Azure">https://channel9.msdn.com/shows/azure-friday/Go-on-Azure-Part-7-Build-a-Go-app-with-Buffalo-and-deploy-to-Azure</a></li>
-      <li>另外，我发现 gobuffalo下，有挺多Go的库。<a href="https://github.com/gobuffalo">https://github.com/gobuffalo</a></li>
-    </ul>
-  </li>
-</ul>
+<h2 id="when-should-i-use-amazon-aurora-and-when-should-i-use-rds-mysql">When Should I Use Amazon Aurora and When Should I use RDS MySQL?</h2>
 
-<h2 id="announcing-project-athens-and-gophersource-for-the-go-community">Announcing Project Athens and GopherSource for the Go community</h2>
+<p><em><a href="https://www.percona.com/blog/2018/07/17/when-should-i-use-amazon-aurora-and-when-should-i-use-rds-mysql/">https://www.percona.com/blog/2018/07/17/when-should-i-use-amazon-aurora-and-when-should-i-use-rds-mysql/</a></em></p>
 
-<p><em><a href="https://open.microsoft.com/2018/08/28/announcing-project-athens-gophersource-go-community/">https://open.microsoft.com/2018/08/28/announcing-project-athens-gophersource-go-community/</a></em></p>
+<p>Percona公司写的文章，告诉你什么时候应该选RDS，什么时候应该选Aurora。文章最后有 TL;DR，可以直接看结果。简单的总结一下就是，Aurora属于NewSQL，虽然兼容MySQL协议，但是由于架构不同，所以性能、费用、兼容性，都和RDS MySQL有不一样的地方。你可以认为Aurora 是 TiDB，而RDS就是MySQL。</p>
 
-<p>微软发布的Go Module Proxy Server，目前还处在早期阶段。</p>
+<h2 id="pg_cron-run-periodic-jobs-in-postgresql">pg_cron: Run periodic jobs in PostgreSQL</h2>
 
-<h2 id="googles-approach-to-observability">Google’s Approach to Observability</h2>
+<p><em><a href="https://www.citusdata.com/blog/2016/09/09/pgcron-run-periodic-jobs-in-postgres/">https://www.citusdata.com/blog/2016/09/09/pgcron-run-periodic-jobs-in-postgres/</a></em></p>
 
-<p><em><a href="https://medium.com/observability/googles-approach-to-observability-frameworks-c89fc1f0e058">https://medium.com/observability/googles-approach-to-observability-frameworks-c89fc1f0e058</a></em></p>
-
-<p>介绍了Google内部对于tracing的使用理念，也就是现在开始流行的opentracing等方案。</p>
-
-<h2 id="managing-resources-for-large-scale-testing">Managing resources for large-scale testing</h2>
-
-<p><em><a href="https://code.fb.com/android/managing-resources-for-large-scale-testing/">https://code.fb.com/android/managing-resources-for-large-scale-testing/</a></em></p>
-
-<p>介绍了Facebook的One World，一个大规模的测试服务，连接了物理设备和模拟器，为开发人员提供方便的测试环境，设置可以让开发人员把自己的设备接入进来进行测试。</p>
-
-<h2 id="postgres-11---a-first-look">Postgres 11 - a First Look</h2>
-
-<p><em><a href="http://www.craigkerstiens.com/2018/09/20/postgresql-11-a-first-look/">http://www.craigkerstiens.com/2018/09/20/postgresql-11-a-first-look/</a></em></p>
-
-<p>介绍了即将发布的Postgres 11的一些新特性，包括：</p>
-
-<ul>
-  <li>可以使用 exit 或者 quit 退出psql。</li>
-  <li>add column with default 提升了性能，不用害怕migration的时候导致全表卡住。</li>
-  <li>性能的提升，包括并发和初步的JIT支持。</li>
-  <li>继续改进统计功能。</li>
-  <li>引入了 keeping standbys warm 的功能。</li>
-</ul>
+<p>Citus 出的一个支持在pg中执行cron任务的扩展：https://github.com/citusdata/pg_cron 。用起来很方便啊。而且支持备机变成主之后，自动开始运行cron job。</p>
 
     <br />
 
@@ -199,8 +150,8 @@
 <div id="disqus_thread"></div>
 <script>
 var disqus_config = function () {
-  this.page.url = "http://diabloneo.github.io/2018/09/24/write-what-i-have-034/"; // <--- use canonical URL
-  this.page.identifier = "/2018/09/24/write-what-i-have-034";
+  this.page.url = "http://diabloneo.github.io/2018/09/30/write-what-i-have-035/"; // <--- use canonical URL
+  this.page.identifier = "/2018/09/30/write-what-i-have-035";
 };
 (function() { // DON'T EDIT BELOW THIS LINE
   var d = document, s = d.createElement('script');
