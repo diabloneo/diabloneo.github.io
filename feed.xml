@@ -6,8 +6,8 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 21 Oct 2018 19:45:06 +0800</pubDate>
-    <lastBuildDate>Sun, 21 Oct 2018 19:45:06 +0800</lastBuildDate>
+    <pubDate>Sun, 21 Oct 2018 19:58:31 +0800</pubDate>
+    <lastBuildDate>Sun, 21 Oct 2018 19:58:31 +0800</lastBuildDate>
     <generator>Jekyll v3.7.3</generator>
     
       <item>
@@ -51,6 +51,12 @@
 &lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://aws.amazon.com/blogs/aws/new-managed-databases-for-amazon-lightsail/&quot;&gt;https://aws.amazon.com/blogs/aws/new-managed-databases-for-amazon-lightsail/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 
 &lt;p&gt;AWS Lightsail 现在支持支持数据库实例了，最便宜的版本只要 15 美元一个月。&lt;/p&gt;
+
+&lt;h2 id=&quot;postgresql-11-released&quot;&gt;PostgreSQL 11 Released!&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.postgresql.org/about/news/1894/&quot;&gt;https://www.postgresql.org/about/news/1894/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;带来好多新特性，以及性能提升。&lt;/p&gt;
 </description>
         <pubDate>Sun, 21 Oct 2018 00:00:00 +0800</pubDate>
         <link>http://diabloneo.github.io//2018/10/21/write-what-i-have-036/</link>
