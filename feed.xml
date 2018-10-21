@@ -6,9 +6,64 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 30 Sep 2018 23:27:34 +0800</pubDate>
-    <lastBuildDate>Sun, 30 Sep 2018 23:27:34 +0800</lastBuildDate>
+    <pubDate>Sun, 21 Oct 2018 19:45:06 +0800</pubDate>
+    <lastBuildDate>Sun, 21 Oct 2018 19:45:06 +0800</lastBuildDate>
     <generator>Jekyll v3.7.3</generator>
+    
+      <item>
+        <title>想到什么写什么周报 第36期 - 2018-10-21</title>
+        <description>&lt;h2 id=&quot;amazon-rds-for-postgresql-now-supports-iam-authentication&quot;&gt;Amazon RDS for PostgreSQL now supports IAM Authentication&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://aws.amazon.com/about-aws/whats-new/2018/09/amazon-rds-postgresql-now-supports-iam-authentication/&quot;&gt;https://aws.amazon.com/about-aws/whats-new/2018/09/amazon-rds-postgresql-now-supports-iam-authentication/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;RDS Postgres 9.5 以上的版本可以使用 IAM 来管理用户登陆信息了。&lt;/p&gt;
+
+&lt;h2 id=&quot;postgresql的sql高级特性&quot;&gt;PostgreSQL的SQL高级特性&lt;/h2&gt;
+
+&lt;p&gt;https://mp.weixin.qq.com/s/sFRZ2NjpKTofSZWVgXUG6g&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;&amp;lt;介绍了一些 Postgres 的 SQL 高级特性，包括： WITH，批量插入，RETURNING，UPSERT，数据抽样，聚合函数，窗口函数。&amp;gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;parallelism-in-postgresql-11&quot;&gt;Parallelism in Postgresql 11&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://speakerdeck.com/macdice/parallelism-in-postgresql-11&quot;&gt;https://speakerdeck.com/macdice/parallelism-in-postgresql-11&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;介绍了 postgres 11 引入的并行查询的实现方式。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;worker负责执行查询，gather负责合并查询结果。&lt;/li&gt;
+  &lt;li&gt;多进程模型，每个worker一个进程。&lt;/li&gt;
+  &lt;li&gt;以前pg的每个进程都能访问一个共享的内存区域。现在执行并行查询的进程之间还会使用一个动态的共享内存区，这个内存区在查询结束之后销毁。&lt;/li&gt;
+  &lt;li&gt;引入了新的IPC机制。&lt;/li&gt;
+  &lt;li&gt;对于seq scan，设计了一种机制来充分利用操作系统的pagecache预读机制。&lt;/li&gt;
+  &lt;li&gt;对于index scan，目前只支持btree index，有可能会触发操作系统的pagecache预读机制。&lt;/li&gt;
+  &lt;li&gt;加入了多个cost值到planner中。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;the-impact-of-virtualization-on-your-database&quot;&gt;The Impact of Virtualization on Your Database&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.scylladb.com/2018/06/21/impact-virtualization-database/&quot;&gt;https://www.scylladb.com/2018/06/21/impact-virtualization-database/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;ScyllaDB 测试了 AWS 新推出的 baremetal 实例 i3.metal，价格和 i3.16xlarge 一样。i3.metal 比 i3.16xlarge 能提供更多的 CPU 和内存。虽然只增加了 12% 的CPU，但是因为移除了虚拟化层，最后得到的写吞吐性能提升达到了 31%，读时延则最多达到了 8 倍，并且读时延更加稳定。&lt;/p&gt;
+
+&lt;h2 id=&quot;new--managed-databases-for-amazon-lightsail&quot;&gt;New – Managed Databases for Amazon Lightsail&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://aws.amazon.com/blogs/aws/new-managed-databases-for-amazon-lightsail/&quot;&gt;https://aws.amazon.com/blogs/aws/new-managed-databases-for-amazon-lightsail/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;AWS Lightsail 现在支持支持数据库实例了，最便宜的版本只要 15 美元一个月。&lt;/p&gt;
+</description>
+        <pubDate>Sun, 21 Oct 2018 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2018/10/21/write-what-i-have-036/</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2018/10/21/write-what-i-have-036/</guid>
+        
+        <category>cloud</category>
+        
+        <category>golang</category>
+        
+        <category>database</category>
+        
+        
+      </item>
     
       <item>
         <title>想到什么写什么周报 第35期 - 2018-09-30</title>
@@ -751,79 +806,6 @@ failed&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
         <category>database</category>
         
         <category>linux</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>想到什么写什么周报 第31期 - 2018-07-15</title>
-        <description>&lt;h2 id=&quot;memory-leaking&quot;&gt;Memory Leaking&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://go101.org/article/memory-leaking.html&quot;&gt;https://go101.org/article/memory-leaking.html&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;描述了几种容易碰到的内存泄露的情况。使用&lt;code class=&quot;highlighter-rouge&quot;&gt;string&lt;/code&gt;，&lt;code class=&quot;highlighter-rouge&quot;&gt;slice&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;time.Ticker&lt;/code&gt;的时候需要小心这些陷阱。本文是出自书 &lt;strong&gt;Go 101&lt;/strong&gt;，值得一读。&lt;a href=&quot;https://go101.org/article/101.html&quot;&gt;https://go101.org/article/101.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;how-much-does-netflix-spend-on-amazon-aws&quot;&gt;How much does Netflix spend on Amazon AWS?&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.quora.com/How-much-does-Netflix-spend-on-Amazon-AWS&quot;&gt;https://www.quora.com/How-much-does-Netflix-spend-on-Amazon-AWS&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Quora上的一个问题。有人引用了一个Intricately的数据回答了。每月花4000w美元在云服务上，其中2360w是花在AWS上。AWS上前五名的花费如下：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;EC2            1900w&lt;/li&gt;
-  &lt;li&gt;ELB            300w&lt;/li&gt;
-  &lt;li&gt;CloudFront     100w&lt;/li&gt;
-  &lt;li&gt;S3             51.5w&lt;/li&gt;
-  &lt;li&gt;Route 53       11.7w&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;minimal-ubuntu-on-public-clouds-and-docker-hub&quot;&gt;Minimal Ubuntu, on public clouds and Docker Hub&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.ubuntu.com/2018/07/09/minimal-ubuntu-released&quot;&gt;https://blog.ubuntu.com/2018/07/09/minimal-ubuntu-released&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Ubuntu推出新的minimal镜像，针对公有云和kvm进行优化，体积更小，启动更快，性能更好。&lt;/p&gt;
-
-&lt;h2 id=&quot;fun-with-sql-functions-in-postgres&quot;&gt;Fun with SQL: Functions in Postgres&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.citusdata.com/blog/2018/06/21/fun-with-sql-functions/&quot;&gt;https://www.citusdata.com/blog/2018/06/21/fun-with-sql-functions/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;介绍了下面这些方便的Postgres函数&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;array_agg()&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;array_to_string()&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;date_trunc()&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;JSON&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;migrating-messenger-storage-to-optimize-performance&quot;&gt;Migrating Messenger storage to optimize performance&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://code.fb.com/data-infrastructure/migrating-messenger-storage-to-optimize-performance/&quot;&gt;https://code.fb.com/data-infrastructure/migrating-messenger-storage-to-optimize-performance/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;重新设计数据格式&lt;/li&gt;
-  &lt;li&gt;从HBase迁移到MyRocks&lt;/li&gt;
-  &lt;li&gt;从HDD迁移到SSD，用上了自家的Lightning Server&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;99.9%的账号走普通流程，在2周内迁移完，剩下的走buffered迁移流程，又用了两周。 迁移结束后，得到了如下的好处：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;最后使用新的数据格式减少了数据量&lt;/li&gt;
-  &lt;li&gt;使用自家的Zstandard压缩数据&lt;/li&gt;
-  &lt;li&gt;因为用了MyRocks，数据从6副本减少到3副本&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;总的算下来，数据空间占用减少了90%。延迟减少了50倍。对最终用户来说，查看历史消息的速度更快了。&lt;/p&gt;
-</description>
-        <pubDate>Sun, 15 Jul 2018 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2018/07/15/write-what-i-have-031/</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2018/07/15/write-what-i-have-031/</guid>
-        
-        <category>cloud</category>
-        
-        <category>golang</category>
-        
-        <category>storage</category>
         
         
       </item>
