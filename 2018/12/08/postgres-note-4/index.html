@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Postgres的使用 - 4</title>
+  <meta name="description" content="sequence 的相关操作">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/pygments-rainbow_dash.css">
+  <link rel="canonical" href="http://diabloneo.github.io//2018/12/08/postgres-note-4/">
+  <link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
+</head>
+
+
+  <body>
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">Coffee, Coke and Code</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <a class="page-link" href="/tags">Tags</a>
+        <a class="page-link" href="/feed.xml">RSS</a>
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Postgres的使用 - 4</h1>
+    <p class="post-meta"><time datetime="2018-12-08T00:00:00+08:00" itemprop="datePublished">Dec 8, 2018</time></p>
+  </header>
+
+  <div class="post-tags">
+    <ul>
+      
+      <li>
+        <a href="/tags/database/">database</a>
+      </li>
+      
+    </ul>
+  </div>
+
+  <div class="post-content" itemprop="articleBody">
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+    <br />
+      <h2 id="sequence-的相关操作">sequence 的相关操作</h2>
+
+<p><strong>sequence</strong> 是 Postgres 的一种对象，用来实现自增序列的生成，一般会用来生成表的主键的值。例如下面这个 <em>task</em> 表的主键就使用一个 sequence <strong>task_id_seq</strong> 来生成：</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="n">testdb</span><span class="o">=#</span> <span class="err">\</span><span class="n">d</span> <span class="n">task</span>
+<span class="k">Table</span> <span class="nv">"public.task"</span>
+<span class="k">Column</span>   <span class="o">|</span>           <span class="k">Type</span>           <span class="o">|</span>                     <span class="n">Modifiers</span>
+<span class="c1">------------+--------------------------+---------------------------------------------------</span>
+<span class="n">id</span>         <span class="o">|</span> <span class="n">integer</span>                  <span class="o">|</span> <span class="k">not</span> <span class="k">null</span> <span class="k">default</span> <span class="n">nextval</span><span class="p">(</span><span class="s1">'task_id_seq'</span><span class="p">::</span><span class="n">regclass</span><span class="p">)</span></code></pre></figure>
+
+<p>Postgres 提供了一些操作 sequence 的函数：<em><a href="https://www.postgresql.org/docs/9.6/functions-sequence.html">https://www.postgresql.org/docs/9.6/functions-sequence.html</a></em>。</p>
+
+<h3 id="查询-sequence-会生成的下一个值">查询 sequence 会生成的下一个值</h3>
+
+<p>如果当前的 session 调用过了 <code class="highlighter-rouge">nextval()</code> 函数，就可以使用 <code class="highlighter-rouge">currval(seqname)</code> 函数来获取一个 sequence 对象最后一次被 <code class="highlighter-rouge">nextval()</code> 函数返回的值，将其加一就可以得到下一个值。注意，如果在当前 session 中没有对这个 sequence 调用过 <code class="highlighter-rouge">nextval()</code> 函数，那么调用 <code class="highlighter-rouge">currval(seqname)</code> 将返回错误。</p>
+
+<p>不过，即使当前的 session 没有调用对应 <code class="highlighter-rouge">nextval(seqname)</code>，也可以通过直接查看 relation 的方式起来确定一个 sequence 会生成的下一个值。例如，上面的 <code class="highlighter-rouge">task_id_seq</code>：</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="n">testdb</span><span class="o">=#</span> <span class="err">\</span><span class="n">d</span> <span class="n">task_id_seq</span>
+         <span class="n">Sequence</span> <span class="nv">"public.task_id_seq"</span>
+    <span class="k">Column</span>     <span class="o">|</span>  <span class="k">Type</span>   <span class="o">|</span>        <span class="n">Value</span>
+<span class="c1">---------------+---------+---------------------</span>
+ <span class="n">sequence_name</span> <span class="o">|</span> <span class="n">name</span>    <span class="o">|</span> <span class="n">task_id_seq</span>
+ <span class="n">last_value</span>    <span class="o">|</span> <span class="n">bigint</span>  <span class="o">|</span> <span class="mi">6296</span>
+ <span class="n">start_value</span>   <span class="o">|</span> <span class="n">bigint</span>  <span class="o">|</span> <span class="mi">1</span>
+ <span class="n">increment_by</span>  <span class="o">|</span> <span class="n">bigint</span>  <span class="o">|</span> <span class="mi">1</span>
+ <span class="n">max_value</span>     <span class="o">|</span> <span class="n">bigint</span>  <span class="o">|</span> <span class="mi">9223372036854775807</span>
+ <span class="n">min_value</span>     <span class="o">|</span> <span class="n">bigint</span>  <span class="o">|</span> <span class="mi">1</span>
+ <span class="n">cache_value</span>   <span class="o">|</span> <span class="n">bigint</span>  <span class="o">|</span> <span class="mi">1</span>
+ <span class="n">log_cnt</span>       <span class="o">|</span> <span class="n">bigint</span>  <span class="o">|</span> <span class="mi">29</span>
+ <span class="n">is_cycled</span>     <span class="o">|</span> <span class="n">boolean</span> <span class="o">|</span> <span class="n">f</span>
+ <span class="n">is_called</span>     <span class="o">|</span> <span class="n">boolean</span> <span class="o">|</span> <span class="n">t</span>
+<span class="n">Owned</span> <span class="k">by</span><span class="p">:</span> <span class="k">public</span><span class="p">.</span><span class="n">task</span><span class="p">.</span><span class="n">id</span></code></pre></figure>
+
+<p>关注其中的 <code class="highlighter-rouge">last_value</code> 字段和 <code class="highlighter-rouge">is_called</code> 字段。<code class="highlighter-rouge">last_value</code> 表示上次被调用的值是多少，这个值会从 <code class="highlighter-rouge">start_value</code> 指定的值开始，一般是 1。 如果 <code class="highlighter-rouge">is_called</code> 的值为 <code class="highlighter-rouge">false</code>，表示 <code class="highlighter-rouge">last_value</code> 这个值还没有被返回过，会在下次返回。一般来说，当我们刚创建了一个表时，还未向其中插入数据，即<code class="highlighter-rouge">last_value</code> 的值等于 <code class="highlighter-rouge">start_value</code> 的值时，<code class="highlighter-rouge">is_called</code> 的值会设置为 <code class="highlighter-rouge">false</code>。</p>
+
+<p>上面这个输出表示 <code class="highlighter-rouge">task_id_seq</code> 最后一次返回的是 <strong>6296</strong>，下一次返回 6297。</p>
+
+<h3 id="重置一个-sequence">重置一个 sequence</h3>
+
+<p>常用的有两个方法。</p>
+
+<ol>
+  <li><code class="highlighter-rouge">ALTER SEQUENCE seq RESTART WITH 1;</code>，将值重置为 1。</li>
+  <li><code class="highlighter-rouge">SELECT setval('sequence', 1);</code> 设置 <code class="highlighter-rouge">last_value</code> 的值为 1。<code class="highlighter-rouge">SELECT setval('sequence', 1, false);</code> 设置 <code class="highlighter-rouge">last_value</code> 的值为 1，<code class="highlighter-rouge">is_called</code> 为 <code class="highlighter-rouge">false</code>。</li>
+</ol>
+
+    <br />
+
+    <div>
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议</a>进行许可。
+    </div>
+
+    <br />
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+  </div>
+
+  
+    <div class="post-comment">
+      
+<div id="disqus_thread"></div>
+<script>
+var disqus_config = function () {
+  this.page.url = "http://diabloneo.github.io/2018/12/08/postgres-note-4/"; // <--- use canonical URL
+  this.page.identifier = "/2018/12/08/postgres-note-4";
+};
+(function() { // DON'T EDIT BELOW THIS LINE
+  var d = document, s = d.createElement('script');
+
+  s.src = 'https://coffee-coke-and-code.disqus.com/embed.js';
+
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+    </div>
+  
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Coffee, Coke and Code</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>Coffee, Coke and Code</li>
+          <li><a href="mailto:diabloneo@gmail.com">diabloneo@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <i class="fa fa-github"></i>
+            <a href="https://github.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <i class="fa fa-twitter"></i>
+            <a href="https://twitter.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <i class="fa fa-weibo"></i>
+            <a href="https://weibo.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Archive diabloneo's articles.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+    
+      <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-78067453-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+    
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
+  </body>
+
+</html>
