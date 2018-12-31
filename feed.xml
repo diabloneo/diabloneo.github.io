@@ -6,9 +6,59 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 11 Dec 2018 00:06:00 +0800</pubDate>
-    <lastBuildDate>Tue, 11 Dec 2018 00:06:00 +0800</lastBuildDate>
+    <pubDate>Mon, 31 Dec 2018 21:07:02 +0800</pubDate>
+    <lastBuildDate>Mon, 31 Dec 2018 21:07:02 +0800</lastBuildDate>
     <generator>Jekyll v3.7.3</generator>
+    
+      <item>
+        <title>想到什么写什么周报 第38期 - 2018-12-31</title>
+        <description>&lt;h2 id=&quot;microsoft-procdump-for-linux&quot;&gt;Microsoft ProcDump for Linux&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://github.com/Microsoft/ProcDump-for-Linux&quot;&gt;https://github.com/Microsoft/ProcDump-for-Linux&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;微软的 ProdDump 出了 Linux 版，用来监控进程的 CPU 突发和挂起等信息。&lt;/p&gt;
+
+&lt;h2 id=&quot;how-can-i-use-gnu-parallel-to-run-a-lot-of-commands-in-parallel&quot;&gt;How can I use GNU Parallel to run a lot of commands in parallel&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.msi.umn.edu/support/faq/how-can-i-use-gnu-parallel-run-lot-commands-parallel&quot;&gt;https://www.msi.umn.edu/support/faq/how-can-i-use-gnu-parallel-run-lot-commands-parallel&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;GNU Parallel 的 quick start。&lt;/p&gt;
+
+&lt;h2 id=&quot;cape-technical-deep-dive&quot;&gt;Cape Technical Deep Dive&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;em&gt;&lt;a href=&quot;https://blogs.dropbox.com/tech/2017/05/introducing-cape/&quot;&gt;https://blogs.dropbox.com/tech/2017/05/introducing-cape/&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;&lt;a href=&quot;https://blogs.dropbox.com/tech/2018/12/cape-technical-deep-dive/&quot;&gt;https://blogs.dropbox.com/tech/2018/12/cape-technical-deep-dive/&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Dropbox 介绍了自己的事件调度系统 Cape。Cape 要求低延迟、事件隔离、至少成功一次等特性。文中分析了为什么 Kafka, SQS, Redis 等消息队列系统不能满足需求。然后介绍了 Cape 的架构。&lt;/p&gt;
+
+&lt;h2 id=&quot;access-patterns-and-tiered-storage-in-apache-pulsar&quot;&gt;Access Patterns and Tiered Storage in Apache Pulsar&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://streaml.io/blog/access-patterns-and-tiered-storage-in-apache-pulsar&quot;&gt;https://streaml.io/blog/access-patterns-and-tiered-storage-in-apache-pulsar&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;介绍了 BookKeeper 的消息系统中，如何对消息进行分层存储。整个存储分为三层，L1 是内存，L2 是节点硬盘，L3 是更便宜的持久存储。其中 L2 是的硬盘和 Journal 用的硬盘虽然在同一个机器上，但是使用不同的硬盘，因为 Journal 是顺序写，而消息存储则主要是顺序读。&lt;/p&gt;
+
+&lt;h2 id=&quot;the-billion-data-point-challenge-building-a-query-engine-for-high-cardinality-time-series-data&quot;&gt;The Billion Data Point Challenge: Building a Query Engine for High Cardinality Time Series Data&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://eng.uber.com/billion-data-point-challenge/&quot;&gt;https://eng.uber.com/billion-data-point-challenge/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Uber 开源的 M3 监控系统，重点解决了查询性能。文中描述了 M3 如何解决内存问题、存储问题、跨数据中心的查询延迟问题、降级获取samples（downsampling）。其中 Downsampling 使用了 Largest Triangle Three Bucket (LTTB) 算法。这个系统使用自己的 M3QL 查询语言，但是支持 Prometheus 的 PromQL，也支持 Promtheus 的 exporter。&lt;/p&gt;
+</description>
+        <pubDate>Mon, 31 Dec 2018 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2018/12/31/write-what-i-have-038/</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2018/12/31/write-what-i-have-038/</guid>
+        
+        <category>linux</category>
+        
+        <category>shell</category>
+        
+        <category>storage</category>
+        
+        <category>distributed-computing</category>
+        
+        
+      </item>
     
       <item>
         <title>获取 Golang gRPC 的错误类型</title>
@@ -651,72 +701,6 @@ bash-4.3&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&
         <guid isPermaLink="true">http://diabloneo.github.io//2018/09/21/postgres-note-2/</guid>
         
         <category>database</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>想到什么写什么周报 第33期 - 2018-09-14</title>
-        <description>&lt;h2 id=&quot;how-a-single-postgresql-config-change-improved-slow-query-performance-by-50x&quot;&gt;How a single PostgreSQL config change improved slow query performance by 50x&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://amplitude.engineering/how-a-single-postgresql-config-change-improved-slow-query-performance-by-50x-85593b8991b0&quot;&gt;https://amplitude.engineering/how-a-single-postgresql-config-change-improved-slow-query-performance-by-50x-85593b8991b0&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;因为默认的配置中，random_page_cost = 4, seq_page_cost = 1，是针对HDD调优的，当你使用SSD时，实际情况并不是这样的。如果不修改配置，就会导致Postgres选择一个更差的计划。&lt;/p&gt;
-
-&lt;h2 id=&quot;a-one-size-fits-all-database-doesnt-fit-anyone&quot;&gt;A one size fits all database doesn’t fit anyone&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.allthingsdistributed.com/2018/06/purpose-built-databases-in-aws.html&quot;&gt;https://www.allthingsdistributed.com/2018/06/purpose-built-databases-in-aws.html&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;AWS CTO Werner描述了为什么AWS要提供这么多不同的数据库服务，包括：关系数据库，kv数据库，文档数据库，图数据库，内存数据库和搜索数据库。因为不同的数据库类型用来解决不同的问题，没有一种数据库可以解决所有的问题。AWS的许多客户都已经不再开发一个巨应用了，都改微服务了，每个服务可以选择自己需要的数据库。&lt;/p&gt;
-
-&lt;h2 id=&quot;google-titan-security-key-is-now-on-sale-for-50&quot;&gt;Google ‘Titan Security Key’ Is Now On Sale For $50&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://thehackernews.com/2018/08/google-titan-security-key.html&quot;&gt;https://thehackernews.com/2018/08/google-titan-security-key.html&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Google 推出了自己的硬件秘钥Titan，售价50美元，支持蓝牙，支持所有usb接口，电脑只要有Chrome就能用。目前尽在没有有售。&lt;/p&gt;
-
-&lt;h2 id=&quot;influxdb-eventual-consistency&quot;&gt;InfluxDB: Eventual Consistency&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;em&gt;&lt;a href=&quot;https://www.influxdata.com/blog/eventual-consistency-hhq/&quot;&gt;https://www.influxdata.com/blog/eventual-consistency-hhq/&lt;/a&gt;&lt;/em&gt;
-    &lt;ul&gt;
-      &lt;li&gt;使用 Hinted Handoff Queue 来保存失败节点的消息，也就是一个暂存区。&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;&lt;a href=&quot;https://www.influxdata.com/blog/eventual-consistency-anti-entropy/&quot;&gt;https://www.influxdata.com/blog/eventual-consistency-anti-entropy/&lt;/a&gt;&lt;/em&gt;
-    &lt;ul&gt;
-      &lt;li&gt;实现 Anti Entropy，也就是避免数据的不一致性。&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;这两篇其实只是科普文章，用来介绍 InfluxDB Enterprise 如何实现最终一致性的。&lt;/p&gt;
-
-&lt;h2 id=&quot;metrics-to-monitor-in-your-postgresql-database&quot;&gt;Metrics to Monitor in Your PostgreSQL Database&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.influxdata.com/blog/metrics-to-monitor-in-your-postgresql-database/&quot;&gt;https://www.influxdata.com/blog/metrics-to-monitor-in-your-postgresql-database/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;介绍了postgres的几个用于监控的数据以及使用场景。&lt;/p&gt;
-
-&lt;h2 id=&quot;on-premises-hipchat-replacements-in-2018&quot;&gt;On-Premises HipChat Replacements in 2018&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://stackshare.io/posts/on-premises-hipchat-replacements-in-2018&quot;&gt;https://stackshare.io/posts/on-premises-hipchat-replacements-in-2018&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;介绍了在2018年，你要搭一个自己的类Slack服务，有哪些选择？忘了HipChat吧，那个过时了，本文推荐了3个：Rocket.Chat, Zulip 和 Mattermost。&lt;/p&gt;
-</description>
-        <pubDate>Fri, 14 Sep 2018 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2018/09/14/write-what-i-have-033/</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2018/09/14/write-what-i-have-033/</guid>
-        
-        <category>cloud</category>
-        
-        <category>golang</category>
-        
-        <category>storage</category>
-        
-        <category>database</category>
-        
-        <category>security</category>
         
         
       </item>
