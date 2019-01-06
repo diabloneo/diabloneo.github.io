@@ -6,9 +6,47 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 31 Dec 2018 21:07:02 +0800</pubDate>
-    <lastBuildDate>Mon, 31 Dec 2018 21:07:02 +0800</lastBuildDate>
+    <pubDate>Sun, 06 Jan 2019 23:12:50 +0800</pubDate>
+    <lastBuildDate>Sun, 06 Jan 2019 23:12:50 +0800</lastBuildDate>
     <generator>Jekyll v3.7.3</generator>
+    
+      <item>
+        <title>想到什么写什么周报 第39期 - 2019-01-06</title>
+        <description>&lt;h2 id=&quot;diagnositics&quot;&gt;Diagnositics&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://golang.org/doc/diagnostics.html&quot;&gt;https://golang.org/doc/diagnostics.html&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Go 语言官方文档，关于 profile, trace, debug 的介绍。&lt;/p&gt;
+
+&lt;h2 id=&quot;october-21-post-incident-analysis&quot;&gt;October 21 post-incident analysis&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.github.com/2018-10-30-oct21-post-incident-analysis&quot;&gt;https://blog.github.com/2018-10-30-oct21-post-incident-analysis&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;GitHub 官方复盘了 2018 年 10 月 30 号的站点不可用事故。里面提到了几个点可以学习下：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;对数据恢复时间估计不准确。一个是因为从备份恢复整个 MySQL 集群没有完整演练过，不知道要花多长时间；另外一个是，在事故恢复的后期，有些集群的数据复制进度赶不上新数据写入的进度。&lt;/li&gt;
+  &lt;li&gt;只有绿色、黄色和红色的三个状态无法代表整个服务的可用性。后来，GitHub 推出了新的站点状态服务： &lt;em&gt;&lt;a href=&quot;https://blog.github.com/2018-12-11-introducing-the-new-github-status-site/&quot;&gt;https://blog.github.com/2018-12-11-introducing-the-new-github-status-site/&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;the-future-of-kubernetes-is-virtual-machines&quot;&gt;The future of Kubernetes is Virtual Machines&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://tech.paulcz.net/blog/future-of-kubernetes-is-virtual-machines&quot;&gt;https://tech.paulcz.net/blog/future-of-kubernetes-is-virtual-machines&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;K8s 自身的多租户模型比较脆弱，因为容器本身无法实现资源的完全隔离。作者提出了，K8s 的未来会依赖基于 VM Container 的资源管理方案，例如 Kata Container。&lt;/p&gt;
+</description>
+        <pubDate>Sun, 06 Jan 2019 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2019/01/06/write-what-i-have-039/</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2019/01/06/write-what-i-have-039/</guid>
+        
+        <category>cloud</category>
+        
+        <category>golang</category>
+        
+        <category>distributed-computing</category>
+        
+        
+      </item>
     
       <item>
         <title>想到什么写什么周报 第38期 - 2018-12-31</title>
@@ -634,73 +672,6 @@ bash-4.3&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&
         <guid isPermaLink="true">http://diabloneo.github.io//2018/09/22/docker-tty-size-problem/</guid>
         
         <category>docker</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Postgres的使用 - 2</title>
-        <description>&lt;h2 id=&quot;pg_stat_activity-视图&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;pg_stat_activity&lt;/code&gt; 视图&lt;/h2&gt;
-
-&lt;p&gt;在 Postgres 中，&lt;code class=&quot;highlighter-rouge&quot;&gt;pg_stat_activity&lt;/code&gt; 是一个视图，每行对应一个服务器进程，用来显示进程当前活动有关的信息。因此，我们可以使用如下的查询来获取长时间执行的查询或者操作。&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sql&quot; data-lang=&quot;sql&quot;&gt;&lt;span class=&quot;k&quot;&gt;SELECT&lt;/span&gt;
-	&lt;span class=&quot;n&quot;&gt;datname&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-	&lt;span class=&quot;n&quot;&gt;usename&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-	&lt;span class=&quot;n&quot;&gt;client_addr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-	&lt;span class=&quot;k&quot;&gt;state&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-	&lt;span class=&quot;n&quot;&gt;backend_start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-	&lt;span class=&quot;n&quot;&gt;xact_start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-	&lt;span class=&quot;n&quot;&gt;xact_duration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-	&lt;span class=&quot;n&quot;&gt;query_start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-	&lt;span class=&quot;n&quot;&gt;query_duration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-	&lt;span class=&quot;n&quot;&gt;query&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-	&lt;span class=&quot;k&quot;&gt;SELECT&lt;/span&gt;
-		&lt;span class=&quot;n&quot;&gt;pgsa&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;datname&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;AS&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;datname&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-		&lt;span class=&quot;n&quot;&gt;pgsa&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;usename&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;AS&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;usename&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-		&lt;span class=&quot;n&quot;&gt;pgsa&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;client_addr&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;AS&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;client_addr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-		&lt;span class=&quot;n&quot;&gt;pgsa&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;state&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;AS&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;state&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-		&lt;span class=&quot;n&quot;&gt;pgsa&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;backend_start&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;AS&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;backend_start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-		&lt;span class=&quot;n&quot;&gt;pgsa&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;xact_start&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;AS&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xact_start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-		&lt;span class=&quot;k&quot;&gt;EXTRACT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;EPOCH&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;now&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pgsa&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;xact_start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;AS&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xact_duration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-		&lt;span class=&quot;n&quot;&gt;pgsa&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;query_start&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;AS&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;query_start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-		&lt;span class=&quot;k&quot;&gt;EXTRACT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;EPOCH&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;now&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pgsa&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;query_start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;AS&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;query_duration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-		&lt;span class=&quot;n&quot;&gt;REGEXP_REPLACE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;REPLACE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pgsa&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;query&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CHR&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;' '&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'^SELECT.*FROM'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'FROM'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'i'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;AS&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;query&lt;/span&gt;
-	&lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pg_stat_activity&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;AS&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pgsa&lt;/span&gt;
-	&lt;span class=&quot;k&quot;&gt;WHERE&lt;/span&gt;
-		&lt;span class=&quot;n&quot;&gt;pgsa&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;state&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'idle'&lt;/span&gt;
-		&lt;span class=&quot;k&quot;&gt;AND&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pgsa&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;state&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'idle in transaction'&lt;/span&gt;
-		&lt;span class=&quot;k&quot;&gt;AND&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pgsa&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;state&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'idle in transaction (aborted)'&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;idleconnections&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;ORDER&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;BY&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;query_duration&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;DESC&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;LIMIT&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;这个查询用到的字段在 9.2 版本就都支持了，9.6 版本还增加了其他字段，有需要可以自己对比一下文档：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;9.2: &lt;a href=&quot;https://www.postgresql.org/docs/9.2/static/monitoring-stats.html&quot;&gt;https://www.postgresql.org/docs/9.2/static/monitoring-stats.html&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;9.6: &lt;a href=&quot;https://www.postgresql.org/docs/9.6/static/monitoring-stats.html&quot;&gt;https://www.postgresql.org/docs/9.6/static/monitoring-stats.html&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;用到的几个字段的含义如下：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;datname&lt;/code&gt;: 数据库名称。&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;username&lt;/code&gt;: 用户名。&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;client_addr&lt;/code&gt;: 客户端地址。&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;state&lt;/code&gt;: 连接的当前状态，一共有6种，这里需要显示的是其中3种&lt;strong&gt;非空闲&lt;/strong&gt;的。&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;backend_start&lt;/code&gt;: 连接开始时间。&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;xact_start&lt;/code&gt;: 当前事务开始时间。&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;EXTRACT(EPOCH FROM (now() - pgsa.xact_start)) AS xact_duration&lt;/code&gt;: 计算当前事务进行了多久，单位是秒。&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;query_start&lt;/code&gt;: 当前查询开始的时间，一个事务内可能有多个查询。&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;EXTRACT(EPOCH FROM (now() - pgsa.query_start)) AS query_duration&lt;/code&gt;: 计算当前查询进行了多久，单位是秒。&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;REGEXP_REPLACE(REPLACE(pgsa.query, CHR(10), ' '), '^SELECT.*FROM', 'FROM', 'i') AS query&lt;/code&gt;: 查询语句的内容，这里把换行符替换成空格，而且会尝试把 &lt;em&gt;SELECT … FROM&lt;/em&gt; 替换为 &lt;em&gt;FROM&lt;/em&gt;（方便查看查询的是哪个表，不过如果语句过长，原始查询语句只会保留前 1024 个字符，这个是由 &lt;strong&gt;track_activity_query_size&lt;/strong&gt; 参数决定的）。&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Fri, 21 Sep 2018 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2018/09/21/postgres-note-2/</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2018/09/21/postgres-note-2/</guid>
-        
-        <category>database</category>
         
         
       </item>
