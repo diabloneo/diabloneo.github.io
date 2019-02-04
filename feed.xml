@@ -6,9 +6,84 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 27 Jan 2019 23:14:33 +0800</pubDate>
-    <lastBuildDate>Sun, 27 Jan 2019 23:14:33 +0800</lastBuildDate>
+    <pubDate>Mon, 04 Feb 2019 16:04:21 +0800</pubDate>
+    <lastBuildDate>Mon, 04 Feb 2019 16:04:21 +0800</lastBuildDate>
     <generator>Jekyll v3.7.3</generator>
+    
+      <item>
+        <title>想到什么写什么周报 第42期 - 2019-02-04</title>
+        <description>&lt;h2 id=&quot;introducing-the-next-generation-influxdb-20-platform&quot;&gt;Introducing the Next-Generation InfluxDB 2.0 Platform&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.influxdata.com/blog/introducing-the-next-generation-influxdb-2-0-platform/&quot;&gt;https://www.influxdata.com/blog/introducing-the-next-generation-influxdb-2-0-platform/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;InfluxDB 2.0 alpha 版本发布。把原来 TICK 的 4 个功能集中到一个软件里，新的数据查询器，增加了 task 的支持等。&lt;/p&gt;
+
+&lt;h2 id=&quot;why-not-to-build-a-time-series-database&quot;&gt;Why NOT to Build a Time-Series Database&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.outlyer.com/blog/why-not-to-build-a-time-series-database/&quot;&gt;https://www.outlyer.com/blog/why-not-to-build-a-time-series-database/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Outlyer 的广告文。OUtlyer 是一家 TSDB 服务提供商，试图说服你不要自己开发和维护时间序列存储方案 (TSDB)，不过挺有意思的：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;介绍了自家做的三代 TSDB 的情况，以及前两代遇到的问题。&lt;/li&gt;
+  &lt;li&gt;介绍了为什么开发 TSDB 是困难的，同时说明了，市面上的所有 TSDB 都有优缺点，不可能有完美的方案，需要根据自己的业务进行选择。&lt;/li&gt;
+  &lt;li&gt;介绍了 4 个时间序列数据的特点（在其他文章中也常提到）：
+    &lt;ul&gt;
+      &lt;li&gt;大部分的查询只会查询过去一个小时内的数据。&lt;/li&gt;
+      &lt;li&gt;数据点是不可变的。&lt;/li&gt;
+      &lt;li&gt;你可以丢一点数据。&lt;/li&gt;
+      &lt;li&gt;新查询的数据和上次查询的数据相比只有一点变化，或者基本不变。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;最后介绍了自家的第三代 TSDB 的架构。重要的一点是使用镜像而不是集群方式来备份数据，镜像很简单，集群很复杂（被 DalmatinerDB 坑怕了）。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;materialized-views-vs-rollup-tables-in-postgres&quot;&gt;Materialized views vs. Rollup tables in Postgres&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.citusdata.com/blog/2018/10/31/materialized-views-vs-rollup-tables/&quot;&gt;https://www.citusdata.com/blog/2018/10/31/materialized-views-vs-rollup-tables/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;介绍了 Materialzed View 的使用。但是每次 refresh 都需要重新计算数据，对于大表来说性能可能太差，所以有一种变通的办法就是自己建一张 table ，然后使用  upsert 的方式来进行增量更新可以提升性能。&lt;/p&gt;
+
+&lt;h2 id=&quot;sqlite-in-2018-a-state-of-the-art-sql-dialect&quot;&gt;SQLite in 2018: A state of the art SQL dialect&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://modern-sql.com/blog/2019-01/sqlite-in-2018&quot;&gt;https://modern-sql.com/blog/2019-01/sqlite-in-2018&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;SQLite 在 2018 年增加了许多功能，包括：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Boolean Literals and Tests&lt;/li&gt;
+  &lt;li&gt;Windos Functions&lt;/li&gt;
+  &lt;li&gt;Filter Clause&lt;/li&gt;
+  &lt;li&gt;Upsert&lt;/li&gt;
+  &lt;li&gt;Rename Column&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;gophercon-2014-high-performance-systems-in-go-by-derek-collison&quot;&gt;GopherCon 2014 High Performance Systems in Go by Derek Collison&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://youtu.be/ylRKac5kSOk&quot;&gt;https://youtu.be/ylRKac5kSOk&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;CNCF 项目 NATS 的作者 2014 年在 GopherCon 上的演讲。介绍了几个优化系统性能的事件，把 NATS 的性能从 500k msg/s 提升到了 5 - 6m msg/s&lt;/p&gt;
+
+&lt;h2 id=&quot;top-50-developer-tools-of-2018&quot;&gt;TOP 50 DEVELOPER TOOLS OF 2018&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://stackshare.io/posts/top-developer-tools-2018&quot;&gt;https://stackshare.io/posts/top-developer-tools-2018&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;stackshare 评选出来的 2018 年 50 大开发者工具。&lt;/p&gt;
+</description>
+        <pubDate>Mon, 04 Feb 2019 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2019/02/04/write-what-i-have-042/</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2019/02/04/write-what-i-have-042/</guid>
+        
+        <category>cloud</category>
+        
+        <category>golang</category>
+        
+        <category>distributed-computing</category>
+        
+        <category>database</category>
+        
+        
+      </item>
     
       <item>
         <title>想到什么写什么周报 第41期 - 2019-01-27</title>
@@ -466,86 +541,6 @@
         <category>cloud</category>
         
         <category>database</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>想到什么写什么周报 第34期 - 2018-09-24</title>
-        <description>&lt;h2 id=&quot;introducing-the-tink-cryptographic-software-library&quot;&gt;Introducing the Tink cryptographic software library&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://opensource.googleblog.com/2018/08/introducing-tink-cryptographic-library.html&quot;&gt;https://opensource.googleblog.com/2018/08/introducing-tink-cryptographic-library.html&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Google开源的Tink密码学库，支持多种语言，设计思想是提供受限的API功能，防止由于误用接口导致的安全问题。&lt;/p&gt;
-
-&lt;h2 id=&quot;helping-go-developers-build-better-cloud-apps-faster&quot;&gt;Helping Go developers build better cloud apps faster&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://azure.microsoft.com/en-us/blog/helping-go-developers-build-better-cloud-apps-faster/&quot;&gt;https://azure.microsoft.com/en-us/blog/helping-go-developers-build-better-cloud-apps-faster/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;微软介绍了自己为了让用户使用Go在Azure上开发云原生应用所作的工作。主要包括：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;2月份开源的Go SDK &lt;a href=&quot;https://github.com/Azure/azure-sdk-for-go&quot;&gt;https://github.com/Azure/azure-sdk-for-go&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;以及针对几个专门服务开发的SDK
-    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;https://github.com/Azure/azure-service-bus-go&quot;&gt;https://github.com/Azure/azure-service-bus-go&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;https://github.com/Azure/azure-event-hubs-go&quot;&gt;https://github.com/Azure/azure-event-hubs-go&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;https://github.com/Azure/azure-storage-blob-go&quot;&gt;https://github.com/Azure/azure-storage-blob-go&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Buffalo项目：&lt;a href=&quot;https://gobuffalo.io/en&quot;&gt;https://gobuffalo.io/en&lt;/a&gt;。用于帮助开发者快速开发web应用，帮你生成不同功能的脚手架代码，帮你部署到Azure上面。
-    &lt;ul&gt;
-      &lt;li&gt;可以查看这个介绍视频：&lt;a href=&quot;https://channel9.msdn.com/shows/azure-friday/Go-on-Azure-Part-7-Build-a-Go-app-with-Buffalo-and-deploy-to-Azure&quot;&gt;https://channel9.msdn.com/shows/azure-friday/Go-on-Azure-Part-7-Build-a-Go-app-with-Buffalo-and-deploy-to-Azure&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;另外，我发现 gobuffalo下，有挺多Go的库。&lt;a href=&quot;https://github.com/gobuffalo&quot;&gt;https://github.com/gobuffalo&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;announcing-project-athens-and-gophersource-for-the-go-community&quot;&gt;Announcing Project Athens and GopherSource for the Go community&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://open.microsoft.com/2018/08/28/announcing-project-athens-gophersource-go-community/&quot;&gt;https://open.microsoft.com/2018/08/28/announcing-project-athens-gophersource-go-community/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;微软发布的Go Module Proxy Server，目前还处在早期阶段。&lt;/p&gt;
-
-&lt;h2 id=&quot;googles-approach-to-observability&quot;&gt;Google’s Approach to Observability&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://medium.com/observability/googles-approach-to-observability-frameworks-c89fc1f0e058&quot;&gt;https://medium.com/observability/googles-approach-to-observability-frameworks-c89fc1f0e058&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;介绍了Google内部对于tracing的使用理念，也就是现在开始流行的opentracing等方案。&lt;/p&gt;
-
-&lt;h2 id=&quot;managing-resources-for-large-scale-testing&quot;&gt;Managing resources for large-scale testing&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://code.fb.com/android/managing-resources-for-large-scale-testing/&quot;&gt;https://code.fb.com/android/managing-resources-for-large-scale-testing/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;介绍了Facebook的One World，一个大规模的测试服务，连接了物理设备和模拟器，为开发人员提供方便的测试环境，设置可以让开发人员把自己的设备接入进来进行测试。&lt;/p&gt;
-
-&lt;h2 id=&quot;postgres-11---a-first-look&quot;&gt;Postgres 11 - a First Look&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;http://www.craigkerstiens.com/2018/09/20/postgresql-11-a-first-look/&quot;&gt;http://www.craigkerstiens.com/2018/09/20/postgresql-11-a-first-look/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;介绍了即将发布的Postgres 11的一些新特性，包括：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;可以使用 exit 或者 quit 退出psql。&lt;/li&gt;
-  &lt;li&gt;add column with default 提升了性能，不用害怕migration的时候导致全表卡住。&lt;/li&gt;
-  &lt;li&gt;性能的提升，包括并发和初步的JIT支持。&lt;/li&gt;
-  &lt;li&gt;继续改进统计功能。&lt;/li&gt;
-  &lt;li&gt;引入了 keeping standbys warm 的功能。&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Mon, 24 Sep 2018 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2018/09/24/write-what-i-have-034/</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2018/09/24/write-what-i-have-034/</guid>
-        
-        <category>cloud</category>
-        
-        <category>golang</category>
-        
-        <category>storage</category>
-        
-        <category>database</category>
-        
-        <category>security</category>
         
         
       </item>
