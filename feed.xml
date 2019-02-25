@@ -6,9 +6,63 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 04 Feb 2019 16:04:21 +0800</pubDate>
-    <lastBuildDate>Mon, 04 Feb 2019 16:04:21 +0800</lastBuildDate>
+    <pubDate>Mon, 25 Feb 2019 10:54:38 +0800</pubDate>
+    <lastBuildDate>Mon, 25 Feb 2019 10:54:38 +0800</lastBuildDate>
     <generator>Jekyll v3.7.3</generator>
+    
+      <item>
+        <title>想到什么写什么周报 第43期 - 2019-02-25</title>
+        <description>&lt;h2 id=&quot;an-introduction-to-join-ordering&quot;&gt;An Introduction to Join Ordering&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.cockroachlabs.com/blog/join-ordering-pt1/&quot;&gt;https://www.cockroachlabs.com/blog/join-ordering-pt1/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;介绍了 SQL join 的概念以及 join 操作的数学特性。&lt;/p&gt;
+
+&lt;h2 id=&quot;my-favorite-postgresql-queries-and-why-they-matter&quot;&gt;My Favorite PostgreSQL Queries and Why They Matter&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://severalnines.com/blog/my-favorite-postgresql-queries-and-why-they-matter&quot;&gt;https://severalnines.com/blog/my-favorite-postgresql-queries-and-why-they-matter&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;介绍了 8 个很用的 Postgres 查询技术：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Left join&lt;/li&gt;
+  &lt;li&gt;String Cancatenation&lt;/li&gt;
+  &lt;li&gt;Supplying IN values list with Subquery’s&lt;/li&gt;
+  &lt;li&gt;generate_series()&lt;/li&gt;
+  &lt;li&gt;Query’s with the COUNT() aggregate function&lt;/li&gt;
+  &lt;li&gt;UPDATE multiple rows with a CASE expression&lt;/li&gt;
+  &lt;li&gt;COPY and \copy&lt;/li&gt;
+  &lt;li&gt;psql \help meta-command&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;postgrs-window-functions&quot;&gt;Postgrs Window Functions&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://thoughtbot.com/blog/postgres-window-functions&quot;&gt;https://thoughtbot.com/blog/postgres-window-functions&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;用一个 blog 的例子来说明 window function 的用法，是我见过最好的一个例子。&lt;/p&gt;
+
+&lt;h2 id=&quot;life-of-a-sql-query&quot;&gt;Life of a SQL query&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://numeracy.co/blog/life-of-a-sql-query&quot;&gt;https://numeracy.co/blog/life-of-a-sql-query&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;一篇很好的科普文章，介绍了一条 sql 查询从客户端发起到返回的整个过程，包括简单的展示了 Postgres 网络协议的内容，以及数据的存储格式。&lt;/p&gt;
+
+&lt;h2 id=&quot;parsing-logs-230x-faster-with-rust&quot;&gt;Parsing logs 230x faster with Rust&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://andre.arko.net/2018/10/25/parsing-logs-230x-faster-with-rust/&quot;&gt;https://andre.arko.net/2018/10/25/parsing-logs-230x-faster-with-rust/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;使用 Rust 写了一个解析 RubyGems.org 的 log 的程序，比使用 Python 写的快了 78 倍，而且使用 aws lambda 来运行，发现分析 500GB 的 log 文件不用花钱（在 free tier 内）。&lt;/p&gt;
+</description>
+        <pubDate>Mon, 25 Feb 2019 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2019/02/25/write-what-i-have-043/</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2019/02/25/write-what-i-have-043/</guid>
+        
+        <category>cloud</category>
+        
+        <category>database</category>
+        
+        
+      </item>
     
       <item>
         <title>想到什么写什么周报 第42期 - 2019-02-04</title>
@@ -502,43 +556,6 @@
         <category>cloud</category>
         
         <category>golang</category>
-        
-        <category>database</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>想到什么写什么周报 第35期 - 2018-09-30</title>
-        <description>&lt;h2 id=&quot;postgresql-10-identity-columns-explained&quot;&gt;PostgreSQL 10 identity columns explained&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.2ndquadrant.com/postgresql-10-identity-columns/&quot;&gt;https://blog.2ndquadrant.com/postgresql-10-identity-columns/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Postgres 10 引入了一个新特性：identity columns。用于生成符合SQL标准的数字递增式 id 列。在这之前postgres的id列一般是使用sequence来实现 id 列，但是这种实现方式引入了两个对象，一个是表本身，另外一个是表所使用的sequence。使用新的 identity column 特性之后，就不存在单独的sequence序列了，对于数据库的管理来说更为简单且不容易出错。文中就举了几个方面的例子说明了改动前后的区别。&lt;/p&gt;
-
-&lt;h2 id=&quot;a-missing-link-in-postgres-11-fast-column-creation-with-defaults&quot;&gt;A Missing Link in Postgres 11: Fast Column Creation with Defaults&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://brandur.org/postgres-default&quot;&gt;https://brandur.org/postgres-default&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Postgres 11 引入了一种新的实现来支持 ALTER TABLE ADD COLUMN NOT NULL DEFAULT 这样的修改。原来这种修改需要使用 EXCLUSIVE LOCK锁住整个表，然后对表执行rewrite。新的实现是在 pg_attribute 中加入两列：atthasmissing 和 attmissingvalue，当数据库要返回一行数据时，如果一个列的值不存在，那么就会检查这两列，返回用户设置的默认值。新插入的行则直接设置指定的默认值。&lt;/p&gt;
-
-&lt;h2 id=&quot;when-should-i-use-amazon-aurora-and-when-should-i-use-rds-mysql&quot;&gt;When Should I Use Amazon Aurora and When Should I use RDS MySQL?&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.percona.com/blog/2018/07/17/when-should-i-use-amazon-aurora-and-when-should-i-use-rds-mysql/&quot;&gt;https://www.percona.com/blog/2018/07/17/when-should-i-use-amazon-aurora-and-when-should-i-use-rds-mysql/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Percona公司写的文章，告诉你什么时候应该选RDS，什么时候应该选Aurora。文章最后有 TL;DR，可以直接看结果。简单的总结一下就是，Aurora属于NewSQL，虽然兼容MySQL协议，但是由于架构不同，所以性能、费用、兼容性，都和RDS MySQL有不一样的地方。你可以认为Aurora 是 TiDB，而RDS就是MySQL。&lt;/p&gt;
-
-&lt;h2 id=&quot;pg_cron-run-periodic-jobs-in-postgresql&quot;&gt;pg_cron: Run periodic jobs in PostgreSQL&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.citusdata.com/blog/2016/09/09/pgcron-run-periodic-jobs-in-postgres/&quot;&gt;https://www.citusdata.com/blog/2016/09/09/pgcron-run-periodic-jobs-in-postgres/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Citus 出的一个支持在pg中执行cron任务的扩展：https://github.com/citusdata/pg_cron 。用起来很方便啊。而且支持备机变成主之后，自动开始运行cron job。&lt;/p&gt;
-</description>
-        <pubDate>Sun, 30 Sep 2018 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2018/09/30/write-what-i-have-035/</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2018/09/30/write-what-i-have-035/</guid>
-        
-        <category>cloud</category>
         
         <category>database</category>
         
