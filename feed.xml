@@ -6,9 +6,58 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 25 Feb 2019 10:54:38 +0800</pubDate>
-    <lastBuildDate>Mon, 25 Feb 2019 10:54:38 +0800</lastBuildDate>
+    <pubDate>Sun, 17 Mar 2019 16:55:58 +0800</pubDate>
+    <lastBuildDate>Sun, 17 Mar 2019 16:55:58 +0800</lastBuildDate>
     <generator>Jekyll v3.7.3</generator>
+    
+      <item>
+        <title>想到什么写什么周报 第44期 - 2019-03-17</title>
+        <description>&lt;h2 id=&quot;happy-fibonacci-day-here-is-how-to-generate-a-fibonacci-sequence-in-postgresql&quot;&gt;Happy Fibonacci day, here is how to generate a Fibonacci sequence in PostgreSQL&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://denisgobo.blogspot.com/2018/11/happy-fibonacci-day-here-is-how-to.html&quot;&gt;https://denisgobo.blogspot.com/2018/11/happy-fibonacci-day-here-is-how-to.html&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;使用 Fbonacci 数列介绍如何使用 Postgres 的 WITH RECURSIVE 特性。建议去看一下官方文档中关于 WITH 语句递归的计算方法 &lt;em&gt;&lt;a href=&quot;https://www.postgresql.org/docs/9.6/queries-with.html&quot;&gt;https://www.postgresql.org/docs/9.6/queries-with.html&lt;/a&gt;&lt;/em&gt;。&lt;/p&gt;
+
+&lt;h2 id=&quot;a-better-nerdtree-setup&quot;&gt;A better NERDTree setup&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://medium.com/@victormours/a-better-nerdtree-setup-3d3921abc0b9&quot;&gt;https://medium.com/@victormours/a-better-nerdtree-setup-3d3921abc0b9&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;介绍了几个不错的 NERDTree 配置。看了之后，我就从 NERDTreeToggle 换成了  NERDTreeFind。&lt;/p&gt;
+
+&lt;h2 id=&quot;10-awesome-features-of-python-that-you-cant-use-because-you-refuse-to-upgrade-to-python-3&quot;&gt;10 awesome features of Python that you can’t use because you refuse to upgrade to Python 3&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.asmeurer.com/python3-presentation/slides.html&quot;&gt;https://www.asmeurer.com/python3-presentation/slides.html&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;介绍了 Python3 相对于 Python2 有改进的 10 个地方，让你觉得升级到 Python3 是值得的。至少新项目应该用 Python3.&lt;/p&gt;
+
+&lt;h2 id=&quot;python-3-using-yield-from-in-generators&quot;&gt;Python 3: Using “yield from” in Generators&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;http://simeonvisser.com/posts/python-3-using-yield-from-in-generators-part-1.html&quot;&gt;http://simeonvisser.com/posts/python-3-using-yield-from-in-generators-part-1.html&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;http://simeonvisser.com/posts/python-3-using-yield-from-in-generators-part-2.html&quot;&gt;http://simeonvisser.com/posts/python-3-using-yield-from-in-generators-part-2.html&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Python 3.3 增加了 yield from 关键字，这两篇文章解释了这个关键字的用途。简单的说，就是方便你写一个生成器，里面用 yield from 包装多个生成器，代码会比较简洁。我觉得在组合多个生成器时，必须要考虑生成器参数的一致性问题。&lt;/p&gt;
+
+&lt;h2 id=&quot;the-state-of-caching-in-go&quot;&gt;The State of Caching in Go&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.dgraph.io/post/caching-in-go/&quot;&gt;https://blog.dgraph.io/post/caching-in-go/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Go 领域最近的网红文章，由 DGraph 公司出品，介绍了目前所有 Go 实现的 cache 系统的特点，然后比较了文中提出的 5 个 cache 系统需要满足的特性。结论是，现在用 Go 实现的 cache 系统都不够好，和 Java 界的 caffine ( &lt;em&gt;&lt;a href=&quot;https://github.com/ben-manes/caffeine&quot;&gt;https://github.com/ben-manes/caffeine&lt;/a&gt;&lt;/em&gt; ) 有些差距。所以 dgraph 打算尝试实现一个 Go 版本的 caffine。&lt;/p&gt;
+</description>
+        <pubDate>Sun, 17 Mar 2019 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2019/03/17/write-what-i-have-044/</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2019/03/17/write-what-i-have-044/</guid>
+        
+        <category>linux</category>
+        
+        <category>golang</category>
+        
+        <category>python</category>
+        
+        <category>database</category>
+        
+        
+      </item>
     
       <item>
         <title>想到什么写什么周报 第43期 - 2019-02-25</title>
@@ -497,67 +546,6 @@
         <category>linux</category>
         
         <category>distributed-computing</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>想到什么写什么周报 第36期 - 2018-10-21</title>
-        <description>&lt;h2 id=&quot;amazon-rds-for-postgresql-now-supports-iam-authentication&quot;&gt;Amazon RDS for PostgreSQL now supports IAM Authentication&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://aws.amazon.com/about-aws/whats-new/2018/09/amazon-rds-postgresql-now-supports-iam-authentication/&quot;&gt;https://aws.amazon.com/about-aws/whats-new/2018/09/amazon-rds-postgresql-now-supports-iam-authentication/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;RDS Postgres 9.5 以上的版本可以使用 IAM 来管理用户登陆信息了。&lt;/p&gt;
-
-&lt;h2 id=&quot;postgresql的sql高级特性&quot;&gt;PostgreSQL的SQL高级特性&lt;/h2&gt;
-
-&lt;p&gt;https://mp.weixin.qq.com/s/sFRZ2NjpKTofSZWVgXUG6g&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;&amp;lt;介绍了一些 Postgres 的 SQL 高级特性，包括： WITH，批量插入，RETURNING，UPSERT，数据抽样，聚合函数，窗口函数。&amp;gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;parallelism-in-postgresql-11&quot;&gt;Parallelism in Postgresql 11&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://speakerdeck.com/macdice/parallelism-in-postgresql-11&quot;&gt;https://speakerdeck.com/macdice/parallelism-in-postgresql-11&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;介绍了 postgres 11 引入的并行查询的实现方式。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;worker负责执行查询，gather负责合并查询结果。&lt;/li&gt;
-  &lt;li&gt;多进程模型，每个worker一个进程。&lt;/li&gt;
-  &lt;li&gt;以前pg的每个进程都能访问一个共享的内存区域。现在执行并行查询的进程之间还会使用一个动态的共享内存区，这个内存区在查询结束之后销毁。&lt;/li&gt;
-  &lt;li&gt;引入了新的IPC机制。&lt;/li&gt;
-  &lt;li&gt;对于seq scan，设计了一种机制来充分利用操作系统的pagecache预读机制。&lt;/li&gt;
-  &lt;li&gt;对于index scan，目前只支持btree index，有可能会触发操作系统的pagecache预读机制。&lt;/li&gt;
-  &lt;li&gt;加入了多个cost值到planner中。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;the-impact-of-virtualization-on-your-database&quot;&gt;The Impact of Virtualization on Your Database&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.scylladb.com/2018/06/21/impact-virtualization-database/&quot;&gt;https://www.scylladb.com/2018/06/21/impact-virtualization-database/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;ScyllaDB 测试了 AWS 新推出的 baremetal 实例 i3.metal，价格和 i3.16xlarge 一样。i3.metal 比 i3.16xlarge 能提供更多的 CPU 和内存。虽然只增加了 12% 的CPU，但是因为移除了虚拟化层，最后得到的写吞吐性能提升达到了 31%，读时延则最多达到了 8 倍，并且读时延更加稳定。&lt;/p&gt;
-
-&lt;h2 id=&quot;new--managed-databases-for-amazon-lightsail&quot;&gt;New – Managed Databases for Amazon Lightsail&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://aws.amazon.com/blogs/aws/new-managed-databases-for-amazon-lightsail/&quot;&gt;https://aws.amazon.com/blogs/aws/new-managed-databases-for-amazon-lightsail/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;AWS Lightsail 现在支持支持数据库实例了，最便宜的版本只要 15 美元一个月。&lt;/p&gt;
-
-&lt;h2 id=&quot;postgresql-11-released&quot;&gt;PostgreSQL 11 Released!&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.postgresql.org/about/news/1894/&quot;&gt;https://www.postgresql.org/about/news/1894/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;带来好多新特性，以及性能提升。&lt;/p&gt;
-</description>
-        <pubDate>Sun, 21 Oct 2018 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2018/10/21/write-what-i-have-036/</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2018/10/21/write-what-i-have-036/</guid>
-        
-        <category>cloud</category>
-        
-        <category>golang</category>
-        
-        <category>database</category>
         
         
       </item>
