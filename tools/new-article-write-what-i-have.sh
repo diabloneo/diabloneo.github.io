@@ -11,15 +11,14 @@ last_index=$(find _posts/ -name '*write-what-i-have*' | \
 	head -1)
 
 let index=${last_index}+1
-year=$(date +%Y)
-date=$(date +%Y-%m-%d)
-filename=$(printf "%s-write-what-i-have-%03d.markdown" ${date} ${index})
-filepath=${POSTS_DIR}/${year}/${filename}
 
-echo "New article: ${filename}"
+article=$(new_article $(printf "write-what-i-have-%03d" ${index}))
+filepath=$(article_path ${article})
+
+echo "New article: ${article}"
 cat <<-EOF > ${filepath}
 ---
-title: "想到什么写什么周报 第${index}期 - ${date}"
+title: "想到什么写什么周报 第${index}期 - ${DATE}"
 tag: [cloud, golang, database]
 ---
 

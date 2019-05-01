@@ -6,9 +6,62 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 17 Mar 2019 16:55:58 +0800</pubDate>
-    <lastBuildDate>Sun, 17 Mar 2019 16:55:58 +0800</lastBuildDate>
+    <pubDate>Wed, 01 May 2019 23:41:10 +0800</pubDate>
+    <lastBuildDate>Wed, 01 May 2019 23:41:10 +0800</lastBuildDate>
     <generator>Jekyll v3.7.3</generator>
+    
+      <item>
+        <title>想到什么写什么周报 第45期 - 2019-05-01</title>
+        <description>&lt;h2 id=&quot;nginx-add_header-configuration-pitfall&quot;&gt;Nginx add_header configuration pitfall&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.g3rt.nl/nginx-add_header-pitfall.html&quot;&gt;https://blog.g3rt.nl/nginx-add_header-pitfall.html&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Nginx 的 add_header 指令会清除所有父级的 add_header 指令添加的 header，解决办法写到一个 conf 文件里，在每一级的 block 里 include 进来。&lt;/p&gt;
+
+&lt;h2 id=&quot;understanding-python-metaclasses&quot;&gt;Understanding Python metaclasses&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;http://blog.ionelmc.ro/2015/02/09/understanding-python-metaclasses/&quot;&gt;http://blog.ionelmc.ro/2015/02/09/understanding-python-metaclasses/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;一篇很好的关于 Python metaclass 的教程。&lt;/p&gt;
+
+&lt;h2 id=&quot;cloudpinginfo&quot;&gt;CloudPing.info&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.cloudping.info/&quot;&gt;https://www.cloudping.info/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;测试你的浏览器到 AWS 各个region 的延迟。&lt;/p&gt;
+
+&lt;h2 id=&quot;h2nonfiletype&quot;&gt;h2non/filetype&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://github.com/h2non/filetype&quot;&gt;https://github.com/h2non/filetype&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;纯 Go 实现的用于推断文件类型的库。&lt;/p&gt;
+
+&lt;h2 id=&quot;boltdb-vs-badger-a-comparison-of-go-key-value-databases&quot;&gt;BoltDB vs Badger: A Comparison of Go Key-Value databases&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://tech.townsourced.com/post/boltdb-vs-badger/&quot;&gt;https://tech.townsourced.com/post/boltdb-vs-badger/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;BoltHold  和 BadgerHold  的作者介绍了 BoltDB 和 Bager 之间的区别，并且提供了选择的建议。&lt;/p&gt;
+
+&lt;h2 id=&quot;katrina-ellison-geltman-code-generation-gos-secret-weapon&quot;&gt;Katrina Ellison Geltman Code Generation: Go’s Secret Weapon&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=3llI65DQB_w&quot;&gt;https://www.youtube.com/watch?v=3llI65DQB_w&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;用 Go 自己的 template 功能来生成 Go 代码，是一个非常使用且方便的做法。&lt;/p&gt;
+</description>
+        <pubDate>Wed, 01 May 2019 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2019/05/01/write-what-i-have-045/</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2019/05/01/write-what-i-have-045/</guid>
+        
+        <category>cloud</category>
+        
+        <category>golang</category>
+        
+        <category>python</category>
+        
+        <category>storage</category>
+        
+        
+      </item>
     
       <item>
         <title>想到什么写什么周报 第44期 - 2019-03-17</title>
@@ -495,57 +548,6 @@
         <guid isPermaLink="true">http://diabloneo.github.io//2018/12/08/postgres-note-4/</guid>
         
         <category>database</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>想到什么写什么周报 第37期 - 2018-11-11</title>
-        <description>&lt;h2 id=&quot;mysql-high-availability-at-github&quot;&gt;MySQL High Availability at GitHub&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://githubengineering.com/mysql-high-availability-at-github/&quot;&gt;https://githubengineering.com/mysql-high-availability-at-github/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;GitHub 将 MySQL 的高可用方案从 VIP + DNS 的方案，迁移到了使用 anycast + GLB + Consul + orchestrator raft 的方案。改进了数据库 down 的切换时间，基本维持在 10 到 13 秒之间。&lt;/p&gt;
-
-&lt;p&gt;没想看到这篇文章过了没几天，GitHub 就遇到了一次存储故障。&lt;/p&gt;
-
-&lt;h2 id=&quot;ubuntu-1810-released&quot;&gt;Ubuntu 18.10 released&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.omgubuntu.co.uk/2018/10/ubuntu-18-10-released-review&quot;&gt;https://www.omgubuntu.co.uk/2018/10/ubuntu-18-10-released-review&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;cost-of-a-join&quot;&gt;Cost of a Join&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.brianlikespostgres.com/cost-of-a-join.html&quot;&gt;https://www.brianlikespostgres.com/cost-of-a-join.html&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;作者通过测试说明了，做 inner join 的成本其实很低，尤其是加上外键的索引之后。文章中使用的画图服务 plot.ly 不错。&lt;/p&gt;
-
-&lt;h2 id=&quot;why-we-decided-to-rewrite-ubers-driver-app&quot;&gt;Why We Decided to Rewrite Uber’s Driver App&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://eng.uber.com/rewrite-uber-carbon-app/关于迁移的部分很值得一读。&quot;&gt;https://eng.uber.com/rewrite-uber-carbon-app/关于迁移的部分很值得一读。&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Uber 发现一边迁移到新架构，一边做新功能的办法是不行的，最后总会留下遗留的代码，导致迁移失败。而这种迁移失败是 Uber 技术债务的主要原因。&lt;/li&gt;
-  &lt;li&gt;迁移会导致不稳定性情况大量出现。&lt;/li&gt;
-  &lt;li&gt;在迁移过程中进行新功能开发，总是导致新功能无法被完全实现。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;glb-githubs-open-source-load-balancer&quot;&gt;GLB: GitHub’s open source load balancer&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://githubengineering.com/glb-director-open-source-load-balancer/&quot;&gt;https://githubengineering.com/glb-director-open-source-load-balancer/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;GitHub 在使用过程中发现现有的负载均衡方案有几个典型问题，于是决定自己开发了一套，还上了 DPDK。&lt;/p&gt;
-</description>
-        <pubDate>Sun, 11 Nov 2018 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2018/11/11/write-what-i-have-037/</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2018/11/11/write-what-i-have-037/</guid>
-        
-        <category>cloud</category>
-        
-        <category>database</category>
-        
-        <category>linux</category>
-        
-        <category>distributed-computing</category>
         
         
       </item>
