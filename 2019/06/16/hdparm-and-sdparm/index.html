@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>hdparm and sdparm</title>
+  <meta name="description" content="hdparm 和 sdparm 是 Linux 下常用的两个查询和设置硬盘参数的工具，这两个工具分别适用于不同的硬盘类型。">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/pygments-rainbow_dash.css">
+  <link rel="canonical" href="http://diabloneo.github.io//2019/06/16/hdparm-and-sdparm/">
+  <link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
+</head>
+
+
+  <body>
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">Coffee, Coke and Code</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <a class="page-link" href="/tags">Tags</a>
+        <a class="page-link" href="/feed.xml">RSS</a>
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">hdparm and sdparm</h1>
+    <p class="post-meta"><time datetime="2019-06-16T00:00:00+08:00" itemprop="datePublished">Jun 16, 2019</time></p>
+  </header>
+
+  <div class="post-tags">
+    <ul>
+      
+      <li>
+        <a href="/tags/storage/">storage</a>
+      </li>
+      
+      <li>
+        <a href="/tags/linux/">linux</a>
+      </li>
+      
+    </ul>
+  </div>
+
+  <div class="post-content" itemprop="articleBody">
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+    <br />
+      <p><strong>hdparm</strong> 和 <strong>sdparm</strong> 是 Linux 下常用的两个查询和设置硬盘参数的工具，这两个工具分别适用于不同的硬盘类型。</p>
+
+<h2 id="硬盘类型">硬盘类型</h2>
+
+<p>不考虑早起的 IDE 硬盘，以及最新的 NVME 等硬盘，目前主流的硬盘分为两个类型：</p>
+
+<ol>
+  <li><strong>SATA</strong>: Serial Advanced Technoogy Attachment</li>
+  <li><strong>SAS</strong>: Serial Attached SCSI</li>
+</ol>
+
+<p>在 Linux 系统中，可以用 <strong>smartctl</strong> 命令查看硬盘的类型。 这里，我们不看这两种接口的标准和实现的差异，重点关注的是使用上的差异。</p>
+
+<p><strong>转速差距</strong></p>
+
+<ul>
+  <li>SATA 一般是 7200 rpm</li>
+  <li>SAS 一般是 10k 或者 15k rpm</li>
+</ul>
+
+<p><strong>IOPS (小 IO)</strong></p>
+
+<ul>
+  <li>7.2k rpm 的 SATA 盘一般是 IOPS 80</li>
+  <li>10k rpm 的 SAS 盘一般是 IOPS 120</li>
+  <li>10k rpm 的 SAS 盘一般是 IOPS 180</li>
+</ul>
+
+<p><strong>可靠性</strong></p>
+
+<p>可靠性上，SAS 更可靠。</p>
+
+<blockquote>
+  <p>SAS drives are more reliable than SATA drives. The industry accepted Mean Time Between Failure (MTBF) for SAS drives is 1.2 million hours vs 700,000 hours MTBF for SATA drives.</p>
+</blockquote>
+
+<p><strong>容量</strong></p>
+
+<p>SATA 盘的容量可以做得更大。</p>
+
+<blockquote>
+  <p>In terms of capacity though, SATA drives win hands down. 3TB SATA hard drives are not uncommon and there are 8TB disk offerings in a 3.5 inch format. Generally though they are most cost effective in the 1TB to 3TB range. SAS drives on the other hand tend to max at around 900GB although the most popular configuration is around 450GB to 500GB.</p>
+</blockquote>
+
+<p><strong>其他</strong></p>
+
+<p>SATA 的线缆长度很短，最多 1 米；SAS 可达 10 米。</p>
+
+<blockquote>
+  <p>From a physical perspective the data cables are also significantly different. SATA cables are limited to 1 metre in length and the data and power are separate whereas SAS cables can be up to 10 metres in length with power and data provided through the same cable.</p>
+</blockquote>
+
+<h2 id="hdparm">hdparm</h2>
+
+<p><strong>hdparm</strong> 工具是通过 kernel 的 <strong>libata</strong> 子系统和 IDE 子系统来和硬盘交互，达到读取或者设置硬盘参数的目的。这个工具并不能百分百兼容 SAS 硬盘，只有部分选项对 SAS 硬盘是有效的，比如 <em>write-caching</em> 参数就不兼容 SAS 盘。</p>
+
+<p>hdparm 直接通过指定参数即可和硬盘交互，更详细的文档请参考： <em><a href="https://wiki.archlinux.org/index.php/hdparm">https://wiki.archlinux.org/index.php/hdparm</a></em> 或者 <code class="highlighter-rouge">man hdparm</code>。</p>
+
+<p>例如可以用 <strong>-W</strong> 来设置 SATA 盘的 <em>write-caching</em> 属性：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root ~]# hdparm -W 1 /dev/sda
+[root ~]# hdparm -W /dev/sda
+
+/dev/sda:
+ write-caching =  1 (on)
+</code></pre></div></div>
+
+<h2 id="sdparm">sdparm</h2>
+
+<p><strong>sdparm</strong> 是一个 SCSI 协议交互工具，用于访问 SCSI mode pages，读取 VPD pages，以及发送简单的 SCSI 命令。因此这个工具一般被用来控制 SAS 盘。这里只是简单说明下几个主要的概念和工具用法，更详细的内容，推荐阅读 <em><a href="http://sg.danny.cz/sg/sdparm.html#mozTocId871473">http://sg.danny.cz/sg/sdparm.html#mozTocId871473</a></em>。</p>
+
+<h3 id="scsi-mode-pages">SCSI mode pages</h3>
+
+<p>SCSI mode pages 包含了一些 SCSI 设备的元数据，用户可以通过设置这些元数据来改变设备的行为。SCSI 协议在 SPC 中定义了 mode page 相关的内容。</p>
+
+<p>sdparm 可以使用 <strong>-all</strong> 参数来查看设备所支持的 page:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root ~]# sdparm --all --long /dev/sdb | grep page
+Read write error recovery [rw] mode page:
+Disconnect-reconnect (SPC + transports) [dr] mode page:
+Format (SBC) [fo] mode page:
+Rigid disk (SBC) [rd] mode page:
+Verify error recovery (SBC) [ve] mode page:
+Caching (SBC) [ca] mode page:
+Control [co] mode page:
+  ATMPE       0  [cha: n, def:  0, sav:  0]  Application tag mode page enabled
+Protocol specific logical unit [pl] mode page:
+Protocol specific port [pp] mode page:
+Power condition [po] mode page:
+Informational exceptions control [ie] mode page:
+Background control (SBC) [bc] mode page:
+</code></pre></div></div>
+
+<p>每一行是一个 mode page，其中中括号内的是 page 的缩写。要查询一个 page 的指定内容，每行一个域：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root ~]# sdparm --all --page=ca /dev/sdb
+    /dev/sdb: TOSHIBA   MG03SCA200        5702
+Caching (SBC) mode page:
+  IC          0  [cha: y, def:  0, sav:  0]
+  ABPF        0  [cha: n, def:  0, sav:  0]
+  CAP         0  [cha: n, def:  0, sav:  0]
+  DISC        1  [cha: n, def:  1, sav:  1]
+  SIZE        0  [cha: n, def:  0, sav:  0]
+  WCE         0  [cha: y, def:  0, sav:  0]
+  MF          0  [cha: n, def:  0, sav:  0]
+  RCD         0  [cha: y, def:  0, sav:  0]
+  DRRP        0  [cha: n, def:  0, sav:  0]
+  WRP         0  [cha: n, def:  0, sav:  0]
+  DPTL       -1  [cha: n, def: -1, sav: -1]
+  MIPF        0  [cha: n, def:  0, sav:  0]
+  MAPF        0  [cha: n, def:  0, sav:  0]
+  MAPFC      -1  [cha: n, def: -1, sav: -1]
+  FSW         1  [cha: y, def:  1, sav:  1]
+  LBCSS       0  [cha: n, def:  0, sav:  0]
+  DRA         0  [cha: n, def:  0, sav:  0]
+  SYNC_PROG   0  [cha: n, def:  0, sav:  0]
+  NV_DIS      0  [cha: n, def:  0, sav:  0]
+  NCS         8  [cha: y, def:  8, sav:  8]
+  CSS         0  [cha: n, def:  0, sav:  0]
+</code></pre></div></div>
+
+<p>还可以通过 <code class="highlighter-rouge">--get</code> 和 <code class="highlighter-rouge">--set</code> 来设置一个指定域的值。域的缩写就是上面第一列的大写字母，这个缩写是全局唯一的，在不同的 page 内也不重复。比如查看和设置一个硬盘的 write-caching 的方法如下：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root ~]# sdparm --set WCE=0 --save /dev/sdb
+    /dev/sdb: TOSHIBA   MG03SCA200        5702
+[root ~]#
+[root ~]# sdparm --get=WCE /dev/sdb
+    /dev/sdb: TOSHIBA   MG03SCA200        5702
+WCE         0  [cha: y, def:  0, sav:  0]
+</code></pre></div></div>
+
+<h3 id="vpd-pages">VPD pages</h3>
+
+<p>VPD (Vital Product Data) 是指软件或者硬件提供的一组配置和信息，一般在硬件中都用来存储硬件的关键信息。SCSI 协议是在 SBC 中定义了 VPD 相关的内容，最重要的就是 <strong>Device Identification VPD page (page number: 0x83)</strong>，这个 page 包含了磁盘序列号等信息。</p>
+
+<p>在 sdparm 参数中，可以通过指定 <code class="highlighter-rouge">--inquiry</code> 参数来指定要查询的是 VPD pages：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root ~]# sdparm --inquiry --all /dev/sdb
+    /dev/sdb: TOSHIBA   MG03SCA200        5702
+Supported VPD pages VPD page:
+  Supported VPD pages [sv]
+  Unit serial number [sn]
+  Device identification [di]
+  Extended inquiry data [ei]
+  Power condition [pc]
+  Protocol-specific logical unit information [pslu]
+  Block device characteristics (SBC) [bdc]
+</code></pre></div></div>
+
+<p>一般我们是通过 <strong>sn</strong> page 来查询硬盘的序列号：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root ~]# sdparm --inquiry --page=sn /dev/sdb
+    /dev/sdb: TOSHIBA   MG03SCA200        5702
+Unit serial number VPD page:
+  Z3M0AXXXXXU6
+</code></pre></div></div>
+
+<h2 id="references">References</h2>
+
+<ol>
+  <li><em><a href="https://www.pickaweb.co.uk/kb/difference-between-sata-sas-hard-drives/">https://www.pickaweb.co.uk/kb/difference-between-sata-sas-hard-drives/</a></em></li>
+  <li><em><a href="https://www.intel.com/content/www/us/en/support/articles/000005782/server-products.html">https://www.intel.com/content/www/us/en/support/articles/000005782/server-products.html</a></em></li>
+  <li><em><a href="https://www.kernel.org/doc/html/v4.13/driver-api/libata.html">https://www.kernel.org/doc/html/v4.13/driver-api/libata.html</a></em></li>
+  <li><em><a href="https://en.wikipedia.org/wiki/SCSI_mode_page">https://en.wikipedia.org/wiki/SCSI_mode_page</a></em></li>
+  <li><em><a href="https://en.wikipedia.org/wiki/Vital_Product_Data">https://en.wikipedia.org/wiki/Vital_Product_Data</a></em></li>
+  <li>Working Draft SCSI Block Commands - 3 (SBC-3) <em><a href="http://t10.org/ftp/t10/document.05/05-344r0.pdf">http://t10.org/ftp/t10/document.05/05-344r0.pdf</a></em></li>
+  <li>Working Draft SCSI Primary Commands - 4 (SPC-4) <em><a href="http://caxapa.ru/thumbs/563550/spc4r31.pdf">http://caxapa.ru/thumbs/563550/spc4r31.pdf</a></em></li>
+  <li><em><a href="https://www.systutorials.com/docs/linux/man/8-sg_vpd/">https://www.systutorials.com/docs/linux/man/8-sg_vpd/</a></em></li>
+</ol>
+
+    <br />
+
+    <div>
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议</a>进行许可。
+    </div>
+
+    <br />
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+  </div>
+
+  
+    <div class="post-comment">
+      
+<div id="disqus_thread"></div>
+<script>
+var disqus_config = function () {
+  this.page.url = "http://diabloneo.github.io/2019/06/16/hdparm-and-sdparm/"; // <--- use canonical URL
+  this.page.identifier = "/2019/06/16/hdparm-and-sdparm";
+};
+(function() { // DON'T EDIT BELOW THIS LINE
+  var d = document, s = d.createElement('script');
+
+  s.src = 'https://coffee-coke-and-code.disqus.com/embed.js';
+
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+    </div>
+  
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Coffee, Coke and Code</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>Coffee, Coke and Code</li>
+          <li><a href="mailto:diabloneo@gmail.com">diabloneo@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <i class="fa fa-github"></i>
+            <a href="https://github.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <i class="fa fa-twitter"></i>
+            <a href="https://twitter.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <i class="fa fa-weibo"></i>
+            <a href="https://weibo.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Archive diabloneo's articles.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+    
+      <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-78067453-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+    
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
+  </body>
+
+</html>
