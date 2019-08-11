@@ -6,9 +6,75 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 18 Jun 2019 00:01:02 +0800</pubDate>
-    <lastBuildDate>Tue, 18 Jun 2019 00:01:02 +0800</lastBuildDate>
+    <pubDate>Sun, 11 Aug 2019 15:27:30 +0800</pubDate>
+    <lastBuildDate>Sun, 11 Aug 2019 15:27:30 +0800</lastBuildDate>
     <generator>Jekyll v3.7.3</generator>
+    
+      <item>
+        <title>在 PEX 程序中访问项目代码 --not-zip-safe</title>
+        <description>&lt;h2 id=&quot;问题&quot;&gt;问题&lt;/h2&gt;
+
+&lt;p&gt;当使用 PEX (&lt;em&gt;&lt;a href=&quot;https://github.com/pantsbuild/pex&quot;&gt;https://github.com/pantsbuild/pex&lt;/a&gt;&lt;/em&gt;) 来打包一个 Python 项目时，会发现有些动态的源码访问方式无法使用。例如下面这段代码，通过动态遍历 Python 源文件来载入一个 package 下的所有模块：&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# -*- coding: utf-8 -*-&lt;/span&gt;
+
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;glob&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;os.path&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dirname&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;basename&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;isfile&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;modules&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;glob&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;glob&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dirname&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__file__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;*.py&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;__all__&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;basename&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)[:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;modules&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;isfile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;__init__.py&quot;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;  &lt;span class=&quot;c&quot;&gt;# noqa&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;当使用 PEX 进行打包的时候，程序默认会使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;--zip-safe&lt;/code&gt; 参数，即在 PEX 程序执行的过程中，源码不会存在到磁盘上，因此 &lt;code class=&quot;highlighter-rouge&quot;&gt;glob.glob()&lt;/code&gt; 会返回一个空列表，所以就无法载入任何模块。如果遇到这个情况，当你需要访问某些子模块时，就会触发如下的错误：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;AttributeError: 'module' object has no attribute 'submodule_name'
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;解决方案&quot;&gt;解决方案&lt;/h2&gt;
+
+&lt;p&gt;如果要支持这样的代码逻辑，需要使用 PEX 的 &lt;code class=&quot;highlighter-rouge&quot;&gt;--not-zip-safe&lt;/code&gt; 模式。当启用该模式时，PEX 在运行程序前，会先把程序的代码解压到 &lt;code class=&quot;highlighter-rouge&quot;&gt;${PEX_ROOT}/code&lt;/code&gt; 目录下 （ PEX_ROOT 可以通过 &lt;code class=&quot;highlighter-rouge&quot;&gt;--pex-root&lt;/code&gt; 参数指定，默认值是 &lt;em&gt;~/.pex/&lt;/em&gt;），然后再运行程序。这样代码中就可以使用上面这样的逻辑来动态的访问源码文件了。&lt;/p&gt;
+
+&lt;p&gt;但是，使用这个方法有个问题，就是每运行一次，代码就会被保留一份到 &lt;code class=&quot;highlighter-rouge&quot;&gt;${PEX_ROOT}/code&lt;/code&gt; 目录下一次，不仅会占用空间，而且会让别人可以方便的访问到源代码（虽然，直接解压 PEX 文件也能获得源代码）。所以，可以使用类似如下的代码，在程序退出前删除 PEX 解压出来的源代码：&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;clean_pex_code_dir&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# We use default PEX_ROOT setting.&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;pex_root&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;os&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;expanduser&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;~/.pex&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;code_path&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;os&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pex_root&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;code&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;deco&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;kwargs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;try&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;kwargs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;except&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Exception&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+            &lt;span class=&quot;c&quot;&gt;# It's necessary to raise catched exception for dumping traceback.&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;raise&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;finally&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;os&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;exists&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;code_path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;shutil&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rmtree&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;code_path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;deco&lt;/span&gt;
+
+
+&lt;span class=&quot;nd&quot;&gt;@clean_pex_code_dir&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;pass&lt;/span&gt;
+
+
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;__name__&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;__main__&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>
+        <pubDate>Sun, 11 Aug 2019 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2019/08/11/pex-vist-source-files/</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2019/08/11/pex-vist-source-files/</guid>
+        
+        <category>python</category>
+        
+        
+      </item>
     
       <item>
         <title>想到什么写什么周报 第46期 - 2019-06-16</title>
@@ -629,56 +695,6 @@ Unit serial number VPD page:
         <category>cloud</category>
         
         <category>golang</category>
-        
-        <category>distributed-computing</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>想到什么写什么周报 第38期 - 2018-12-31</title>
-        <description>&lt;h2 id=&quot;microsoft-procdump-for-linux&quot;&gt;Microsoft ProcDump for Linux&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://github.com/Microsoft/ProcDump-for-Linux&quot;&gt;https://github.com/Microsoft/ProcDump-for-Linux&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;微软的 ProdDump 出了 Linux 版，用来监控进程的 CPU 突发和挂起等信息。&lt;/p&gt;
-
-&lt;h2 id=&quot;how-can-i-use-gnu-parallel-to-run-a-lot-of-commands-in-parallel&quot;&gt;How can I use GNU Parallel to run a lot of commands in parallel&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.msi.umn.edu/support/faq/how-can-i-use-gnu-parallel-run-lot-commands-parallel&quot;&gt;https://www.msi.umn.edu/support/faq/how-can-i-use-gnu-parallel-run-lot-commands-parallel&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;GNU Parallel 的 quick start。&lt;/p&gt;
-
-&lt;h2 id=&quot;cape-technical-deep-dive&quot;&gt;Cape Technical Deep Dive&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;em&gt;&lt;a href=&quot;https://blogs.dropbox.com/tech/2017/05/introducing-cape/&quot;&gt;https://blogs.dropbox.com/tech/2017/05/introducing-cape/&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;&lt;a href=&quot;https://blogs.dropbox.com/tech/2018/12/cape-technical-deep-dive/&quot;&gt;https://blogs.dropbox.com/tech/2018/12/cape-technical-deep-dive/&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Dropbox 介绍了自己的事件调度系统 Cape。Cape 要求低延迟、事件隔离、至少成功一次等特性。文中分析了为什么 Kafka, SQS, Redis 等消息队列系统不能满足需求。然后介绍了 Cape 的架构。&lt;/p&gt;
-
-&lt;h2 id=&quot;access-patterns-and-tiered-storage-in-apache-pulsar&quot;&gt;Access Patterns and Tiered Storage in Apache Pulsar&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://streaml.io/blog/access-patterns-and-tiered-storage-in-apache-pulsar&quot;&gt;https://streaml.io/blog/access-patterns-and-tiered-storage-in-apache-pulsar&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;介绍了 BookKeeper 的消息系统中，如何对消息进行分层存储。整个存储分为三层，L1 是内存，L2 是节点硬盘，L3 是更便宜的持久存储。其中 L2 是的硬盘和 Journal 用的硬盘虽然在同一个机器上，但是使用不同的硬盘，因为 Journal 是顺序写，而消息存储则主要是顺序读。&lt;/p&gt;
-
-&lt;h2 id=&quot;the-billion-data-point-challenge-building-a-query-engine-for-high-cardinality-time-series-data&quot;&gt;The Billion Data Point Challenge: Building a Query Engine for High Cardinality Time Series Data&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://eng.uber.com/billion-data-point-challenge/&quot;&gt;https://eng.uber.com/billion-data-point-challenge/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Uber 开源的 M3 监控系统，重点解决了查询性能。文中描述了 M3 如何解决内存问题、存储问题、跨数据中心的查询延迟问题、降级获取samples（downsampling）。其中 Downsampling 使用了 Largest Triangle Three Bucket (LTTB) 算法。这个系统使用自己的 M3QL 查询语言，但是支持 Prometheus 的 PromQL，也支持 Promtheus 的 exporter。&lt;/p&gt;
-</description>
-        <pubDate>Mon, 31 Dec 2018 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2018/12/31/write-what-i-have-038/</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2018/12/31/write-what-i-have-038/</guid>
-        
-        <category>linux</category>
-        
-        <category>shell</category>
-        
-        <category>storage</category>
         
         <category>distributed-computing</category>
         

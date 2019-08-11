@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>在 PEX 程序中访问项目代码 --not-zip-safe</title>
+  <meta name="description" content="问题">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/pygments-rainbow_dash.css">
+  <link rel="canonical" href="http://diabloneo.github.io//2019/08/11/pex-vist-source-files/">
+  <link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
+</head>
+
+
+  <body>
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">Coffee, Coke and Code</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <a class="page-link" href="/tags">Tags</a>
+        <a class="page-link" href="/feed.xml">RSS</a>
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">在 PEX 程序中访问项目代码 --not-zip-safe</h1>
+    <p class="post-meta"><time datetime="2019-08-11T00:00:00+08:00" itemprop="datePublished">Aug 11, 2019</time></p>
+  </header>
+
+  <div class="post-tags">
+    <ul>
+      
+      <li>
+        <a href="/tags/python/">python</a>
+      </li>
+      
+    </ul>
+  </div>
+
+  <div class="post-content" itemprop="articleBody">
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+    <br />
+      <h2 id="问题">问题</h2>
+
+<p>当使用 PEX (<em><a href="https://github.com/pantsbuild/pex">https://github.com/pantsbuild/pex</a></em>) 来打包一个 Python 项目时，会发现有些动态的源码访问方式无法使用。例如下面这段代码，通过动态遍历 Python 源文件来载入一个 package 下的所有模块：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">dirname</span><span class="p">,</span> <span class="n">basename</span><span class="p">,</span> <span class="n">join</span><span class="p">,</span> <span class="n">isfile</span>
+
+<span class="n">modules</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">),</span> <span class="s">"*.py"</span><span class="p">))</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">basename</span><span class="p">(</span><span class="n">f</span><span class="p">)[:</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">modules</span> <span class="k">if</span> <span class="n">isfile</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="ow">and</span> <span class="n">f</span> <span class="o">!=</span> <span class="s">"__init__.py"</span>
+<span class="p">]</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="o">*</span>  <span class="c"># noqa</span>
+</code></pre></div></div>
+
+<p>当使用 PEX 进行打包的时候，程序默认会使用 <code class="highlighter-rouge">--zip-safe</code> 参数，即在 PEX 程序执行的过程中，源码不会存在到磁盘上，因此 <code class="highlighter-rouge">glob.glob()</code> 会返回一个空列表，所以就无法载入任何模块。如果遇到这个情况，当你需要访问某些子模块时，就会触发如下的错误：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>AttributeError: 'module' object has no attribute 'submodule_name'
+</code></pre></div></div>
+
+<h2 id="解决方案">解决方案</h2>
+
+<p>如果要支持这样的代码逻辑，需要使用 PEX 的 <code class="highlighter-rouge">--not-zip-safe</code> 模式。当启用该模式时，PEX 在运行程序前，会先把程序的代码解压到 <code class="highlighter-rouge">${PEX_ROOT}/code</code> 目录下 （ PEX_ROOT 可以通过 <code class="highlighter-rouge">--pex-root</code> 参数指定，默认值是 <em>~/.pex/</em>），然后再运行程序。这样代码中就可以使用上面这样的逻辑来动态的访问源码文件了。</p>
+
+<p>但是，使用这个方法有个问题，就是每运行一次，代码就会被保留一份到 <code class="highlighter-rouge">${PEX_ROOT}/code</code> 目录下一次，不仅会占用空间，而且会让别人可以方便的访问到源代码（虽然，直接解压 PEX 文件也能获得源代码）。所以，可以使用类似如下的代码，在程序退出前删除 PEX 解压出来的源代码：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">clean_pex_code_dir</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+    <span class="c"># We use default PEX_ROOT setting.</span>
+    <span class="n">pex_root</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s">"~/.pex"</span><span class="p">)</span>
+    <span class="n">code_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pex_root</span><span class="p">,</span> <span class="s">"code"</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">deco</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="c"># It's necessary to raise catched exception for dumping traceback.</span>
+            <span class="k">raise</span> <span class="n">e</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">code_path</span><span class="p">):</span>
+                <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">code_path</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">deco</span>
+
+
+<span class="nd">@clean_pex_code_dir</span>
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="k">pass</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</code></pre></div></div>
+
+    <br />
+
+    <div>
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议</a>进行许可。
+    </div>
+
+    <br />
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+  </div>
+
+  
+    <div class="post-comment">
+      
+<div id="disqus_thread"></div>
+<script>
+var disqus_config = function () {
+  this.page.url = "http://diabloneo.github.io/2019/08/11/pex-vist-source-files/"; // <--- use canonical URL
+  this.page.identifier = "/2019/08/11/pex-vist-source-files";
+};
+(function() { // DON'T EDIT BELOW THIS LINE
+  var d = document, s = d.createElement('script');
+
+  s.src = 'https://coffee-coke-and-code.disqus.com/embed.js';
+
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+    </div>
+  
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Coffee, Coke and Code</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>Coffee, Coke and Code</li>
+          <li><a href="mailto:diabloneo@gmail.com">diabloneo@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <i class="fa fa-github"></i>
+            <a href="https://github.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <i class="fa fa-twitter"></i>
+            <a href="https://twitter.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <i class="fa fa-weibo"></i>
+            <a href="https://weibo.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Archive diabloneo's articles.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+    
+      <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-78067453-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+    
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
+  </body>
+
+</html>
