@@ -6,9 +6,50 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 11 Aug 2019 23:06:37 +0800</pubDate>
-    <lastBuildDate>Sun, 11 Aug 2019 23:06:37 +0800</lastBuildDate>
+    <pubDate>Tue, 20 Aug 2019 21:58:30 +0800</pubDate>
+    <lastBuildDate>Tue, 20 Aug 2019 21:58:30 +0800</lastBuildDate>
     <generator>Jekyll v3.7.3</generator>
+    
+      <item>
+        <title>使用 Python mock call 表示一个类示例</title>
+        <description>&lt;p&gt;&lt;em&gt;以下内容对于 Python 2 或者 Python 3 均适用。术语 &lt;strong&gt;mock 对象&lt;/strong&gt; 表示用于替换代码中实际对象的 &lt;code class=&quot;highlighter-rouge&quot;&gt;mock.Mock&lt;/code&gt; 或者 &lt;code class=&quot;highlighter-rouge&quot;&gt;mock.MagicMock&lt;/code&gt; 对象&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;mock&lt;/strong&gt; 库是 Python 中用来进行单元测试模拟的一个库。&lt;code class=&quot;highlighter-rouge&quot;&gt;mock.call&lt;/code&gt; 是 mock 库中用来表示 mock 对象调用的一个辅助对象，通常我们使用一个 &lt;code class=&quot;highlighter-rouge&quot;&gt;mock.call&lt;/code&gt; 对象或者一个含有多个 &lt;code class=&quot;highlighter-rouge&quot;&gt;mock.call&lt;/code&gt; 对象的列表来表示我们期望发生在 mock 对象上的调用，这样不仅可以判断一个 mock 对象是否执行了期望的调用，还确认这些调用是按照期望的顺序执行的。在测试代码中，我们会将所期望的调用和 mock 对象的 &lt;code class=&quot;highlighter-rouge&quot;&gt;call_args&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;call_args_list&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;mock_calls&lt;/code&gt; 以及 &lt;code class=&quot;highlighter-rouge&quot;&gt;method_calls&lt;/code&gt; 这些记录内容做比较。&lt;/p&gt;
+
+&lt;p&gt;有一点需要注意，&lt;code class=&quot;highlighter-rouge&quot;&gt;mock.call&lt;/code&gt; 本身就是一个 &lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;mock._Call&lt;/code&gt; 类的实例&lt;/strong&gt;，所以它本身，即不加调用符号 (&lt;code class=&quot;highlighter-rouge&quot;&gt;mock.call()&lt;/code&gt; 或者 &lt;code class=&quot;highlighter-rouge&quot;&gt;mock.call(*args, **kwargs)&lt;/code&gt;) 时，表示的是 &lt;strong&gt;mock 对象本身&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;下面来看个个例子。假设 &lt;code class=&quot;highlighter-rouge&quot;&gt;app.util.SSH&lt;/code&gt; 是我们封装的一个用于管理 SSH 连接，并且提供某些命令封装的类。现在 SSH 提供了两个实例方法 &lt;code class=&quot;highlighter-rouge&quot;&gt;hostname()&lt;/code&gt; 和 &lt;code class=&quot;highlighter-rouge&quot;&gt;restart_service(service)&lt;/code&gt;。我们一般会这么 mock 它：&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;k&quot;&gt;with&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mock&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;patch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;app.util.SSH&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;mocked_conn&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mock&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Mock&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;return_value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mocked_conn&lt;/span&gt;
+
+    &lt;span class=&quot;c&quot;&gt;# test logics&lt;/span&gt;
+
+    &lt;span class=&quot;c&quot;&gt;# do assert with mocked_conn object&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;这样，我们就可以让代码中对一个 SSH 实例的调用，转换成对我们的 mock 对象 mocked_conn 的调用。这样，代码中对 mock 对象的使用和 &lt;code class=&quot;highlighter-rouge&quot;&gt;mock.call&lt;/code&gt; 的对应关系如下：&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ip&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;conn&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;util&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SSH&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ip&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;          &lt;span class=&quot;c&quot;&gt;# conn == mock.call&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;conn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hostname&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;                  &lt;span class=&quot;c&quot;&gt;# mock.call.hostname()&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;conn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;restart_service&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;service1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;   &lt;span class=&quot;c&quot;&gt;# mock.call.restart_service(service1)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;conn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;restart_service&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;service2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;   &lt;span class=&quot;c&quot;&gt;# mock.call.restart_service(service2)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;所以 &lt;code class=&quot;highlighter-rouge&quot;&gt;mocked_conn.mock_calls&lt;/code&gt; 的内容就是&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mock&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;call&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hostname&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mock&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;call&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;restart_service&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;service1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mock&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;call&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;restart_service&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;service2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;要进行 assert 时，你需要提供上面这个 call list。&lt;/p&gt;
+</description>
+        <pubDate>Tue, 20 Aug 2019 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2019/08/20/use-python-mock-call-to-represent-a-class-instance/</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2019/08/20/use-python-mock-call-to-represent-a-class-instance/</guid>
+        
+        <category>Python</category>
+        
+        
+      </item>
     
       <item>
         <title>在 PEX 程序中访问项目代码 --not-zip-safe</title>
@@ -657,44 +698,6 @@ Unit serial number VPD page:
         <category>golang</category>
         
         <category>database</category>
-        
-        <category>distributed-computing</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>想到什么写什么周报 第39期 - 2019-01-06</title>
-        <description>&lt;h2 id=&quot;diagnositics&quot;&gt;Diagnositics&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://golang.org/doc/diagnostics.html&quot;&gt;https://golang.org/doc/diagnostics.html&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Go 语言官方文档，关于 profile, trace, debug 的介绍。&lt;/p&gt;
-
-&lt;h2 id=&quot;october-21-post-incident-analysis&quot;&gt;October 21 post-incident analysis&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.github.com/2018-10-30-oct21-post-incident-analysis&quot;&gt;https://blog.github.com/2018-10-30-oct21-post-incident-analysis&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;GitHub 官方复盘了 2018 年 10 月 30 号的站点不可用事故。里面提到了几个点可以学习下：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;对数据恢复时间估计不准确。一个是因为从备份恢复整个 MySQL 集群没有完整演练过，不知道要花多长时间；另外一个是，在事故恢复的后期，有些集群的数据复制进度赶不上新数据写入的进度。&lt;/li&gt;
-  &lt;li&gt;只有绿色、黄色和红色的三个状态无法代表整个服务的可用性。后来，GitHub 推出了新的站点状态服务： &lt;em&gt;&lt;a href=&quot;https://blog.github.com/2018-12-11-introducing-the-new-github-status-site/&quot;&gt;https://blog.github.com/2018-12-11-introducing-the-new-github-status-site/&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;the-future-of-kubernetes-is-virtual-machines&quot;&gt;The future of Kubernetes is Virtual Machines&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://tech.paulcz.net/blog/future-of-kubernetes-is-virtual-machines&quot;&gt;https://tech.paulcz.net/blog/future-of-kubernetes-is-virtual-machines&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;K8s 自身的多租户模型比较脆弱，因为容器本身无法实现资源的完全隔离。作者提出了，K8s 的未来会依赖基于 VM Container 的资源管理方案，例如 Kata Container。&lt;/p&gt;
-</description>
-        <pubDate>Sun, 06 Jan 2019 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2019/01/06/write-what-i-have-039/</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2019/01/06/write-what-i-have-039/</guid>
-        
-        <category>cloud</category>
-        
-        <category>golang</category>
         
         <category>distributed-computing</category>
         
