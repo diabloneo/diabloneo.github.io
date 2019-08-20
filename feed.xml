@@ -6,8 +6,8 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 20 Aug 2019 21:58:30 +0800</pubDate>
-    <lastBuildDate>Tue, 20 Aug 2019 21:58:30 +0800</lastBuildDate>
+    <pubDate>Tue, 20 Aug 2019 22:51:00 +0800</pubDate>
+    <lastBuildDate>Tue, 20 Aug 2019 22:51:00 +0800</lastBuildDate>
     <generator>Jekyll v3.7.3</generator>
     
       <item>
@@ -47,6 +47,52 @@
         <guid isPermaLink="true">http://diabloneo.github.io//2019/08/20/use-python-mock-call-to-represent-a-class-instance/</guid>
         
         <category>Python</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>smartctl 设置硬盘的 write-caching</title>
+        <description>&lt;p&gt;在 &lt;a href=&quot;http://diabloneo.github.io//2019/06/16/hdparm-and-sdparm&quot;&gt;hdparm and sdparm&lt;/a&gt; 中，提到了 SATA 盘和 SAS 盘可以分别通过 &lt;em&gt;hdparm&lt;/em&gt; 和 &lt;em&gt;sdparm&lt;/em&gt; 来设置它的 &lt;strong&gt;write-caching&lt;/strong&gt; 属性。&lt;/p&gt;
+
+&lt;p&gt;但是在有的情况下，系统上没有安装这两个工具，还可以考虑使用 &lt;strong&gt;smartctl&lt;/strong&gt; 工具来设置。smartctl 的 &lt;strong&gt;–get&lt;/strong&gt; 和 &lt;strong&gt;–set&lt;/strong&gt; 参数可以用来查询和设置非 SMART 的属性，其中就包括了写缓存属性 &lt;strong&gt;wcache&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;查看当前硬盘当前的 wcache 值：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@chenhong204 ~]# smartctl --get=wcache /dev/sdc
+smartctl 6.2 2013-07-26 r3841 [x86_64-linux-3.10.0-693.el7.x86_64] (local build)
+Copyright (C) 2002-13, Bruce Allen, Christian Franke, www.smartmontools.org
+
+Writeback Cache is:   Enabled
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;关闭写缓存：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@chenhong204 ~]# smartctl --set=wcache,off /dev/sdc
+smartctl 6.2 2013-07-26 r3841 [x86_64-linux-3.10.0-693.el7.x86_64] (local build)
+Copyright (C) 2002-13, Bruce Allen, Christian Franke, www.smartmontools.org
+
+Write cache disabled
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;开启写缓存：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@chenhong204 ~]# smartctl --set=wcache,on /dev/sdc
+smartctl 6.2 2013-07-26 r3841 [x86_64-linux-3.10.0-693.el7.x86_64] (local build)
+Copyright (C) 2002-13, Bruce Allen, Christian Franke, www.smartmontools.org
+
+Write cache enabled
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;特别需要注意的是，用 smartctl 设置的值不能持久化，即重启后会恢复默认值。&lt;/strong&gt;&lt;/p&gt;
+</description>
+        <pubDate>Tue, 20 Aug 2019 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2019/08/20/smartctl-wcache/</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2019/08/20/smartctl-wcache/</guid>
+        
+        <category>storage</category>
+        
+        <category>linux</category>
         
         
       </item>
@@ -622,84 +668,6 @@ Unit serial number VPD page:
         <guid isPermaLink="true">http://diabloneo.github.io//2019/01/27/write-what-i-have-041/</guid>
         
         <category>golang</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>想到什么写什么周报 第40期 - 2019-01-20</title>
-        <description>&lt;h2 id=&quot;how-algolia-reduces-latency-for-21b-searches-per-month&quot;&gt;How Algolia Reduces Latency For 21B Searches Per Month&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://stackshare.io/algolia/how-algolia-reduces-latency-for-21b-searches-per-month&quot;&gt;https://stackshare.io/algolia/how-algolia-reduces-latency-for-21b-searches-per-month&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;介绍了 Algolia 如何实现低延迟的搜索服务。提到了几个关键工具如下：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;em&gt;&lt;a href=&quot;https://www.wavefront.com/&quot;&gt;https://www.wavefront.com/&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;&lt;a href=&quot;https://www.pagerduty.com/&quot;&gt;https://www.pagerduty.com/&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;&lt;a href=&quot;https://github.com/etsy/statsd/&quot;&gt;https://github.com/etsy/statsd/&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;&lt;a href=&quot;https://collectd.org/&quot;&gt;https://collectd.org/&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
-  &lt;li&gt;获取当前进程及子进程的资源使用率 &lt;em&gt;&lt;a href=&quot;http://man7.org/linux/man-pages/man2/getrusage.2.html&quot;&gt;http://man7.org/linux/man-pages/man2/getrusage.2.html&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
-  &lt;li&gt;内存带宽测试工具 &lt;em&gt;&lt;a href=&quot;https://github.com/raas/mbw&quot;&gt;https://github.com/raas/mbw&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;&lt;a href=&quot;https://github.com/gperftools/gperftools&quot;&gt;https://github.com/gperftools/gperftools&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;他们家的服务状态页做得不错： &lt;em&gt;&lt;a href=&quot;https://status.algolia.com/&quot;&gt;https://status.algolia.com/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;postgresql-configuration-cheat-sheet&quot;&gt;PostgreSQL Configuration Cheat Sheet&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://pgdash.io/blog/postgres-configuration-cheatsheet.html&quot;&gt;https://pgdash.io/blog/postgres-configuration-cheatsheet.html&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;linux-technology-for-the-new-year-ebpf&quot;&gt;Linux Technology for the New Year: eBPF&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://thenewstack.io/linux-technology-for-the-new-year-ebpf/&quot;&gt;https://thenewstack.io/linux-technology-for-the-new-year-ebpf/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;eBPF 越来越火了，虽然 RHEL 7 还不支持，但是 RHEL 8 已经使用了 4.18 版本的内核，是时候学起来了。&lt;/p&gt;
-
-&lt;h2 id=&quot;how-we-solved-a-storage-problem-in-postgresql-without-adding-a-single-byte-of-storage&quot;&gt;How We Solved a Storage Problem in PostgreSQL Without Adding a Single Byte of Storage&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://hakibenita.com/how-we-solved-a-storage-problem-in-postgre-sql-without-adding-a-single-bytes-of-storage&quot;&gt;https://hakibenita.com/how-we-solved-a-storage-problem-in-postgre-sql-without-adding-a-single-bytes-of-storage&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;pg 的默认 work_mem 是 4MB，作者使用的 sql 查询需要处理一个二进制的列，这需要使用大约 300MB 的空间，超过了 work_mem 的大小，所以一运行查询就消耗很多的硬盘空间。&lt;/p&gt;
-
-&lt;p&gt;解决方案是不直接使用二进制列的内容，而是先做一个 md5 hash，并且使用 uuid 类型将要处理的数据减少到 16 字节，最终需要消耗的硬盘空间从 309MB 减少到了 7MB。因为计算 hash，查询的执行时间从 160ms 上升到 374ms，不过对于夜间跑的任务来说，这个不是问题。&lt;/p&gt;
-
-&lt;h2 id=&quot;time-series-data-why-and-how-to-use-a-relational-database-instead-of-nosql&quot;&gt;Time-series data: Why (and how) to use a relational database instead of NoSQL&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.timescale.com/time-series-data-why-and-how-to-use-a-relational-database-instead-of-nosql-d0cd6975e87c&quot;&gt;https://blog.timescale.com/time-series-data-why-and-how-to-use-a-relational-database-instead-of-nosql-d0cd6975e87c&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;介绍了 TimescaleDB 如何利用 Postgres 来构建一个时序数据库。几个点：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;OLTP 的内存和硬盘数据交换成本很高。&lt;/li&gt;
-  &lt;li&gt;时序数据的写是 append only 的。&lt;/li&gt;
-  &lt;li&gt;time/space chunking&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;want-a-super-fast-messaging-system&quot;&gt;Want a super-fast messaging system?&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://hackernoon.com/want-a-super-fast-messaging-system-c19c9f8cf560&quot;&gt;https://hackernoon.com/want-a-super-fast-messaging-system-c19c9f8cf560&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;NATS 的作者介绍他们团队在设计一个高性能的消息队列服务上的经验，主要关心四个方面：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Message Per IO call&lt;/li&gt;
-  &lt;li&gt;Message Routing&lt;/li&gt;
-  &lt;li&gt;Protocol Parser&lt;/li&gt;
-  &lt;li&gt;Scalability&lt;/li&gt;
-&lt;/ol&gt;
-</description>
-        <pubDate>Sun, 20 Jan 2019 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2019/01/20/write-what-i-have-040/</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2019/01/20/write-what-i-have-040/</guid>
-        
-        <category>linux</category>
-        
-        <category>golang</category>
-        
-        <category>database</category>
-        
-        <category>distributed-computing</category>
         
         
       </item>
