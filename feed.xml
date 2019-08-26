@@ -6,9 +6,35 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 20 Aug 2019 22:51:00 +0800</pubDate>
-    <lastBuildDate>Tue, 20 Aug 2019 22:51:00 +0800</lastBuildDate>
+    <pubDate>Mon, 26 Aug 2019 23:05:50 +0800</pubDate>
+    <lastBuildDate>Mon, 26 Aug 2019 23:05:50 +0800</lastBuildDate>
     <generator>Jekyll v3.7.3</generator>
+    
+      <item>
+        <title>在 VIM 中配置 fzf 使用 find</title>
+        <description>&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://github.com/junegunn/fzf&quot;&gt;https://github.com/junegunn/fzf&lt;/a&gt;&lt;/em&gt; 是 VIM 常用的文件查找工具。fzf 可以使用 find 或者 &lt;em&gt;&lt;a href=&quot;https://github.com/sharkdp/fd&quot;&gt;https://github.com/sharkdp/fd&lt;/a&gt;&lt;/em&gt; 作为查找工具，官方的文档里给了很多 fd 的配置，但是 find 的较少。这里提供了一个使用 find 的配置，可以根据自己需要修改：&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-vim&quot; data-lang=&quot;vim&quot;&gt;&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; $FZF_DEFAULT_COMMAND&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&quot;find &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;regextype egrep
+&lt;span class=&quot;se&quot;&gt;			\&lt;/span&gt;    \\&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;path &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;/vendor &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;prune \\&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;             ;; ignore some dirs
+&lt;span class=&quot;se&quot;&gt;			\&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;o&lt;/span&gt; \\&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;path &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;/_site &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;prune \\&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;se&quot;&gt;			\&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;o&lt;/span&gt; \\&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;path &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;/_output &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;prune \\&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;se&quot;&gt;			\&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;o&lt;/span&gt; \\&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;path &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;/&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;git &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;prune \\&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;se&quot;&gt;			\&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;o&lt;/span&gt; \\&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;path &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;/&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;svn &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;prune \\&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;se&quot;&gt;			\&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;o&lt;/span&gt; \\&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;path &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;/&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;tox &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;prune \\&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;se&quot;&gt;			\&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;o&lt;/span&gt; \\&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;type &lt;span class=&quot;k&quot;&gt;f&lt;/span&gt; 
+&lt;span class=&quot;se&quot;&gt;			\&lt;/span&gt;    &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;a&lt;/span&gt; \\&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;not &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;regex &lt;span class=&quot;s1&quot;&gt;'.*\.(pyc|pyo)$'&lt;/span&gt; \\&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;   ;; ignore some &lt;span class=&quot;k&quot;&gt;files&lt;/span&gt;
+&lt;span class=&quot;se&quot;&gt;			\&lt;/span&gt;    \\&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;se&quot;&gt;			\&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;print&quot;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+</description>
+        <pubDate>Mon, 26 Aug 2019 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2019/08/26/Using-fzf-with-find/</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2019/08/26/Using-fzf-with-find/</guid>
+        
+        <category>vim</category>
+        
+        
+      </item>
     
       <item>
         <title>使用 Python mock call 表示一个类示例</title>
@@ -631,43 +657,6 @@ Unit serial number VPD page:
         <category>distributed-computing</category>
         
         <category>database</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>想到什么写什么周报 第41期 - 2019-01-27</title>
-        <description>&lt;h2 id=&quot;optimising-startup-time-of-prometheus-260-with-pprof&quot;&gt;Optimising startup time of Prometheus 2.6.0 with pprof&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.robustperception.io/optimising-startup-time-of-prometheus-2-6-0-with-pprof&quot;&gt;https://www.robustperception.io/optimising-startup-time-of-prometheus-2-6-0-with-pprof&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;一个使用 pprof 来改进性能的实际例子。&lt;/p&gt;
-
-&lt;h2 id=&quot;scheduling-in-go&quot;&gt;Scheduling In Go&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;em&gt;&lt;a href=&quot;https://www.ardanlabs.com/blog/2018/08/scheduling-in-go-part1.html&quot;&gt;https://www.ardanlabs.com/blog/2018/08/scheduling-in-go-part1.html&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;&lt;a href=&quot;https://www.ardanlabs.com/blog/2018/08/scheduling-in-go-part2.html&quot;&gt;https://www.ardanlabs.com/blog/2018/08/scheduling-in-go-part2.html&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;&lt;a href=&quot;https://www.ardanlabs.com/blog/2018/12/scheduling-in-go-part3.html&quot;&gt;https://www.ardanlabs.com/blog/2018/12/scheduling-in-go-part3.html&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;一个系列的入门文章，介绍了 Gorouting 调度的基本概念，并且给出了一些例子说明什么情况下基于 Gorouting 的并发会更快。&lt;/p&gt;
-
-&lt;h2 id=&quot;golangs-real-time-gc-in-theory-and-practice&quot;&gt;Golang’s Real-time GC in Theory and Practice&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://making.pusher.com/golangs-real-time-gc-in-theory-and-practice/&quot;&gt;https://making.pusher.com/golangs-real-time-gc-in-theory-and-practice/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;一篇 2016 年的文章，有一个好看的动画介绍了 Go 的 GC 的工作原理： &lt;strong&gt;tricolor mark-and-sweep algorithm&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;p&gt;这篇文章也对比了 Go 和 Haskell 的 GC 的不同应用场景：Go 注重低延迟，Haskell 注重高并发。所以选择语言的时候需要考虑 GC 的使用场景。文中也提到了一个仓库包含了对多种语言的 GC 导致处理延迟的 benchmark，并且给出了测试结果，Go 的延迟是比较好的。&lt;/p&gt;
-
-&lt;p&gt;最后，提到了两个 GC 的 bug，不过在 1.8 版本都已经解决了。&lt;/p&gt;
-</description>
-        <pubDate>Sun, 27 Jan 2019 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2019/01/27/write-what-i-have-041/</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2019/01/27/write-what-i-have-041/</guid>
-        
-        <category>golang</category>
         
         
       </item>

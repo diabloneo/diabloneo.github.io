@@ -6,12 +6,12 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>想到什么写什么周报 第40期 - 2019-01-20</title>
-  <meta name="description" content="How Algolia Reduces Latency For 21B Searches Per Month">
+  <title>在 VIM 中配置 fzf 使用 find</title>
+  <meta name="description" content="https://github.com/junegunn/fzf 是 VIM 常用的文件查找工具。fzf 可以使用 find 或者 https://github.com/sharkdp/fd 作为查找工具，官方的文档里给了很多 fd 的配置，但是 find 的较少。这里提供了一个使用 find 的配置，可以根据自己...">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="/css/main.css">
   <link rel="stylesheet" href="/css/pygments-rainbow_dash.css">
-  <link rel="canonical" href="http://diabloneo.github.io//2019/01/20/write-what-i-have-040/">
+  <link rel="canonical" href="http://diabloneo.github.io//2019/08/26/Using-fzf-with-find/">
   <link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
 </head>
 
@@ -89,27 +89,15 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">想到什么写什么周报 第40期 - 2019-01-20</h1>
-    <p class="post-meta"><time datetime="2019-01-20T00:00:00+08:00" itemprop="datePublished">Jan 20, 2019</time></p>
+    <h1 class="post-title" itemprop="name headline">在 VIM 中配置 fzf 使用 find</h1>
+    <p class="post-meta"><time datetime="2019-08-26T00:00:00+08:00" itemprop="datePublished">Aug 26, 2019</time></p>
   </header>
 
   <div class="post-tags">
     <ul>
       
       <li>
-        <a href="/tags/linux/">linux</a>
-      </li>
-      
-      <li>
-        <a href="/tags/golang/">golang</a>
-      </li>
-      
-      <li>
-        <a href="/tags/database/">database</a>
-      </li>
-      
-      <li>
-        <a href="/tags/distributed-computing/">distributed-computing</a>
+        <a href="/tags/vim/">vim</a>
       </li>
       
     </ul>
@@ -121,66 +109,20 @@
       <div class="addthis_inline_share_toolbox"></div>
     
     <br />
-      <h2 id="how-algolia-reduces-latency-for-21b-searches-per-month">How Algolia Reduces Latency For 21B Searches Per Month</h2>
+      <p><em><a href="https://github.com/junegunn/fzf">https://github.com/junegunn/fzf</a></em> 是 VIM 常用的文件查找工具。fzf 可以使用 find 或者 <em><a href="https://github.com/sharkdp/fd">https://github.com/sharkdp/fd</a></em> 作为查找工具，官方的文档里给了很多 fd 的配置，但是 find 的较少。这里提供了一个使用 find 的配置，可以根据自己需要修改：</p>
 
-<p><em><a href="https://stackshare.io/algolia/how-algolia-reduces-latency-for-21b-searches-per-month">https://stackshare.io/algolia/how-algolia-reduces-latency-for-21b-searches-per-month</a></em></p>
+<figure class="highlight"><pre><code class="language-vim" data-lang="vim"><span class="k">let</span> $FZF_DEFAULT_COMMAND<span class="p">=</span>"find <span class="p">.</span> <span class="p">-</span>regextype egrep
+<span class="se">			\</span>    \\<span class="p">(</span> <span class="p">-</span>path <span class="p">.</span>/vendor <span class="p">-</span>prune \\<span class="p">)</span>             ;; ignore some dirs
+<span class="se">			\</span> <span class="p">-</span><span class="k">o</span> \\<span class="p">(</span> <span class="p">-</span>path <span class="p">.</span>/_site <span class="p">-</span>prune \\<span class="p">)</span>
+<span class="se">			\</span> <span class="p">-</span><span class="k">o</span> \\<span class="p">(</span> <span class="p">-</span>path <span class="p">.</span>/_output <span class="p">-</span>prune \\<span class="p">)</span>
+<span class="se">			\</span> <span class="p">-</span><span class="k">o</span> \\<span class="p">(</span> <span class="p">-</span>path <span class="p">.</span>/<span class="p">.</span>git <span class="p">-</span>prune \\<span class="p">)</span>
+<span class="se">			\</span> <span class="p">-</span><span class="k">o</span> \\<span class="p">(</span> <span class="p">-</span>path <span class="p">.</span>/<span class="p">.</span>svn <span class="p">-</span>prune \\<span class="p">)</span>
+<span class="se">			\</span> <span class="p">-</span><span class="k">o</span> \\<span class="p">(</span> <span class="p">-</span>path <span class="p">.</span>/<span class="p">.</span>tox <span class="p">-</span>prune \\<span class="p">)</span>
+<span class="se">			\</span> <span class="p">-</span><span class="k">o</span> \\<span class="p">(</span> <span class="p">-</span>type <span class="k">f</span> 
+<span class="se">			\</span>    <span class="p">-</span><span class="k">a</span> \\<span class="p">(</span> <span class="p">-</span>not <span class="p">-</span>regex <span class="s1">'.*\.(pyc|pyo)$'</span> \\<span class="p">)</span>   ;; ignore some <span class="k">files</span>
+<span class="se">			\</span>    \\<span class="p">)</span>
+<span class="se">			\</span> <span class="p">-</span>print"</code></pre></figure>
 
-<p>介绍了 Algolia 如何实现低延迟的搜索服务。提到了几个关键工具如下：</p>
-
-<ul>
-  <li><em><a href="https://www.wavefront.com/">https://www.wavefront.com/</a></em></li>
-  <li><em><a href="https://www.pagerduty.com/">https://www.pagerduty.com/</a></em></li>
-  <li><em><a href="https://github.com/etsy/statsd/">https://github.com/etsy/statsd/</a></em></li>
-  <li><em><a href="https://collectd.org/">https://collectd.org/</a></em></li>
-  <li>获取当前进程及子进程的资源使用率 <em><a href="http://man7.org/linux/man-pages/man2/getrusage.2.html">http://man7.org/linux/man-pages/man2/getrusage.2.html</a></em></li>
-  <li>内存带宽测试工具 <em><a href="https://github.com/raas/mbw">https://github.com/raas/mbw</a></em></li>
-  <li><em><a href="https://github.com/gperftools/gperftools">https://github.com/gperftools/gperftools</a></em></li>
-</ul>
-
-<p>他们家的服务状态页做得不错： <em><a href="https://status.algolia.com/">https://status.algolia.com/</a></em></p>
-
-<h2 id="postgresql-configuration-cheat-sheet">PostgreSQL Configuration Cheat Sheet</h2>
-
-<p><em><a href="https://pgdash.io/blog/postgres-configuration-cheatsheet.html">https://pgdash.io/blog/postgres-configuration-cheatsheet.html</a></em></p>
-
-<h2 id="linux-technology-for-the-new-year-ebpf">Linux Technology for the New Year: eBPF</h2>
-
-<p><em><a href="https://thenewstack.io/linux-technology-for-the-new-year-ebpf/">https://thenewstack.io/linux-technology-for-the-new-year-ebpf/</a></em></p>
-
-<p>eBPF 越来越火了，虽然 RHEL 7 还不支持，但是 RHEL 8 已经使用了 4.18 版本的内核，是时候学起来了。</p>
-
-<h2 id="how-we-solved-a-storage-problem-in-postgresql-without-adding-a-single-byte-of-storage">How We Solved a Storage Problem in PostgreSQL Without Adding a Single Byte of Storage</h2>
-
-<p><em><a href="https://hakibenita.com/how-we-solved-a-storage-problem-in-postgre-sql-without-adding-a-single-bytes-of-storage">https://hakibenita.com/how-we-solved-a-storage-problem-in-postgre-sql-without-adding-a-single-bytes-of-storage</a></em></p>
-
-<p>pg 的默认 work_mem 是 4MB，作者使用的 sql 查询需要处理一个二进制的列，这需要使用大约 300MB 的空间，超过了 work_mem 的大小，所以一运行查询就消耗很多的硬盘空间。</p>
-
-<p>解决方案是不直接使用二进制列的内容，而是先做一个 md5 hash，并且使用 uuid 类型将要处理的数据减少到 16 字节，最终需要消耗的硬盘空间从 309MB 减少到了 7MB。因为计算 hash，查询的执行时间从 160ms 上升到 374ms，不过对于夜间跑的任务来说，这个不是问题。</p>
-
-<h2 id="time-series-data-why-and-how-to-use-a-relational-database-instead-of-nosql">Time-series data: Why (and how) to use a relational database instead of NoSQL</h2>
-
-<p><em><a href="https://blog.timescale.com/time-series-data-why-and-how-to-use-a-relational-database-instead-of-nosql-d0cd6975e87c">https://blog.timescale.com/time-series-data-why-and-how-to-use-a-relational-database-instead-of-nosql-d0cd6975e87c</a></em></p>
-
-<p>介绍了 TimescaleDB 如何利用 Postgres 来构建一个时序数据库。几个点：</p>
-
-<ul>
-  <li>OLTP 的内存和硬盘数据交换成本很高。</li>
-  <li>时序数据的写是 append only 的。</li>
-  <li>time/space chunking</li>
-</ul>
-
-<h2 id="want-a-super-fast-messaging-system">Want a super-fast messaging system?</h2>
-
-<p><em><a href="https://hackernoon.com/want-a-super-fast-messaging-system-c19c9f8cf560">https://hackernoon.com/want-a-super-fast-messaging-system-c19c9f8cf560</a></em></p>
-
-<p>NATS 的作者介绍他们团队在设计一个高性能的消息队列服务上的经验，主要关心四个方面：</p>
-
-<ol>
-  <li>Message Per IO call</li>
-  <li>Message Routing</li>
-  <li>Protocol Parser</li>
-  <li>Scalability</li>
-</ol>
 
     <br />
 
@@ -201,8 +143,8 @@
 <div id="disqus_thread"></div>
 <script>
 var disqus_config = function () {
-  this.page.url = "http://diabloneo.github.io/2019/01/20/write-what-i-have-040/"; // <--- use canonical URL
-  this.page.identifier = "/2019/01/20/write-what-i-have-040";
+  this.page.url = "http://diabloneo.github.io/2019/08/26/Using-fzf-with-find/"; // <--- use canonical URL
+  this.page.identifier = "/2019/08/26/Using-fzf-with-find";
 };
 (function() { // DON'T EDIT BELOW THIS LINE
   var d = document, s = d.createElement('script');
