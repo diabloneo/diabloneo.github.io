@@ -6,9 +6,505 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 26 Aug 2019 23:05:50 +0800</pubDate>
-    <lastBuildDate>Mon, 26 Aug 2019 23:05:50 +0800</lastBuildDate>
+    <pubDate>Fri, 30 Aug 2019 13:43:44 +0800</pubDate>
+    <lastBuildDate>Fri, 30 Aug 2019 13:43:44 +0800</lastBuildDate>
     <generator>Jekyll v3.7.3</generator>
+    
+      <item>
+        <title>如何使用 top 命令</title>
+        <description>&lt;p&gt;&lt;strong&gt;top&lt;/strong&gt; 命令是 Linux 下最常用的系统监控命令。默认执行 top 命令之后，我们就能看到系统的许多监控指标，也可以看到进程按照 CPU 利用率从高到低排列。但是，这个只是 top 命令的最简单用法，其实 top 可以进行很多的定制。&lt;/p&gt;
+
+&lt;h2 id=&quot;top-界面模式&quot;&gt;top 界面模式&lt;/h2&gt;
+
+&lt;p&gt;top 的界面其实有两个模式：&lt;strong&gt;full-screen mode&lt;/strong&gt; 和 &lt;strong&gt;alternate-display mode&lt;/strong&gt;，根据实际的效果来看，这两个模式就是&lt;strong&gt;全屏模式&lt;/strong&gt;和&lt;strong&gt;多窗口模式&lt;/strong&gt;。不做任何定制的时候，我们看到的就是全屏模式。如下图所示：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://diabloneo.github.io//assets/imgs/00021_top_cmd_1.png&quot; alt=&quot;top_cmd_1&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;full-screen-mode&quot;&gt;full-screen mode&lt;/h3&gt;
+
+&lt;p&gt;全屏模式时，整个界面分为两个部分：&lt;strong&gt;summary area&lt;/strong&gt; 和 &lt;strong&gt;tasks area&lt;/strong&gt;，如上图所示。&lt;/p&gt;
+
+&lt;h3 id=&quot;alternate-display-mode&quot;&gt;alternate-display mode&lt;/h3&gt;
+
+&lt;p&gt;多窗口模式的界面如下：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://diabloneo.github.io//assets/imgs/00022_top_cmd_2.png&quot; alt=&quot;top_cmd_2&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;要进入多窗口模式，在全屏模式下，按 &lt;strong&gt;A&lt;/strong&gt; 即可（这个可以在两个模式间来回切换）。多窗口模式有一个 summary area 和 4 个 window，4 个窗口从上到下编号，对应 1 到 4。summary area 默认为 window 1 的 summary area，可以切换为不同 window 的 summary area，这个可以从 summary area 左上角的提示看出来。这个提示区会展示 summary area 当前对应的 window 的编号和名字，比如 &lt;strong&gt;1:Def&lt;/strong&gt;。要切换 summary area 对应不同的 window，可以按 &lt;strong&gt;a&lt;/strong&gt; （从上到下） 或者 &lt;strong&gt;w&lt;/strong&gt; （从下到上）。&lt;/p&gt;
+
+&lt;p&gt;top 默认定义了 4 个 window，这里先给出名字和编号，其他的下文再详述：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Def&lt;/li&gt;
+  &lt;li&gt;Job&lt;/li&gt;
+  &lt;li&gt;Mem&lt;/li&gt;
+  &lt;li&gt;Usr&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;field-group&quot;&gt;Field Group&lt;/h4&gt;
+
+&lt;p&gt;top 其实有两个概念是混合使用的，就是 window 和 Field Group，你可以认为他们就是等价的，本文除了这一小节，后面都使用 window 这个术语。。上面提到了，top 默认定义了 4 个 window，每个 window 配置要显示的列，就称为这个 window 的 &lt;strong&gt;Field Group&lt;/strong&gt;。在全屏模式下，可以通过快捷键 &lt;strong&gt;g&lt;/strong&gt; 切换当前要显示的 Field Group 是哪个，使用序号 1 到 4 到进行选择。修改当前展示的 Field Group 不仅是修改了要显示的内容，&lt;strong&gt;样式也会使用 window 的配置，包括过滤器和颜色配置等&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;在多窗口模式下，快捷键 &lt;strong&gt;g&lt;/strong&gt; 就对应到切换 window，效果和 &lt;strong&gt;a&lt;/strong&gt; &lt;strong&gt;w&lt;/strong&gt; 是一样的。在多窗口模式下，快捷键 &lt;strong&gt;G&lt;/strong&gt; 用来修改 window 的名字。&lt;/p&gt;
+
+&lt;h3 id=&quot;界面的滚动和定位&quot;&gt;界面的滚动和定位&lt;/h3&gt;
+
+&lt;p&gt;在任何一个 window 下，或者全屏模式下，top 都支持如下快捷键来进行界面的滚动：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Up&lt;/strong&gt; or &lt;strong&gt;alt+k&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Down&lt;/strong&gt; or &lt;strong&gt;alt+j&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Left&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Right&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;PgUp&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;PgDown&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Home&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;End&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;上面这些和大多数应用是一样的，就不展开说了。这里要说的是，top 支持显示一个定位信息，你可以看到自己现在处于第几行，第几个字段，通过快捷键 &lt;strong&gt;C&lt;/strong&gt; 切换：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://diabloneo.github.io//assets/imgs/00026_top_cmd_6.png&quot; alt=&quot;top_cmd_6&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;这个定位信息，也很容易看，&lt;em&gt;y&lt;/em&gt; 表示当前的第一行是第几个 task 以及一共有几个 task；&lt;em&gt;x&lt;/em&gt; 表示当前的第一列是第几列，以及一共有多少列。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;scroll coordinates: y = 1/145 (tasks), x = 1/12 (fields)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;summary-area&quot;&gt;Summary Area&lt;/h2&gt;
+
+&lt;p&gt;Summary area 展示了系统的全局监控信息，如下所示。整个区域从上到下分为 3 个部分： &lt;strong&gt;load average&lt;/strong&gt;, &lt;strong&gt;tasks and cpu&lt;/strong&gt;, &lt;strong&gt;memory&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+top - 14:24:54 up 26 days, 22:13,  1 user,  load average: 0.08, 0.05, 0.05        # load average
+Tasks: 145 total,   1 running, 144 sleeping,   0 stopped,   0 zombie              # tasks and cpu
+%Cpu(s):  0.2 us,  0.2 sy,  0.0 ni, 99.5 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st   # tasks and cpu
+KiB Mem : 12138004 total,  2857072 free,   548312 used,  8732620 buff/cache       # memory
+KiB Swap:        0 total,        0 free,        0 used.  7757480 avail Mem        # memory
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;load-average&quot;&gt;Load average&lt;/h3&gt;
+
+&lt;p&gt;&lt;em&gt;Load average&lt;/em&gt; 部分主要展示系统的负载。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+#     Now      Uptime              User     Load average
+#                                  count                  1m    5m    15m
+top - 14:24:54 up 26 days, 22:13,  1 user,  load average: 0.08, 0.05, 0.05
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;如下快捷键可以用来控制这个区域：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;l&lt;/strong&gt;(lower case L): 切换是否显示。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;tasks-and-cpu&quot;&gt;Tasks and CPU&lt;/h3&gt;
+
+&lt;p&gt;&lt;em&gt;Tasks&lt;/em&gt; 部分主要展示系统的进程数或者线程数（根据 threads-mode 来决定）。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+#      Total        State      State           State        State
+#      tasks or     running    sleeping        stopped      zombie
+#      threads
+Tasks: 145 total,   1 running, 144 sleeping,   0 stopped,   0 zombie
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;em&gt;CPU&lt;/em&gt; 的部分主要是展示不同状态的任务的 CPU 消耗占比：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;%Cpu(s):  0.2 us,  0.2 sy,  0.0 ni, 99.5 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;具体的缩写含义如下：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;us&lt;/strong&gt;: user, time running un-niced user processes, 普通进程的 CPU 消耗占比。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;sy&lt;/strong&gt;: system, time running kernel processes, 内核任务的 CPU 消耗占比。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;ni&lt;/strong&gt;: nice, time running niced user processes, 高优先级进程的 CPU 消耗占比。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;id&lt;/strong&gt;: idle, time spent in the kernel idle handler, 空闲时间占比。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;wa&lt;/strong&gt;: IO-wait, time waiting for I/O completion, 等待 IO 完成的 CPU 消耗占比（进程处于 D 状态）。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;hi&lt;/strong&gt;: time spent servicing hardware interrupts, 用于处理硬中断的 CPU 消耗占比。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;si&lt;/strong&gt;: time spent servicing software interrupts, 用于处理软中断的 CPU 消耗占比。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;st&lt;/strong&gt;: time stolen from this vm by the hypervisor, 虚拟机管理进程从这个虚拟机偷走的 CPU 资源。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;如下快捷键可以用来控制这个区域：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;t&lt;/strong&gt;: 切换 CPU 部分的展示方式，例如数值还是进度条，也可以切换到关闭这个区域。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;1&lt;/strong&gt;(digit one): 切换单个 CPU 和总体 CPU 的显示。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;2&lt;/strong&gt;: 按照 NUMA Node 展示。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;3&lt;/strong&gt;: 展示指定 NUMA Node 下的所有 CPU。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;H&lt;/strong&gt;: 显示线程显示，默认是进程。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;memory&quot;&gt;Memory&lt;/h3&gt;
+
+&lt;p&gt;*Memory** 的部分展示了系统的内存信息和交换分区的信息。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+KiB Mem : 12138004 total,  2857072 free,   548312 used,  8732620 buff/cache
+KiB Swap:        0 total,        0 free,        0 used.  7757480 avail Mem
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;total&lt;/strong&gt;: 总内存大小。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;free&lt;/strong&gt;: 空闲内存大小。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;used&lt;/strong&gt;: 已使用内存大小。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;buff/cache&lt;/strong&gt;: block buffer + page cache 所占用的内存大小。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;avail Mem&lt;/strong&gt;: 这个值是系统的估算值，表示可用于启动新程序的物理内存大小（不包括 swap 空间）。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;如下快捷键可以用来控制这个区域：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;m&lt;/strong&gt;: 切换 memory 部分的展示方式，例如数值还是进度条，也可以切换到关闭这个区域。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;E&lt;/strong&gt;: 切换内存单位。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;tasks-area&quot;&gt;Tasks Area&lt;/h2&gt;
+
+&lt;p&gt;Tasks area 包含两个部分：字段名称和任务列表（根据指定的字段排序）。这里我们先介绍全屏模式下 tasks area，多窗口模式的 tasks area 后面介绍。。对于 tasks area，最主要考虑的是如下几个问题：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;要显示哪些字段？要根据哪个字段排序？升序还是降序？&lt;/li&gt;
+  &lt;li&gt;是否只展示符合某些条件的任务？&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;要展示哪些字段要根据哪个字段排序&quot;&gt;要展示哪些字段？要根据哪个字段排序？&lt;/h3&gt;
+
+&lt;p&gt;top 其实可以展示很多内容，我们可以定义要展示哪些字段。在全屏模式下，按 &lt;strong&gt;F&lt;/strong&gt; 进入字段管理界面，如下：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://diabloneo.github.io//assets/imgs/00023_top_cmd_3.png&quot; alt=&quot;top_cmd_3&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;首先要注意的是第一行，这个界面可以为 4 个 window 分别设置要展示的字段，最上面一行提示当前正在为哪个 window 设置字段，以及当前使用的排序字段是哪个。同样的，可以通过可以按 &lt;strong&gt;a&lt;/strong&gt; 或者 &lt;strong&gt;w&lt;/strong&gt; 来切换 window。然后可以上下移动到想要处理的字段，按空格或者 &lt;strong&gt;d&lt;/strong&gt; 切换是否展示，按 &lt;strong&gt;s&lt;/strong&gt; 设置用该字段进行排序，按 &lt;strong&gt;q&lt;/strong&gt; 或者 ESC 退出这个界面。前面型号的表示选中。要调整字段的排列顺序，先选中一个字段，按右键表示开始移动，然后上下移动，然后按左键表示移动结束。&lt;/p&gt;
+
+&lt;p&gt;下面来看下可用的字段。&lt;/p&gt;
+
+&lt;h4 id=&quot;进程身份相关&quot;&gt;进程身份相关&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;COMMAND&lt;/strong&gt;:  Command Name/Line&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;PID&lt;/strong&gt;:  Process Id&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;ENVIRON&lt;/strong&gt;:  Environment vars&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;USER&lt;/strong&gt;:  Effective User Name&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;PPID&lt;/strong&gt;:  Parent Process pid&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;UID&lt;/strong&gt;:  Effective User Id&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;RUID&lt;/strong&gt;:  Real User Id&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;RUSER&lt;/strong&gt;:  Real User Name&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;SUID&lt;/strong&gt;:  Saved User Id&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;SUSER&lt;/strong&gt;:  Saved User Name&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;GID&lt;/strong&gt;:  Group Id&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;GROUP&lt;/strong&gt;:  Group Name&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;PGRP&lt;/strong&gt;:  Process Group Id&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;TTY&lt;/strong&gt;:  Controlling Tty&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;TPGID&lt;/strong&gt;:  Tty Process Grp Id&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;SID&lt;/strong&gt;:  Session Id&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;SUPGIDS&lt;/strong&gt;:  Supp Groups IDs&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;SUPGRPS&lt;/strong&gt;:  Supp Groups Names&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;TGID&lt;/strong&gt;:  Thread Group Id&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;如下快捷键可以用来控制这些字段：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;c&lt;/strong&gt;: 用于切换 COMMAND 列的内容是 command line 还是 program name。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;进程状态相关&quot;&gt;进程状态相关&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;S&lt;/strong&gt;:  Process Status&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;%CPU&lt;/strong&gt;:  CPU Usage&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;nTH&lt;/strong&gt;:  Number of Threads&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;P&lt;/strong&gt;:  Last Used Cpu (SMP)&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;TIME&lt;/strong&gt;:  CPU Time。任务从启动到现在使用的 CPU 时间。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;TIME+&lt;/strong&gt;:  CPU Time, hundredths。任务从启动到现在使用的 CPU 时间，精确到百分之一秒。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;WCHAN&lt;/strong&gt;:  Sleeping in Function。对于 sleeping 的进程，当前所处的内核函数。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Flags&lt;/strong&gt;:  Task Flags &lt;sched.h&gt;&lt;/sched.h&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;进程状态有如下几种：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;D&lt;/strong&gt; Uninterruptible sleep。不可中断休眠，就是等待 I/O 完成时的状态，会导致 CPU 统计的 wa 上升。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;R&lt;/strong&gt; Running&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;S&lt;/strong&gt; Sleeping&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;T&lt;/strong&gt; Stopped by job control signal&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;t&lt;/strong&gt; Stopped by debugger during trace&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Z&lt;/strong&gt; zombie&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;如下快捷键可以用来控制这些字段：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;I&lt;/strong&gt; (upper case i): 切换 %CPU 的模式，Irix/Solaris 两个模式。Irix mode 的计算方式是跑满一个 CPU 为 100%，%CPU 可能会超过 100%。Solaris mode 则是会把总体利用率除以 CPU 核数，保证不会超过 100%。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;S&lt;/strong&gt;: Cumulative time，off 展示两次刷新时间的即时值，而不是从进程启动到现在的累加值。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;进程优先级相关&quot;&gt;进程优先级相关&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;NI&lt;/strong&gt;:  Nice Value. 进程的优先级。这个是表示进程的用户态优先级，范围是 -20 到 +19，默认值是 0，值越低优先级越高。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;PR&lt;/strong&gt;:  Priority. 进程的调度优先级，这个是内核实际使用的任务的优先级，范围是 0 到 39，映射到内核的值是 100 到 139；也可以是 rt ，表示实时任务。内核表示一个 task 的优先级的范围是 0 到 139。其中，0 到 99 是实时进程的优先级，100 到 139 是非实时进程的优先级。PR 的默认值是 20，对应到内核是 120，和 NI 的关系是: PR = 20 + NI。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;内存相关&quot;&gt;内存相关&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;%MEM&lt;/strong&gt;:  Memory Usage (RES)&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;VIRT&lt;/strong&gt;:  Virtual Image (KiB)。表示一个任务使用的虚拟内存总和，包括所有的代码段、数据段、链接的共享库、已经被 swap 的页和已经被映射但是没有使用的页。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;RES&lt;/strong&gt;:  Resident Size (KiB)。表示一个任务使用的没有被 swap 的物理内存。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;SHR&lt;/strong&gt;:  Shared Memory (KiB)。表示一个任务可能和其他任务共享的内存。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;SWAP&lt;/strong&gt;:  Swapped Size (KiB)。表示一个任务的非驻留内存，也就是使用的交换空间。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;CODE&lt;/strong&gt;:  Code Size (KiB)。表示任务的代码段的大小。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;DATA&lt;/strong&gt;:  Data+Stack (KiB)。Data Resident Set size，包括了程序数据段和栈。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;USED&lt;/strong&gt;:  Res+Swap Size (KiB)。就是 RES + SWAP。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;nDRT&lt;/strong&gt;:  Dirty Pages Count。该 task 内存空间中的脏页的数量。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;nMaj&lt;/strong&gt;:  Major Page Faults。该 task 遇到的 Major Page Faults 的数量。Major Page Fault 是指需要访问通过访问 swap 分区或者硬盘（mmap 一个文件，但是还没把内容读取到内存时）来处理的缺页异常。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;nMin&lt;/strong&gt;:  Minor Page Faults。该 task 遇到的 Minor Page Faults 的数量。Minor Page Fault 是指不需要通过访问 swap 分区或者硬盘来处理的缺页异常，简单的说，没用到磁盘 I/O。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;vMj&lt;/strong&gt;:  Major Faults delta。上次 top 刷新数据依赖的 Major Page Faults 增加数量。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;vMn&lt;/strong&gt;:  Minor Faults delta。上次 top 刷新数据依赖的 Minor Page Faults 增加数量。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;如下快捷键可以用来控制这些字段：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;e&lt;/strong&gt;: 切换内存单位。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;cgroup-相关&quot;&gt;CGroup 相关&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;CGROUPS&lt;/strong&gt;:  Control Groups&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;nsIPC&lt;/strong&gt;:  IPC namespace Inode&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;nsMNT&lt;/strong&gt;:  MNT namespace Inode&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;nsNET&lt;/strong&gt;:  NET namespace Inode&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;nsPID&lt;/strong&gt;:  PID namespace Inode&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;nsUSER&lt;/strong&gt;:  USER namespace Inode&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;nsUTS&lt;/strong&gt;:  UTS namespace Inode&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;是否只展示符合某些条件的任务&quot;&gt;是否只展示符合某些条件的任务？&lt;/h3&gt;
+
+&lt;p&gt;这个问题，也就是如何过滤，只展示某些任务。也许你用过 &lt;strong&gt;htop&lt;/strong&gt;，知道 htop 可以和方便的根据名称来过滤。top 其实也可以，而且可以根据很多字段来过滤。&lt;/p&gt;
+
+&lt;h4 id=&quot;只展示非空闲的任务&quot;&gt;只展示非空闲的任务&lt;/h4&gt;
+
+&lt;p&gt;快捷键 &lt;strong&gt;i&lt;/strong&gt; 用来切换是否只展示非空闲任务。&lt;/p&gt;
+
+&lt;h4 id=&quot;限制展示任务的数量&quot;&gt;限制展示任务的数量&lt;/h4&gt;
+
+&lt;p&gt;快捷键 &lt;strong&gt;n&lt;/strong&gt; 用于限制要展示的任务的数量，0 表示无限制。默认是全部展示（超过一页需要翻页）。&lt;/p&gt;
+
+&lt;h4 id=&quot;只展示指定用户的任务&quot;&gt;只展示指定用户的任务&lt;/h4&gt;
+
+&lt;p&gt;快捷键 &lt;strong&gt;u&lt;/strong&gt; 表示要过滤的用户，可以加 &lt;strong&gt;!&lt;/strong&gt; 前缀表示反向条件。可以输入 UID 或者 username，直接回车表示取消这个过滤条件。&lt;/p&gt;
+
+&lt;h4 id=&quot;根据其他条件过滤&quot;&gt;根据其他条件过滤&lt;/h4&gt;
+
+&lt;p&gt;top 提供了 &lt;strong&gt;Other Filter&lt;/strong&gt; 的功能，通过快捷键 &lt;strong&gt;o&lt;/strong&gt; (大小写不敏感) 或者 &lt;strong&gt;O&lt;/strong&gt; (大小写敏感) 来启用。过滤条件的格式如下：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;{!}Field-Name?include-if-value
+              exclude-if-value
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;!&lt;/strong&gt; 表示非，不是必选字段，其他都是必填字段。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Field-Name&lt;/strong&gt; 表示字段名字，前文已经列出。注意，这里是大小写敏感的，要完全一致。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;?&lt;/strong&gt; 代表一个要求的分隔符和操作符(=, &amp;lt;, &amp;gt;):
+    &lt;ul&gt;
+      &lt;li&gt;&lt;strong&gt;&amp;lt;&lt;/strong&gt; 或者 &lt;strong&gt;&amp;gt;&lt;/strong&gt; 表示字符串比较，或者数值比较。注意比较时的数字的单位问题，100.0m 会比 1.0g 大，所以需要先进行单位切换（例如内存的单位切换，e）&lt;/li&gt;
+      &lt;li&gt;&lt;strong&gt;=&lt;/strong&gt; 表示部分匹配&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;可以使用多个条件进行过滤，每个按一次 o 或者 O 输入一个条件，所有条件会进行与操作。可以按 &lt;strong&gt;Ctrl-o&lt;/strong&gt; 显示所有条件。&lt;/p&gt;
+
+&lt;p&gt;还有两个清理操作：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;=&lt;/strong&gt;  reset filtering in current window&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;+&lt;/strong&gt;  reset filtering in all windows&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;举些例子：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;过滤 nice 值小于 0 的任务，即以减号开头的 nice 值：&lt;code class=&quot;highlighter-rouge&quot;&gt;NI=-&lt;/code&gt;。&lt;/li&gt;
+  &lt;li&gt;过滤所有 postgres 进程：&lt;code class=&quot;highlighter-rouge&quot;&gt;COMMAND=postgres&lt;/code&gt;。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;搜索&quot;&gt;搜索&lt;/h4&gt;
+
+&lt;p&gt;搜索和过滤不一样，搜索不考虑字段，会在 tasks area 显示的所有内容中找到指定的行。快捷键 &lt;strong&gt;L&lt;/strong&gt; 用于输入要搜索的关键字，&lt;strong&gt;&amp;amp;&lt;/strong&gt; 表示跳转到下一个匹配项。搜索关键字会被高亮，除了使用 &lt;strong&gt;&amp;amp;&lt;/strong&gt; 以外，你也需要使用 PgUp 和 PgDown 等来调整展示的内容。&lt;/p&gt;
+
+&lt;h3 id=&quot;其他定制&quot;&gt;其他定制&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;R&lt;/strong&gt; 切换排序的方向，默认是从高到底，可以切换为从低到高。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;x&lt;/strong&gt; 切换是否高亮显示排序列。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;y&lt;/strong&gt; 切换是否高亮显示 running 的 task。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;b&lt;/strong&gt; bold/reverse，这个快捷键用于切换关键位置是粗体展示还是反色展示，会影响到 x, y 的展示效果，也会影响到 summary area 的 CPU 进度条 和 memory 进度条的展示效果。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;d&lt;/strong&gt; 定时刷新间隔，默认是 3s。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;V&lt;/strong&gt; 切换成森林视图，也就是展示进程父子关系。这个模式下无法按照字段排序。效果如下图：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://diabloneo.github.io//assets/imgs/00024_top_cmd_4.png&quot; alt=&quot;top_cmd_4&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;有时候不想看层级太深的任务，可以使用 other filter。除了第二级是一个空格，往下的每一级都是每级三个空格，最后再加上一个反引号开头。所以要过滤掉第三级以下的，可以使用如下条件（COMMAND=后面跟7个空格）：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;!COMMAND=       `
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;界面颜色&quot;&gt;界面颜色&lt;/h2&gt;
+
+&lt;p&gt;为了更清晰的进行监控，定制颜色也是很有用的。可以按快捷键 &lt;strong&gt;Z&lt;/strong&gt; 进入颜色定制界面，如下图所示：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://diabloneo.github.io//assets/imgs/00025_top_cmd_5.png&quot; alt=&quot;top_cmd_5&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;首先可以看到上半部表示了当前正在设置哪个窗口，然后下半部有 1 2 3 三个步骤：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;选择要定制的区域：
+    &lt;ol&gt;
+      &lt;li&gt;&lt;strong&gt;S&lt;/strong&gt;: Summary Data&lt;/li&gt;
+      &lt;li&gt;&lt;strong&gt;M&lt;/strong&gt;: Messages/Prompts&lt;/li&gt;
+      &lt;li&gt;&lt;strong&gt;H&lt;/strong&gt;: Column Heads&lt;/li&gt;
+      &lt;li&gt;&lt;strong&gt;T&lt;/strong&gt;: Task Information&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;给选定的区域选择一个颜色，用数字 0 到 7 对应 8 个颜色。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;q&lt;/strong&gt; 取消颜色设置，&lt;strong&gt;a&lt;/strong&gt; 或者 &lt;strong&gt;g&lt;/strong&gt; 提交颜色设置并且切换到下个窗口进行设置，回车提交颜色设置并且退出这个界面。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;在 top 界面上，可以通过快捷键 &lt;strong&gt;z&lt;/strong&gt; 来切换是否使用颜色。&lt;/p&gt;
+
+&lt;h2 id=&quot;配置文件&quot;&gt;配置文件&lt;/h2&gt;
+
+&lt;p&gt;上面讲的这些定制，都可以保存到一个配置文件，然后 top 每次启动都会载入它所找到的配置文件。配置文件中会保存一些全局模式，比如 Irix mode 的配置，刷新时间等，也会保存每个窗口的字段配置和颜色配置等，还会保存 inspect entries （见下文）。&lt;/p&gt;
+
+&lt;p&gt;生成配置文件的方式很简单，在你完成想要的定制后，按快捷键 &lt;strong&gt;W&lt;/strong&gt; 即可。CentOS 7 上，配置文件的保存路径是 &lt;em&gt;/root/.toprc&lt;/em&gt;；Ubuntu 上则是 &lt;em&gt;~/.config/procps/toprc&lt;/em&gt;，每次你保存的时候，top 会显示这个路径。&lt;/p&gt;
+
+&lt;h2 id=&quot;inspect-mode&quot;&gt;Inspect Mode&lt;/h2&gt;
+
+&lt;p&gt;top 有一个模式，可以允许你执行指定的命令来查看一个任务的更多信息，这个模式可以称为 &lt;strong&gt;Inspect Mode&lt;/strong&gt;，通过快捷键 &lt;strong&gt;Y&lt;/strong&gt; 可以进入这个模式，top 会提示你输入一个要 inspect 的 PID。不过，要使用这个模式，你需要先定义可以使用的 inspect entries，否则 top 不会进入这个模式。下面是一个最简单的配置，可以先体会下这个配置是如何写的：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+[root@user ~]# cat .toprc
+top's Config File (Linux processes with windows)
+Id:i, Mode_altscr=0, Mode_irixps=1, Delay_time=3.0, Curwin=0
+Def     fieldscur=ķ&amp;amp;')*+,-./012568&amp;lt;&amp;gt;?ABCFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghij
+        winflags=195892, sortindx=18, maxtasks=0, graph_cpus=0, graph_mems=0
+        summclr=5, msgsclr=1, headclr=3, taskclr=4
+Job     fieldscur=(Ļ@&amp;lt;)*+,-./012568&amp;gt;?ABCFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghij
+        winflags=193844, sortindx=0, maxtasks=0, graph_cpus=0, graph_mems=0
+        summclr=6, msgsclr=6, headclr=7, taskclr=6
+Mem     fieldscur=&amp;lt;MBND34&amp;amp;'()*+,-./0125689FGHIJKLOPQRSTUVWXYZ[\]^_`abcdefghij
+        winflags=193844, sortindx=21, maxtasks=0, graph_cpus=0, graph_mems=0
+        summclr=5, msgsclr=5, headclr=4, taskclr=5
+Usr     fieldscur=)+,-./1234568;&amp;lt;=&amp;gt;?@ABCFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghij
+        winflags=193844, sortindx=3, maxtasks=0, graph_cpus=0, graph_mems=0
+        summclr=3, msgsclr=3, headclr=2, taskclr=3
+Fixed_widest=0, Summ_mscale=0, Task_mscale=0, Zero_suppress=0
+
+pipe    Open Files      lsof -P -p %d 2&amp;gt;&amp;amp;1
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;上面的最后一行就是就是一个 inspect entry，表示获取进程打开的文件列表。使用这个配置文件后，打开 top，按 &lt;strong&gt;Y&lt;/strong&gt; 进入 inspect 模式，效果如下：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://diabloneo.github.io//assets/imgs/00027_top_cmd_7.png&quot; alt=&quot;top_cmd_7&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;在这个界面，可以左右选择你自定义的 entry，然后回车就可以执行。比如上面这个 &lt;em&gt;Open Files&lt;/em&gt; 执行后的效果如下，和直接使用 &lt;em&gt;lsof&lt;/em&gt; 命令的效果一样：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://diabloneo.github.io//assets/imgs/00028_top_cmd_8.png&quot; alt=&quot;top_cmd_8&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;在上面这个界面，可以使用 PgUp, PgDown, Home, End 等进行滚动，也可以使用 &lt;em&gt;less&lt;/em&gt; 命令的语法（ &lt;code class=&quot;highlighter-rouge&quot;&gt;/&lt;/code&gt; 表示搜索）。&lt;/p&gt;
+
+&lt;p&gt;下面来看 entry 的定制语法。&lt;/p&gt;
+
+&lt;p&gt;首先，&lt;strong&gt;#&lt;/strong&gt; 开头的行是被注释掉的。&lt;/p&gt;
+
+&lt;p&gt;一行 inspect entry 包含三个部分： &lt;strong&gt;type&lt;/strong&gt;, &lt;strong&gt;name&lt;/strong&gt;, &lt;strong&gt;fmts&lt;/strong&gt;，每个部分之间使用制表符 &lt;code class=&quot;highlighter-rouge&quot;&gt;\t&lt;/code&gt; 分隔。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;type&lt;/strong&gt;: 可以是 &lt;em&gt;file&lt;/em&gt; 或者 &lt;em&gt;pipe&lt;/em&gt;。&lt;em&gt;file&lt;/em&gt; 就是打开一个文件，读它的内容。&lt;em&gt;pipe&lt;/em&gt; 就是用 &lt;code class=&quot;highlighter-rouge&quot;&gt;popen&lt;/code&gt; 接口执行命令，然后获取输出。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;name&lt;/strong&gt;: 名字，比如你上面看到的 &lt;em&gt;Open Files&lt;/em&gt;。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;fmts&lt;/strong&gt;：一个文件路径，或者一行命令。这个部分可以使用变量 &lt;code class=&quot;highlighter-rouge&quot;&gt;%d&lt;/code&gt; 表示 PID，比如 &lt;code class=&quot;highlighter-rouge&quot;&gt;/proc/%d/numa_maps&lt;/code&gt; 或者 &lt;code class=&quot;highlighter-rouge&quot;&gt;lsof -P -p %d 2&amp;gt;&amp;amp;1&lt;/code&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;我的定制&quot;&gt;我的定制&lt;/h2&gt;
+
+&lt;p&gt;效果如下：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://diabloneo.github.io//assets/imgs/00029_top_cmd_9.png&quot; alt=&quot;top_cmd_9&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;我在 CentOS 7 下的定制文件如下：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;top's Config File (Linux processes with windows)
+Id:i, Mode_altscr=0, Mode_irixps=1, Delay_time=3.0, Curwin=0
+Cpu     fieldscur=ķ9')*+,-./0126&amp;lt;&amp;gt;?ABCFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghij
+        winflags=195380, sortindx=18, maxtasks=0, graph_cpus=0, graph_mems=0
+        summclr=4, msgsclr=1, headclr=3, taskclr=4
+Mem     fieldscur=&amp;amp;97(34D')*+,-./012568&amp;gt;?FGHIJKLOPQRSTUVWXYZ[\]^_`abcdefghij
+        winflags=195380, sortindx=21, maxtasks=0, graph_cpus=0, graph_mems=0
+        summclr=6, msgsclr=6, headclr=3, taskclr=6
+Sch     fieldscur=:;&amp;lt;=&amp;gt;?@AMBNC&amp;amp;'()*+,-./0128HIJKLOPQRSTUVWXYZ[\]^_`abcdefghij
+        winflags=194868, sortindx=0, maxtasks=0, graph_cpus=0, graph_mems=0
+        summclr=5, msgsclr=5, headclr=3, taskclr=5
+Cgp     fieldscur=*097:D)+,-./1234568;&amp;lt;=&amp;gt;?@ABCFGIJKLMNOVWXYZ[\]^_`abcdefghij
+        winflags=194868, sortindx=0, maxtasks=0, graph_cpus=0, graph_mems=0
+        summclr=2, msgsclr=3, headclr=3, taskclr=2
+Fixed_widest=0, Summ_mscale=0, Task_mscale=0, Zero_suppress=0
+
+pipe    NetFiles        lsof -a -l -n -P -i4 -p %d 2&amp;gt;&amp;amp;1
+pipe    OpenFiles       lsof -a -l -n -P -p %d 2&amp;gt;&amp;amp;1
+file    NUMAInfo        /proc/%d/numa_maps
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;主要是定制了 4 个 window 的字段和颜色，还有 3 个 inspect entries：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;CPU (sort by %CPU): PID, PPID, USER, PR, NI, VIRT, RES, SHR, S, %CPU, %MEM, TIME+, COMMAND&lt;/li&gt;
+  &lt;li&gt;Mem (sort by %MEM): PID, VIRT, RES, SHR, SWAP, nDRT, nMaj, nMin, vMj, vMn, %MEM, COMMAND&lt;/li&gt;
+  &lt;li&gt;Sche (sort by PID): PID, nTH, PR, NI, Flags,  S, P, %CPU, TIME+, COMMAND, WCHAN&lt;/li&gt;
+  &lt;li&gt;CGROUP (sort by PID): PID, PPID,UID, USER, CGROUPS, nsIPC, nsMNT, nsNET, nsPID, nsUSER, nsUTS, COMMAND&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;如果要直接使用的话，用 base64 解码下面的内容，直接从网页上拷贝会有字符问题：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dG9wJ3MgQ29uZmlnIEZpbGUgKExpbnV4IHByb2Nlc3NlcyB3aXRoIHdpbmRvd3MpCklkOmksIE1v
+ZGVfYWx0c2NyPTAsIE1vZGVfaXJpeHBzPTEsIERlbGF5X3RpbWU9My4wLCBDdXJ3aW49MApDcHUJ
+ZmllbGRzY3VyPaWmqLWztLu9wMS3urg5xScpKissLS4vMDEyNjw+P0FCQ0ZHSElKS0xNTk9QUVJT
+VFVWV1hZWltcXV5fYGFiY2RlZmdoaWoKCXdpbmZsYWdzPTE5NTM4MCwgc29ydGluZHg9MTgsIG1h
+eHRhc2tzPTAsIGdyYXBoX2NwdXM9MCwgZ3JhcGhfbWVtcz0wCglzdW1tY2xyPTQsIG1zZ3NjbHI9
+MSwgaGVhZGNscj0zLCB0YXNrY2xyPTQKTWVtCWZpZWxkc2N1cj2lu73AvMPBws3OJjk3uigzNEQn
+xSkqKywtLi8wMTI1Njg+P0ZHSElKS0xPUFFSU1RVVldYWVpbXF1eX2BhYmNkZWZnaGlqCgl3aW5m
+bGFncz0xOTUzODAsIHNvcnRpbmR4PTIxLCBtYXh0YXNrcz0wLCBncmFwaF9jcHVzPTAsIGdyYXBo
+X21lbXM9MAoJc3VtbWNscj02LCBtc2dzY2xyPTYsIGhlYWRjbHI9MywgdGFza2Nscj02ClNjaAlm
+aWVsZHNjdXI9pTo7PD0+P0BBTUJOQ7WztMfEtre5xcYmJygpKissLS4vMDEyOEhJSktMT1BRUlNU
+VVZXWFlaW1xdXl9gYWJjZGVmZ2hpagoJd2luZmxhZ3M9MTk0ODY4LCBzb3J0aW5keD0wLCBtYXh0
+YXNrcz0wLCBncmFwaF9jcHVzPTAsIGdyYXBoX21lbXM9MAoJc3VtbWNscj01LCBtc2dzY2xyPTUs
+IGhlYWRjbHI9MywgdGFza2Nscj01CkNncAlmaWVsZHNjdXI9paanqCowOTc6RCkrLC0uLzEyMzQ1
+Njg7PD0+P0BBQkNGR8hJSktMTU5P0NHS09TVxVZXWFlaW1xdXl9gYWJjZGVmZ2hpagoJd2luZmxh
+Z3M9MTk0ODY4LCBzb3J0aW5keD0wLCBtYXh0YXNrcz0wLCBncmFwaF9jcHVzPTAsIGdyYXBoX21l
+bXM9MAoJc3VtbWNscj0yLCBtc2dzY2xyPTMsIGhlYWRjbHI9MywgdGFza2Nscj0yCkZpeGVkX3dp
+ZGVzdD0wLCBTdW1tX21zY2FsZT0wLCBUYXNrX21zY2FsZT0wLCBaZXJvX3N1cHByZXNzPTAKCnBp
+cGUJTmV0RmlsZXMJbHNvZiAtYSAtbCAtbiAtUCAtaTQgLXAgJWQgMj4mMQpwaXBlCU9wZW5GaWxl
+cwlsc29mIC1hIC1sIC1uIC1QIC1wICVkIDI+JjEKZmlsZQlOVU1BSW5mbwkvcHJvYy8lZC9udW1h
+X21hcHMK
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>
+        <pubDate>Thu, 29 Aug 2019 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2019/08/29/How-to-use-top-command/</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2019/08/29/How-to-use-top-command/</guid>
+        
+        <category>linux</category>
+        
+        
+      </item>
     
       <item>
         <title>在 VIM 中配置 fzf 使用 find</title>
@@ -580,81 +1076,6 @@ Unit serial number VPD page:
         <guid isPermaLink="true">http://diabloneo.github.io//2019/02/25/write-what-i-have-043/</guid>
         
         <category>cloud</category>
-        
-        <category>database</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>想到什么写什么周报 第42期 - 2019-02-04</title>
-        <description>&lt;h2 id=&quot;introducing-the-next-generation-influxdb-20-platform&quot;&gt;Introducing the Next-Generation InfluxDB 2.0 Platform&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.influxdata.com/blog/introducing-the-next-generation-influxdb-2-0-platform/&quot;&gt;https://www.influxdata.com/blog/introducing-the-next-generation-influxdb-2-0-platform/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;InfluxDB 2.0 alpha 版本发布。把原来 TICK 的 4 个功能集中到一个软件里，新的数据查询器，增加了 task 的支持等。&lt;/p&gt;
-
-&lt;h2 id=&quot;why-not-to-build-a-time-series-database&quot;&gt;Why NOT to Build a Time-Series Database&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.outlyer.com/blog/why-not-to-build-a-time-series-database/&quot;&gt;https://www.outlyer.com/blog/why-not-to-build-a-time-series-database/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Outlyer 的广告文。OUtlyer 是一家 TSDB 服务提供商，试图说服你不要自己开发和维护时间序列存储方案 (TSDB)，不过挺有意思的：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;介绍了自家做的三代 TSDB 的情况，以及前两代遇到的问题。&lt;/li&gt;
-  &lt;li&gt;介绍了为什么开发 TSDB 是困难的，同时说明了，市面上的所有 TSDB 都有优缺点，不可能有完美的方案，需要根据自己的业务进行选择。&lt;/li&gt;
-  &lt;li&gt;介绍了 4 个时间序列数据的特点（在其他文章中也常提到）：
-    &lt;ul&gt;
-      &lt;li&gt;大部分的查询只会查询过去一个小时内的数据。&lt;/li&gt;
-      &lt;li&gt;数据点是不可变的。&lt;/li&gt;
-      &lt;li&gt;你可以丢一点数据。&lt;/li&gt;
-      &lt;li&gt;新查询的数据和上次查询的数据相比只有一点变化，或者基本不变。&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;最后介绍了自家的第三代 TSDB 的架构。重要的一点是使用镜像而不是集群方式来备份数据，镜像很简单，集群很复杂（被 DalmatinerDB 坑怕了）。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;materialized-views-vs-rollup-tables-in-postgres&quot;&gt;Materialized views vs. Rollup tables in Postgres&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.citusdata.com/blog/2018/10/31/materialized-views-vs-rollup-tables/&quot;&gt;https://www.citusdata.com/blog/2018/10/31/materialized-views-vs-rollup-tables/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;介绍了 Materialzed View 的使用。但是每次 refresh 都需要重新计算数据，对于大表来说性能可能太差，所以有一种变通的办法就是自己建一张 table ，然后使用  upsert 的方式来进行增量更新可以提升性能。&lt;/p&gt;
-
-&lt;h2 id=&quot;sqlite-in-2018-a-state-of-the-art-sql-dialect&quot;&gt;SQLite in 2018: A state of the art SQL dialect&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://modern-sql.com/blog/2019-01/sqlite-in-2018&quot;&gt;https://modern-sql.com/blog/2019-01/sqlite-in-2018&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;SQLite 在 2018 年增加了许多功能，包括：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Boolean Literals and Tests&lt;/li&gt;
-  &lt;li&gt;Windos Functions&lt;/li&gt;
-  &lt;li&gt;Filter Clause&lt;/li&gt;
-  &lt;li&gt;Upsert&lt;/li&gt;
-  &lt;li&gt;Rename Column&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;gophercon-2014-high-performance-systems-in-go-by-derek-collison&quot;&gt;GopherCon 2014 High Performance Systems in Go by Derek Collison&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://youtu.be/ylRKac5kSOk&quot;&gt;https://youtu.be/ylRKac5kSOk&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;CNCF 项目 NATS 的作者 2014 年在 GopherCon 上的演讲。介绍了几个优化系统性能的事件，把 NATS 的性能从 500k msg/s 提升到了 5 - 6m msg/s&lt;/p&gt;
-
-&lt;h2 id=&quot;top-50-developer-tools-of-2018&quot;&gt;TOP 50 DEVELOPER TOOLS OF 2018&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://stackshare.io/posts/top-developer-tools-2018&quot;&gt;https://stackshare.io/posts/top-developer-tools-2018&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;stackshare 评选出来的 2018 年 50 大开发者工具。&lt;/p&gt;
-</description>
-        <pubDate>Mon, 04 Feb 2019 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2019/02/04/write-what-i-have-042/</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2019/02/04/write-what-i-have-042/</guid>
-        
-        <category>cloud</category>
-        
-        <category>golang</category>
-        
-        <category>distributed-computing</category>
         
         <category>database</category>
         
