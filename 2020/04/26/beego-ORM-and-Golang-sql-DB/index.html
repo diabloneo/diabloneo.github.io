@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>beego ORM 和 Golang sql.DB</title>
+  <meta name="description" content="几个数据结构之间的关系">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/pygments-rainbow_dash.css">
+  <link rel="canonical" href="http://diabloneo.github.io//2020/04/26/beego-ORM-and-Golang-sql-DB/">
+  <link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
+</head>
+
+
+  <body>
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">Coffee, Coke and Code</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <a class="page-link" href="/tags">Tags</a>
+        <a class="page-link" href="/feed.xml">RSS</a>
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">beego ORM 和 Golang sql.DB</h1>
+    <p class="post-meta"><time datetime="2020-04-26T00:00:00+08:00" itemprop="datePublished">Apr 26, 2020</time></p>
+  </header>
+
+  <div class="post-tags">
+    <ul>
+      
+      <li>
+        <a href="/tags/database/">database</a>
+      </li>
+      
+      <li>
+        <a href="/tags/golang/">golang</a>
+      </li>
+      
+    </ul>
+  </div>
+
+  <div class="post-content" itemprop="articleBody">
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+    <br />
+      <h2 id="几个数据结构之间的关系">几个数据结构之间的关系</h2>
+
+<h3 id="注册数据库">注册数据库</h3>
+
+<p>我们使用如下的方式来将一个数据库注册到 beego ORM 的 <strong>default</strong> alias 中：</p>
+
+<figure class="highlight"><pre><code class="language-go" data-lang="go"><span class="n">orm</span><span class="o">.</span><span class="n">RegisterDatabase</span><span class="p">(</span><span class="s">"default"</span><span class="p">,</span><span class="x"> </span><span class="n">dsn</span><span class="p">,</span><span class="x"> </span><span class="n">MaxIdleConns</span><span class="p">,</span><span class="x"> </span><span class="n">MaxOpenConns</span><span class="p">)</span></code></pre></figure>
+
+<p><code class="highlighter-rouge">RegisterDataBase()</code> 方法的主要内容是将 <code class="highlighter-rouge">orm.alias</code> 对象和 <code class="highlighter-rouge">sql.DB</code>，以及对应数据库类型的 <code class="highlighter-rouge">dbBaser</code> 对象关联起来。</p>
+
+<figure class="highlight"><pre><code class="language-go" data-lang="go"><span class="c">// RegisterDataBase Setting the database connect params. Use the database driver self dataSource args.</span><span class="x">
+</span><span class="k">func</span><span class="x"> </span><span class="n">RegisterDataBase</span><span class="p">(</span><span class="n">aliasName</span><span class="p">,</span><span class="x"> </span><span class="n">driverName</span><span class="p">,</span><span class="x"> </span><span class="n">dataSource</span><span class="x"> </span><span class="kt">string</span><span class="p">,</span><span class="x"> </span><span class="n">params</span><span class="x"> </span><span class="o">...</span><span class="kt">int</span><span class="p">)</span><span class="x"> </span><span class="kt">error</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="k">var</span><span class="x"> </span><span class="p">(</span><span class="x">
+		</span><span class="n">err</span><span class="x"> </span><span class="kt">error</span><span class="x">
+		</span><span class="n">db</span><span class="x">  </span><span class="o">*</span><span class="n">sql</span><span class="o">.</span><span class="n">DB</span><span class="x">
+		</span><span class="n">al</span><span class="x">  </span><span class="o">*</span><span class="n">alias</span><span class="x">
+	</span><span class="p">)</span><span class="x">
+
+	</span><span class="n">db</span><span class="p">,</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="n">sql</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="n">driverName</span><span class="p">,</span><span class="x"> </span><span class="n">dataSource</span><span class="p">)</span><span class="x">
+	</span><span class="o">...</span><span class="x">
+
+	</span><span class="n">al</span><span class="p">,</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="n">addAliasWthDB</span><span class="p">(</span><span class="n">aliasName</span><span class="p">,</span><span class="x"> </span><span class="n">driverName</span><span class="p">,</span><span class="x"> </span><span class="n">db</span><span class="p">)</span><span class="x">
+	</span><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
+		</span><span class="k">goto</span><span class="x"> </span><span class="n">end</span><span class="x">
+	</span><span class="p">}</span><span class="x">
+
+	</span><span class="o">...</span><span class="x">
+
+	</span><span class="k">return</span><span class="x"> </span><span class="n">err</span><span class="x">
+</span><span class="p">}</span></code></pre></figure>
+
+<p>其中 <code class="highlighter-rouge">sql.Open</code> 返回一个 <code class="highlighter-rouge">*sql.DB</code> 对象。<code class="highlighter-rouge">addAliasWithDB()</code> 方法返回 <code class="highlighter-rouge">*orm.alias</code>，主要是设置 <code class="highlighter-rouge">DbBaser</code> 和 <code class="highlighter-rouge">DB</code> 这两个对象。<code class="highlighter-rouge">DB</code> 指向 <code class="highlighter-rouge">sql.DB</code>，<code class="highlighter-rouge">DbBaser</code> 则指向所支持的数据库类型的实现对象。</p>
+
+<figure class="highlight"><pre><code class="language-go" data-lang="go"><span class="k">func</span><span class="x"> </span><span class="n">addAliasWthDB</span><span class="p">(</span><span class="n">aliasName</span><span class="p">,</span><span class="x"> </span><span class="n">driverName</span><span class="x"> </span><span class="kt">string</span><span class="p">,</span><span class="x"> </span><span class="n">db</span><span class="x"> </span><span class="o">*</span><span class="n">sql</span><span class="o">.</span><span class="n">DB</span><span class="p">)</span><span class="x"> </span><span class="p">(</span><span class="o">*</span><span class="n">alias</span><span class="p">,</span><span class="x"> </span><span class="kt">error</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="n">al</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="nb">new</span><span class="p">(</span><span class="n">alias</span><span class="p">)</span><span class="x">
+	</span><span class="n">al</span><span class="o">.</span><span class="n">Name</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="n">aliasName</span><span class="x">
+	</span><span class="n">al</span><span class="o">.</span><span class="n">DriverName</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="n">driverName</span><span class="x">
+	</span><span class="n">al</span><span class="o">.</span><span class="n">DB</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="n">db</span><span class="x">
+
+	</span><span class="k">if</span><span class="x"> </span><span class="n">dr</span><span class="p">,</span><span class="x"> </span><span class="n">ok</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">drivers</span><span class="p">[</span><span class="n">driverName</span><span class="p">];</span><span class="x"> </span><span class="n">ok</span><span class="x"> </span><span class="p">{</span><span class="x">
+		</span><span class="n">al</span><span class="o">.</span><span class="n">DbBaser</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="n">dbBasers</span><span class="p">[</span><span class="n">dr</span><span class="p">]</span><span class="x">
+		</span><span class="n">al</span><span class="o">.</span><span class="n">Driver</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="n">dr</span><span class="x">
+	</span><span class="p">}</span><span class="x"> </span><span class="k">else</span><span class="x"> </span><span class="p">{</span><span class="x">
+		</span><span class="k">return</span><span class="x"> </span><span class="no">nil</span><span class="p">,</span><span class="x"> </span><span class="n">fmt</span><span class="o">.</span><span class="n">Errorf</span><span class="p">(</span><span class="s">"driver name `%s` have not registered"</span><span class="p">,</span><span class="x"> </span><span class="n">driverName</span><span class="p">)</span><span class="x">
+	</span><span class="p">}</span><span class="x">
+
+	</span><span class="o">...</span><span class="x">
+
+	</span><span class="k">return</span><span class="x"> </span><span class="n">al</span><span class="p">,</span><span class="x"> </span><span class="no">nil</span><span class="x">
+</span><span class="p">}</span></code></pre></figure>
+
+<p>beego ORM 支持 5 种常用的数据库方言，可以在全局的 <code class="highlighter-rouge">dbBasers</code> map 中查到。</p>
+
+<figure class="highlight"><pre><code class="language-go" data-lang="go"><span class="n">dbBasers</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="k">map</span><span class="p">[</span><span class="n">DriverType</span><span class="p">]</span><span class="n">dbBaser</span><span class="p">{</span><span class="x">
+	</span><span class="n">DRMySQL</span><span class="o">:</span><span class="x">    </span><span class="n">newdbBaseMysql</span><span class="p">(),</span><span class="x">
+	</span><span class="n">DRSqlite</span><span class="o">:</span><span class="x">   </span><span class="n">newdbBaseSqlite</span><span class="p">(),</span><span class="x">
+	</span><span class="n">DROracle</span><span class="o">:</span><span class="x">   </span><span class="n">newdbBaseOracle</span><span class="p">(),</span><span class="x">
+	</span><span class="n">DRPostgres</span><span class="o">:</span><span class="x"> </span><span class="n">newdbBasePostgres</span><span class="p">(),</span><span class="x">
+	</span><span class="n">DRTiDB</span><span class="o">:</span><span class="x">     </span><span class="n">newdbBaseTidb</span><span class="p">(),</span><span class="x">
+</span><span class="p">}</span></code></pre></figure>
+
+<p>我常用的 Postgres 的实现在 <em>orm/db_postgres.go</em> 里，所依赖的 <code class="highlighter-rouge">dbBase</code> 在 <em>orm/db.go</em> 里。</p>
+
+<h3 id="orm-执行-sql-语句的过程">ORM 执行 SQL 语句的过程</h3>
+
+<p>一般我们是先调用 <code class="highlighter-rouge">NewOrm()</code> 方法获得 <code class="highlighter-rouge">orm.Ormer</code> 对象。这个方法会创建一个 <code class="highlighter-rouge">orm.orm</code> 对象，主要是设置了 <code class="highlighter-rouge">o.alias = al</code> ( <code class="highlighter-rouge">al</code> 是上面创建的默认 alias ) 和 <code class="highlighter-rouge">o.db = al.DB</code>。即 <code class="highlighter-rouge">o.db</code> 是 <code class="highlighter-rouge">*sql.DB</code>。</p>
+
+<p>然后，当我们要执行一个查询时，我们一般这么写：</p>
+
+<figure class="highlight"><pre><code class="language-go" data-lang="go"><span class="n">qs</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">model</span><span class="o">.</span><span class="n">orm</span><span class="o">.</span><span class="n">QueryTable</span><span class="p">(</span><span class="nb">new</span><span class="p">(</span><span class="n">User</span><span class="p">))</span><span class="x">
+</span><span class="n">qs</span><span class="o">.</span><span class="n">All</span><span class="p">(</span><span class="o">&amp;</span><span class="n">users</span><span class="p">)</span></code></pre></figure>
+
+<p>这里的 <code class="highlighter-rouge">orm.QueryTable</code> 方法，主要是调用 <code class="highlighter-rouge">newQuerySet()</code> 返回一个 <code class="highlighter-rouge">QuerySetter</code> interface，本质是一个 <code class="highlighter-rouge">*querySet</code>。</p>
+
+<figure class="highlight"><pre><code class="language-go" data-lang="go"><span class="c">// return a QuerySeter for table operations.</span><span class="x">
+</span><span class="c">// table name can be string or struct.</span><span class="x">
+</span><span class="c">// e.g. QueryTable("user"), QueryTable(&amp;user{}) or QueryTable((*User)(nil)),</span><span class="x">
+</span><span class="k">func</span><span class="x"> </span><span class="p">(</span><span class="n">o</span><span class="x"> </span><span class="o">*</span><span class="n">orm</span><span class="p">)</span><span class="x"> </span><span class="n">QueryTable</span><span class="p">(</span><span class="n">ptrStructOrTableName</span><span class="x"> </span><span class="k">interface</span><span class="p">{})</span><span class="x"> </span><span class="p">(</span><span class="n">qs</span><span class="x"> </span><span class="n">QuerySeter</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="n">name</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="s">""</span><span class="x">
+	</span><span class="k">if</span><span class="x"> </span><span class="n">table</span><span class="p">,</span><span class="x"> </span><span class="n">ok</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">ptrStructOrTableName</span><span class="o">.</span><span class="p">(</span><span class="kt">string</span><span class="p">);</span><span class="x"> </span><span class="n">ok</span><span class="x"> </span><span class="p">{</span><span class="x">
+		</span><span class="n">name</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="n">snakeString</span><span class="p">(</span><span class="n">table</span><span class="p">)</span><span class="x">
+		</span><span class="k">if</span><span class="x"> </span><span class="n">mi</span><span class="p">,</span><span class="x"> </span><span class="n">ok</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">modelCache</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">);</span><span class="x"> </span><span class="n">ok</span><span class="x"> </span><span class="p">{</span><span class="x">
+			</span><span class="n">qs</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="n">newQuerySet</span><span class="p">(</span><span class="n">o</span><span class="p">,</span><span class="x"> </span><span class="n">mi</span><span class="p">)</span><span class="x">
+		</span><span class="p">}</span><span class="x">
+	</span><span class="p">}</span><span class="x"> </span><span class="k">else</span><span class="x"> </span><span class="p">{</span><span class="x">
+		</span><span class="n">name</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="n">getFullName</span><span class="p">(</span><span class="n">indirectType</span><span class="p">(</span><span class="n">reflect</span><span class="o">.</span><span class="n">TypeOf</span><span class="p">(</span><span class="n">ptrStructOrTableName</span><span class="p">)))</span><span class="x">
+		</span><span class="k">if</span><span class="x"> </span><span class="n">mi</span><span class="p">,</span><span class="x"> </span><span class="n">ok</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">modelCache</span><span class="o">.</span><span class="n">getByFullName</span><span class="p">(</span><span class="n">name</span><span class="p">);</span><span class="x"> </span><span class="n">ok</span><span class="x"> </span><span class="p">{</span><span class="x">
+			</span><span class="n">qs</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="n">newQuerySet</span><span class="p">(</span><span class="n">o</span><span class="p">,</span><span class="x"> </span><span class="n">mi</span><span class="p">)</span><span class="x">
+		</span><span class="p">}</span><span class="x">
+	</span><span class="p">}</span><span class="x">
+	</span><span class="k">if</span><span class="x"> </span><span class="n">qs</span><span class="x"> </span><span class="o">==</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
+		</span><span class="nb">panic</span><span class="p">(</span><span class="n">fmt</span><span class="o">.</span><span class="n">Errorf</span><span class="p">(</span><span class="s">"&lt;Ormer.QueryTable&gt; table name: `%s` not exists"</span><span class="p">,</span><span class="x"> </span><span class="n">name</span><span class="p">))</span><span class="x">
+	</span><span class="p">}</span><span class="x">
+	</span><span class="k">return</span><span class="x">
+</span><span class="p">}</span><span class="x">
+
+</span><span class="k">func</span><span class="x"> </span><span class="n">newQuerySet</span><span class="p">(</span><span class="n">orm</span><span class="x"> </span><span class="o">*</span><span class="n">orm</span><span class="p">,</span><span class="x"> </span><span class="n">mi</span><span class="x"> </span><span class="o">*</span><span class="n">modelInfo</span><span class="p">)</span><span class="x"> </span><span class="n">QuerySeter</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="n">o</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="nb">new</span><span class="p">(</span><span class="n">querySet</span><span class="p">)</span><span class="x">
+	</span><span class="n">o</span><span class="o">.</span><span class="n">mi</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="n">mi</span><span class="x">
+	</span><span class="n">o</span><span class="o">.</span><span class="n">orm</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="n">orm</span><span class="x">
+	</span><span class="k">return</span><span class="x"> </span><span class="n">o</span><span class="x">
+</span><span class="p">}</span><span class="x">
+
+</span><span class="c">// real query struct</span><span class="x">
+</span><span class="k">type</span><span class="x"> </span><span class="n">querySet</span><span class="x"> </span><span class="k">struct</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="n">mi</span><span class="x">       </span><span class="o">*</span><span class="n">modelInfo</span><span class="x">
+	</span><span class="n">cond</span><span class="x">     </span><span class="o">*</span><span class="n">Condition</span><span class="x">
+	</span><span class="n">related</span><span class="x">  </span><span class="p">[]</span><span class="kt">string</span><span class="x">
+	</span><span class="n">relDepth</span><span class="x"> </span><span class="kt">int</span><span class="x">
+	</span><span class="n">limit</span><span class="x">    </span><span class="kt">int64</span><span class="x">
+	</span><span class="n">offset</span><span class="x">   </span><span class="kt">int64</span><span class="x">
+	</span><span class="n">groups</span><span class="x">   </span><span class="p">[]</span><span class="kt">string</span><span class="x">
+	</span><span class="n">orders</span><span class="x">   </span><span class="p">[]</span><span class="kt">string</span><span class="x">
+	</span><span class="n">distinct</span><span class="x"> </span><span class="kt">bool</span><span class="x">
+	</span><span class="n">orm</span><span class="x">      </span><span class="o">*</span><span class="n">orm</span><span class="x">
+</span><span class="p">}</span></code></pre></figure>
+
+<p>最后，我们执行的 <code class="highlighter-rouge">All()</code> 等查询方法，大概是下面这样的：</p>
+
+<figure class="highlight"><pre><code class="language-go" data-lang="go"><span class="k">func</span><span class="x"> </span><span class="p">(</span><span class="n">o</span><span class="x"> </span><span class="o">*</span><span class="n">querySet</span><span class="p">)</span><span class="x"> </span><span class="n">All</span><span class="p">(</span><span class="n">container</span><span class="x"> </span><span class="k">interface</span><span class="p">{},</span><span class="x"> </span><span class="n">cols</span><span class="x"> </span><span class="o">...</span><span class="kt">string</span><span class="p">)</span><span class="x"> </span><span class="p">(</span><span class="kt">int64</span><span class="p">,</span><span class="x"> </span><span class="kt">error</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="k">return</span><span class="x"> </span><span class="n">o</span><span class="o">.</span><span class="n">orm</span><span class="o">.</span><span class="n">alias</span><span class="o">.</span><span class="n">DbBaser</span><span class="o">.</span><span class="n">ReadBatch</span><span class="p">(</span><span class="n">o</span><span class="o">.</span><span class="n">orm</span><span class="o">.</span><span class="n">db</span><span class="p">,</span><span class="x"> </span><span class="n">o</span><span class="p">,</span><span class="x"> </span><span class="n">o</span><span class="o">.</span><span class="n">mi</span><span class="p">,</span><span class="x"> </span><span class="n">o</span><span class="o">.</span><span class="n">cond</span><span class="p">,</span><span class="x"> </span><span class="n">container</span><span class="p">,</span><span class="x"> </span><span class="n">o</span><span class="o">.</span><span class="n">orm</span><span class="o">.</span><span class="n">alias</span><span class="o">.</span><span class="n">TZ</span><span class="p">,</span><span class="x"> </span><span class="n">cols</span><span class="p">)</span><span class="x">
+</span><span class="p">}</span></code></pre></figure>
+
+<p>所以要执行一个 <code class="highlighter-rouge">All()</code>，其实是要到 <em>db_postgres.go</em> 的 <code class="highlighter-rouge">dbBasePostgres</code> 里执行 <code class="highlighter-rouge">ReadBatch</code>，也就是在 <em>orm/db.go</em> 的 <code class="highlighter-rouge">dbBase</code> 的方法：</p>
+
+<figure class="highlight"><pre><code class="language-go" data-lang="go"><span class="k">func</span><span class="x"> </span><span class="p">(</span><span class="n">d</span><span class="x"> </span><span class="o">*</span><span class="n">dbBase</span><span class="p">)</span><span class="x"> </span><span class="n">ReadBatch</span><span class="p">(</span><span class="n">q</span><span class="x"> </span><span class="n">dbQuerier</span><span class="p">,</span><span class="x"> </span><span class="n">qs</span><span class="x"> </span><span class="o">*</span><span class="n">querySet</span><span class="p">,</span><span class="x"> </span><span class="n">mi</span><span class="x"> </span><span class="o">*</span><span class="n">modelInfo</span><span class="p">,</span><span class="x"> </span><span class="n">cond</span><span class="x"> </span><span class="o">*</span><span class="n">Condition</span><span class="p">,</span><span class="x"> </span><span class="n">container</span><span class="x"> </span><span class="k">interface</span><span class="p">{},</span><span class="x"> </span><span class="n">tz</span><span class="x"> </span><span class="o">*</span><span class="n">time</span><span class="o">.</span><span class="n">Location</span><span class="p">,</span><span class="x"> </span><span class="n">cols</span><span class="x"> </span><span class="p">[]</span><span class="kt">string</span><span class="p">)</span><span class="x"> </span><span class="p">(</span><span class="kt">int64</span><span class="p">,</span><span class="x"> </span><span class="kt">error</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
+
+	</span><span class="n">val</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">reflect</span><span class="o">.</span><span class="n">ValueOf</span><span class="p">(</span><span class="n">container</span><span class="p">)</span><span class="x">
+	</span><span class="n">ind</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">reflect</span><span class="o">.</span><span class="n">Indirect</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="x">
+
+	</span><span class="o">...</span><span class="x">
+
+	</span><span class="n">query</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">fmt</span><span class="o">.</span><span class="n">Sprintf</span><span class="p">(</span><span class="s">"%s %s FROM %s%s%s T0 %s%s%s%s%s"</span><span class="p">,</span><span class="x"> </span><span class="n">sqlSelect</span><span class="p">,</span><span class="x"> </span><span class="n">sels</span><span class="p">,</span><span class="x"> </span><span class="n">Q</span><span class="p">,</span><span class="x"> </span><span class="n">mi</span><span class="o">.</span><span class="n">table</span><span class="p">,</span><span class="x"> </span><span class="n">Q</span><span class="p">,</span><span class="x"> </span><span class="n">join</span><span class="p">,</span><span class="x"> </span><span class="n">where</span><span class="p">,</span><span class="x"> </span><span class="n">groupBy</span><span class="p">,</span><span class="x"> </span><span class="n">orderBy</span><span class="p">,</span><span class="x"> </span><span class="n">limit</span><span class="p">)</span><span class="x">
+	</span><span class="k">var</span><span class="x"> </span><span class="n">rs</span><span class="x"> </span><span class="o">*</span><span class="n">sql</span><span class="o">.</span><span class="n">Rows</span><span class="x">
+	</span><span class="n">r</span><span class="p">,</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">q</span><span class="o">.</span><span class="n">Query</span><span class="p">(</span><span class="n">query</span><span class="p">,</span><span class="x"> </span><span class="n">args</span><span class="o">...</span><span class="p">)</span><span class="x">
+	</span><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
+		</span><span class="k">return</span><span class="x"> </span><span class="m">0</span><span class="p">,</span><span class="x"> </span><span class="n">err</span><span class="x">
+	</span><span class="p">}</span><span class="x">
+	</span><span class="n">rs</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="n">r</span><span class="x">
+	</span><span class="o">...</span><span class="x">
+
+	</span><span class="k">return</span><span class="x"> </span><span class="n">cnt</span><span class="p">,</span><span class="x"> </span><span class="no">nil</span><span class="x">
+</span><span class="p">}</span></code></pre></figure>
+
+<p>这里关注第一个参数 <code class="highlighter-rouge">q dbQuerier</code>，<code class="highlighter-rouge">dbQuerier</code> 其实就是确定了需要使用 interface，这些是 <code class="highlighter-rouge">*sql.DB</code> 支持的方法的一个子集，ORM 只需要用到这些方法。</p>
+
+<figure class="highlight"><pre><code class="language-go" data-lang="go"><span class="c">// db querier</span><span class="x">
+</span><span class="k">type</span><span class="x"> </span><span class="n">dbQuerier</span><span class="x"> </span><span class="k">interface</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="n">Prepare</span><span class="p">(</span><span class="n">query</span><span class="x"> </span><span class="kt">string</span><span class="p">)</span><span class="x"> </span><span class="p">(</span><span class="o">*</span><span class="n">sql</span><span class="o">.</span><span class="n">Stmt</span><span class="p">,</span><span class="x"> </span><span class="kt">error</span><span class="p">)</span><span class="x">
+	</span><span class="n">Exec</span><span class="p">(</span><span class="n">query</span><span class="x"> </span><span class="kt">string</span><span class="p">,</span><span class="x"> </span><span class="n">args</span><span class="x"> </span><span class="o">...</span><span class="k">interface</span><span class="p">{})</span><span class="x"> </span><span class="p">(</span><span class="n">sql</span><span class="o">.</span><span class="n">Result</span><span class="p">,</span><span class="x"> </span><span class="kt">error</span><span class="p">)</span><span class="x">
+	</span><span class="n">Query</span><span class="p">(</span><span class="n">query</span><span class="x"> </span><span class="kt">string</span><span class="p">,</span><span class="x"> </span><span class="n">args</span><span class="x"> </span><span class="o">...</span><span class="k">interface</span><span class="p">{})</span><span class="x"> </span><span class="p">(</span><span class="o">*</span><span class="n">sql</span><span class="o">.</span><span class="n">Rows</span><span class="p">,</span><span class="x"> </span><span class="kt">error</span><span class="p">)</span><span class="x">
+	</span><span class="n">QueryRow</span><span class="p">(</span><span class="n">query</span><span class="x"> </span><span class="kt">string</span><span class="p">,</span><span class="x"> </span><span class="n">args</span><span class="x"> </span><span class="o">...</span><span class="k">interface</span><span class="p">{})</span><span class="x"> </span><span class="o">*</span><span class="n">sql</span><span class="o">.</span><span class="n">Row</span><span class="x">
+</span><span class="p">}</span></code></pre></figure>
+
+<p>到这里，可以简单总结一下通过 ORM 进行数据库查询的主要过程：</p>
+
+<ol>
+  <li>ORM 根据你注册的 ORM 对象以及你指定的 DB alias 生成要执行的 SQL。这些主要由各种 <code class="highlighter-rouge">dbBaser</code> 来实现，参考 <em>orm/db_postgres.go</em> 和 <em>orm/db.go</em>。</li>
+  <li>ORM 生成了 SQL 之后，调用了 <code class="highlighter-rouge">*sql.DB.Query()</code> 方法来执行 SQL。</li>
+  <li><code class="highlighter-rouge">sql.DB</code> 在执行查询的时候，则需要依赖于注册的 db driver 来实现，例如 Postgres 的 <em>github.com/lib/pq</em>。这一部分本文就不展开说了。</li>
+  <li>得到查询结果之后，再处理成 ORM 对象。</li>
+</ol>
+
+<h3 id="关系图">关系图</h3>
+
+<p>根据上面的代码分析，可以画一张简单的关系图：</p>
+
+<p><img src="http://diabloneo.github.io//assets/imgs/00030_beego_orm_db.png" alt="beego_orm_db" /></p>
+
+<h2 id="maxopenconns-and-maxidleconns">MaxOpenConns and MaxIdleConns</h2>
+
+<p>当我们注册一个 alias 的时候，除了 dsn，还会传递参数：<code class="highlighter-rouge">MaxOpenConns</code> 和 <code class="highlighter-rouge">MaxIdleConns</code>。这两个参数在 beego ORM 中并没有直接使用，而是为了传递给 <code class="highlighter-rouge">sql.DB</code> 对象。你可以看到 ORM 代码中调用了 <code class="highlighter-rouge">sql.DB</code> 的 <code class="highlighter-rouge">SetMaxIdleConns()</code> 和 <code class="highlighter-rouge">SetMaxOpenConns()</code> 两个方法。</p>
+
+<p>这两个参数最终会保存在 <code class="highlighter-rouge">sql.DB</code> 中：</p>
+
+<figure class="highlight"><pre><code class="language-go" data-lang="go"><span class="k">type</span><span class="x"> </span><span class="n">DB</span><span class="x"> </span><span class="k">struct</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="o">...</span><span class="x">
+	</span><span class="n">connector</span><span class="x"> </span><span class="n">driver</span><span class="o">.</span><span class="n">Connector</span><span class="x">
+
+	</span><span class="n">numOpen</span><span class="x">      </span><span class="kt">int</span><span class="x">    </span><span class="c">// number of opened and pending open connections</span><span class="x">
+
+	</span><span class="n">maxIdle</span><span class="x">           </span><span class="kt">int</span><span class="x">                    </span><span class="c">// zero means defaultMaxIdleConns; negative means 0</span><span class="x">
+	</span><span class="n">maxOpen</span><span class="x">           </span><span class="kt">int</span><span class="x">                    </span><span class="c">// &lt;= 0 means unlimited</span><span class="x">
+	</span><span class="o">...</span><span class="x">
+</span><span class="p">}</span></code></pre></figure>
+
+<p>这两个参数的作用是：</p>
+
+<ul>
+  <li><code class="highlighter-rouge">maxIdle</code>, <code class="highlighter-rouge">MaxIdleConns</code>: 控制最大空闲连接数。</li>
+  <li><code class="highlighter-rouge">maxOpen</code>, <code class="highlighter-rouge">MaxOpenConns</code>: 控制最大连接数。</li>
+</ul>
+
+<h3 id="数据库连接的创建和释放">数据库连接的创建和释放</h3>
+
+<p>为了理解 <code class="highlighter-rouge">MaxIdleConns</code> 和 <code class="highlighter-rouge">MaxOpenConns</code>，我们先来看一下连接的创建和释放的过程。当我们调用到 <code class="highlighter-rouge">sql.DB.Query()</code> 的时候，它会先调用 <code class="highlighter-rouge">DB.conn()</code> 方法来获取一个连接：</p>
+
+<h4 id="创建连接">创建连接</h4>
+
+<figure class="highlight"><pre><code class="language-go" data-lang="go"><span class="c">// Query executes a query that returns rows, typically a SELECT.</span><span class="x">
+</span><span class="c">// The args are for any placeholder parameters in the query.</span><span class="x">
+</span><span class="k">func</span><span class="x"> </span><span class="p">(</span><span class="n">db</span><span class="x"> </span><span class="o">*</span><span class="n">DB</span><span class="p">)</span><span class="x"> </span><span class="n">Query</span><span class="p">(</span><span class="n">query</span><span class="x"> </span><span class="kt">string</span><span class="p">,</span><span class="x"> </span><span class="n">args</span><span class="x"> </span><span class="o">...</span><span class="k">interface</span><span class="p">{})</span><span class="x"> </span><span class="p">(</span><span class="o">*</span><span class="n">Rows</span><span class="p">,</span><span class="x"> </span><span class="kt">error</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="k">return</span><span class="x"> </span><span class="n">db</span><span class="o">.</span><span class="n">QueryContext</span><span class="p">(</span><span class="n">context</span><span class="o">.</span><span class="n">Background</span><span class="p">(),</span><span class="x"> </span><span class="n">query</span><span class="p">,</span><span class="x"> </span><span class="n">args</span><span class="o">...</span><span class="p">)</span><span class="x">
+</span><span class="p">}</span><span class="x">
+
+</span><span class="k">func</span><span class="x"> </span><span class="p">(</span><span class="n">db</span><span class="x"> </span><span class="o">*</span><span class="n">DB</span><span class="p">)</span><span class="x"> </span><span class="n">query</span><span class="p">(</span><span class="n">ctx</span><span class="x"> </span><span class="n">context</span><span class="o">.</span><span class="n">Context</span><span class="p">,</span><span class="x"> </span><span class="n">query</span><span class="x"> </span><span class="kt">string</span><span class="p">,</span><span class="x"> </span><span class="n">args</span><span class="x"> </span><span class="p">[]</span><span class="k">interface</span><span class="p">{},</span><span class="x"> </span><span class="n">strategy</span><span class="x"> </span><span class="n">connReuseStrategy</span><span class="p">)</span><span class="x"> </span><span class="p">(</span><span class="o">*</span><span class="n">Rows</span><span class="p">,</span><span class="x"> </span><span class="kt">error</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="n">dc</span><span class="p">,</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">db</span><span class="o">.</span><span class="n">conn</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="x"> </span><span class="n">strategy</span><span class="p">)</span><span class="x">
+	</span><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
+		</span><span class="k">return</span><span class="x"> </span><span class="no">nil</span><span class="p">,</span><span class="x"> </span><span class="n">err</span><span class="x">
+	</span><span class="p">}</span><span class="x">
+
+	</span><span class="k">return</span><span class="x"> </span><span class="n">db</span><span class="o">.</span><span class="n">queryDC</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="x"> </span><span class="no">nil</span><span class="p">,</span><span class="x"> </span><span class="n">dc</span><span class="p">,</span><span class="x"> </span><span class="n">dc</span><span class="o">.</span><span class="n">releaseConn</span><span class="p">,</span><span class="x"> </span><span class="n">query</span><span class="p">,</span><span class="x"> </span><span class="n">args</span><span class="p">)</span><span class="x">
+</span><span class="p">}</span></code></pre></figure>
+
+<p><code class="highlighter-rouge">DB.conn()</code> 方法主要做了如下的事情：</p>
+
+<ol>
+  <li>如果找不到 cache 的 conn，就会尝试建立一个新的 conn。</li>
+  <li>判断 <code class="highlighter-rouge">db.numOpen</code> 是否超过了 <code class="highlighter-rouge">db.maxOpen</code>，如果超过了，就挂起等待有连接释放或者关闭。</li>
+  <li>否则，就创建一个新的 conn，然后 <code class="highlighter-rouge">db.numOpen++</code>。</li>
+</ol>
+
+<p>创建连接的方式，主要是调用驱动的方法，不在本文的范围内讨论。<code class="highlighter-rouge">DB.conn()</code> 方法如果成功，会返回一个 <code class="highlighter-rouge">*driverConn</code> 对象，这个对象代表数据库连接。</p>
+
+<h4 id="释放连接">释放连接</h4>
+
+<p>当一个连接要被释放时，也就是 <code class="highlighter-rouge">*driverConn</code> 对象要被释放时，这个对象的 <code class="highlighter-rouge">releaseConn()</code> 方法会被调用（上面的 <code class="highlighter-rouge">queryDC()</code> 方法的第四个参数就是这个 <code class="highlighter-rouge">releaseConn()</code> 方法：</p>
+
+<figure class="highlight"><pre><code class="language-go" data-lang="go"><span class="c">// driverConn wraps a driver.Conn with a mutex, to</span><span class="x">
+</span><span class="c">// be held during all calls into the Conn. (including any calls onto</span><span class="x">
+</span><span class="c">// interfaces returned via that Conn, such as calls on Tx, Stmt,</span><span class="x">
+</span><span class="c">// Result, Rows)</span><span class="x">
+</span><span class="k">type</span><span class="x"> </span><span class="n">driverConn</span><span class="x"> </span><span class="k">struct</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="n">db</span><span class="x">        </span><span class="o">*</span><span class="n">DB</span><span class="x">
+	</span><span class="n">createdAt</span><span class="x"> </span><span class="n">time</span><span class="o">.</span><span class="n">Time</span><span class="x">
+
+	</span><span class="n">sync</span><span class="o">.</span><span class="n">Mutex</span><span class="x">  </span><span class="c">// guards following</span><span class="x">
+	</span><span class="n">ci</span><span class="x">          </span><span class="n">driver</span><span class="o">.</span><span class="n">Conn</span><span class="x">
+	</span><span class="n">closed</span><span class="x">      </span><span class="kt">bool</span><span class="x">
+	</span><span class="n">finalClosed</span><span class="x"> </span><span class="kt">bool</span><span class="x"> </span><span class="c">// ci.Close has been called</span><span class="x">
+	</span><span class="n">openStmt</span><span class="x">    </span><span class="k">map</span><span class="p">[</span><span class="o">*</span><span class="n">driverStmt</span><span class="p">]</span><span class="kt">bool</span><span class="x">
+	</span><span class="n">lastErr</span><span class="x">     </span><span class="kt">error</span><span class="x"> </span><span class="c">// lastError captures the result of the session resetter.</span><span class="x">
+
+	</span><span class="c">// guarded by db.mu</span><span class="x">
+	</span><span class="n">inUse</span><span class="x">      </span><span class="kt">bool</span><span class="x">
+	</span><span class="n">onPut</span><span class="x">      </span><span class="p">[]</span><span class="k">func</span><span class="p">()</span><span class="x"> </span><span class="c">// code (with db.mu held) run when conn is next returned</span><span class="x">
+	</span><span class="n">dbmuClosed</span><span class="x"> </span><span class="kt">bool</span><span class="x">     </span><span class="c">// same as closed, but guarded by db.mu, for removeClosedStmtLocked</span><span class="x">
+</span><span class="p">}</span><span class="x">
+
+</span><span class="k">func</span><span class="x"> </span><span class="p">(</span><span class="n">dc</span><span class="x"> </span><span class="o">*</span><span class="n">driverConn</span><span class="p">)</span><span class="x"> </span><span class="n">releaseConn</span><span class="p">(</span><span class="n">err</span><span class="x"> </span><span class="kt">error</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="n">dc</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">putConn</span><span class="p">(</span><span class="n">dc</span><span class="p">,</span><span class="x"> </span><span class="n">err</span><span class="p">,</span><span class="x"> </span><span class="no">true</span><span class="p">)</span><span class="x">
+</span><span class="p">}</span></code></pre></figure>
+
+<p>其中的 <code class="highlighter-rouge">dc.db.putConn</code> 方法如下：</p>
+
+<figure class="highlight"><pre><code class="language-go" data-lang="go"><span class="c">// putConn adds a connection to the db's free pool.</span><span class="x">
+</span><span class="c">// err is optionally the last error that occurred on this connection.</span><span class="x">
+</span><span class="k">func</span><span class="x"> </span><span class="p">(</span><span class="n">db</span><span class="x"> </span><span class="o">*</span><span class="n">DB</span><span class="p">)</span><span class="x"> </span><span class="n">putConn</span><span class="p">(</span><span class="n">dc</span><span class="x"> </span><span class="o">*</span><span class="n">driverConn</span><span class="p">,</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="kt">error</span><span class="p">,</span><span class="x"> </span><span class="n">resetSession</span><span class="x"> </span><span class="kt">bool</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="n">db</span><span class="o">.</span><span class="n">mu</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span><span class="x">
+	</span><span class="k">if</span><span class="x"> </span><span class="o">!</span><span class="n">dc</span><span class="o">.</span><span class="n">inUse</span><span class="x"> </span><span class="p">{</span><span class="x">
+		</span><span class="k">if</span><span class="x"> </span><span class="n">debugGetPut</span><span class="x"> </span><span class="p">{</span><span class="x">
+			</span><span class="n">fmt</span><span class="o">.</span><span class="n">Printf</span><span class="p">(</span><span class="s">"putConn(%v) DUPLICATE was: %s</span><span class="se">\n\n</span><span class="s">PREVIOUS was: %s"</span><span class="p">,</span><span class="x"> </span><span class="n">dc</span><span class="p">,</span><span class="x"> </span><span class="n">stack</span><span class="p">(),</span><span class="x"> </span><span class="n">db</span><span class="o">.</span><span class="n">lastPut</span><span class="p">[</span><span class="n">dc</span><span class="p">])</span><span class="x">
+		</span><span class="p">}</span><span class="x">
+		</span><span class="nb">panic</span><span class="p">(</span><span class="s">"sql: connection returned that was never out"</span><span class="p">)</span><span class="x">
+	</span><span class="p">}</span><span class="x">
+	</span><span class="k">if</span><span class="x"> </span><span class="n">debugGetPut</span><span class="x"> </span><span class="p">{</span><span class="x">
+		</span><span class="n">db</span><span class="o">.</span><span class="n">lastPut</span><span class="p">[</span><span class="n">dc</span><span class="p">]</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="n">stack</span><span class="p">()</span><span class="x">
+	</span><span class="p">}</span><span class="x">
+	</span><span class="n">dc</span><span class="o">.</span><span class="n">inUse</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="no">false</span><span class="x">
+
+	</span><span class="k">for</span><span class="x"> </span><span class="n">_</span><span class="p">,</span><span class="x"> </span><span class="n">fn</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="k">range</span><span class="x"> </span><span class="n">dc</span><span class="o">.</span><span class="n">onPut</span><span class="x"> </span><span class="p">{</span><span class="x">
+		</span><span class="n">fn</span><span class="p">()</span><span class="x">
+	</span><span class="p">}</span><span class="x">
+	</span><span class="n">dc</span><span class="o">.</span><span class="n">onPut</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="no">nil</span><span class="x">
+
+	</span><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">==</span><span class="x"> </span><span class="n">driver</span><span class="o">.</span><span class="n">ErrBadConn</span><span class="x"> </span><span class="p">{</span><span class="x">
+		</span><span class="c">// Don't reuse bad connections.</span><span class="x">
+		</span><span class="c">// Since the conn is considered bad and is being discarded, treat it</span><span class="x">
+		</span><span class="c">// as closed. Don't decrement the open count here, finalClose will</span><span class="x">
+		</span><span class="c">// take care of that.</span><span class="x">
+		</span><span class="n">db</span><span class="o">.</span><span class="n">maybeOpenNewConnections</span><span class="p">()</span><span class="x">
+		</span><span class="n">db</span><span class="o">.</span><span class="n">mu</span><span class="o">.</span><span class="n">Unlock</span><span class="p">()</span><span class="x">
+		</span><span class="n">dc</span><span class="o">.</span><span class="n">Close</span><span class="p">()</span><span class="x">
+		</span><span class="k">return</span><span class="x">
+	</span><span class="p">}</span><span class="x">
+	</span><span class="k">if</span><span class="x"> </span><span class="n">putConnHook</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
+		</span><span class="n">putConnHook</span><span class="p">(</span><span class="n">db</span><span class="p">,</span><span class="x"> </span><span class="n">dc</span><span class="p">)</span><span class="x">
+	</span><span class="p">}</span><span class="x">
+	</span><span class="k">if</span><span class="x"> </span><span class="n">db</span><span class="o">.</span><span class="n">closed</span><span class="x"> </span><span class="p">{</span><span class="x">
+		</span><span class="c">// Connections do not need to be reset if they will be closed.</span><span class="x">
+		</span><span class="c">// Prevents writing to resetterCh after the DB has closed.</span><span class="x">
+		</span><span class="n">resetSession</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="no">false</span><span class="x">
+	</span><span class="p">}</span><span class="x">
+	</span><span class="k">if</span><span class="x"> </span><span class="n">resetSession</span><span class="x"> </span><span class="p">{</span><span class="x">
+		</span><span class="k">if</span><span class="x"> </span><span class="n">_</span><span class="p">,</span><span class="x"> </span><span class="n">resetSession</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="n">dc</span><span class="o">.</span><span class="n">ci</span><span class="o">.</span><span class="p">(</span><span class="n">driver</span><span class="o">.</span><span class="n">SessionResetter</span><span class="p">);</span><span class="x"> </span><span class="n">resetSession</span><span class="x"> </span><span class="p">{</span><span class="x">
+			</span><span class="c">// Lock the driverConn here so it isn't released until</span><span class="x">
+			</span><span class="c">// the connection is reset.</span><span class="x">
+			</span><span class="c">// The lock must be taken before the connection is put into</span><span class="x">
+			</span><span class="c">// the pool to prevent it from being taken out before it is reset.</span><span class="x">
+			</span><span class="n">dc</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span><span class="x">
+		</span><span class="p">}</span><span class="x">
+	</span><span class="p">}</span><span class="x">
+	</span><span class="n">added</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">db</span><span class="o">.</span><span class="n">putConnDBLocked</span><span class="p">(</span><span class="n">dc</span><span class="p">,</span><span class="x"> </span><span class="no">nil</span><span class="p">)</span><span class="x">
+	</span><span class="n">db</span><span class="o">.</span><span class="n">mu</span><span class="o">.</span><span class="n">Unlock</span><span class="p">()</span><span class="x">
+
+	</span><span class="k">if</span><span class="x"> </span><span class="o">!</span><span class="n">added</span><span class="x"> </span><span class="p">{</span><span class="x">
+		</span><span class="k">if</span><span class="x"> </span><span class="n">resetSession</span><span class="x"> </span><span class="p">{</span><span class="x">
+			</span><span class="n">dc</span><span class="o">.</span><span class="n">Unlock</span><span class="p">()</span><span class="x">
+		</span><span class="p">}</span><span class="x">
+		</span><span class="n">dc</span><span class="o">.</span><span class="n">Close</span><span class="p">()</span><span class="x">
+		</span><span class="k">return</span><span class="x">
+	</span><span class="p">}</span><span class="x">
+	</span><span class="k">if</span><span class="x"> </span><span class="o">!</span><span class="n">resetSession</span><span class="x"> </span><span class="p">{</span><span class="x">
+		</span><span class="k">return</span><span class="x">
+	</span><span class="p">}</span><span class="x">
+	</span><span class="k">select</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="k">default</span><span class="o">:</span><span class="x">
+		</span><span class="c">// If the resetterCh is blocking then mark the connection</span><span class="x">
+		</span><span class="c">// as bad and continue on.</span><span class="x">
+		</span><span class="n">dc</span><span class="o">.</span><span class="n">lastErr</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="n">driver</span><span class="o">.</span><span class="n">ErrBadConn</span><span class="x">
+		</span><span class="n">dc</span><span class="o">.</span><span class="n">Unlock</span><span class="p">()</span><span class="x">
+	</span><span class="k">case</span><span class="x"> </span><span class="n">db</span><span class="o">.</span><span class="n">resetterCh</span><span class="x"> </span><span class="o">&lt;-</span><span class="x"> </span><span class="n">dc</span><span class="o">:</span><span class="x">
+	</span><span class="p">}</span><span class="x">
+</span><span class="p">}</span></code></pre></figure>
+
+<p>这里的重点是 <code class="highlighter-rouge">added := db.putConnDBLocked(dc, nil)</code> 这行。如果这里返回的 <code class="highlighter-rouge">added == false</code>，那么这个连接就会被关闭，否则就会保留。</p>
+
+<figure class="highlight"><pre><code class="language-go" data-lang="go"><span class="c">// Satisfy a connRequest or put the driverConn in the idle pool and return true</span><span class="x">
+</span><span class="c">// or return false.</span><span class="x">
+</span><span class="c">// putConnDBLocked will satisfy a connRequest if there is one, or it will</span><span class="x">
+</span><span class="c">// return the *driverConn to the freeConn list if err == nil and the idle</span><span class="x">
+</span><span class="c">// connection limit will not be exceeded.</span><span class="x">
+</span><span class="c">// If err != nil, the value of dc is ignored.</span><span class="x">
+</span><span class="c">// If err == nil, then dc must not equal nil.</span><span class="x">
+</span><span class="c">// If a connRequest was fulfilled or the *driverConn was placed in the</span><span class="x">
+</span><span class="c">// freeConn list, then true is returned, otherwise false is returned.</span><span class="x">
+</span><span class="k">func</span><span class="x"> </span><span class="p">(</span><span class="n">db</span><span class="x"> </span><span class="o">*</span><span class="n">DB</span><span class="p">)</span><span class="x"> </span><span class="n">putConnDBLocked</span><span class="p">(</span><span class="n">dc</span><span class="x"> </span><span class="o">*</span><span class="n">driverConn</span><span class="p">,</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="kt">error</span><span class="p">)</span><span class="x"> </span><span class="kt">bool</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="k">if</span><span class="x"> </span><span class="n">db</span><span class="o">.</span><span class="n">closed</span><span class="x"> </span><span class="p">{</span><span class="x">
+		</span><span class="k">return</span><span class="x"> </span><span class="no">false</span><span class="x">
+	</span><span class="p">}</span><span class="x">
+	</span><span class="k">if</span><span class="x"> </span><span class="n">db</span><span class="o">.</span><span class="n">maxOpen</span><span class="x"> </span><span class="o">&gt;</span><span class="x"> </span><span class="m">0</span><span class="x"> </span><span class="o">&amp;&amp;</span><span class="x"> </span><span class="n">db</span><span class="o">.</span><span class="n">numOpen</span><span class="x"> </span><span class="o">&gt;</span><span class="x"> </span><span class="n">db</span><span class="o">.</span><span class="n">maxOpen</span><span class="x"> </span><span class="p">{</span><span class="x">
+		</span><span class="k">return</span><span class="x"> </span><span class="no">false</span><span class="x">
+	</span><span class="p">}</span><span class="x">
+	</span><span class="k">if</span><span class="x"> </span><span class="n">c</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="nb">len</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">connRequests</span><span class="p">);</span><span class="x"> </span><span class="n">c</span><span class="x"> </span><span class="o">&gt;</span><span class="x"> </span><span class="m">0</span><span class="x"> </span><span class="p">{</span><span class="x">
+		</span><span class="k">var</span><span class="x"> </span><span class="n">req</span><span class="x"> </span><span class="k">chan</span><span class="x"> </span><span class="n">connRequest</span><span class="x">
+		</span><span class="k">var</span><span class="x"> </span><span class="n">reqKey</span><span class="x"> </span><span class="kt">uint64</span><span class="x">
+		</span><span class="k">for</span><span class="x"> </span><span class="n">reqKey</span><span class="p">,</span><span class="x"> </span><span class="n">req</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="k">range</span><span class="x"> </span><span class="n">db</span><span class="o">.</span><span class="n">connRequests</span><span class="x"> </span><span class="p">{</span><span class="x">
+			</span><span class="k">break</span><span class="x">
+		</span><span class="p">}</span><span class="x">
+		</span><span class="nb">delete</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">connRequests</span><span class="p">,</span><span class="x"> </span><span class="n">reqKey</span><span class="p">)</span><span class="x"> </span><span class="c">// Remove from pending requests.</span><span class="x">
+		</span><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">==</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
+			</span><span class="n">dc</span><span class="o">.</span><span class="n">inUse</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="no">true</span><span class="x">
+		</span><span class="p">}</span><span class="x">
+		</span><span class="n">req</span><span class="x"> </span><span class="o">&lt;-</span><span class="x"> </span><span class="n">connRequest</span><span class="p">{</span><span class="x">
+			</span><span class="n">conn</span><span class="o">:</span><span class="x"> </span><span class="n">dc</span><span class="p">,</span><span class="x">
+			</span><span class="n">err</span><span class="o">:</span><span class="x">  </span><span class="n">err</span><span class="p">,</span><span class="x">
+		</span><span class="p">}</span><span class="x">
+		</span><span class="k">return</span><span class="x"> </span><span class="no">true</span><span class="x">
+	</span><span class="p">}</span><span class="x"> </span><span class="k">else</span><span class="x"> </span><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">==</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="o">&amp;&amp;</span><span class="x"> </span><span class="o">!</span><span class="n">db</span><span class="o">.</span><span class="n">closed</span><span class="x"> </span><span class="p">{</span><span class="x">
+		</span><span class="k">if</span><span class="x"> </span><span class="n">db</span><span class="o">.</span><span class="n">maxIdleConnsLocked</span><span class="p">()</span><span class="x"> </span><span class="o">&gt;</span><span class="x"> </span><span class="nb">len</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">freeConn</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
+			</span><span class="n">db</span><span class="o">.</span><span class="n">freeConn</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="nb">append</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">freeConn</span><span class="p">,</span><span class="x"> </span><span class="n">dc</span><span class="p">)</span><span class="x">
+			</span><span class="n">db</span><span class="o">.</span><span class="n">startCleanerLocked</span><span class="p">()</span><span class="x">
+			</span><span class="k">return</span><span class="x"> </span><span class="no">true</span><span class="x">
+		</span><span class="p">}</span><span class="x">
+		</span><span class="n">db</span><span class="o">.</span><span class="n">maxIdleClosed</span><span class="o">++</span><span class="x">
+	</span><span class="p">}</span><span class="x">
+	</span><span class="k">return</span><span class="x"> </span><span class="no">false</span><span class="x">
+</span><span class="p">}</span><span class="x">
+
+</span><span class="k">func</span><span class="x"> </span><span class="p">(</span><span class="n">db</span><span class="x"> </span><span class="o">*</span><span class="n">DB</span><span class="p">)</span><span class="x"> </span><span class="n">maxIdleConnsLocked</span><span class="p">()</span><span class="x"> </span><span class="kt">int</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="n">n</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">db</span><span class="o">.</span><span class="n">maxIdle</span><span class="x">
+	</span><span class="k">switch</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="k">case</span><span class="x"> </span><span class="n">n</span><span class="x"> </span><span class="o">==</span><span class="x"> </span><span class="m">0</span><span class="o">:</span><span class="x">
+		</span><span class="c">// TODO(bradfitz): ask driver, if supported, for its default preference</span><span class="x">
+		</span><span class="k">return</span><span class="x"> </span><span class="n">defaultMaxIdleConns</span><span class="x">
+	</span><span class="k">case</span><span class="x"> </span><span class="n">n</span><span class="x"> </span><span class="o">&lt;</span><span class="x"> </span><span class="m">0</span><span class="o">:</span><span class="x">
+		</span><span class="k">return</span><span class="x"> </span><span class="m">0</span><span class="x">
+	</span><span class="k">default</span><span class="o">:</span><span class="x">
+		</span><span class="k">return</span><span class="x"> </span><span class="n">n</span><span class="x">
+	</span><span class="p">}</span><span class="x">
+</span><span class="p">}</span></code></pre></figure>
+
+<p>这个方法要做几个事情：</p>
+
+<ol>
+  <li>如果 <code class="highlighter-rouge">db.numOpen &gt; db.maxOpen</code>，那么说明打开的连接数已经超过上限，返回 <code class="highlighter-rouge">false</code>。</li>
+  <li>如果有 goroutine 正在等待请求，那么就会将当前连接分配给那个 goroutine，返回 <code class="highlighter-rouge">true</code>。</li>
+  <li>如果没有 goroutine 正在等待请求，就会判断空闲数量是否达到上限，如果还没有达到，那么就会将连接加入到空闲列表，返回 <code class="highlighter-rouge">true</code>。否则，就会返回 <code class="highlighter-rouge">false</code>。</li>
+</ol>
+
+<p>那么 <code class="highlighter-rouge">releaseConn()</code> 什么时候会被调用？这个我们需要看两个地方的代码，首先是 <code class="highlighter-rouge">sql.DB.queryDC()</code> 方法的最后一部分：</p>
+
+<figure class="highlight"><pre><code class="language-go" data-lang="go"><span class="k">func</span><span class="x"> </span><span class="p">(</span><span class="n">db</span><span class="x"> </span><span class="o">*</span><span class="n">DB</span><span class="p">)</span><span class="x"> </span><span class="n">queryDC</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="x"> </span><span class="n">txctx</span><span class="x"> </span><span class="n">context</span><span class="o">.</span><span class="n">Context</span><span class="p">,</span><span class="x"> </span><span class="n">dc</span><span class="x"> </span><span class="o">*</span><span class="n">driverConn</span><span class="p">,</span><span class="x"> </span><span class="n">releaseConn</span><span class="x"> </span><span class="k">func</span><span class="p">(</span><span class="kt">error</span><span class="p">),</span><span class="x"> </span><span class="n">query</span><span class="x"> </span><span class="kt">string</span><span class="p">,</span><span class="x"> </span><span class="n">args</span><span class="x"> </span><span class="p">[]</span><span class="k">interface</span><span class="p">{})</span><span class="x"> </span><span class="p">(</span><span class="o">*</span><span class="n">Rows</span><span class="p">,</span><span class="x"> </span><span class="kt">error</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="o">...</span><span class="x">
+
+	</span><span class="c">// Note: ownership of ci passes to the *Rows, to be freed</span><span class="x">
+	</span><span class="c">// with releaseConn.</span><span class="x">
+	</span><span class="n">rows</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="o">&amp;</span><span class="n">Rows</span><span class="p">{</span><span class="x">
+		</span><span class="n">dc</span><span class="o">:</span><span class="x">          </span><span class="n">dc</span><span class="p">,</span><span class="x">
+		</span><span class="n">releaseConn</span><span class="o">:</span><span class="x"> </span><span class="n">releaseConn</span><span class="p">,</span><span class="x">
+		</span><span class="n">rowsi</span><span class="o">:</span><span class="x">       </span><span class="n">rowsi</span><span class="p">,</span><span class="x">
+		</span><span class="n">closeStmt</span><span class="o">:</span><span class="x">   </span><span class="n">ds</span><span class="p">,</span><span class="x">
+	</span><span class="p">}</span><span class="x">
+	</span><span class="n">rows</span><span class="o">.</span><span class="n">initContextClose</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="x"> </span><span class="n">txctx</span><span class="p">)</span><span class="x">
+	</span><span class="k">return</span><span class="x"> </span><span class="n">rows</span><span class="p">,</span><span class="x"> </span><span class="no">nil</span><span class="x">
+</span><span class="p">}</span></code></pre></figure>
+
+<p>这个方法返回的 <code class="highlighter-rouge">*sql.Rows</code> 对象是查询的行对象，其中的 <code class="highlighter-rouge">releaseConn</code> 对象就被赋值为 <code class="highlighter-rouge">driverConn.releaseConn()</code>。接下来，再看下 ORM 里的 <code class="highlighter-rouge">ReadBatch()</code> 方法：</p>
+
+<figure class="highlight"><pre><code class="language-go" data-lang="go"><span class="x">	</span><span class="k">var</span><span class="x"> </span><span class="n">rs</span><span class="x"> </span><span class="o">*</span><span class="n">sql</span><span class="o">.</span><span class="n">Rows</span><span class="x">
+	</span><span class="n">r</span><span class="p">,</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">q</span><span class="o">.</span><span class="n">Query</span><span class="p">(</span><span class="n">query</span><span class="p">,</span><span class="x"> </span><span class="n">args</span><span class="o">...</span><span class="p">)</span><span class="x">
+	</span><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
+		</span><span class="k">return</span><span class="x"> </span><span class="m">0</span><span class="p">,</span><span class="x"> </span><span class="n">err</span><span class="x">
+	</span><span class="p">}</span><span class="x">
+	</span><span class="n">rs</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="n">r</span><span class="x">
+
+	</span><span class="n">refs</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="nb">make</span><span class="p">([]</span><span class="k">interface</span><span class="p">{},</span><span class="x"> </span><span class="n">colsNum</span><span class="p">)</span><span class="x">
+	</span><span class="k">for</span><span class="x"> </span><span class="n">i</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="k">range</span><span class="x"> </span><span class="n">refs</span><span class="x"> </span><span class="p">{</span><span class="x">
+		</span><span class="k">var</span><span class="x"> </span><span class="n">ref</span><span class="x"> </span><span class="k">interface</span><span class="p">{}</span><span class="x">
+		</span><span class="n">refs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="x"> </span><span class="o">=</span><span class="x"> </span><span class="o">&amp;</span><span class="n">ref</span><span class="x">
+	</span><span class="p">}</span><span class="x">
+
+	</span><span class="k">defer</span><span class="x"> </span><span class="n">rs</span><span class="o">.</span><span class="n">Close</span><span class="p">()</span></code></pre></figure>
+
+<p>当我们从这个方法返回时，也就是我们调用的 <code class="highlighter-rouge">querySet.All()</code> 方法返回时，<code class="highlighter-rouge">*sql.Rows.Close()</code> 会被调用，其中会调用 <code class="highlighter-rouge">releaseConn()</code>。</p>
+
+<h4 id="小结">小结</h4>
+
+<ul>
+  <li><code class="highlighter-rouge">maxIdle</code> 表示允许的最大空闲连接，<code class="highlighter-rouge">&lt;=0</code> 表示不允许空闲连接。</li>
+  <li><code class="highlighter-rouge">maxOpen</code> 表示允许的最大连接数，<code class="highlighter-rouge">&lt;= 0</code> 表示不限制连接数。</li>
+  <li>在 beego ORM 的实现中，一次查询结束之后，就会释放掉连接。</li>
+</ul>
+
+<p>另外，设置的接口中会保证 <code class="highlighter-rouge">maxOpen &gt;= maxIdle</code>。</p>
+
+    <br />
+
+    <div>
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议</a>进行许可。
+    </div>
+
+    <br />
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+  </div>
+
+  
+    <div class="post-comment">
+      
+<div id="disqus_thread"></div>
+<script>
+var disqus_config = function () {
+  this.page.url = "http://diabloneo.github.io/2020/04/26/beego-ORM-and-Golang-sql-DB/"; // <--- use canonical URL
+  this.page.identifier = "/2020/04/26/beego-ORM-and-Golang-sql-DB";
+};
+(function() { // DON'T EDIT BELOW THIS LINE
+  var d = document, s = d.createElement('script');
+
+  s.src = 'https://coffee-coke-and-code.disqus.com/embed.js';
+
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+    </div>
+  
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Coffee, Coke and Code</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>Coffee, Coke and Code</li>
+          <li><a href="mailto:diabloneo@gmail.com">diabloneo@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <i class="fa fa-github"></i>
+            <a href="https://github.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <i class="fa fa-twitter"></i>
+            <a href="https://twitter.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <i class="fa fa-weibo"></i>
+            <a href="https://weibo.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Archive diabloneo's articles.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+    
+      <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-78067453-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+    
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
+  </body>
+
+</html>
