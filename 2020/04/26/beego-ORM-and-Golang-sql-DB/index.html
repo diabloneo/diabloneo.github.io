@@ -544,7 +544,7 @@
 <h4 id="小结">小结</h4>
 
 <ul>
-  <li><code class="highlighter-rouge">maxIdle</code> 表示允许的最大空闲连接，<code class="highlighter-rouge">&lt;=0</code> 表示不允许空闲连接。</li>
+  <li><code class="highlighter-rouge">maxIdle</code> 表示允许的最大空闲连接，<code class="highlighter-rouge">&lt; 0</code> 表示不允许空闲连接, <code class="highlighter-rouge">== 0</code> 表示允许两个空闲连接，<code class="highlighter-rouge">&gt; 0</code> 表示允许指定的空闲连接。</li>
   <li><code class="highlighter-rouge">maxOpen</code> 表示允许的最大连接数，<code class="highlighter-rouge">&lt;= 0</code> 表示不限制连接数。</li>
   <li>在 beego ORM 的实现中，一次查询结束之后，就会释放掉连接。</li>
 </ul>

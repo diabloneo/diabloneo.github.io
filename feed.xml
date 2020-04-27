@@ -6,8 +6,8 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 26 Apr 2020 23:31:01 +0800</pubDate>
-    <lastBuildDate>Sun, 26 Apr 2020 23:31:01 +0800</lastBuildDate>
+    <pubDate>Mon, 27 Apr 2020 11:58:31 +0800</pubDate>
+    <lastBuildDate>Mon, 27 Apr 2020 11:58:31 +0800</lastBuildDate>
     <generator>Jekyll v3.7.3</generator>
     
       <item>
@@ -441,7 +441,7 @@
 &lt;h4 id=&quot;小结&quot;&gt;小结&lt;/h4&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;maxIdle&lt;/code&gt; 表示允许的最大空闲连接，&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;=0&lt;/code&gt; 表示不允许空闲连接。&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;maxIdle&lt;/code&gt; 表示允许的最大空闲连接，&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt; 0&lt;/code&gt; 表示不允许空闲连接, &lt;code class=&quot;highlighter-rouge&quot;&gt;== 0&lt;/code&gt; 表示允许两个空闲连接，&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;gt; 0&lt;/code&gt; 表示允许指定的空闲连接。&lt;/li&gt;
   &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;maxOpen&lt;/code&gt; 表示允许的最大连接数，&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;= 0&lt;/code&gt; 表示不限制连接数。&lt;/li&gt;
   &lt;li&gt;在 beego ORM 的实现中，一次查询结束之后，就会释放掉连接。&lt;/li&gt;
 &lt;/ul&gt;
