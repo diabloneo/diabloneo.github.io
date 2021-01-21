@@ -115,7 +115,7 @@
 
 <h2 id="build-cache">Build Cache</h2>
 
-<p>意思就是会把编译过程的中间结果cache下来，从而实现增量编译。原来需要通过<code class="highlighter-rouge">go build -i</code>命令来实现，现在go build命令默认启用了cache。启用cache后的效果是很明显的，我司的一个大程序的编译时间如下：</p>
+<p>意思就是会把编译过程的中间结果cache下来，从而实现增量编译。原来需要通过<code class="language-plaintext highlighter-rouge">go build -i</code>命令来实现，现在go build命令默认启用了cache。启用cache后的效果是很明显的，我司的一个大程序的编译时间如下：</p>
 
 <ul>
   <li>全新编译，耗时107秒。</li>
@@ -124,7 +124,7 @@
 
 <h2 id="test-cache">Test Cache</h2>
 
-<p>测试现在也默认启用了cache，在内容没有变化的情况下，对于同样的参数的测试，会直接使用cache的测试结果，也就是同样的测试不会重复跑。当使用cache的结果时，go test命令最后会显示 <code class="highlighter-rouge">(cached)</code> 的字样:</p>
+<p>测试现在也默认启用了cache，在内容没有变化的情况下，对于同样的参数的测试，会直接使用cache的测试结果，也就是同样的测试不会重复跑。当使用cache的结果时，go test命令最后会显示 <code class="language-plaintext highlighter-rouge">(cached)</code> 的字样:</p>
 
 <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>➜ ~/go/src/project git:<span class="o">(</span>feature<span class="o">)</span> ✗  <span class="nv">$ </span>go <span class="nb">test </span>project/dp/master
 ok      project/dp/master    <span class="o">(</span>cached<span class="o">)</span>
@@ -137,8 +137,8 @@ ok      project/dp/master    <span class="o">(</span>cached<span class="o">)</sp
 <p>如果要清除cache，可以使用如下两个命令:</p>
 
 <ul>
-  <li><code class="highlighter-rouge">go clean -cache</code> 清除build cache。</li>
-  <li><code class="highlighter-rouge">go clean -testcache</code> 清除test cache。</li>
+  <li><code class="language-plaintext highlighter-rouge">go clean -cache</code> 清除build cache。</li>
+  <li><code class="language-plaintext highlighter-rouge">go clean -testcache</code> 清除test cache。</li>
 </ul>
 
     <br />

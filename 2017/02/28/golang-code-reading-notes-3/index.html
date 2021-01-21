@@ -107,29 +107,29 @@
       <div class="addthis_inline_share_toolbox"></div>
     
     <br />
-      <p>在<a href="/2017/02/26/golang-code-reading-notes-1/">第一篇文章go build(1)</a>中，我们提到了<em>cmd/go/pkg.go</em>文件中的<code class="highlighter-rouge">loadImport</code>函数。该函数有两个主要的步骤，一个是调用<code class="highlighter-rouge">buildContext.Import()</code>方法来获得要构建的package的基本信息，这个我们在<a href="/2017/02/27/golang-code-reading-notes-2/">上一篇文章go build(2)</a>中已经说明了其内部逻辑，另外一个调用是<code class="highlighter-rouge">p.load(stk, bp, err)</code>，也就是载入这个package的依赖。本文要看的是第二个步骤的具体过程。</p>
+      <p>在<a href="/2017/02/26/golang-code-reading-notes-1/">第一篇文章go build(1)</a>中，我们提到了<em>cmd/go/pkg.go</em>文件中的<code class="language-plaintext highlighter-rouge">loadImport</code>函数。该函数有两个主要的步骤，一个是调用<code class="language-plaintext highlighter-rouge">buildContext.Import()</code>方法来获得要构建的package的基本信息，这个我们在<a href="/2017/02/27/golang-code-reading-notes-2/">上一篇文章go build(2)</a>中已经说明了其内部逻辑，另外一个调用是<code class="language-plaintext highlighter-rouge">p.load(stk, bp, err)</code>，也就是载入这个package的依赖。本文要看的是第二个步骤的具体过程。</p>
 
-<h2 id="cmdgopackage对象的load方法"><code class="highlighter-rouge">cmd/go.Package</code>对象的<code class="highlighter-rouge">load</code>方法</h2>
+<h2 id="cmdgopackage对象的load方法"><code class="language-plaintext highlighter-rouge">cmd/go.Package</code>对象的<code class="language-plaintext highlighter-rouge">load</code>方法</h2>
 
 <p>该方法位于<em>cmd/go/pkg.go</em>文件中。</p>
 
 <h3 id="调用说明">调用说明</h3>
 
-<p>在<code class="highlighter-rouge">loadImport</code>函数中执行的代码是<code class="highlighter-rouge">p.load(stk, bp, err)</code>：</p>
+<p>在<code class="language-plaintext highlighter-rouge">loadImport</code>函数中执行的代码是<code class="language-plaintext highlighter-rouge">p.load(stk, bp, err)</code>：</p>
 
 <ul>
-  <li><code class="highlighter-rouge">p</code>是<code class="highlighter-rouge">cmd/go.Package</code>对象，这个是表示一个要构建的package。相对的<code class="highlighter-rouge">go/build.Package</code>表示一个被import的package。前者包含的信息更多。</li>
-  <li><code class="highlighter-rouge">stk</code>是一个表示依赖深度的栈，用于记录import路径的一个栈。通过栈的<strong>push</strong>和<strong>pop</strong>操作，不断的记录import的路径，栈顶是当前正在处理的package，栈顶下的那个package则import了栈顶package。</li>
-  <li><code class="highlighter-rouge">bp</code> 是<code class="highlighter-rouge">buildContext.Import</code>方法返回的对象，是一个<code class="highlighter-rouge">go/build.Package</code>对象，包含了要构建的package的基本信息。</li>
+  <li><code class="language-plaintext highlighter-rouge">p</code>是<code class="language-plaintext highlighter-rouge">cmd/go.Package</code>对象，这个是表示一个要构建的package。相对的<code class="language-plaintext highlighter-rouge">go/build.Package</code>表示一个被import的package。前者包含的信息更多。</li>
+  <li><code class="language-plaintext highlighter-rouge">stk</code>是一个表示依赖深度的栈，用于记录import路径的一个栈。通过栈的<strong>push</strong>和<strong>pop</strong>操作，不断的记录import的路径，栈顶是当前正在处理的package，栈顶下的那个package则import了栈顶package。</li>
+  <li><code class="language-plaintext highlighter-rouge">bp</code> 是<code class="language-plaintext highlighter-rouge">buildContext.Import</code>方法返回的对象，是一个<code class="language-plaintext highlighter-rouge">go/build.Package</code>对象，包含了要构建的package的基本信息。</li>
 </ul>
 
-<h3 id="load方法的内部逻辑"><code class="highlighter-rouge">load</code>方法的内部逻辑</h3>
+<h3 id="load方法的内部逻辑"><code class="language-plaintext highlighter-rouge">load</code>方法的内部逻辑</h3>
 
-<p>强调一下，这里我们还是以最常见的import path形式，类似<strong>goexample/hello</strong>这样，来看<code class="highlighter-rouge">load</code>方法的内部逻辑。</p>
+<p>强调一下，这里我们还是以最常见的import path形式，类似<strong>goexample/hello</strong>这样，来看<code class="language-plaintext highlighter-rouge">load</code>方法的内部逻辑。</p>
 
 <h4 id="拷贝信息">拷贝信息</h4>
 
-<p>首先执行<code class="highlighter-rouge">p.copyBuild(bp)</code>将<code class="highlighter-rouge">go/build.Package</code>对象的内容拷贝到<code class="highlighter-rouge">p</code>，也就是<code class="highlighter-rouge">cmd/go.Package</code>中，也会把<code class="highlighter-rouge">bp</code>赋值给<code class="highlighter-rouge">p.build</code>。</p>
+<p>首先执行<code class="language-plaintext highlighter-rouge">p.copyBuild(bp)</code>将<code class="language-plaintext highlighter-rouge">go/build.Package</code>对象的内容拷贝到<code class="language-plaintext highlighter-rouge">p</code>，也就是<code class="language-plaintext highlighter-rouge">cmd/go.Package</code>中，也会把<code class="language-plaintext highlighter-rouge">bp</code>赋值给<code class="language-plaintext highlighter-rouge">p.build</code>。</p>
 
 <h4 id="构建结果存放位置的处理">构建结果存放位置的处理</h4>
 
@@ -137,12 +137,12 @@
 
 <ol>
   <li>package的名称是<strong>main</strong>，也就是构建结果是一个可执行程序。这个时候构建结果的存放目录是在一个<em>bin</em>目录下，最常见的情况就是<em>GOPATH/bin</em>目录，输出的文件名是package的目录名。</li>
-  <li>如果是非<strong>main</strong>的package，那么一般使用<code class="highlighter-rouge">p.build.PkgObj</code>这个路径作为目标路径。这个路径在上一篇文章中有描述了生成过程，类似<em>GOPATH/pkg/linux_amd64/goexample/hello.a</em>。</li>
+  <li>如果是非<strong>main</strong>的package，那么一般使用<code class="language-plaintext highlighter-rouge">p.build.PkgObj</code>这个路径作为目标路径。这个路径在上一篇文章中有描述了生成过程，类似<em>GOPATH/pkg/linux_amd64/goexample/hello.a</em>。</li>
 </ol>
 
 <h4 id="依赖的预处理">依赖的预处理</h4>
 
-<p>之前已经得到了要构建的package的依赖，保存在<code class="highlighter-rouge">p.build.Imports</code>中，又被拷贝到<code class="highlighter-rouge">p.Imports</code>中。这些只是源码中写的<code class="highlighter-rouge">import</code>语句的依赖，构建过程还需要加上其他的内部依赖。对于最常见的情况，还需要把<strong>runtime</strong>增加到依赖中。其他的情况会根据是否有cgo、架构平台、是否是标准库以及命令行参数等条件来增加相应的依赖。经过预处理的依赖存放在变量<code class="highlighter-rouge">importPaths</code>中。</p>
+<p>之前已经得到了要构建的package的依赖，保存在<code class="language-plaintext highlighter-rouge">p.build.Imports</code>中，又被拷贝到<code class="language-plaintext highlighter-rouge">p.Imports</code>中。这些只是源码中写的<code class="language-plaintext highlighter-rouge">import</code>语句的依赖，构建过程还需要加上其他的内部依赖。对于最常见的情况，还需要把<strong>runtime</strong>增加到依赖中。其他的情况会根据是否有cgo、架构平台、是否是标准库以及命令行参数等条件来增加相应的依赖。经过预处理的依赖存放在变量<code class="language-plaintext highlighter-rouge">importPaths</code>中。</p>
 
 <h4 id="文件的预处理">文件的预处理</h4>
 
@@ -152,17 +152,17 @@
 
 <h4 id="处理依赖">处理依赖</h4>
 
-<p>接下来，<code class="highlighter-rouge">load</code>方法开始处理依赖，也就是<code class="highlighter-rouge">importPaths</code>变量中的package。这里会遍历每个ImportPath，然后依次处理。</p>
+<p>接下来，<code class="language-plaintext highlighter-rouge">load</code>方法开始处理依赖，也就是<code class="language-plaintext highlighter-rouge">importPaths</code>变量中的package。这里会遍历每个ImportPath，然后依次处理。</p>
 
 <ol>
   <li>首先，跳过ImportPath为<strong>C</strong>的package，因为这是cgo的package，不属于依赖。</li>
-  <li>执行<code class="highlighter-rouge">p1 := loadImport(path, p.Dir, p, stk, p.build.ImportPos[path], useVendor)</code>。看到<code class="highlighter-rouge">loadImport</code>函数是不是觉得很熟悉？没错，这个就是在<a href="% post_url 2017-02-26-golang-code-reading-notes-1 %}">文章go build(1)</a>中提到的<code class="highlighter-rouge">loadImport</code>函数，也就是调用了我们正在讲解的这个<code class="highlighter-rouge">cmd/go.Package</code>对象的<code class="highlighter-rouge">load</code>方法。所以，这里是一个递归调用，不过同样path的package只会收集一次信息，之后再遇到会直接从cache返回，这个在<a href="% post_url 2017-02-26-golang-code-reading-notes-1 %}">文章go build(1)</a>中已经提到过了。</li>
+  <li>执行<code class="language-plaintext highlighter-rouge">p1 := loadImport(path, p.Dir, p, stk, p.build.ImportPos[path], useVendor)</code>。看到<code class="language-plaintext highlighter-rouge">loadImport</code>函数是不是觉得很熟悉？没错，这个就是在<a href="% post_url 2017-02-26-golang-code-reading-notes-1 %}">文章go build(1)</a>中提到的<code class="language-plaintext highlighter-rouge">loadImport</code>函数，也就是调用了我们正在讲解的这个<code class="language-plaintext highlighter-rouge">cmd/go.Package</code>对象的<code class="language-plaintext highlighter-rouge">load</code>方法。所以，这里是一个递归调用，不过同样path的package只会收集一次信息，之后再遇到会直接从cache返回，这个在<a href="% post_url 2017-02-26-golang-code-reading-notes-1 %}">文章go build(1)</a>中已经提到过了。</li>
   <li>判断一下import进来的package的名称是否是<strong>main</strong>，是的话就报错。</li>
-  <li>把<code class="highlighter-rouge">p1</code>加入到<code class="highlighter-rouge">deps</code>这个map中，这样<code class="highlighter-rouge">deps</code>就是一个包含所有package <code class="highlighter-rouge">p</code>的依赖的map。同样，也把<code class="highlighter-rouge">p1</code>加入到<code class="highlighter-rouge">imports</code>这个slice中，这样<code class="highlighter-rouge">imports</code>就是一个包含所有package <code class="highlighter-rouge">p</code>的依赖的slice。</li>
-  <li>如果<code class="highlighter-rouge">p1.Incomplete</code>为<code class="highlighter-rouge">true</code>，那么也设置<code class="highlighter-rouge">p.Incomplete</code>为<code class="highlighter-rouge">true</code>。<code class="highlighter-rouge">Incomplete</code>表示在载入这个package或者它的依赖时出现错误。</li>
+  <li>把<code class="language-plaintext highlighter-rouge">p1</code>加入到<code class="language-plaintext highlighter-rouge">deps</code>这个map中，这样<code class="language-plaintext highlighter-rouge">deps</code>就是一个包含所有package <code class="language-plaintext highlighter-rouge">p</code>的依赖的map。同样，也把<code class="language-plaintext highlighter-rouge">p1</code>加入到<code class="language-plaintext highlighter-rouge">imports</code>这个slice中，这样<code class="language-plaintext highlighter-rouge">imports</code>就是一个包含所有package <code class="language-plaintext highlighter-rouge">p</code>的依赖的slice。</li>
+  <li>如果<code class="language-plaintext highlighter-rouge">p1.Incomplete</code>为<code class="language-plaintext highlighter-rouge">true</code>，那么也设置<code class="language-plaintext highlighter-rouge">p.Incomplete</code>为<code class="language-plaintext highlighter-rouge">true</code>。<code class="language-plaintext highlighter-rouge">Incomplete</code>表示在载入这个package或者它的依赖时出现错误。</li>
 </ol>
 
-<p>经过上面的处理，就已经递归的载入了package <code class="highlighter-rouge">p</code>的所有依赖，这些依赖的相关信息会被记录到<code class="highlighter-rouge">p</code>中，<code class="highlighter-rouge">p.imports = imports</code>，<code class="highlighter-rouge">p.deps</code>会是排序过的<code class="highlighter-rouge">deps</code>。</p>
+<p>经过上面的处理，就已经递归的载入了package <code class="language-plaintext highlighter-rouge">p</code>的所有依赖，这些依赖的相关信息会被记录到<code class="language-plaintext highlighter-rouge">p</code>中，<code class="language-plaintext highlighter-rouge">p.imports = imports</code>，<code class="language-plaintext highlighter-rouge">p.deps</code>会是排序过的<code class="language-plaintext highlighter-rouge">deps</code>。</p>
 
 <h4 id="计算buildid">计算BuildID</h4>
 
@@ -172,13 +172,13 @@
 
 <p>完成上面这些步骤后，这个package的依赖也就都载入成功了，并且buildID也已经计算完成。</p>
 
-<h2 id="reusepackage函数"><code class="highlighter-rouge">reusePackage</code>函数</h2>
+<h2 id="reusepackage函数"><code class="language-plaintext highlighter-rouge">reusePackage</code>函数</h2>
 
-<p><code class="highlighter-rouge">reusePackage(p *Package, stk *importStack)</code>函数位于文件<em>cmd/go/pkg.go</em>文件中。我们已经知道，这个函数会在<code class="highlighter-rouge">loadImport</code>中被调用，用来判断是否有循环应用的情况。现在我们来仔细看一下这个逻辑。</p>
+<p><code class="language-plaintext highlighter-rouge">reusePackage(p *Package, stk *importStack)</code>函数位于文件<em>cmd/go/pkg.go</em>文件中。我们已经知道，这个函数会在<code class="language-plaintext highlighter-rouge">loadImport</code>中被调用，用来判断是否有循环应用的情况。现在我们来仔细看一下这个逻辑。</p>
 
-<p>首先，看一下<code class="highlighter-rouge">loadImport</code>中的代码：</p>
+<p>首先，看一下<code class="language-plaintext highlighter-rouge">loadImport</code>中的代码：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>func loadImport(path, srcDir string, parent *Package, stk *importStack, importPos []token.Position, mode int) *Package {
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>func loadImport(path, srcDir string, parent *Package, stk *importStack, importPos []token.Position, mode int) *Package {
     ...
     importPath := path
     ...
@@ -195,11 +195,11 @@
 }
 </code></pre></div></div>
 
-<p>从上面代码可以看出，在发现现在要import的path已经被处理过了之后，就可以直接返回cache中的<code class="highlighter-rouge">cmd/go.Package</code>对象，但是返回前要先调用<code class="highlighter-rouge">reusePackage</code>函数检查是否循环引用。如果这个path不在cache中，那么创建新的package之后，立刻加入到cache。</p>
+<p>从上面代码可以看出，在发现现在要import的path已经被处理过了之后，就可以直接返回cache中的<code class="language-plaintext highlighter-rouge">cmd/go.Package</code>对象，但是返回前要先调用<code class="language-plaintext highlighter-rouge">reusePackage</code>函数检查是否循环引用。如果这个path不在cache中，那么创建新的package之后，立刻加入到cache。</p>
 
-<p>接下来看一下<code class="highlighter-rouge">reusePackage</code>中是如何检查循环引用的：</p>
+<p>接下来看一下<code class="language-plaintext highlighter-rouge">reusePackage</code>中是如何检查循环引用的：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>func reusePackage(p *Package, stk *importStack) *Package {
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>func reusePackage(p *Package, stk *importStack) *Package {
     if p.imports == nil {
         // import cycle
     }
@@ -208,13 +208,13 @@
 }
 </code></pre></div></div>
 
-<p>上一节中，我们看到了，<code class="highlighter-rouge">p.load</code>这个方法在收集了所有的依赖的信息后，才会设置自己的<code class="highlighter-rouge">p.imports</code>变量。所以，只要<code class="highlighter-rouge">p.imports</code>这个变量还是空的，就说明这个package还没有处理完依赖，所以只要在处理依赖的过程中再次遇到自己，就会触发<code class="highlighter-rouge">reusePackage</code>函数的调用，就会看到<code class="highlighter-rouge">p.imports == nil</code>。</p>
+<p>上一节中，我们看到了，<code class="language-plaintext highlighter-rouge">p.load</code>这个方法在收集了所有的依赖的信息后，才会设置自己的<code class="language-plaintext highlighter-rouge">p.imports</code>变量。所以，只要<code class="language-plaintext highlighter-rouge">p.imports</code>这个变量还是空的，就说明这个package还没有处理完依赖，所以只要在处理依赖的过程中再次遇到自己，就会触发<code class="language-plaintext highlighter-rouge">reusePackage</code>函数的调用，就会看到<code class="language-plaintext highlighter-rouge">p.imports == nil</code>。</p>
 
-<h2 id="回到packagesanderrors函数">回到<code class="highlighter-rouge">packagesAndErrors</code>函数</h2>
+<h2 id="回到packagesanderrors函数">回到<code class="language-plaintext highlighter-rouge">packagesAndErrors</code>函数</h2>
 
-<p>现在回到<a href="% post_url 2017-02-26-golang-code-reading-notes-1 %}">文章go build(1)</a>中的<code class="highlighter-rouge">packagesAndErrors</code>函数。我们回顾一下到目前为止走过的流程：</p>
+<p>现在回到<a href="% post_url 2017-02-26-golang-code-reading-notes-1 %}">文章go build(1)</a>中的<code class="language-plaintext highlighter-rouge">packagesAndErrors</code>函数。我们回顾一下到目前为止走过的流程：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>packagesAndErrors()
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>packagesAndErrors()
     loadPackage()
         loadImport()
             reusePackage()
@@ -223,26 +223,26 @@
     computeStale()
 </code></pre></div></div>
 
-<p>到目前为止，我们已经分析了从<code class="highlighter-rouge">loadPackage()</code>函数开始往下的流程。现在，在<code class="highlighter-rouge">packagesAndErrors</code>函数中，我们通过调用<code class="highlighter-rouge">loadPackage</code>函数，得到了一个<code class="highlighter-rouge">cmd/go.Package</code>对象<code class="highlighter-rouge">pkg</code>。下面就开始调用<code class="highlighter-rouge">computeStale(pkg)</code>。</p>
+<p>到目前为止，我们已经分析了从<code class="language-plaintext highlighter-rouge">loadPackage()</code>函数开始往下的流程。现在，在<code class="language-plaintext highlighter-rouge">packagesAndErrors</code>函数中，我们通过调用<code class="language-plaintext highlighter-rouge">loadPackage</code>函数，得到了一个<code class="language-plaintext highlighter-rouge">cmd/go.Package</code>对象<code class="language-plaintext highlighter-rouge">pkg</code>。下面就开始调用<code class="language-plaintext highlighter-rouge">computeStale(pkg)</code>。</p>
 
-<h3 id="computestale函数"><code class="highlighter-rouge">computeStale</code>函数</h3>
+<h3 id="computestale函数"><code class="language-plaintext highlighter-rouge">computeStale</code>函数</h3>
 
-<p>这个函数会判断一个package是否需要重新构建，也就是是否stale。如果需要，就设置<code class="highlighter-rouge">pkg.Stale</code>为<code class="highlighter-rouge">true</code>。判断的工作是由<code class="highlighter-rouge">isStale(p *Package) (bool, string)</code>函数完成的，这个函数位于<em>cmd/go/pkg.go</em>文件中。</p>
+<p>这个函数会判断一个package是否需要重新构建，也就是是否stale。如果需要，就设置<code class="language-plaintext highlighter-rouge">pkg.Stale</code>为<code class="language-plaintext highlighter-rouge">true</code>。判断的工作是由<code class="language-plaintext highlighter-rouge">isStale(p *Package) (bool, string)</code>函数完成的，这个函数位于<em>cmd/go/pkg.go</em>文件中。</p>
 
-<p>判断stale的逻辑在<code class="highlighter-rouge">isStale</code>函数的注释中写的非常清楚，包括演变过程，主要是基于buildID和文件修改时间来判断的。</p>
+<p>判断stale的逻辑在<code class="language-plaintext highlighter-rouge">isStale</code>函数的注释中写的非常清楚，包括演变过程，主要是基于buildID和文件修改时间来判断的。</p>
 
 <ul>
-  <li>buildID的方法如下：编译输出时，将这个package的buildID记录到目标文件中，在<code class="highlighter-rouge">isStale</code>函数中，会读取目标文件中保存的buildID，如果和现在package中计算出来的buildID不同，那么就需要重新构建。</li>
+  <li>buildID的方法如下：编译输出时，将这个package的buildID记录到目标文件中，在<code class="language-plaintext highlighter-rouge">isStale</code>函数中，会读取目标文件中保存的buildID，如果和现在package中计算出来的buildID不同，那么就需要重新构建。</li>
   <li>基于文件修改时间的方法如下：只要构建package有关的文件中，有一个文件的修改时间比目标文件晚，那么就需要重新构建。</li>
 </ul>
 
-<p>上面这个是最基本的方法介绍，<code class="highlighter-rouge">isStale</code>函数中还考虑了命令行参数，以及文件是否存在等情况。</p>
+<p>上面这个是最基本的方法介绍，<code class="language-plaintext highlighter-rouge">isStale</code>函数中还考虑了命令行参数，以及文件是否存在等情况。</p>
 
 <h3 id="小结-1">小结</h3>
 
-<p><code class="highlighter-rouge">packagesAndErrors</code>函数调用完<code class="highlighter-rouge">computeStale</code>之后，就返回所获取到的packages对象。</p>
+<p><code class="language-plaintext highlighter-rouge">packagesAndErrors</code>函数调用完<code class="language-plaintext highlighter-rouge">computeStale</code>之后，就返回所获取到的packages对象。</p>
 
-<p>因为<code class="highlighter-rouge">packagesForBuild</code>函数是调用了<code class="highlighter-rouge">packagesAndErrors</code>函数来获得packages，如果获取的过程没有错误，那么<code class="highlighter-rouge">packagesForBuild</code>就返回获取到的packages。我们又回到了<code class="highlighter-rouge">runBuild</code>函数中。</p>
+<p>因为<code class="language-plaintext highlighter-rouge">packagesForBuild</code>函数是调用了<code class="language-plaintext highlighter-rouge">packagesAndErrors</code>函数来获得packages，如果获取的过程没有错误，那么<code class="language-plaintext highlighter-rouge">packagesForBuild</code>就返回获取到的packages。我们又回到了<code class="language-plaintext highlighter-rouge">runBuild</code>函数中。</p>
 
     <br />
 

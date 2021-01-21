@@ -111,33 +111,33 @@
       <div class="addthis_inline_share_toolbox"></div>
     
     <br />
-      <p><em>以下内容对于 Python 2 或者 Python 3 均适用。术语 <strong>mock 对象</strong> 表示用于替换代码中实际对象的 <code class="highlighter-rouge">mock.Mock</code> 或者 <code class="highlighter-rouge">mock.MagicMock</code> 对象</em></p>
+      <p><em>以下内容对于 Python 2 或者 Python 3 均适用。术语 <strong>mock 对象</strong> 表示用于替换代码中实际对象的 <code class="language-plaintext highlighter-rouge">mock.Mock</code> 或者 <code class="language-plaintext highlighter-rouge">mock.MagicMock</code> 对象</em></p>
 
-<p><strong>mock</strong> 库是 Python 中用来进行单元测试模拟的一个库。<code class="highlighter-rouge">mock.call</code> 是 mock 库中用来表示 mock 对象调用的一个辅助对象，通常我们使用一个 <code class="highlighter-rouge">mock.call</code> 对象或者一个含有多个 <code class="highlighter-rouge">mock.call</code> 对象的列表来表示我们期望发生在 mock 对象上的调用，这样不仅可以判断一个 mock 对象是否执行了期望的调用，还确认这些调用是按照期望的顺序执行的。在测试代码中，我们会将所期望的调用和 mock 对象的 <code class="highlighter-rouge">call_args</code>, <code class="highlighter-rouge">call_args_list</code>, <code class="highlighter-rouge">mock_calls</code> 以及 <code class="highlighter-rouge">method_calls</code> 这些记录内容做比较。</p>
+<p><strong>mock</strong> 库是 Python 中用来进行单元测试模拟的一个库。<code class="language-plaintext highlighter-rouge">mock.call</code> 是 mock 库中用来表示 mock 对象调用的一个辅助对象，通常我们使用一个 <code class="language-plaintext highlighter-rouge">mock.call</code> 对象或者一个含有多个 <code class="language-plaintext highlighter-rouge">mock.call</code> 对象的列表来表示我们期望发生在 mock 对象上的调用，这样不仅可以判断一个 mock 对象是否执行了期望的调用，还确认这些调用是按照期望的顺序执行的。在测试代码中，我们会将所期望的调用和 mock 对象的 <code class="language-plaintext highlighter-rouge">call_args</code>, <code class="language-plaintext highlighter-rouge">call_args_list</code>, <code class="language-plaintext highlighter-rouge">mock_calls</code> 以及 <code class="language-plaintext highlighter-rouge">method_calls</code> 这些记录内容做比较。</p>
 
-<p>有一点需要注意，<code class="highlighter-rouge">mock.call</code> 本身就是一个 <strong><code class="highlighter-rouge">mock._Call</code> 类的实例</strong>，所以它本身，即不加调用符号 (<code class="highlighter-rouge">mock.call()</code> 或者 <code class="highlighter-rouge">mock.call(*args, **kwargs)</code>) 时，表示的是 <strong>mock 对象本身</strong>。</p>
+<p>有一点需要注意，<code class="language-plaintext highlighter-rouge">mock.call</code> 本身就是一个 <strong><code class="language-plaintext highlighter-rouge">mock._Call</code> 类的实例</strong>，所以它本身，即不加调用符号 (<code class="language-plaintext highlighter-rouge">mock.call()</code> 或者 <code class="language-plaintext highlighter-rouge">mock.call(*args, **kwargs)</code>) 时，表示的是 <strong>mock 对象本身</strong>。</p>
 
-<p>下面来看个个例子。假设 <code class="highlighter-rouge">app.util.SSH</code> 是我们封装的一个用于管理 SSH 连接，并且提供某些命令封装的类。现在 SSH 提供了两个实例方法 <code class="highlighter-rouge">hostname()</code> 和 <code class="highlighter-rouge">restart_service(service)</code>。我们一般会这么 mock 它：</p>
+<p>下面来看个个例子。假设 <code class="language-plaintext highlighter-rouge">app.util.SSH</code> 是我们封装的一个用于管理 SSH 连接，并且提供某些命令封装的类。现在 SSH 提供了两个实例方法 <code class="language-plaintext highlighter-rouge">hostname()</code> 和 <code class="language-plaintext highlighter-rouge">restart_service(service)</code>。我们一般会这么 mock 它：</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">with</span> <span class="n">mock</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="s">"app.util.SSH"</span><span class="p">)</span> <span class="k">as</span> <span class="n">m</span><span class="p">:</span>
-    <span class="n">mocked_conn</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">()</span>
-    <span class="n">m</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="n">mocked_conn</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">with</span> <span class="n">mock</span><span class="p">.</span><span class="n">patch</span><span class="p">(</span><span class="s">"app.util.SSH"</span><span class="p">)</span> <span class="k">as</span> <span class="n">m</span><span class="p">:</span>
+    <span class="n">mocked_conn</span> <span class="o">=</span> <span class="n">mock</span><span class="p">.</span><span class="n">Mock</span><span class="p">()</span>
+    <span class="n">m</span><span class="p">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="n">mocked_conn</span>
 
-    <span class="c"># test logics</span>
+    <span class="c1"># test logics
+</span>
+    <span class="c1"># do assert with mocked_conn object</span></code></pre></figure>
 
-    <span class="c"># do assert with mocked_conn object</span></code></pre></figure>
-
-<p>这样，我们就可以让代码中对一个 SSH 实例的调用，转换成对我们的 mock 对象 mocked_conn 的调用。这样，代码中对 mock 对象的使用和 <code class="highlighter-rouge">mock.call</code> 的对应关系如下：</p>
+<p>这样，我们就可以让代码中对一个 SSH 实例的调用，转换成对我们的 mock 对象 mocked_conn 的调用。这样，代码中对 mock 对象的使用和 <code class="language-plaintext highlighter-rouge">mock.call</code> 的对应关系如下：</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="n">ip</span><span class="p">):</span>
-    <span class="n">conn</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">SSH</span><span class="p">(</span><span class="n">ip</span><span class="p">)</span>          <span class="c"># conn == mock.call</span>
-    <span class="n">conn</span><span class="o">.</span><span class="n">hostname</span><span class="p">()</span>                  <span class="c"># mock.call.hostname()</span>
-    <span class="n">conn</span><span class="o">.</span><span class="n">restart_service</span><span class="p">(</span><span class="n">service1</span><span class="p">)</span>   <span class="c"># mock.call.restart_service(service1)</span>
-    <span class="n">conn</span><span class="o">.</span><span class="n">restart_service</span><span class="p">(</span><span class="n">service2</span><span class="p">)</span>   <span class="c"># mock.call.restart_service(service2)</span></code></pre></figure>
+    <span class="n">conn</span> <span class="o">=</span> <span class="n">app</span><span class="p">.</span><span class="n">util</span><span class="p">.</span><span class="n">SSH</span><span class="p">(</span><span class="n">ip</span><span class="p">)</span>          <span class="c1"># conn == mock.call
+</span>    <span class="n">conn</span><span class="p">.</span><span class="n">hostname</span><span class="p">()</span>                  <span class="c1"># mock.call.hostname()
+</span>    <span class="n">conn</span><span class="p">.</span><span class="n">restart_service</span><span class="p">(</span><span class="n">service1</span><span class="p">)</span>   <span class="c1"># mock.call.restart_service(service1)
+</span>    <span class="n">conn</span><span class="p">.</span><span class="n">restart_service</span><span class="p">(</span><span class="n">service2</span><span class="p">)</span>   <span class="c1"># mock.call.restart_service(service2)</span></code></pre></figure>
 
-<p>所以 <code class="highlighter-rouge">mocked_conn.mock_calls</code> 的内容就是</p>
+<p>所以 <code class="language-plaintext highlighter-rouge">mocked_conn.mock_calls</code> 的内容就是</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="p">[</span><span class="n">mock</span><span class="o">.</span><span class="n">call</span><span class="o">.</span><span class="n">hostname</span><span class="p">,</span> <span class="n">mock</span><span class="o">.</span><span class="n">call</span><span class="o">.</span><span class="n">restart_service</span><span class="p">(</span><span class="n">service1</span><span class="p">),</span> <span class="n">mock</span><span class="o">.</span><span class="n">call</span><span class="o">.</span><span class="n">restart_service</span><span class="p">(</span><span class="n">service2</span><span class="p">)]</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="p">[</span><span class="n">mock</span><span class="p">.</span><span class="n">call</span><span class="p">.</span><span class="n">hostname</span><span class="p">,</span> <span class="n">mock</span><span class="p">.</span><span class="n">call</span><span class="p">.</span><span class="n">restart_service</span><span class="p">(</span><span class="n">service1</span><span class="p">),</span> <span class="n">mock</span><span class="p">.</span><span class="n">call</span><span class="p">.</span><span class="n">restart_service</span><span class="p">(</span><span class="n">service2</span><span class="p">)]</span></code></pre></figure>
 
 <p>要进行 assert 时，你需要提供上面这个 call list。</p>
 

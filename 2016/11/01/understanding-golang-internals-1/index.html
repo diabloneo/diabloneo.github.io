@@ -146,7 +146,7 @@ go version go1.7 linux/amd64
 
 <p>编译Golang程序，一般是用 <strong>go build</strong>工具，不过为了查看汇编代码，我们需要使用 <strong>go tool compile</strong>工具。其实 <strong>go build</strong>也是使用了 <strong>go tool compile</strong>和 <strong>go tool link</strong>工具，一个负责编译，一个负责链接。</p>
 
-<p>先写个 <em>hello, world</em> 程序 <em>goexamples/hello/hello.go</em> ，在程序里定义一个看起来没用的 <code class="highlighter-rouge">foo()</code>函数：</p>
+<p>先写个 <em>hello, world</em> 程序 <em>goexamples/hello/hello.go</em> ，在程序里定义一个看起来没用的 <code class="language-plaintext highlighter-rouge">foo()</code>函数：</p>
 
 <figure class="highlight"><pre><code class="language-go" data-lang="go"><table class="rouge-table"><tbody><tr><td class="gutter gl"><pre class="lineno">1
 2
@@ -162,22 +162,23 @@ go version go1.7 linux/amd64
 12
 13
 14
-</pre></td><td class="code"><pre><span class="k">package</span><span class="x"> </span><span class="n">main</span><span class="x">
+</pre></td><td class="code"><pre><span class="k">package</span> <span class="n">main</span>
 
-</span><span class="k">import</span><span class="x"> </span><span class="p">(</span><span class="x">
-	</span><span class="s">"fmt"</span><span class="x">
-</span><span class="p">)</span><span class="x">
+<span class="k">import</span> <span class="p">(</span>
+	<span class="s">"fmt"</span>
+<span class="p">)</span>
 
-</span><span class="k">func</span><span class="x"> </span><span class="n">foo</span><span class="p">()</span><span class="x"> </span><span class="kt">int</span><span class="x"> </span><span class="p">{</span><span class="x">
-	</span><span class="k">var</span><span class="x"> </span><span class="n">a</span><span class="x"> </span><span class="kt">int</span><span class="x">
-	</span><span class="k">return</span><span class="x"> </span><span class="n">a</span><span class="x">
-</span><span class="p">}</span><span class="x">
+<span class="k">func</span> <span class="n">foo</span><span class="p">()</span> <span class="kt">int</span> <span class="p">{</span>
+	<span class="k">var</span> <span class="n">a</span> <span class="kt">int</span>
+	<span class="k">return</span> <span class="n">a</span>
+<span class="p">}</span>
 
-</span><span class="k">func</span><span class="x"> </span><span class="n">main</span><span class="p">()</span><span class="x"> </span><span class="p">{</span><span class="x">
-	</span><span class="n">fmt</span><span class="o">.</span><span class="n">Printf</span><span class="p">(</span><span class="s">"hello, world</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span><span class="x">
-</span><span class="p">}</span></pre></td></tr></tbody></table></code></pre></figure>
+<span class="k">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">fmt</span><span class="o">.</span><span class="n">Printf</span><span class="p">(</span><span class="s">"hello, world</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></code></pre></figure>
 
-<p>接下来，我们可以执行编译该文件来得到该文件的汇编代码，执行命令<code class="highlighter-rouge">go tool compile -S hello.go</code>：</p>
+<p>接下来，我们可以执行编译该文件来得到该文件的汇编代码，执行命令<code class="language-plaintext highlighter-rouge">go tool compile -S hello.go</code>：</p>
 
 <figure class="highlight"><pre><code class="language-shell" data-lang="shell">➜ ~/go/src/goexamples/hello  <span class="nv">$ </span>go tool compile <span class="nt">-S</span> hello.go
 <span class="s2">""</span>.foo <span class="nv">t</span><span class="o">=</span>1 <span class="nv">size</span><span class="o">=</span>10 <span class="nv">args</span><span class="o">=</span>0x8 <span class="nv">locals</span><span class="o">=</span>0x0
@@ -288,13 +289,13 @@ type..importpath.fmt. t=9 dupok size=6
 <span class="s2">""</span>.main <span class="nv">t</span><span class="o">=</span>1 <span class="nv">size</span><span class="o">=</span>98 <span class="nv">args</span><span class="o">=</span>0x0 <span class="nv">locals</span><span class="o">=</span>0x48
 ...</code></pre></figure>
 
-<p>上面两行就是我们定义的两个函数：<code class="highlighter-rouge">main()</code>和<code class="highlighter-rouge">foo()</code>，跟在这两行后面的是两个函数的内容。为了方便阐述，这里会把要研究的代码都写在<code class="highlighter-rouge">foo()</code>函数内。</p>
+<p>上面两行就是我们定义的两个函数：<code class="language-plaintext highlighter-rouge">main()</code>和<code class="language-plaintext highlighter-rouge">foo()</code>，跟在这两行后面的是两个函数的内容。为了方便阐述，这里会把要研究的代码都写在<code class="language-plaintext highlighter-rouge">foo()</code>函数内。</p>
 
 <p>接下来，我们需要 <strong>关系编译优化</strong>。Golang的编译器在编译的时候会执行一些默认的优化，这会提升性能和节约空间，但是会使得汇编代码和Golang代码对应不起来，所以我们要先关闭这个优化，然后才能更好的研究汇编代码。关闭优化需要传递 <strong>-N</strong>选项给编译器：</p>
 
 <figure class="highlight"><pre><code class="language-shell" data-lang="shell">➜ ~/go/src/goexamples/hello  <span class="nv">$ </span>go tool compile <span class="nt">-N</span> <span class="nt">-S</span> hello.go</code></pre></figure>
 
-<p>这样得到的汇编输出会和前面略有不同，可以通过对比<code class="highlighter-rouge">foo()</code>函数的汇编代码来看到这些不同点：</p>
+<p>这样得到的汇编输出会和前面略有不同，可以通过对比<code class="language-plaintext highlighter-rouge">foo()</code>函数的汇编代码来看到这些不同点：</p>
 
 <p><strong>有优化</strong></p>
 
@@ -388,7 +389,7 @@ type..importpath.fmt. t=9 dupok size=6
 
 <h3 id="指令">指令</h3>
 
-<p>下面来介绍一下上文代码中的<code class="highlighter-rouge">foo()</code>函数的汇编代码中用到的汇编指令：</p>
+<p>下面来介绍一下上文代码中的<code class="language-plaintext highlighter-rouge">foo()</code>函数的汇编代码中用到的汇编指令：</p>
 
 <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="s2">""</span>.foo <span class="nv">t</span><span class="o">=</span>1 <span class="nv">size</span><span class="o">=</span>50 <span class="nv">args</span><span class="o">=</span>0x8 <span class="nv">locals</span><span class="o">=</span>0x10
         0x0000 00000 <span class="o">(</span>hello.go:7<span class="o">)</span>       TEXT    <span class="s2">""</span>.foo<span class="o">(</span>SB<span class="o">)</span>, <span class="nv">$16</span><span class="nt">-8</span>
@@ -404,18 +405,18 @@ type..importpath.fmt. t=9 dupok size=6
         0x002d 00045 <span class="o">(</span>hello.go:9<span class="o">)</span>       ADDQ    <span class="nv">$16</span>, SP
         0x0031 00049 <span class="o">(</span>hello.go:9<span class="o">)</span>       RET</code></pre></figure>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>TEXT "".foo(SB), $16-8
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>TEXT "".foo(SB), $16-8
 </code></pre></div></div>
 
 <p><strong>TEXT</strong>是一个伪指令，表示定义一个入口点，也就是定义一个函数。它可以带三个参数：</p>
 
 <ol>
-  <li>第一个参数表示函数名，就是这里的<code class="highlighter-rouge">"".foo(SB)</code>。</li>
+  <li>第一个参数表示函数名，就是这里的<code class="language-plaintext highlighter-rouge">"".foo(SB)</code>。</li>
   <li>第二个参数是flag，这里没有体现出来，以后的文章再说。</li>
-  <li>第三个参数是frame size，表示当前函数的栈帧大小以及参数大小，形式如同<code class="highlighter-rouge">$framesize-argsize</code>，减号前面是栈帧大小，减号后面是参数大小（包括返回值）。比如<code class="highlighter-rouge">$16-8</code>表示该函数栈帧大小为16，参数大小为8。</li>
+  <li>第三个参数是frame size，表示当前函数的栈帧大小以及参数大小，形式如同<code class="language-plaintext highlighter-rouge">$framesize-argsize</code>，减号前面是栈帧大小，减号后面是参数大小（包括返回值）。比如<code class="language-plaintext highlighter-rouge">$16-8</code>表示该函数栈帧大小为16，参数大小为8。</li>
 </ol>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SUBQ $16, SP
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SUBQ $16, SP
 MOVQ BP, 8(SP)
 LEAQ 8(SP), BP
 </code></pre></div></div>
@@ -432,20 +433,20 @@ LEAQ 8(SP), BP
   <li><strong>LEAQ</strong> 载入有效地址。LEA的全称是 <em>Load Effective Address</em>，LEA指令计算源操作数所表示的地址的值，然后保存在目标操作数中。有时候LEA指令也会被用来进行简单的无符号计算（支持加、减、乘）。关于LEA指令的更多资料，可以看这里<a href="https://en.wikibooks.org/wiki/X86_Assembly/Data_Transfer">X86 Assembly/Data Transfer</a>。</li>
 </ol>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>FUNCDATA        $0, gclocals·5184031d3a32a42d85027f073f873668(SB)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>FUNCDATA        $0, gclocals·5184031d3a32a42d85027f073f873668(SB)
 FUNCDATA        $1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
 </code></pre></div></div>
 
 <p>这两行是用于保存GC所需要的数据。相关指定以后再介绍。</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>MOVQ $0, "".~r0+24(FP)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>MOVQ $0, "".~r0+24(FP)
 MOVQ $0, "".a(SP)
 MOVQ $0, "".~r0+24(FP)
 </code></pre></div></div>
 
-<p>这里没有新的指令，赋值操作实现了返回<code class="highlighter-rouge">a</code>变量。</p>
+<p>这里没有新的指令，赋值操作实现了返回<code class="language-plaintext highlighter-rouge">a</code>变量。</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>MOVQ 8(SP), BP
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>MOVQ 8(SP), BP
 ADDQ $16, SP
 </code></pre></div></div>
 

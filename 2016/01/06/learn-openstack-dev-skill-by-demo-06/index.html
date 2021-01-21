@@ -210,20 +210,20 @@
 
 <p>SQLAlchemy使用URL的方式来指定要访问的数据库，整个URL的具体格式如下：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dialect+driver://username:password@host:port/database
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dialect+driver://username:password@host:port/database
 </code></pre></div></div>
 
 <p>其中，<strong>dialect</strong>就是指DBMS的名称，一般可选的值有：<em>postgresql</em>, <em>mysql</em>, <em>sqlite</em>等。<strong>driver</strong>就是指驱动的名称，如果不指定，SQLAlchemy会使用默认值。<em>database</em>就是指DBMS中的一个数据库，一般是指通过<em>CREATE DATABASE</em>语句创建的数据库。其他的参数就不言而喻了。dialect和driver参数有很多选择，具体的可以参考官方文档：<a href="http://docs.sqlalchemy.org/en/rel_1_0/core/engines.html#database-urls">Database URLs</a></p>
 
 <h5 id="创建engine对象">创建Engine对象</h5>
 
-<p>确定了要连接的数据库信息后，就可以通过<code class="highlighter-rouge">create_engine</code>函数来创建一个<strong>Engine</strong>对象了。</p>
+<p>确定了要连接的数据库信息后，就可以通过<code class="language-plaintext highlighter-rouge">create_engine</code>函数来创建一个<strong>Engine</strong>对象了。</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">create_engine</span>
 
 <span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="s">'sqlite://:memory:'</span><span class="p">)</span></code></pre></figure>
 
-<p><code class="highlighter-rouge">create_engine</code>函数还支持以下几个参数：</p>
+<p><code class="language-plaintext highlighter-rouge">create_engine</code>函数还支持以下几个参数：</p>
 
 <ul>
   <li><em>connect_args</em>：一个字典，用来自定义数据库连接的参数，比如指定客户端使用的字符编码。</li>
@@ -240,7 +240,7 @@
 
 <p>一般来说，应用程序的代码是不直接使用Engine对象的，而是把Engine对象交给ORM去使用，或者创建session对象来使用。不过，我们还是来简单看一下Engine对象能做什么事情。</p>
 
-<p>应用程序可以调用Engine对象的<code class="highlighter-rouge">connect()</code>方法来获得一个到数据库的连接对象；然后可以在这个连接对象上调用<code class="highlighter-rouge">execute()</code>来执行SQL语句，调用<code class="highlighter-rouge">begin()</code>、<code class="highlighter-rouge">commit()</code>、<code class="highlighter-rouge">rollback()</code>来执行事务操作；调用<code class="highlighter-rouge">close()</code>来关闭连接。Engine对象也有一些快捷方法来直接执行上述操作，避免了每次都要调用<code class="highlighter-rouge">connect()</code>来获取连接这种繁琐的代码，比如<code class="highlighter-rouge">engine.execute()</code>, <code class="highlighter-rouge">with engine.begin()</code>等。</p>
+<p>应用程序可以调用Engine对象的<code class="language-plaintext highlighter-rouge">connect()</code>方法来获得一个到数据库的连接对象；然后可以在这个连接对象上调用<code class="language-plaintext highlighter-rouge">execute()</code>来执行SQL语句，调用<code class="language-plaintext highlighter-rouge">begin()</code>、<code class="language-plaintext highlighter-rouge">commit()</code>、<code class="language-plaintext highlighter-rouge">rollback()</code>来执行事务操作；调用<code class="language-plaintext highlighter-rouge">close()</code>来关闭连接。Engine对象也有一些快捷方法来直接执行上述操作，避免了每次都要调用<code class="language-plaintext highlighter-rouge">connect()</code>来获取连接这种繁琐的代码，比如<code class="language-plaintext highlighter-rouge">engine.execute()</code>, <code class="language-plaintext highlighter-rouge">with engine.begin()</code>等。</p>
 
 <h4 id="定义数据模型">定义数据模型</h4>
 
@@ -253,7 +253,7 @@
 <ol>
   <li>首先定义一个映射类，这个类是数据库表在代码中的对象表示，这类的类属性是很多Column类的实例。</li>
   <li>然后定义一个Table对象，这里的Table就是上面提到的在<strong>Schema/Types</strong>模块中的一个类，用来表示一个数据库中的表。</li>
-  <li>调用<code class="highlighter-rouge">sqlalchemy.orm.mapper</code>函数把步骤1中定义的类映射到步骤2中定义的Table。</li>
+  <li>调用<code class="language-plaintext highlighter-rouge">sqlalchemy.orm.mapper</code>函数把步骤1中定义的类映射到步骤2中定义的Table。</li>
 </ol>
 
 <p>上面这种方式称为<em>Classical Mappings</em>，看起来好麻烦啊。所以就有了<strong>Declarative</strong>系统。这个系统就是一次完成这三个步骤，你只需要定义步骤1中的类即可。这也是现在在SQLAlchemy中使用ORM的方式，无需在使用过去这种麻烦的方法。</p>
@@ -270,18 +270,18 @@
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Column</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">String</span>
 
-<span class="c">## 这里的基类Base是上面我们通过declarative_base函数生成的</span>
-<span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
+<span class="c1">## 这里的基类Base是上面我们通过declarative_base函数生成的
+</span><span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
     <span class="n">__tablename__</span> <span class="o">=</span> <span class="s">'person'</span>
 
     <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Interger</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
     <span class="n">name</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">250</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span></code></pre></figure>
 
-<p>这样我们就定义了一个映射类<strong>Person</strong>，后续我们可以通过操作这个类的实例来实现对数据库表<strong>person</strong>的操作。在我们的映射类中，我们使用<code class="highlighter-rouge">__tablename__</code>属性来指定该映射类所对应的数据库表，通过<code class="highlighter-rouge">Column</code>类实例的方式来指定数据库的字段。这里，读者可能会问：<strong>我如何能知道<code class="highlighter-rouge">Column</code>都能支持哪些类型呢？</strong>这个查看官方文档获得：<a href="http://docs.sqlalchemy.org/en/rel_1_0/core/type_basics.html">Column And Data Types</a>。</p>
+<p>这样我们就定义了一个映射类<strong>Person</strong>，后续我们可以通过操作这个类的实例来实现对数据库表<strong>person</strong>的操作。在我们的映射类中，我们使用<code class="language-plaintext highlighter-rouge">__tablename__</code>属性来指定该映射类所对应的数据库表，通过<code class="language-plaintext highlighter-rouge">Column</code>类实例的方式来指定数据库的字段。这里，读者可能会问：<strong>我如何能知道<code class="language-plaintext highlighter-rouge">Column</code>都能支持哪些类型呢？</strong>这个查看官方文档获得：<a href="http://docs.sqlalchemy.org/en/rel_1_0/core/type_basics.html">Column And Data Types</a>。</p>
 
-<p>因为我们使用了Declarative系统，所以虽然我们自己没有定义Table对象，但是Declarative系统帮我们做了，并且帮我们调用了<code class="highlighter-rouge">mapper</code>函数。因此，当我们定义好一个表的映射类后，这个类的<code class="highlighter-rouge">__table__</code>属性就保存了该映射类所映射的<em>Table</em>对象：</p>
+<p>因为我们使用了Declarative系统，所以虽然我们自己没有定义Table对象，但是Declarative系统帮我们做了，并且帮我们调用了<code class="language-plaintext highlighter-rouge">mapper</code>函数。因此，当我们定义好一个表的映射类后，这个类的<code class="language-plaintext highlighter-rouge">__table__</code>属性就保存了该映射类所映射的<em>Table</em>对象：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>In [6]: Person.__table__
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>In [6]: Person.__table__
 Out[6]: Table('person', MetaData(bind=None),
     Column('id', Integer(), table=&lt;person&gt;, primary_key=True, nullable=False),
     Column('name', String(length=250), table=&lt;person&gt;, nullable=False), schema=None)
@@ -291,13 +291,13 @@ Out[6]: Table('person', MetaData(bind=None),
 
 <h4 id="schema和metadata">Schema和Metadata</h4>
 
-<p>关于Table对象，我们上面也提到了，它属于SQLAlchemy的core层的<strong>Schema/Types</strong>这个部分。SQLAlchemy中的Schema可以理解为和DDL相关的一套体系，它告诉SQLAlchemy的其他部分，数据库中的表是如何定义的。这个相当于我们在MySQL中使用<code class="highlighter-rouge">describe</code>命令，或者在PostgreSQL中使用<code class="highlighter-rouge">\d</code>命令。</p>
+<p>关于Table对象，我们上面也提到了，它属于SQLAlchemy的core层的<strong>Schema/Types</strong>这个部分。SQLAlchemy中的Schema可以理解为和DDL相关的一套体系，它告诉SQLAlchemy的其他部分，数据库中的表是如何定义的。这个相当于我们在MySQL中使用<code class="language-plaintext highlighter-rouge">describe</code>命令，或者在PostgreSQL中使用<code class="language-plaintext highlighter-rouge">\d</code>命令。</p>
 
 <p>SQLAlchemy中通过<strong>schema metadata</strong>来实现上面说的Schema。<strong>Schema metadata</strong>，官方文档中也称为<strong>database metadata</strong>，简称为metadata，是一个容器，其中包含了和DDL相关的所有信息，包括Table, Column等对象。当SQLAlchemy要根据映射类生成SQL语句时，它会查询metadata中的信息，根据信息来生成SQL语句。</p>
 
-<p>为了要让metadata可以工作，我们需要把DDL的相关信息放到metadata中。如果你注意看上面<code class="highlighter-rouge">Person.__table__</code>的输出，就会发现<code class="highlighter-rouge">Table</code>类的第二个参数就是一个Metadata实例，也就是说，我们需要在定义Table的时候就把DDL信息放到metadata中。如果是是用classical mapping的方式，我们需要先创建一个metadata实例，然后每次创建一个Table对象的时候就把metadata传递进去。从写代码的角度来说，这个方式没有什么问题，也不算麻烦；问题是我们在使用ORM的过程中，几乎不会用到metadata，metadata基本上是给SQLAlchemy用的，对于用户来说metadata提供的接口只能用来创建表和删除表，这种操作的频率远低于查询操作。</p>
+<p>为了要让metadata可以工作，我们需要把DDL的相关信息放到metadata中。如果你注意看上面<code class="language-plaintext highlighter-rouge">Person.__table__</code>的输出，就会发现<code class="language-plaintext highlighter-rouge">Table</code>类的第二个参数就是一个Metadata实例，也就是说，我们需要在定义Table的时候就把DDL信息放到metadata中。如果是是用classical mapping的方式，我们需要先创建一个metadata实例，然后每次创建一个Table对象的时候就把metadata传递进去。从写代码的角度来说，这个方式没有什么问题，也不算麻烦；问题是我们在使用ORM的过程中，几乎不会用到metadata，metadata基本上是给SQLAlchemy用的，对于用户来说metadata提供的接口只能用来创建表和删除表，这种操作的频率远低于查询操作。</p>
 
-<p>好在Declarative系统则帮我们把这些都做好了。当我们通过<code class="highlighter-rouge">declarative_base()</code>生成一个基类Base的时候，这个基类就已经包含了一个metadata实例，后面基于Base定义映射类都会被自动加入到这个metadata中。我们可以通过<code class="highlighter-rouge">Base.metadata</code>来访问这个metadata实例。</p>
+<p>好在Declarative系统则帮我们把这些都做好了。当我们通过<code class="language-plaintext highlighter-rouge">declarative_base()</code>生成一个基类Base的时候，这个基类就已经包含了一个metadata实例，后面基于Base定义映射类都会被自动加入到这个metadata中。我们可以通过<code class="language-plaintext highlighter-rouge">Base.metadata</code>来访问这个metadata实例。</p>
 
 <p>说了这么多关于metadata的内容，简单总结一下：metadata是schema在SQLAlchemy中的实现，包含了DDL的信息，SQLAlchemy中的其他部分需要依赖于metadata中的信息，一般用户很少使用metadata。</p>
 
@@ -305,11 +305,11 @@ Out[6]: Table('person', MetaData(bind=None),
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">Base</span> <span class="o">=</span> <span class="n">declarative_base</span><span class="p">()</span>
 
-<span class="c">## 基于Base定义映射类</span>
+<span class="c1">## 基于Base定义映射类
+</span>
+<span class="n">Base</span><span class="p">.</span><span class="n">metadata</span><span class="p">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span></code></pre></figure>
 
-<span class="n">Base</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span></code></pre></figure>
-
-<p>最后这行代码是我们最常用到metadata的地方：<strong>创建所有的表</strong>。我们告诉<code class="highlighter-rouge">create_all</code>使用哪个engine，它就会生成所有的<code class="highlighter-rouge">CREATE TABLE</code>语句，并且通过engine发送到数据库上执行。这个在单元测试的时候很有用。你可以执行一下下面的代码来观察输出：</p>
+<p>最后这行代码是我们最常用到metadata的地方：<strong>创建所有的表</strong>。我们告诉<code class="language-plaintext highlighter-rouge">create_all</code>使用哪个engine，它就会生成所有的<code class="language-plaintext highlighter-rouge">CREATE TABLE</code>语句，并且通过engine发送到数据库上执行。这个在单元测试的时候很有用。你可以执行一下下面的代码来观察输出：</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Column</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">String</span>
 <span class="kn">from</span> <span class="nn">sqlalchemy.ext.declarative</span> <span class="kn">import</span> <span class="n">declarative_base</span>
@@ -329,7 +329,7 @@ Out[6]: Table('person', MetaData(bind=None),
 <span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="s">'sqlite:///:memory:'</span><span class="p">,</span> <span class="n">echo</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 
 
-<span class="n">Base</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span></code></pre></figure>
+<span class="n">Base</span><span class="p">.</span><span class="n">metadata</span><span class="p">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span></code></pre></figure>
 
 <p>输出结果如下：</p>
 
@@ -354,42 +354,42 @@ CREATE TABLE person <span class="o">(</span>
 
 <p>会话(<strong>session</strong>)是我们通过SQLAlchemy来操作数据库的入口。我们前面有介绍过SQLAlchemy的架构，session是属于ORM层的。Session的功能是管理我们的程序和数据库之间的会话，它利用Engine的连接管理功能来实现会话。我们在上文有提到，我们创建了Engine对象，但是一般不直接使用它，而是把它交给ORM去使用。其中，通过session来使用Engine就是一个常用的方式。</p>
 
-<p>要是用session，我们需要先通过<code class="highlighter-rouge">sessionmaker</code>函数创建一个session类，然后通过这个类的实例来使用会话，如下所示：</p>
+<p>要是用session，我们需要先通过<code class="language-plaintext highlighter-rouge">sessionmaker</code>函数创建一个session类，然后通过这个类的实例来使用会话，如下所示：</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="n">sessionmaker</span>
 
 <span class="n">DBSession</span> <span class="o">=</span> <span class="n">sessionmaker</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
 <span class="n">session</span> <span class="o">=</span> <span class="n">DBSession</span><span class="p">()</span></code></pre></figure>
 
-<p>我们通过<code class="highlighter-rouge">sessionmaker</code>的<em>bind</em>参数把Engine对象传递给<code class="highlighter-rouge">DBSession</code>去管理。然后，<code class="highlighter-rouge">DBSession</code>实例化的对象<code class="highlighter-rouge">session</code>就能被我们使用了。</p>
+<p>我们通过<code class="language-plaintext highlighter-rouge">sessionmaker</code>的<em>bind</em>参数把Engine对象传递给<code class="language-plaintext highlighter-rouge">DBSession</code>去管理。然后，<code class="language-plaintext highlighter-rouge">DBSession</code>实例化的对象<code class="language-plaintext highlighter-rouge">session</code>就能被我们使用了。</p>
 
 <h4 id="crud">CRUD</h4>
 
-<p><strong>CRUD</strong>就是CREATE, READ, UPDATE, DELETE，增删改查。这个也是SQLAlchemy中最常用的功能，而且都是通过上一小节中的<code class="highlighter-rouge">session</code>对象来使用的。我们这简单的介绍一下这四个操作，后面会给出官方文档的位置。</p>
+<p><strong>CRUD</strong>就是CREATE, READ, UPDATE, DELETE，增删改查。这个也是SQLAlchemy中最常用的功能，而且都是通过上一小节中的<code class="language-plaintext highlighter-rouge">session</code>对象来使用的。我们这简单的介绍一下这四个操作，后面会给出官方文档的位置。</p>
 
 <h5 id="create">Create</h5>
 
-<p>在数据库中插入一条记录，是通过session的<code class="highlighter-rouge">add()</code>方法来实现的，你需要先创建一个映射类的实例，然后调用<code class="highlighter-rouge">session.add()</code>方法，然后调用<code class="highlighter-rouge">session.commit()</code>方法提交你的事务（关于事务，我们下面会专门讲解）：</p>
+<p>在数据库中插入一条记录，是通过session的<code class="language-plaintext highlighter-rouge">add()</code>方法来实现的，你需要先创建一个映射类的实例，然后调用<code class="language-plaintext highlighter-rouge">session.add()</code>方法，然后调用<code class="language-plaintext highlighter-rouge">session.commit()</code>方法提交你的事务（关于事务，我们下面会专门讲解）：</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">new_person</span> <span class="o">=</span> <span class="n">Person</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'new person'</span><span class="p">)</span>
-<span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">new_person</span><span class="p">)</span>
-<span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></code></pre></figure>
+<span class="n">session</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">new_person</span><span class="p">)</span>
+<span class="n">session</span><span class="p">.</span><span class="n">commit</span><span class="p">()</span></code></pre></figure>
 
 <h5 id="delete">Delete</h5>
 
-<p>删除操作和创建操作差不多，是把一个映射类实例传递给<code class="highlighter-rouge">session.delete()</code>方法。</p>
+<p>删除操作和创建操作差不多，是把一个映射类实例传递给<code class="language-plaintext highlighter-rouge">session.delete()</code>方法。</p>
 
 <h5 id="update">Update</h5>
 
-<p>更新一条记录需要先使用查询操作获得一条记录对应的对象，然后修改对象的属性，再通过<code class="highlighter-rouge">session.add()</code>方法来完成更新操作。</p>
+<p>更新一条记录需要先使用查询操作获得一条记录对应的对象，然后修改对象的属性，再通过<code class="language-plaintext highlighter-rouge">session.add()</code>方法来完成更新操作。</p>
 
 <h5 id="read">Read</h5>
 
-<p>查询操作，一般称为query，在SQLAlchemy中一般是通过<strong>Query</strong>对象来完成的。我们可以通过<code class="highlighter-rouge">session.query()</code>方法来创建一个Query对象，然后调用Query对象的众多方法来完成查询操作。</p>
+<p>查询操作，一般称为query，在SQLAlchemy中一般是通过<strong>Query</strong>对象来完成的。我们可以通过<code class="language-plaintext highlighter-rouge">session.query()</code>方法来创建一个Query对象，然后调用Query对象的众多方法来完成查询操作。</p>
 
 <h4 id="事务">事务</h4>
 
-<p>使用session，就会涉及到事务，我们的应用程序也会有很多事务操作的要求。当你调用一个session的方法，导致session执行一条SQL语句时，它会自动开始一个事务，直到你下次调用<code class="highlighter-rouge">session.commit()</code>或者<code class="highlighter-rouge">session.rollback()</code>，它就会结束这个事务。你也可以显示的调用<code class="highlighter-rouge">session.begin()</code>来开始一个事务，并且<code class="highlighter-rouge">session.begin()</code>还可以配合Python的with来使用。</p>
+<p>使用session，就会涉及到事务，我们的应用程序也会有很多事务操作的要求。当你调用一个session的方法，导致session执行一条SQL语句时，它会自动开始一个事务，直到你下次调用<code class="language-plaintext highlighter-rouge">session.commit()</code>或者<code class="language-plaintext highlighter-rouge">session.rollback()</code>，它就会结束这个事务。你也可以显示的调用<code class="language-plaintext highlighter-rouge">session.begin()</code>来开始一个事务，并且<code class="language-plaintext highlighter-rouge">session.begin()</code>还可以配合Python的with来使用。</p>
 
 <h4 id="会话-crud-事务的小结">会话, CRUD, 事务的小结</h4>
 

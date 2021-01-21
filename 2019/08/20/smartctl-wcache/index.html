@@ -121,7 +121,7 @@
 
 <p>查看当前硬盘当前的 wcache 值：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root@chenhong204 ~]# smartctl --get=wcache /dev/sdc
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root@chenhong204 ~]# smartctl --get=wcache /dev/sdc
 smartctl 6.2 2013-07-26 r3841 [x86_64-linux-3.10.0-693.el7.x86_64] (local build)
 Copyright (C) 2002-13, Bruce Allen, Christian Franke, www.smartmontools.org
 
@@ -130,7 +130,7 @@ Writeback Cache is:   Enabled
 
 <p>关闭写缓存：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root@chenhong204 ~]# smartctl --set=wcache,off /dev/sdc
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root@chenhong204 ~]# smartctl --set=wcache,off /dev/sdc
 smartctl 6.2 2013-07-26 r3841 [x86_64-linux-3.10.0-693.el7.x86_64] (local build)
 Copyright (C) 2002-13, Bruce Allen, Christian Franke, www.smartmontools.org
 
@@ -139,7 +139,7 @@ Write cache disabled
 
 <p>开启写缓存：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root@chenhong204 ~]# smartctl --set=wcache,on /dev/sdc
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root@chenhong204 ~]# smartctl --set=wcache,on /dev/sdc
 smartctl 6.2 2013-07-26 r3841 [x86_64-linux-3.10.0-693.el7.x86_64] (local build)
 Copyright (C) 2002-13, Bruce Allen, Christian Franke, www.smartmontools.org
 

@@ -119,43 +119,43 @@
 <span class="k">Table</span> <span class="nv">"public.task"</span>
 <span class="k">Column</span>   <span class="o">|</span>           <span class="k">Type</span>           <span class="o">|</span>                     <span class="n">Modifiers</span>
 <span class="c1">------------+--------------------------+---------------------------------------------------</span>
-<span class="n">id</span>         <span class="o">|</span> <span class="n">integer</span>                  <span class="o">|</span> <span class="k">not</span> <span class="k">null</span> <span class="k">default</span> <span class="n">nextval</span><span class="p">(</span><span class="s1">'task_id_seq'</span><span class="p">::</span><span class="n">regclass</span><span class="p">)</span></code></pre></figure>
+<span class="n">id</span>         <span class="o">|</span> <span class="nb">integer</span>                  <span class="o">|</span> <span class="k">not</span> <span class="k">null</span> <span class="k">default</span> <span class="n">nextval</span><span class="p">(</span><span class="s1">'task_id_seq'</span><span class="p">::</span><span class="n">regclass</span><span class="p">)</span></code></pre></figure>
 
 <p>Postgres 提供了一些操作 sequence 的函数：<em><a href="https://www.postgresql.org/docs/9.6/functions-sequence.html">https://www.postgresql.org/docs/9.6/functions-sequence.html</a></em>。</p>
 
 <h3 id="查询-sequence-会生成的下一个值">查询 sequence 会生成的下一个值</h3>
 
-<p>如果当前的 session 调用过了 <code class="highlighter-rouge">nextval()</code> 函数，就可以使用 <code class="highlighter-rouge">currval(seqname)</code> 函数来获取一个 sequence 对象最后一次被 <code class="highlighter-rouge">nextval()</code> 函数返回的值，将其加一就可以得到下一个值。注意，如果在当前 session 中没有对这个 sequence 调用过 <code class="highlighter-rouge">nextval()</code> 函数，那么调用 <code class="highlighter-rouge">currval(seqname)</code> 将返回错误。</p>
+<p>如果当前的 session 调用过了 <code class="language-plaintext highlighter-rouge">nextval()</code> 函数，就可以使用 <code class="language-plaintext highlighter-rouge">currval(seqname)</code> 函数来获取一个 sequence 对象最后一次被 <code class="language-plaintext highlighter-rouge">nextval()</code> 函数返回的值，将其加一就可以得到下一个值。注意，如果在当前 session 中没有对这个 sequence 调用过 <code class="language-plaintext highlighter-rouge">nextval()</code> 函数，那么调用 <code class="language-plaintext highlighter-rouge">currval(seqname)</code> 将返回错误。</p>
 
-<p>不过，即使当前的 session 没有调用对应 <code class="highlighter-rouge">nextval(seqname)</code>，也可以通过直接查看 relation 的方式起来确定一个 sequence 会生成的下一个值。例如，上面的 <code class="highlighter-rouge">task_id_seq</code>：</p>
+<p>不过，即使当前的 session 没有调用对应 <code class="language-plaintext highlighter-rouge">nextval(seqname)</code>，也可以通过直接查看 relation 的方式起来确定一个 sequence 会生成的下一个值。例如，上面的 <code class="language-plaintext highlighter-rouge">task_id_seq</code>：</p>
 
 <figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="n">testdb</span><span class="o">=#</span> <span class="err">\</span><span class="n">d</span> <span class="n">task_id_seq</span>
          <span class="n">Sequence</span> <span class="nv">"public.task_id_seq"</span>
     <span class="k">Column</span>     <span class="o">|</span>  <span class="k">Type</span>   <span class="o">|</span>        <span class="n">Value</span>
 <span class="c1">---------------+---------+---------------------</span>
  <span class="n">sequence_name</span> <span class="o">|</span> <span class="n">name</span>    <span class="o">|</span> <span class="n">task_id_seq</span>
- <span class="n">last_value</span>    <span class="o">|</span> <span class="n">bigint</span>  <span class="o">|</span> <span class="mi">6296</span>
- <span class="n">start_value</span>   <span class="o">|</span> <span class="n">bigint</span>  <span class="o">|</span> <span class="mi">1</span>
- <span class="n">increment_by</span>  <span class="o">|</span> <span class="n">bigint</span>  <span class="o">|</span> <span class="mi">1</span>
- <span class="n">max_value</span>     <span class="o">|</span> <span class="n">bigint</span>  <span class="o">|</span> <span class="mi">9223372036854775807</span>
- <span class="n">min_value</span>     <span class="o">|</span> <span class="n">bigint</span>  <span class="o">|</span> <span class="mi">1</span>
- <span class="n">cache_value</span>   <span class="o">|</span> <span class="n">bigint</span>  <span class="o">|</span> <span class="mi">1</span>
- <span class="n">log_cnt</span>       <span class="o">|</span> <span class="n">bigint</span>  <span class="o">|</span> <span class="mi">29</span>
- <span class="n">is_cycled</span>     <span class="o">|</span> <span class="n">boolean</span> <span class="o">|</span> <span class="n">f</span>
- <span class="n">is_called</span>     <span class="o">|</span> <span class="n">boolean</span> <span class="o">|</span> <span class="n">t</span>
+ <span class="n">last_value</span>    <span class="o">|</span> <span class="nb">bigint</span>  <span class="o">|</span> <span class="mi">6296</span>
+ <span class="n">start_value</span>   <span class="o">|</span> <span class="nb">bigint</span>  <span class="o">|</span> <span class="mi">1</span>
+ <span class="n">increment_by</span>  <span class="o">|</span> <span class="nb">bigint</span>  <span class="o">|</span> <span class="mi">1</span>
+ <span class="n">max_value</span>     <span class="o">|</span> <span class="nb">bigint</span>  <span class="o">|</span> <span class="mi">9223372036854775807</span>
+ <span class="n">min_value</span>     <span class="o">|</span> <span class="nb">bigint</span>  <span class="o">|</span> <span class="mi">1</span>
+ <span class="n">cache_value</span>   <span class="o">|</span> <span class="nb">bigint</span>  <span class="o">|</span> <span class="mi">1</span>
+ <span class="n">log_cnt</span>       <span class="o">|</span> <span class="nb">bigint</span>  <span class="o">|</span> <span class="mi">29</span>
+ <span class="n">is_cycled</span>     <span class="o">|</span> <span class="nb">boolean</span> <span class="o">|</span> <span class="n">f</span>
+ <span class="n">is_called</span>     <span class="o">|</span> <span class="nb">boolean</span> <span class="o">|</span> <span class="n">t</span>
 <span class="n">Owned</span> <span class="k">by</span><span class="p">:</span> <span class="k">public</span><span class="p">.</span><span class="n">task</span><span class="p">.</span><span class="n">id</span></code></pre></figure>
 
-<p>关注其中的 <code class="highlighter-rouge">last_value</code> 字段和 <code class="highlighter-rouge">is_called</code> 字段。<code class="highlighter-rouge">last_value</code> 表示上次被调用的值是多少，这个值会从 <code class="highlighter-rouge">start_value</code> 指定的值开始，一般是 1。 如果 <code class="highlighter-rouge">is_called</code> 的值为 <code class="highlighter-rouge">false</code>，表示 <code class="highlighter-rouge">last_value</code> 这个值还没有被返回过，会在下次返回。一般来说，当我们刚创建了一个表时，还未向其中插入数据，即<code class="highlighter-rouge">last_value</code> 的值等于 <code class="highlighter-rouge">start_value</code> 的值时，<code class="highlighter-rouge">is_called</code> 的值会设置为 <code class="highlighter-rouge">false</code>。</p>
+<p>关注其中的 <code class="language-plaintext highlighter-rouge">last_value</code> 字段和 <code class="language-plaintext highlighter-rouge">is_called</code> 字段。<code class="language-plaintext highlighter-rouge">last_value</code> 表示上次被调用的值是多少，这个值会从 <code class="language-plaintext highlighter-rouge">start_value</code> 指定的值开始，一般是 1。 如果 <code class="language-plaintext highlighter-rouge">is_called</code> 的值为 <code class="language-plaintext highlighter-rouge">false</code>，表示 <code class="language-plaintext highlighter-rouge">last_value</code> 这个值还没有被返回过，会在下次返回。一般来说，当我们刚创建了一个表时，还未向其中插入数据，即<code class="language-plaintext highlighter-rouge">last_value</code> 的值等于 <code class="language-plaintext highlighter-rouge">start_value</code> 的值时，<code class="language-plaintext highlighter-rouge">is_called</code> 的值会设置为 <code class="language-plaintext highlighter-rouge">false</code>。</p>
 
-<p>上面这个输出表示 <code class="highlighter-rouge">task_id_seq</code> 最后一次返回的是 <strong>6296</strong>，下一次返回 6297。</p>
+<p>上面这个输出表示 <code class="language-plaintext highlighter-rouge">task_id_seq</code> 最后一次返回的是 <strong>6296</strong>，下一次返回 6297。</p>
 
 <h3 id="重置一个-sequence">重置一个 sequence</h3>
 
 <p>常用的有两个方法。</p>
 
 <ol>
-  <li><code class="highlighter-rouge">ALTER SEQUENCE seq RESTART WITH 1;</code>，将值重置为 1。</li>
-  <li><code class="highlighter-rouge">SELECT setval('sequence', 1);</code> 设置 <code class="highlighter-rouge">last_value</code> 的值为 1。<code class="highlighter-rouge">SELECT setval('sequence', 1, false);</code> 设置 <code class="highlighter-rouge">last_value</code> 的值为 1，<code class="highlighter-rouge">is_called</code> 为 <code class="highlighter-rouge">false</code>。</li>
+  <li><code class="language-plaintext highlighter-rouge">ALTER SEQUENCE seq RESTART WITH 1;</code>，将值重置为 1。</li>
+  <li><code class="language-plaintext highlighter-rouge">SELECT setval('sequence', 1);</code> 设置 <code class="language-plaintext highlighter-rouge">last_value</code> 的值为 1。<code class="language-plaintext highlighter-rouge">SELECT setval('sequence', 1, false);</code> 设置 <code class="language-plaintext highlighter-rouge">last_value</code> 的值为 1，<code class="language-plaintext highlighter-rouge">is_called</code> 为 <code class="language-plaintext highlighter-rouge">false</code>。</li>
 </ol>
 
     <br />

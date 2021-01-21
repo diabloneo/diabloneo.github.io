@@ -176,7 +176,7 @@
 
 <p>OpenStack早期的项目并没有使用一个框架，而是使用了几个不同的模块来组合出一个框架：<strong>Paste + PasteDeploy + Routes + WebOb</strong>，这几个不同的模块分别负责应用的WSGI化、URL路由和请求处理等功能。Nova, Glance, Neutron, Keystone等早期的项目都是使用这样的架构来实现RESTful API的。</p>
 
-<p>早期的这种技术选型带来的好处是”框架”具备足够的灵活性，缺点则是要把这几个模块组合起来实现一个REST服务，需要写很多代码，连WSGI的入口函数都要自己实现（比如Keystone项目的keystone/common/wsgi.py文件中的<code class="highlighter-rouge">class Application</code>）。因为灵活性的好处不是很明显，而代码量大的坏处很明显，比如上面那个<code class="highlighter-rouge">class Application</code>需要在每个项目中复制一遍，所以社区的新项目就开始使用新的Web框架<strong>Pecan</strong>。</p>
+<p>早期的这种技术选型带来的好处是”框架”具备足够的灵活性，缺点则是要把这几个模块组合起来实现一个REST服务，需要写很多代码，连WSGI的入口函数都要自己实现（比如Keystone项目的keystone/common/wsgi.py文件中的<code class="language-plaintext highlighter-rouge">class Application</code>）。因为灵活性的好处不是很明显，而代码量大的坏处很明显，比如上面那个<code class="language-plaintext highlighter-rouge">class Application</code>需要在每个项目中复制一遍，所以社区的新项目就开始使用新的Web框架<strong>Pecan</strong>。</p>
 
 <p>Pecan是一个基于对象路由的框架，即灵活又简单。Pecan主要实现了URL路由功能，支持RESTful API。Pecan没有实现模板、session管理和ORM等功能，但是这些功能可以通过其他的模块来实现。对于OpenStack来说，Pecan是一个很好的选择，因为OpenStack项目中统一使用sqlalchemy来实现ORM，API的实现也不需要模板功能，安全控制则基于Keystone体系。使用Pecan来开发REST服务，代码量很少，代码结构也清晰。Ceilometer项目就是使用了Pecan。</p>
 

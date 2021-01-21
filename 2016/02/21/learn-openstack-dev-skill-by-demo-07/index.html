@@ -149,8 +149,8 @@
 <p>由于webdemo项目还没有使用<strong>oslo_db</strong>库，所以代码看起来比较直观，没有Magnum项目复杂。接下来，我们就要开始写数据库操作的相关代码，分为两个步骤：</p>
 
 <ol>
-  <li>在<em>db/models.py</em>中定义<code class="highlighter-rouge">User</code>类，对应数据库的user表。</li>
-  <li>在<em>db/api.py</em>中实现一个<code class="highlighter-rouge">Connection</code>类，这个类封装了所有的数据库操作接口。我们会在这个类中实现对user表的CRUD等操作。</li>
+  <li>在<em>db/models.py</em>中定义<code class="language-plaintext highlighter-rouge">User</code>类，对应数据库的user表。</li>
+  <li>在<em>db/api.py</em>中实现一个<code class="language-plaintext highlighter-rouge">Connection</code>类，这个类封装了所有的数据库操作接口。我们会在这个类中实现对user表的CRUD等操作。</li>
 </ol>
 
 <h4 id="定义user数据模型映射类">定义User数据模型映射类</h4>
@@ -162,7 +162,7 @@
 <span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Index</span>
 
 
-<span class="n">Base</span> <span class="o">=</span> <span class="n">declarative</span><span class="o">.</span><span class="n">declarative_base</span><span class="p">()</span>
+<span class="n">Base</span> <span class="o">=</span> <span class="n">declarative</span><span class="p">.</span><span class="n">declarative_base</span><span class="p">()</span>
 
 
 <span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
@@ -202,7 +202,7 @@
         <span class="k">return</span> <span class="n">_ENGINE</span>
 
     <span class="n">_ENGINE</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="s">'sqlite://'</span><span class="p">)</span>
-    <span class="n">db_models</span><span class="o">.</span><span class="n">Base</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">_ENGINE</span><span class="p">)</span>
+    <span class="n">db_models</span><span class="p">.</span><span class="n">Base</span><span class="p">.</span><span class="n">metadata</span><span class="p">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">_ENGINE</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">_ENGINE</span>
 
 
@@ -211,7 +211,7 @@
     <span class="k">if</span> <span class="n">_SESSION_MAKER</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">_SESSION_MAKER</span>
 
-    <span class="n">_SESSION_MAKER</span> <span class="o">=</span> <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">orm</span><span class="o">.</span><span class="n">sessionmaker</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
+    <span class="n">_SESSION_MAKER</span> <span class="o">=</span> <span class="n">sqlalchemy</span><span class="p">.</span><span class="n">orm</span><span class="p">.</span><span class="n">sessionmaker</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">_SESSION_MAKER</span>
 
 
@@ -225,23 +225,23 @@
 <p>上面的代码中，我们定义了三个函数：</p>
 
 <ul>
-  <li><code class="highlighter-rouge">get_engine</code>：返回全局唯一的engine，不需要重复分配。</li>
-  <li><code class="highlighter-rouge">get_session_maker</code>：返回全局唯一的session maker，不需要重复分配。</li>
-  <li><code class="highlighter-rouge">get_session</code>：每次返回一个新的session，因为一个session不能同时被两个数据库客户端使用。</li>
+  <li><code class="language-plaintext highlighter-rouge">get_engine</code>：返回全局唯一的engine，不需要重复分配。</li>
+  <li><code class="language-plaintext highlighter-rouge">get_session_maker</code>：返回全局唯一的session maker，不需要重复分配。</li>
+  <li><code class="language-plaintext highlighter-rouge">get_session</code>：每次返回一个新的session，因为一个session不能同时被两个数据库客户端使用。</li>
 </ul>
 
 <p>这三个函数是使用SQLAlchemy中经常会封装的，所以OpenStack的<strong>oslo_db</strong>项目就封装了这些函数，供所有的OpenStack项目使用。</p>
 
-<p>这里需要注意一个地方，在<code class="highlighter-rouge">get_engine()</code>中：</p>
+<p>这里需要注意一个地方，在<code class="language-plaintext highlighter-rouge">get_engine()</code>中：</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python">    <span class="n">_ENGINE</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="s">'sqlite://'</span><span class="p">)</span>
-    <span class="n">db_models</span><span class="o">.</span><span class="n">Base</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">_ENGINE</span><span class="p">)</span></code></pre></figure>
+    <span class="n">db_models</span><span class="p">.</span><span class="n">Base</span><span class="p">.</span><span class="n">metadata</span><span class="p">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">_ENGINE</span><span class="p">)</span></code></pre></figure>
 
-<p>我们使用了sqlite内存数据库，并且立刻创建了所有的表。这么做只是为了演示方便。在实际的项目中，<code class="highlighter-rouge">create_engine()</code>的数据库URL参数应该是从配置文件中读取的，而且也不能在创建engine后就创建所有的表（这样数据库的数据都丢了）。要解决在数据库中建表的问题，就要先了解数据库版本管理的知识，也就是<strong>database migration</strong>，我们在下文中会说明。</p>
+<p>我们使用了sqlite内存数据库，并且立刻创建了所有的表。这么做只是为了演示方便。在实际的项目中，<code class="language-plaintext highlighter-rouge">create_engine()</code>的数据库URL参数应该是从配置文件中读取的，而且也不能在创建engine后就创建所有的表（这样数据库的数据都丢了）。要解决在数据库中建表的问题，就要先了解数据库版本管理的知识，也就是<strong>database migration</strong>，我们在下文中会说明。</p>
 
 <h5 id="connection实现">Connection实现</h5>
 
-<p><code class="highlighter-rouge">Connection</code>的实现就简单得多了，直接看代码。这里只实现了<code class="highlighter-rouge">get_user()</code>和<code class="highlighter-rouge">list_users()</code>方法。</p>
+<p><code class="language-plaintext highlighter-rouge">Connection</code>的实现就简单得多了，直接看代码。这里只实现了<code class="language-plaintext highlighter-rouge">get_user()</code>和<code class="language-plaintext highlighter-rouge">list_users()</code>方法。</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">Connection</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
@@ -249,19 +249,19 @@
         <span class="k">pass</span>
 
     <span class="k">def</span> <span class="nf">get_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">):</span>
-        <span class="n">query</span> <span class="o">=</span> <span class="n">get_session</span><span class="p">()</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">db_models</span><span class="o">.</span><span class="n">User</span><span class="p">)</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">)</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">get_session</span><span class="p">().</span><span class="n">query</span><span class="p">(</span><span class="n">db_models</span><span class="p">.</span><span class="n">User</span><span class="p">).</span><span class="n">filter_by</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">user</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">one</span><span class="p">()</span>
-        <span class="k">except</span> <span class="n">exc</span><span class="o">.</span><span class="n">NoResultFound</span><span class="p">:</span>
-            <span class="c"># TODO(developer): process this situation</span>
-            <span class="k">pass</span>
+            <span class="n">user</span> <span class="o">=</span> <span class="n">query</span><span class="p">.</span><span class="n">one</span><span class="p">()</span>
+        <span class="k">except</span> <span class="n">exc</span><span class="p">.</span><span class="n">NoResultFound</span><span class="p">:</span>
+            <span class="c1"># TODO(developer): process this situation
+</span>            <span class="k">pass</span>
 
         <span class="k">return</span> <span class="n">user</span>
 
     <span class="k">def</span> <span class="nf">list_users</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">session</span> <span class="o">=</span> <span class="n">get_session</span><span class="p">()</span>
-        <span class="n">query</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">db_models</span><span class="o">.</span><span class="n">User</span><span class="p">)</span>
-        <span class="n">users</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="nb">all</span><span class="p">()</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">session</span><span class="p">.</span><span class="n">query</span><span class="p">(</span><span class="n">db_models</span><span class="p">.</span><span class="n">User</span><span class="p">)</span>
+        <span class="n">users</span> <span class="o">=</span> <span class="n">query</span><span class="p">.</span><span class="nb">all</span><span class="p">()</span>
 
         <span class="k">return</span> <span class="n">users</span>
 
@@ -273,7 +273,7 @@
 
 <h4 id="在api-controller中使用db-api">在API Controller中使用DB API</h4>
 
-<p>现在我们有了DB API，接下来就是要在Controller中使用它。对于使用Pecan框架的应用来说，我们定义一个Pecan hook，这个hook在每个请求进来的时候实例化一个db的<code class="highlighter-rouge">Connection</code>对象，然后在controller代码中我们可以直接使用这个<code class="highlighter-rouge">Connection</code>实例。关于Pecan hook的相关信息，请查看<a href="http://pecan.readthedocs.org/en/latest/hooks.html">Pecan官方文档</a>。</p>
+<p>现在我们有了DB API，接下来就是要在Controller中使用它。对于使用Pecan框架的应用来说，我们定义一个Pecan hook，这个hook在每个请求进来的时候实例化一个db的<code class="language-plaintext highlighter-rouge">Connection</code>对象，然后在controller代码中我们可以直接使用这个<code class="language-plaintext highlighter-rouge">Connection</code>实例。关于Pecan hook的相关信息，请查看<a href="http://pecan.readthedocs.org/en/latest/hooks.html">Pecan官方文档</a>。</p>
 
 <p>首先，我们要实现这个hook，并且加入到app中。hook的实现代码在<em>webdemo/api/hooks.py</em>中：</p>
 
@@ -282,21 +282,21 @@
 <span class="kn">from</span> <span class="nn">webdemo.db</span> <span class="kn">import</span> <span class="n">api</span> <span class="k">as</span> <span class="n">db_api</span>
 
 
-<span class="k">class</span> <span class="nc">DBHook</span><span class="p">(</span><span class="n">hooks</span><span class="o">.</span><span class="n">PecanHook</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">DBHook</span><span class="p">(</span><span class="n">hooks</span><span class="p">.</span><span class="n">PecanHook</span><span class="p">):</span>
     <span class="s">"""Create a db connection instance."""</span>
 
     <span class="k">def</span> <span class="nf">before</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
-        <span class="n">state</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">db_conn</span> <span class="o">=</span> <span class="n">db_api</span><span class="o">.</span><span class="n">Connection</span><span class="p">()</span></code></pre></figure>
+        <span class="n">state</span><span class="p">.</span><span class="n">request</span><span class="p">.</span><span class="n">db_conn</span> <span class="o">=</span> <span class="n">db_api</span><span class="p">.</span><span class="n">Connection</span><span class="p">()</span></code></pre></figure>
 
-<p>然后，修改<em>webdemo/api/app.py</em>中的<code class="highlighter-rouge">setup_app()</code>方法：</p>
+<p>然后，修改<em>webdemo/api/app.py</em>中的<code class="language-plaintext highlighter-rouge">setup_app()</code>方法：</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">setup_app</span><span class="p">():</span>
     <span class="n">config</span> <span class="o">=</span> <span class="n">get_pecan_config</span><span class="p">()</span>
 
-    <span class="n">app_hooks</span> <span class="o">=</span> <span class="p">[</span><span class="n">hooks</span><span class="o">.</span><span class="n">DBHook</span><span class="p">()]</span>
-    <span class="n">app_conf</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">app</span><span class="p">)</span>
-    <span class="n">app</span> <span class="o">=</span> <span class="n">pecan</span><span class="o">.</span><span class="n">make_app</span><span class="p">(</span>
-        <span class="n">app_conf</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">'root'</span><span class="p">),</span>
+    <span class="n">app_hooks</span> <span class="o">=</span> <span class="p">[</span><span class="n">hooks</span><span class="p">.</span><span class="n">DBHook</span><span class="p">()]</span>
+    <span class="n">app_conf</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">config</span><span class="p">.</span><span class="n">app</span><span class="p">)</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">pecan</span><span class="p">.</span><span class="n">make_app</span><span class="p">(</span>
+        <span class="n">app_conf</span><span class="p">.</span><span class="n">pop</span><span class="p">(</span><span class="s">'root'</span><span class="p">),</span>
         <span class="n">logging</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s">'logging'</span><span class="p">,</span> <span class="p">{}),</span>
         <span class="n">hooks</span><span class="o">=</span><span class="n">app_hooks</span><span class="p">,</span>
         <span class="o">**</span><span class="n">app_conf</span>
@@ -306,38 +306,38 @@
 
 <p>现在，我们就可以在controller使用DB API了。我们这里要重新实现<a href="https://segmentfault.com/a/1190000004004179">API服务(4)</a>实现的<em>GET /v1/users</em>这个接口：</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="o">...</span>
-<span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">wtypes</span><span class="o">.</span><span class="n">Base</span><span class="p">):</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="p">...</span>
+<span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">wtypes</span><span class="p">.</span><span class="n">Base</span><span class="p">):</span>
     <span class="nb">id</span> <span class="o">=</span> <span class="nb">int</span>
-    <span class="n">user_id</span> <span class="o">=</span> <span class="n">wtypes</span><span class="o">.</span><span class="n">text</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="n">wtypes</span><span class="o">.</span><span class="n">text</span>
-    <span class="n">email</span> <span class="o">=</span> <span class="n">wtypes</span><span class="o">.</span><span class="n">text</span>
+    <span class="n">user_id</span> <span class="o">=</span> <span class="n">wtypes</span><span class="p">.</span><span class="n">text</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">wtypes</span><span class="p">.</span><span class="n">text</span>
+    <span class="n">email</span> <span class="o">=</span> <span class="n">wtypes</span><span class="p">.</span><span class="n">text</span>
 
 
-<span class="k">class</span> <span class="nc">Users</span><span class="p">(</span><span class="n">wtypes</span><span class="o">.</span><span class="n">Base</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">Users</span><span class="p">(</span><span class="n">wtypes</span><span class="p">.</span><span class="n">Base</span><span class="p">):</span>
     <span class="n">users</span> <span class="o">=</span> <span class="p">[</span><span class="n">User</span><span class="p">]</span>
-<span class="o">...</span>
-<span class="k">class</span> <span class="nc">UsersController</span><span class="p">(</span><span class="n">rest</span><span class="o">.</span><span class="n">RestController</span><span class="p">):</span>
+<span class="p">...</span>
+<span class="k">class</span> <span class="nc">UsersController</span><span class="p">(</span><span class="n">rest</span><span class="p">.</span><span class="n">RestController</span><span class="p">):</span>
 
-    <span class="nd">@pecan.expose</span><span class="p">()</span>
+    <span class="o">@</span><span class="n">pecan</span><span class="p">.</span><span class="n">expose</span><span class="p">()</span>
     <span class="k">def</span> <span class="nf">_lookup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="o">*</span><span class="n">remainder</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">UserController</span><span class="p">(</span><span class="n">user_id</span><span class="p">),</span> <span class="n">remainder</span>
 
-    <span class="nd">@expose.expose</span><span class="p">(</span><span class="n">Users</span><span class="p">)</span>
+    <span class="o">@</span><span class="n">expose</span><span class="p">.</span><span class="n">expose</span><span class="p">(</span><span class="n">Users</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">db_conn</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">db_conn</span>     <span class="c"># 获取DBHook中创建的Connection实例</span>
-        <span class="n">users</span> <span class="o">=</span> <span class="n">db_conn</span><span class="o">.</span><span class="n">list_users</span><span class="p">()</span>  <span class="c"># 调用所需的DB API</span>
-        <span class="n">users_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">db_conn</span> <span class="o">=</span> <span class="n">request</span><span class="p">.</span><span class="n">db_conn</span>     <span class="c1"># 获取DBHook中创建的Connection实例
+</span>        <span class="n">users</span> <span class="o">=</span> <span class="n">db_conn</span><span class="p">.</span><span class="n">list_users</span><span class="p">()</span>  <span class="c1"># 调用所需的DB API
+</span>        <span class="n">users_list</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">users</span><span class="p">:</span>
             <span class="n">u</span> <span class="o">=</span> <span class="n">User</span><span class="p">()</span>
-            <span class="n">u</span><span class="o">.</span><span class="nb">id</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="nb">id</span>
-            <span class="n">u</span><span class="o">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">user_id</span>
-            <span class="n">u</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">name</span>
-            <span class="n">u</span><span class="o">.</span><span class="n">email</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">email</span>
-            <span class="n">users_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+            <span class="n">u</span><span class="p">.</span><span class="nb">id</span> <span class="o">=</span> <span class="n">user</span><span class="p">.</span><span class="nb">id</span>
+            <span class="n">u</span><span class="p">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="n">user</span><span class="p">.</span><span class="n">user_id</span>
+            <span class="n">u</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">user</span><span class="p">.</span><span class="n">name</span>
+            <span class="n">u</span><span class="p">.</span><span class="n">email</span> <span class="o">=</span> <span class="n">user</span><span class="p">.</span><span class="n">email</span>
+            <span class="n">users_list</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Users</span><span class="p">(</span><span class="n">users</span><span class="o">=</span><span class="n">users_list</span><span class="p">)</span>
 
-    <span class="nd">@expose.expose</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">User</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="mi">201</span><span class="p">)</span>
+    <span class="o">@</span><span class="n">expose</span><span class="p">.</span><span class="n">expose</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">User</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="mi">201</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
         <span class="k">print</span> <span class="n">user</span></code></pre></figure>
 
@@ -351,11 +351,11 @@
 
 <h3 id="数据库版本管理的概念">数据库版本管理的概念</h3>
 
-<p>上面我们在<code class="highlighter-rouge">get_engine()</code>函数中使用了内存数据库，并且创建了所有的表。在实际项目中，这么做肯定是不行的：</p>
+<p>上面我们在<code class="language-plaintext highlighter-rouge">get_engine()</code>函数中使用了内存数据库，并且创建了所有的表。在实际项目中，这么做肯定是不行的：</p>
 
 <ol>
   <li>实际项目中不会使用内存数据库，这种数据库一般只是在单元测试中使用。</li>
-  <li>如果每次<code class="highlighter-rouge">create_engine</code>都把数据库的表重新创建一次，那么数据库中的数据就丢失了，绝对不可容忍。</li>
+  <li>如果每次<code class="language-plaintext highlighter-rouge">create_engine</code>都把数据库的表重新创建一次，那么数据库中的数据就丢失了，绝对不可容忍。</li>
 </ol>
 
 <p>解决这个问题的办法也很简单：<strong>不使用内存数据库，并且在运行项目代码前先把数据库中的表都建好</strong>。这么做确实是解决了问题，但是看起来有点麻烦：</p>
@@ -402,7 +402,7 @@
 
 <p>一般OpenStack项目中，Alembic的环境都是放在<em>db/sqlalchemy/</em>目录下，因此，我们先建立目录<em>webdemo/db/sqlalchemy/</em>，然后在这个目录下初始化Alembic环境：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(.venv)➜ ~/programming/python/webdemo git:(master) ✗ $ cd webdemo/db
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(.venv)➜ ~/programming/python/webdemo git:(master) ✗ $ cd webdemo/db
 (.venv)➜ ~/programming/python/webdemo/webdemo/db git:(master) ✗ $ ls
 api.py  api.pyc  __init__.py  __init__.pyc  models.py  models.pyc  sqlalchemy
 (.venv)➜ ~/programming/python/webdemo/webdemo/db git:(master) ✗ $ cd sqlalchemy
@@ -427,7 +427,7 @@ api.py  api.pyc  __init__.py  __init__.pyc  models.py  models.pyc  sqlalchemy
 
 <p><em>webdemo/db/sqlalchemy/alembic.ini</em>文件是Alembic的配置文件，我们现在需要修改文件中的<strong>sqlalchemy.url</strong>这个配置项，用来指向我们的数据库。这里，我们使用SQLite数据库，数据库文件存放在webdemo项目的根目录下，名称是<strong>webdemo.db</strong>：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## sqlalchemy.url = driver://user:pass@localhost/dbname
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## sqlalchemy.url = driver://user:pass@localhost/dbname
 sqlalchemy.url = sqlite:///../../../webdemo.db
 </code></pre></div></div>
 
@@ -437,7 +437,7 @@ sqlalchemy.url = sqlite:///../../../webdemo.db
 
 <p>现在，我们可以创建第一个迁移脚本了，我们的第一个数据库版本就是创建我们的user表：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(.venv)➜ ~/programming/python/webdemo/webdemo/db/sqlalchemy git:(master) ✗ $ alembic revision -m "Create user table"
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(.venv)➜ ~/programming/python/webdemo/webdemo/db/sqlalchemy git:(master) ✗ $ alembic revision -m "Create user table"
   Generating /home/diabloneo/programming/python/webdemo/webdemo/db/sqlalchemy/alembic/versions/4bafdb464737_create_user_table.py ... done
 </code></pre></div></div>
 
@@ -451,8 +451,8 @@ Create Date: 2016-02-21 12:24:46.640894
 
 """</span>
 
-<span class="c">## revision identifiers, used by Alembic.</span>
-<span class="n">revision</span> <span class="o">=</span> <span class="s">'4bafdb464737'</span>
+<span class="c1">## revision identifiers, used by Alembic.
+</span><span class="n">revision</span> <span class="o">=</span> <span class="s">'4bafdb464737'</span>
 <span class="n">down_revision</span> <span class="o">=</span> <span class="bp">None</span>
 <span class="n">branch_labels</span> <span class="o">=</span> <span class="bp">None</span>
 <span class="n">depends_on</span> <span class="o">=</span> <span class="bp">None</span>
@@ -462,33 +462,33 @@ Create Date: 2016-02-21 12:24:46.640894
 
 
 <span class="k">def</span> <span class="nf">upgrade</span><span class="p">():</span>
-    <span class="n">op</span><span class="o">.</span><span class="n">create_table</span><span class="p">(</span>
+    <span class="n">op</span><span class="p">.</span><span class="n">create_table</span><span class="p">(</span>
         <span class="s">'user'</span><span class="p">,</span>
-        <span class="n">sa</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="s">'id'</span><span class="p">,</span> <span class="n">sa</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
-        <span class="n">sa</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="s">'user_id'</span><span class="p">,</span> <span class="n">sa</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">255</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-        <span class="n">sa</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="s">'name'</span><span class="p">,</span> <span class="n">sa</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">64</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
-        <span class="n">sa</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="s">'email'</span><span class="p">,</span> <span class="n">sa</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">255</span><span class="p">))</span>
+        <span class="n">sa</span><span class="p">.</span><span class="n">Column</span><span class="p">(</span><span class="s">'id'</span><span class="p">,</span> <span class="n">sa</span><span class="p">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+        <span class="n">sa</span><span class="p">.</span><span class="n">Column</span><span class="p">(</span><span class="s">'user_id'</span><span class="p">,</span> <span class="n">sa</span><span class="p">.</span><span class="n">String</span><span class="p">(</span><span class="mi">255</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
+        <span class="n">sa</span><span class="p">.</span><span class="n">Column</span><span class="p">(</span><span class="s">'name'</span><span class="p">,</span> <span class="n">sa</span><span class="p">.</span><span class="n">String</span><span class="p">(</span><span class="mi">64</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+        <span class="n">sa</span><span class="p">.</span><span class="n">Column</span><span class="p">(</span><span class="s">'email'</span><span class="p">,</span> <span class="n">sa</span><span class="p">.</span><span class="n">String</span><span class="p">(</span><span class="mi">255</span><span class="p">))</span>
     <span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">downgrade</span><span class="p">():</span>
-    <span class="n">op</span><span class="o">.</span><span class="n">drop_table</span><span class="p">(</span><span class="s">'user'</span><span class="p">)</span></code></pre></figure>
+    <span class="n">op</span><span class="p">.</span><span class="n">drop_table</span><span class="p">(</span><span class="s">'user'</span><span class="p">)</span></code></pre></figure>
 
-<p>其实就是把<code class="highlighter-rouge">User</code>类的定义再写了一遍，使用了Alembic提供的接口来方便的创建和删除表。</p>
+<p>其实就是把<code class="language-plaintext highlighter-rouge">User</code>类的定义再写了一遍，使用了Alembic提供的接口来方便的创建和删除表。</p>
 
 <h4 id="执行迁移操作">执行迁移操作</h4>
 
 <p>我们需要在<em>webdemo/db/sqlalchemy/</em>目录下执行迁移操作，可能需要手动指定PYTHONPATH：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(.venv)➜ ~/programming/python/webdemo/webdemo/db/sqlalchemy git:(master) ✗ $ PYTHONPATH=../../../ alembic upgrade head
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(.venv)➜ ~/programming/python/webdemo/webdemo/db/sqlalchemy git:(master) ✗ $ PYTHONPATH=../../../ alembic upgrade head
 INFO  [alembic.migration] Context impl SQLiteImpl.
 INFO  [alembic.migration] Will assume non-transactional DDL.
 INFO  [alembic.migration] Running upgrade  -&gt; 4bafdb464737, Create user table
 </code></pre></div></div>
 
-<p><code class="highlighter-rouge">alembic upgrade head</code>会把数据库升级到最新的版本。这个时候，在webdemo的根目录下会出现<strong>webdemo.db</strong>这个文件，可以使用sqlite3命令查看内容：</p>
+<p><code class="language-plaintext highlighter-rouge">alembic upgrade head</code>会把数据库升级到最新的版本。这个时候，在webdemo的根目录下会出现<strong>webdemo.db</strong>这个文件，可以使用sqlite3命令查看内容：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(.venv)➜ ~/programming/python/webdemo git:(master) ✗ $ ls
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(.venv)➜ ~/programming/python/webdemo git:(master) ✗ $ ls
 AUTHORS  build  ChangeLog  dist  LICENSE  README.md  requirements.txt  Session.vim  setup.cfg  setup.py  webdemo  webdemo.db  webdemo.egg-info
 (.venv)➜ ~/programming/python/webdemo git:(master) ✗ $ sqlite3 webdemo.db
 SQLite version 3.8.11.1 2015-07-29 20:00:57
@@ -516,7 +516,7 @@ version_num
 
 <h4 id="测试新的数据库">测试新的数据库</h4>
 
-<p>现在我们可以把之前使用的内存数据库换掉，使用我们的文件数据库，修改<code class="highlighter-rouge">get_engine()</code>函数：</p>
+<p>现在我们可以把之前使用的内存数据库换掉，使用我们的文件数据库，修改<code class="language-plaintext highlighter-rouge">get_engine()</code>函数：</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">get_engine</span><span class="p">():</span>
     <span class="k">global</span> <span class="n">_ENGINE</span>
@@ -528,7 +528,7 @@ version_num
 
 <p>现在你可以手动往webdemo.db中添加数据，然后测试下API：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>➜ ~/programming/python/webdemo git:(master) ✗ $ sqlite3 webdemo.db
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>➜ ~/programming/python/webdemo git:(master) ✗ $ sqlite3 webdemo.db
 SQLite version 3.8.11.1 2015-07-29 20:00:57
 Enter ".help" for usage hints.
 sqlite&gt; .header on

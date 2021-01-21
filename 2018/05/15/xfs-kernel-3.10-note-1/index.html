@@ -119,7 +119,7 @@
 
 <h2 id="module_init">module_init</h2>
 
-<p><code class="highlighter-rouge">module_init()</code>的调用在<em>fs/xfs/xfs_super.c</em>文件中，模块初始化函数是<code class="highlighter-rouge">init_xfs_fs()</code>。</p>
+<p><code class="language-plaintext highlighter-rouge">module_init()</code>的调用在<em>fs/xfs/xfs_super.c</em>文件中，模块初始化函数是<code class="language-plaintext highlighter-rouge">init_xfs_fs()</code>。</p>
 
 <h3 id="xfs_dir_startup">xfs_dir_startup</h3>
 
@@ -135,7 +135,7 @@
 
 <h3 id="xfs_mru_cache_init">xfs_mru_cache_init</h3>
 
-<p>初始化一个MRU(Most Recently Used) cache，包括初始化一个kmem zone用于存储<code class="highlighter-rouge">xfs_mru_cache_elem_t</code>，以及一个workqueue <em>xfs_mru_cache</em>。</p>
+<p>初始化一个MRU(Most Recently Used) cache，包括初始化一个kmem zone用于存储<code class="language-plaintext highlighter-rouge">xfs_mru_cache_elem_t</code>，以及一个workqueue <em>xfs_mru_cache</em>。</p>
 
 <h3 id="xfs_filestream_init">xfs_filestream_init</h3>
 
@@ -150,14 +150,14 @@
 <p>初始化几个procfs的文件，都位于目录<em>/proc/fs/xfs</em>目录下：</p>
 
 <ul>
-  <li><strong>fs/xfs/stat</strong>：对应函数<code class="highlighter-rouge">xfs_stat_proc_fops()</code>。</li>
-  <li><strong>fs/xfs/xqmstat</strong>：对应函数<code class="highlighter-rouge">xqmstat_proc_fops()</code>。</li>
-  <li><strong>fs/xfs/xqm</strong>：对应函数<code class="highlighter-rouge">xqm_proc_fops()</code>。</li>
+  <li><strong>fs/xfs/stat</strong>：对应函数<code class="language-plaintext highlighter-rouge">xfs_stat_proc_fops()</code>。</li>
+  <li><strong>fs/xfs/xqmstat</strong>：对应函数<code class="language-plaintext highlighter-rouge">xqmstat_proc_fops()</code>。</li>
+  <li><strong>fs/xfs/xqm</strong>：对应函数<code class="language-plaintext highlighter-rouge">xqm_proc_fops()</code>。</li>
 </ul>
 
 <h3 id="xfs_sysctl_register">xfs_sysctl_register</h3>
 
-<p>注册sysctl，对应的table是<code class="highlighter-rouge">xfs_root_table</code>。</p>
+<p>注册sysctl，对应的table是<code class="language-plaintext highlighter-rouge">xfs_root_table</code>。</p>
 
 <h3 id="xfs_qm_init">xfs_qm_init</h3>
 
@@ -165,7 +165,7 @@
 
 <h3 id="register_filesystem">register_filesystem</h3>
 
-<p>注册文件系统，参数是<code class="highlighter-rouge">xfs_fs_type</code>：</p>
+<p>注册文件系统，参数是<code class="language-plaintext highlighter-rouge">xfs_fs_type</code>：</p>
 
 <figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="k">static</span> <span class="k">struct</span> <span class="n">file_system_type</span> <span class="n">xfs_fs_type</span> <span class="o">=</span> <span class="p">{</span>
     <span class="p">.</span><span class="n">owner</span>			<span class="o">=</span> <span class="n">THIS_MODULE</span><span class="p">,</span>
@@ -179,30 +179,30 @@
 
 <h2 id="xfs_fs_mount">xfs_fs_mount</h2>
 
-<p>这个函数会调用<code class="highlighter-rouge">mount_bdev()</code>函数，并且传递函数<code class="highlighter-rouge">xfs_fs_fill_super()</code>作为<code class="highlighter-rouge">fill_super</code>参数。<code class="highlighter-rouge">mount_udev()</code>是一个公共函数，挂载文件系统的统一入口，位于<code class="highlighter-rouge">fs/super.c</code>。</p>
+<p>这个函数会调用<code class="language-plaintext highlighter-rouge">mount_bdev()</code>函数，并且传递函数<code class="language-plaintext highlighter-rouge">xfs_fs_fill_super()</code>作为<code class="language-plaintext highlighter-rouge">fill_super</code>参数。<code class="language-plaintext highlighter-rouge">mount_udev()</code>是一个公共函数，挂载文件系统的统一入口，位于<code class="language-plaintext highlighter-rouge">fs/super.c</code>。</p>
 
 <h3 id="xfs_fs_fill_super">xfs_fs_fill_super</h3>
 
 <p>这个函数完成一个XFS文件系统的mount工作。函数的原型如下：</p>
 
-<figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="n">STATIC</span> <span class="kt">int</span> <span class="n">xfs_fs_fill_super</span><span class="p">(</span><span class="k">struct</span> <span class="n">super_block</span> <span class="o">*</span><span class="n">sb</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">data</span><span class="p">,</span> <span class="kt">int</span> <span class="n">silent</span><span class="p">);</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="n">STATIC</span> <span class="kt">int</span> <span class="nf">xfs_fs_fill_super</span><span class="p">(</span><span class="k">struct</span> <span class="n">super_block</span> <span class="o">*</span><span class="n">sb</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">data</span><span class="p">,</span> <span class="kt">int</span> <span class="n">silent</span><span class="p">);</span></code></pre></figure>
 
 <p>函数的主要工作如下：</p>
 
 <ol>
-  <li>分配一个<code class="highlighter-rouge">struct xfs_mount</code>结构体，并且初始化字段。</li>
-  <li>调用<code class="highlighter-rouge">xfs_parseargs()</code>解析参数并且设置mp中对应的字段。</li>
-  <li>设置<code class="highlighter-rouge">sb-&gt;s_blocksize</code>等字段。</li>
+  <li>分配一个<code class="language-plaintext highlighter-rouge">struct xfs_mount</code>结构体，并且初始化字段。</li>
+  <li>调用<code class="language-plaintext highlighter-rouge">xfs_parseargs()</code>解析参数并且设置mp中对应的字段。</li>
+  <li>设置<code class="language-plaintext highlighter-rouge">sb-&gt;s_blocksize</code>等字段。</li>
   <li>在superblock中设置操作对应的函数
     <ol>
-      <li><code class="highlighter-rouge">sb-&gt;s_xattr = xfs_xattr_handlers</code>：实现文件扩展属性的函数。</li>
-      <li><code class="highlighter-rouge">sb-&gt;s_export_op = &amp;xfs_export_operations</code></li>
-      <li><code class="highlighter-rouge">sb-&gt;s_qcop = &amp;xfs_quotactl_operations</code>：实现配额的函数。</li>
-      <li><code class="highlighter-rouge">sb-&gt;s_op = &amp;xfs_super_operations</code>：文件级别的操作。</li>
+      <li><code class="language-plaintext highlighter-rouge">sb-&gt;s_xattr = xfs_xattr_handlers</code>：实现文件扩展属性的函数。</li>
+      <li><code class="language-plaintext highlighter-rouge">sb-&gt;s_export_op = &amp;xfs_export_operations</code></li>
+      <li><code class="language-plaintext highlighter-rouge">sb-&gt;s_qcop = &amp;xfs_quotactl_operations</code>：实现配额的函数。</li>
+      <li><code class="language-plaintext highlighter-rouge">sb-&gt;s_op = &amp;xfs_super_operations</code>：文件级别的操作。</li>
     </ol>
   </li>
-  <li>调用<code class="highlighter-rouge">xfs_open_devices()</code>，默认情况下我们只有data device。这个函数还会初始化buffer target，是一个<code class="highlighter-rouge">xfs_buftarg_t</code>指针，保存在<code class="highlighter-rouge">mp-&gt;m_ddev_targp</code>。</li>
-  <li>调用<code class="highlighter-rouge">xfs_init_mount_workqueue</code>。这个函数初始化文件系统mount之后所需要的几个workqueue：
+  <li>调用<code class="language-plaintext highlighter-rouge">xfs_open_devices()</code>，默认情况下我们只有data device。这个函数还会初始化buffer target，是一个<code class="language-plaintext highlighter-rouge">xfs_buftarg_t</code>指针，保存在<code class="language-plaintext highlighter-rouge">mp-&gt;m_ddev_targp</code>。</li>
+  <li>调用<code class="language-plaintext highlighter-rouge">xfs_init_mount_workqueue</code>。这个函数初始化文件系统mount之后所需要的几个workqueue：
     <ol>
       <li><em>xfs-data</em></li>
       <li><em>xfs-conv</em></li>
@@ -212,24 +212,24 @@
       <li><em>xfs-eofblocks</em></li>
     </ol>
   </li>
-  <li>调用<code class="highlighter-rouge">xfs_icsb_init_counters()</code>初始化计数器。</li>
-  <li>调用<code class="highlighter-rouge">xfs_readsb()</code>从设备上读取superblock，并且保存到<code class="highlighter-rouge">mp-&gt;m_sb</code>中。</li>
-  <li>调用<code class="highlighter-rouge">xfs_finish_flags()</code>，根据mount参数再初始化某些<code class="highlighter-rouge">mp</code>的字段。</li>
-  <li>调用<code class="highlighter-rouge">xfs_setup_devices()</code>，根据superblock中的block size和sector size来设置buffer target。</li>
-  <li>调用<code class="highlighter-rouge">xfs_filestream_mount()</code>，创建和filestream相关的MRU cache。</li>
+  <li>调用<code class="language-plaintext highlighter-rouge">xfs_icsb_init_counters()</code>初始化计数器。</li>
+  <li>调用<code class="language-plaintext highlighter-rouge">xfs_readsb()</code>从设备上读取superblock，并且保存到<code class="language-plaintext highlighter-rouge">mp-&gt;m_sb</code>中。</li>
+  <li>调用<code class="language-plaintext highlighter-rouge">xfs_finish_flags()</code>，根据mount参数再初始化某些<code class="language-plaintext highlighter-rouge">mp</code>的字段。</li>
+  <li>调用<code class="language-plaintext highlighter-rouge">xfs_setup_devices()</code>，根据superblock中的block size和sector size来设置buffer target。</li>
+  <li>调用<code class="language-plaintext highlighter-rouge">xfs_filestream_mount()</code>，创建和filestream相关的MRU cache。</li>
   <li>在执行mount操作之前，再设置某些superblock的字段。</li>
-  <li>调用<code class="highlighter-rouge">xfs_mountfs()</code>。这个函数做了许多操作：
+  <li>调用<code class="language-plaintext highlighter-rouge">xfs_mountfs()</code>。这个函数做了许多操作：
     <ol>
-      <li>根据superblock的内容继续初始化<code class="highlighter-rouge">mp</code>。</li>
-      <li><code class="highlighter-rouge">xfs_initialize_perag()</code>，初始化ag的内存表示。</li>
-      <li><code class="highlighter-rouge">xfs_log_mount()</code>，初始化journaling log，这里还包含recovery的处理逻辑。</li>
-      <li>读取root inode，也就是文件系统的根目录，保存在<code class="highlighter-rouge">mp-&gt;m_rootip</code>。</li>
+      <li>根据superblock的内容继续初始化<code class="language-plaintext highlighter-rouge">mp</code>。</li>
+      <li><code class="language-plaintext highlighter-rouge">xfs_initialize_perag()</code>，初始化ag的内存表示。</li>
+      <li><code class="language-plaintext highlighter-rouge">xfs_log_mount()</code>，初始化journaling log，这里还包含recovery的处理逻辑。</li>
+      <li>读取root inode，也就是文件系统的根目录，保存在<code class="language-plaintext highlighter-rouge">mp-&gt;m_rootip</code>。</li>
       <li>初始化quota相关的逻辑。</li>
       <li>结束recovery操作。</li>
       <li>保留一些空间用于特殊操作。</li>
     </ol>
   </li>
-  <li>使用root inode创建一个dentry，保存在<code class="highlighter-rouge">sb-&gt;s_root</code>中。</li>
+  <li>使用root inode创建一个dentry，保存在<code class="language-plaintext highlighter-rouge">sb-&gt;s_root</code>中。</li>
 </ol>
 
     <br />

@@ -111,7 +111,7 @@
       <div class="addthis_inline_share_toolbox"></div>
     
     <br />
-      <p>由于Golang不支持泛型，所以我们会使用Golang的<code class="highlighter-rouge">interface{]</code>和<code class="highlighter-rouge">reflect</code>来实现语言的动态特性。但是，这个也会带来很严重的性能下降问题。但是，到底有多慢呢？我们可以通过Golang的<code class="highlighter-rouge">testing</code>库的<code class="highlighter-rouge">Benchmark</code>来测试一下。</p>
+      <p>由于Golang不支持泛型，所以我们会使用Golang的<code class="language-plaintext highlighter-rouge">interface{]</code>和<code class="language-plaintext highlighter-rouge">reflect</code>来实现语言的动态特性。但是，这个也会带来很严重的性能下降问题。但是，到底有多慢呢？我们可以通过Golang的<code class="language-plaintext highlighter-rouge">testing</code>库的<code class="language-plaintext highlighter-rouge">Benchmark</code>来测试一下。</p>
 
 <h2 id="测试程序">测试程序</h2>
 
@@ -148,39 +148,40 @@
 29
 30
 31
-</pre></td><td class="code"><pre><span class="k">package</span><span class="x"> </span><span class="n">bench</span><span class="x">
+</pre></td><td class="code"><pre><span class="k">package</span> <span class="n">bench</span>
 
-</span><span class="k">import</span><span class="x"> </span><span class="p">(</span><span class="x">
-	</span><span class="s">"reflect"</span><span class="x">
-</span><span class="p">)</span><span class="x">
+<span class="k">import</span> <span class="p">(</span>
+	<span class="s">"reflect"</span>
+<span class="p">)</span>
 
-</span><span class="k">type</span><span class="x"> </span><span class="n">process</span><span class="x"> </span><span class="k">struct</span><span class="p">{}</span><span class="x">
+<span class="k">type</span> <span class="n">process</span> <span class="k">struct</span><span class="p">{}</span>
 
-</span><span class="k">func</span><span class="x"> </span><span class="p">(</span><span class="n">p</span><span class="x"> </span><span class="o">*</span><span class="n">process</span><span class="p">)</span><span class="x"> </span><span class="n">Run1</span><span class="p">(</span><span class="n">a</span><span class="x"> </span><span class="p">[]</span><span class="kt">int</span><span class="p">)</span><span class="x"> </span><span class="kt">int</span><span class="x"> </span><span class="p">{</span><span class="x">
-	</span><span class="k">return</span><span class="x"> </span><span class="m">0</span><span class="x">
-</span><span class="p">}</span><span class="x">
+<span class="k">func</span> <span class="p">(</span><span class="n">p</span> <span class="o">*</span><span class="n">process</span><span class="p">)</span> <span class="n">Run1</span><span class="p">(</span><span class="n">a</span> <span class="p">[]</span><span class="kt">int</span><span class="p">)</span> <span class="kt">int</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="m">0</span>
+<span class="p">}</span>
 
-</span><span class="k">func</span><span class="x"> </span><span class="p">(</span><span class="n">p</span><span class="x"> </span><span class="o">*</span><span class="n">process</span><span class="p">)</span><span class="x"> </span><span class="n">Run2</span><span class="p">()</span><span class="x"> </span><span class="kt">int</span><span class="x"> </span><span class="p">{</span><span class="x">
-	</span><span class="k">return</span><span class="x"> </span><span class="m">0</span><span class="x">
-</span><span class="p">}</span><span class="x">
+<span class="k">func</span> <span class="p">(</span><span class="n">p</span> <span class="o">*</span><span class="n">process</span><span class="p">)</span> <span class="n">Run2</span><span class="p">()</span> <span class="kt">int</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="m">0</span>
+<span class="p">}</span>
 
-</span><span class="k">func</span><span class="x"> </span><span class="n">staticRun1</span><span class="p">(</span><span class="n">p</span><span class="x"> </span><span class="o">*</span><span class="n">process</span><span class="p">,</span><span class="x"> </span><span class="n">a</span><span class="x"> </span><span class="p">[]</span><span class="kt">int</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
-	</span><span class="n">p</span><span class="o">.</span><span class="n">Run1</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="x">
-</span><span class="p">}</span><span class="x">
+<span class="k">func</span> <span class="n">staticRun1</span><span class="p">(</span><span class="n">p</span> <span class="o">*</span><span class="n">process</span><span class="p">,</span> <span class="n">a</span> <span class="p">[]</span><span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">p</span><span class="o">.</span><span class="n">Run1</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="p">}</span>
 
-</span><span class="k">func</span><span class="x"> </span><span class="n">staticRun2</span><span class="p">(</span><span class="n">p</span><span class="x"> </span><span class="o">*</span><span class="n">process</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
-	</span><span class="n">p</span><span class="o">.</span><span class="n">Run2</span><span class="p">()</span><span class="x">
-</span><span class="p">}</span><span class="x">
+<span class="k">func</span> <span class="n">staticRun2</span><span class="p">(</span><span class="n">p</span> <span class="o">*</span><span class="n">process</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">p</span><span class="o">.</span><span class="n">Run2</span><span class="p">()</span>
+<span class="p">}</span>
 
-</span><span class="k">func</span><span class="x"> </span><span class="n">dynamicRun1</span><span class="p">(</span><span class="n">p</span><span class="x"> </span><span class="k">interface</span><span class="p">{},</span><span class="x"> </span><span class="n">data</span><span class="x"> </span><span class="k">interface</span><span class="p">{})</span><span class="x"> </span><span class="p">{</span><span class="x">
-	</span><span class="n">reflect</span><span class="o">.</span><span class="n">ValueOf</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="o">.</span><span class="n">MethodByName</span><span class="p">(</span><span class="s">"Run1"</span><span class="p">)</span><span class="o">.</span><span class="n">Call</span><span class="p">([]</span><span class="n">reflect</span><span class="o">.</span><span class="n">Value</span><span class="p">{</span><span class="n">reflect</span><span class="o">.</span><span class="n">ValueOf</span><span class="p">(</span><span class="n">data</span><span class="p">)})</span><span class="x">
-</span><span class="p">}</span><span class="x">
+<span class="k">func</span> <span class="n">dynamicRun1</span><span class="p">(</span><span class="n">p</span> <span class="k">interface</span><span class="p">{},</span> <span class="n">data</span> <span class="k">interface</span><span class="p">{})</span> <span class="p">{</span>
+	<span class="n">reflect</span><span class="o">.</span><span class="n">ValueOf</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="o">.</span><span class="n">MethodByName</span><span class="p">(</span><span class="s">"Run1"</span><span class="p">)</span><span class="o">.</span><span class="n">Call</span><span class="p">([]</span><span class="n">reflect</span><span class="o">.</span><span class="n">Value</span><span class="p">{</span><span class="n">reflect</span><span class="o">.</span><span class="n">ValueOf</span><span class="p">(</span><span class="n">data</span><span class="p">)})</span>
+<span class="p">}</span>
 
-</span><span class="k">func</span><span class="x"> </span><span class="n">dynamicRun2</span><span class="p">(</span><span class="n">p</span><span class="x"> </span><span class="k">interface</span><span class="p">{})</span><span class="x"> </span><span class="p">{</span><span class="x">
-	</span><span class="n">reflect</span><span class="o">.</span><span class="n">ValueOf</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="o">.</span><span class="n">MethodByName</span><span class="p">(</span><span class="s">"Run2"</span><span class="p">)</span><span class="o">.</span><span class="n">Call</span><span class="p">([]</span><span class="n">reflect</span><span class="o">.</span><span class="n">Value</span><span class="p">{})</span><span class="x">
-</span><span class="p">}</span></pre></td></tr></tbody></table></code></pre></figure>
+<span class="k">func</span> <span class="n">dynamicRun2</span><span class="p">(</span><span class="n">p</span> <span class="k">interface</span><span class="p">{})</span> <span class="p">{</span>
+	<span class="n">reflect</span><span class="o">.</span><span class="n">ValueOf</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="o">.</span><span class="n">MethodByName</span><span class="p">(</span><span class="s">"Run2"</span><span class="p">)</span><span class="o">.</span><span class="n">Call</span><span class="p">([]</span><span class="n">reflect</span><span class="o">.</span><span class="n">Value</span><span class="p">{})</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></code></pre></figure>
 
-<p>主要是测试 <strong>staticRun</strong>和 <strong>dynamicRun</strong>方法的性能差距。注意，<code class="highlighter-rouge">process</code>类型的<code class="highlighter-rouge">Run1</code>方法和<code class="highlighter-rouge">Run2</code>方法必须是exported的。</p>
+<p>主要是测试 <strong>staticRun</strong>和 <strong>dynamicRun</strong>方法的性能差距。注意，<code class="language-plaintext highlighter-rouge">process</code>类型的<code class="language-plaintext highlighter-rouge">Run1</code>方法和<code class="language-plaintext highlighter-rouge">Run2</code>方法必须是exported的。</p>
 
 <p>另外建一个文件 <em>bench_test.go</em>保存benchmark代码：</p>
 
@@ -250,76 +251,77 @@
 64
 65
 66
-</pre></td><td class="code"><pre><span class="k">package</span><span class="x"> </span><span class="n">bench</span><span class="x">
+</pre></td><td class="code"><pre><span class="k">package</span> <span class="n">bench</span>
 
-</span><span class="k">import</span><span class="x"> </span><span class="p">(</span><span class="x">
-	</span><span class="s">"reflect"</span><span class="x">
-	</span><span class="s">"testing"</span><span class="x">
-</span><span class="p">)</span><span class="x">
+<span class="k">import</span> <span class="p">(</span>
+	<span class="s">"reflect"</span>
+	<span class="s">"testing"</span>
+<span class="p">)</span>
 
-</span><span class="k">func</span><span class="x"> </span><span class="n">BenchmarkStaticRun1</span><span class="p">(</span><span class="n">b</span><span class="x"> </span><span class="o">*</span><span class="n">testing</span><span class="o">.</span><span class="n">B</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
-	</span><span class="n">p</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="nb">new</span><span class="p">(</span><span class="n">process</span><span class="p">)</span><span class="x">
-	</span><span class="n">a</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="p">[]</span><span class="kt">int</span><span class="p">{</span><span class="m">1</span><span class="p">,</span><span class="x"> </span><span class="m">2</span><span class="p">,</span><span class="x"> </span><span class="m">3</span><span class="p">}</span><span class="x">
-	</span><span class="n">b</span><span class="o">.</span><span class="n">ResetTimer</span><span class="p">()</span><span class="x">
-	</span><span class="k">for</span><span class="x"> </span><span class="n">i</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="m">0</span><span class="p">;</span><span class="x"> </span><span class="n">i</span><span class="x"> </span><span class="o">&lt;</span><span class="x"> </span><span class="n">b</span><span class="o">.</span><span class="n">N</span><span class="p">;</span><span class="x"> </span><span class="n">i</span><span class="o">++</span><span class="x"> </span><span class="p">{</span><span class="x">
-		</span><span class="n">staticRun1</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="x"> </span><span class="n">a</span><span class="p">)</span><span class="x">
-	</span><span class="p">}</span><span class="x">
-</span><span class="p">}</span><span class="x">
+<span class="k">func</span> <span class="n">BenchmarkStaticRun1</span><span class="p">(</span><span class="n">b</span> <span class="o">*</span><span class="n">testing</span><span class="o">.</span><span class="n">B</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">p</span> <span class="o">:=</span> <span class="nb">new</span><span class="p">(</span><span class="n">process</span><span class="p">)</span>
+	<span class="n">a</span> <span class="o">:=</span> <span class="p">[]</span><span class="kt">int</span><span class="p">{</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">}</span>
+	<span class="n">b</span><span class="o">.</span><span class="n">ResetTimer</span><span class="p">()</span>
+	<span class="k">for</span> <span class="n">i</span> <span class="o">:=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">b</span><span class="o">.</span><span class="n">N</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">{</span>
+		<span class="n">staticRun1</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+	<span class="p">}</span>
+<span class="p">}</span>
 
-</span><span class="k">func</span><span class="x"> </span><span class="n">BenchmarkDynamicRun1</span><span class="p">(</span><span class="n">b</span><span class="x"> </span><span class="o">*</span><span class="n">testing</span><span class="o">.</span><span class="n">B</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
-	</span><span class="n">p</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="nb">new</span><span class="p">(</span><span class="n">process</span><span class="p">)</span><span class="x">
-	</span><span class="n">a</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="p">[]</span><span class="kt">int</span><span class="p">{</span><span class="m">1</span><span class="p">,</span><span class="x"> </span><span class="m">2</span><span class="p">,</span><span class="x"> </span><span class="m">3</span><span class="p">}</span><span class="x">
-	</span><span class="n">b</span><span class="o">.</span><span class="n">ResetTimer</span><span class="p">()</span><span class="x">
-	</span><span class="k">for</span><span class="x"> </span><span class="n">i</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="m">0</span><span class="p">;</span><span class="x"> </span><span class="n">i</span><span class="x"> </span><span class="o">&lt;</span><span class="x"> </span><span class="n">b</span><span class="o">.</span><span class="n">N</span><span class="p">;</span><span class="x"> </span><span class="n">i</span><span class="o">++</span><span class="x"> </span><span class="p">{</span><span class="x">
-		</span><span class="n">dynamicRun1</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="x"> </span><span class="n">a</span><span class="p">)</span><span class="x">
-	</span><span class="p">}</span><span class="x">
-</span><span class="p">}</span><span class="x">
+<span class="k">func</span> <span class="n">BenchmarkDynamicRun1</span><span class="p">(</span><span class="n">b</span> <span class="o">*</span><span class="n">testing</span><span class="o">.</span><span class="n">B</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">p</span> <span class="o">:=</span> <span class="nb">new</span><span class="p">(</span><span class="n">process</span><span class="p">)</span>
+	<span class="n">a</span> <span class="o">:=</span> <span class="p">[]</span><span class="kt">int</span><span class="p">{</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">}</span>
+	<span class="n">b</span><span class="o">.</span><span class="n">ResetTimer</span><span class="p">()</span>
+	<span class="k">for</span> <span class="n">i</span> <span class="o">:=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">b</span><span class="o">.</span><span class="n">N</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">{</span>
+		<span class="n">dynamicRun1</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+	<span class="p">}</span>
+<span class="p">}</span>
 
-</span><span class="k">func</span><span class="x"> </span><span class="n">BenchmarkStaticRun2</span><span class="p">(</span><span class="n">b</span><span class="x"> </span><span class="o">*</span><span class="n">testing</span><span class="o">.</span><span class="n">B</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
-	</span><span class="n">p</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="nb">new</span><span class="p">(</span><span class="n">process</span><span class="p">)</span><span class="x">
-	</span><span class="n">b</span><span class="o">.</span><span class="n">ResetTimer</span><span class="p">()</span><span class="x">
-	</span><span class="k">for</span><span class="x"> </span><span class="n">i</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="m">0</span><span class="p">;</span><span class="x"> </span><span class="n">i</span><span class="x"> </span><span class="o">&lt;</span><span class="x"> </span><span class="n">b</span><span class="o">.</span><span class="n">N</span><span class="p">;</span><span class="x"> </span><span class="n">i</span><span class="o">++</span><span class="x"> </span><span class="p">{</span><span class="x">
-		</span><span class="n">staticRun2</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="x">
-	</span><span class="p">}</span><span class="x">
-</span><span class="p">}</span><span class="x">
+<span class="k">func</span> <span class="n">BenchmarkStaticRun2</span><span class="p">(</span><span class="n">b</span> <span class="o">*</span><span class="n">testing</span><span class="o">.</span><span class="n">B</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">p</span> <span class="o">:=</span> <span class="nb">new</span><span class="p">(</span><span class="n">process</span><span class="p">)</span>
+	<span class="n">b</span><span class="o">.</span><span class="n">ResetTimer</span><span class="p">()</span>
+	<span class="k">for</span> <span class="n">i</span> <span class="o">:=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">b</span><span class="o">.</span><span class="n">N</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">{</span>
+		<span class="n">staticRun2</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+	<span class="p">}</span>
+<span class="p">}</span>
 
-</span><span class="k">func</span><span class="x"> </span><span class="n">BenchmarkDynamicRun2</span><span class="p">(</span><span class="n">b</span><span class="x"> </span><span class="o">*</span><span class="n">testing</span><span class="o">.</span><span class="n">B</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
-	</span><span class="n">p</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="nb">new</span><span class="p">(</span><span class="n">process</span><span class="p">)</span><span class="x">
-	</span><span class="n">b</span><span class="o">.</span><span class="n">ResetTimer</span><span class="p">()</span><span class="x">
-	</span><span class="k">for</span><span class="x"> </span><span class="n">i</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="m">0</span><span class="p">;</span><span class="x"> </span><span class="n">i</span><span class="x"> </span><span class="o">&lt;</span><span class="x"> </span><span class="n">b</span><span class="o">.</span><span class="n">N</span><span class="p">;</span><span class="x"> </span><span class="n">i</span><span class="o">++</span><span class="x"> </span><span class="p">{</span><span class="x">
-		</span><span class="n">dynamicRun2</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="x">
-	</span><span class="p">}</span><span class="x">
-</span><span class="p">}</span><span class="x">
+<span class="k">func</span> <span class="n">BenchmarkDynamicRun2</span><span class="p">(</span><span class="n">b</span> <span class="o">*</span><span class="n">testing</span><span class="o">.</span><span class="n">B</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">p</span> <span class="o">:=</span> <span class="nb">new</span><span class="p">(</span><span class="n">process</span><span class="p">)</span>
+	<span class="n">b</span><span class="o">.</span><span class="n">ResetTimer</span><span class="p">()</span>
+	<span class="k">for</span> <span class="n">i</span> <span class="o">:=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">b</span><span class="o">.</span><span class="n">N</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">{</span>
+		<span class="n">dynamicRun2</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+	<span class="p">}</span>
+<span class="p">}</span>
 
-</span><span class="k">func</span><span class="x"> </span><span class="n">BenchmarkValueOf</span><span class="p">(</span><span class="n">b</span><span class="x"> </span><span class="o">*</span><span class="n">testing</span><span class="o">.</span><span class="n">B</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
-	</span><span class="n">p</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="nb">new</span><span class="p">(</span><span class="n">process</span><span class="p">)</span><span class="x">
-	</span><span class="n">b</span><span class="o">.</span><span class="n">ResetTimer</span><span class="p">()</span><span class="x">
-	</span><span class="k">for</span><span class="x"> </span><span class="n">i</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="m">0</span><span class="p">;</span><span class="x"> </span><span class="n">i</span><span class="x"> </span><span class="o">&lt;</span><span class="x"> </span><span class="n">b</span><span class="o">.</span><span class="n">N</span><span class="p">;</span><span class="x"> </span><span class="n">i</span><span class="o">++</span><span class="x"> </span><span class="p">{</span><span class="x">
-		</span><span class="n">reflect</span><span class="o">.</span><span class="n">ValueOf</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="x">
-	</span><span class="p">}</span><span class="x">
-</span><span class="p">}</span><span class="x">
+<span class="k">func</span> <span class="n">BenchmarkValueOf</span><span class="p">(</span><span class="n">b</span> <span class="o">*</span><span class="n">testing</span><span class="o">.</span><span class="n">B</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">p</span> <span class="o">:=</span> <span class="nb">new</span><span class="p">(</span><span class="n">process</span><span class="p">)</span>
+	<span class="n">b</span><span class="o">.</span><span class="n">ResetTimer</span><span class="p">()</span>
+	<span class="k">for</span> <span class="n">i</span> <span class="o">:=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">b</span><span class="o">.</span><span class="n">N</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">{</span>
+		<span class="n">reflect</span><span class="o">.</span><span class="n">ValueOf</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+	<span class="p">}</span>
+<span class="p">}</span>
 
-</span><span class="k">func</span><span class="x"> </span><span class="n">BenchmarkMethodByName</span><span class="p">(</span><span class="n">b</span><span class="x"> </span><span class="o">*</span><span class="n">testing</span><span class="o">.</span><span class="n">B</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
-	</span><span class="n">p</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="nb">new</span><span class="p">(</span><span class="n">process</span><span class="p">)</span><span class="x">
-	</span><span class="n">v</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">reflect</span><span class="o">.</span><span class="n">ValueOf</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="x">
-	</span><span class="n">b</span><span class="o">.</span><span class="n">ResetTimer</span><span class="p">()</span><span class="x">
-	</span><span class="k">for</span><span class="x"> </span><span class="n">i</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="m">0</span><span class="p">;</span><span class="x"> </span><span class="n">i</span><span class="x"> </span><span class="o">&lt;</span><span class="x"> </span><span class="n">b</span><span class="o">.</span><span class="n">N</span><span class="p">;</span><span class="x"> </span><span class="n">i</span><span class="o">++</span><span class="x"> </span><span class="p">{</span><span class="x">
-		</span><span class="n">v</span><span class="o">.</span><span class="n">MethodByName</span><span class="p">(</span><span class="s">"Run2"</span><span class="p">)</span><span class="x">
-	</span><span class="p">}</span><span class="x">
-</span><span class="p">}</span><span class="x">
+<span class="k">func</span> <span class="n">BenchmarkMethodByName</span><span class="p">(</span><span class="n">b</span> <span class="o">*</span><span class="n">testing</span><span class="o">.</span><span class="n">B</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">p</span> <span class="o">:=</span> <span class="nb">new</span><span class="p">(</span><span class="n">process</span><span class="p">)</span>
+	<span class="n">v</span> <span class="o">:=</span> <span class="n">reflect</span><span class="o">.</span><span class="n">ValueOf</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+	<span class="n">b</span><span class="o">.</span><span class="n">ResetTimer</span><span class="p">()</span>
+	<span class="k">for</span> <span class="n">i</span> <span class="o">:=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">b</span><span class="o">.</span><span class="n">N</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">{</span>
+		<span class="n">v</span><span class="o">.</span><span class="n">MethodByName</span><span class="p">(</span><span class="s">"Run2"</span><span class="p">)</span>
+	<span class="p">}</span>
+<span class="p">}</span>
 
-</span><span class="k">func</span><span class="x"> </span><span class="n">BenchmarkCallRun2</span><span class="p">(</span><span class="n">b</span><span class="x"> </span><span class="o">*</span><span class="n">testing</span><span class="o">.</span><span class="n">B</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
-	</span><span class="n">p</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="nb">new</span><span class="p">(</span><span class="n">process</span><span class="p">)</span><span class="x">
-	</span><span class="n">v</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">reflect</span><span class="o">.</span><span class="n">ValueOf</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="o">.</span><span class="n">MethodByName</span><span class="p">(</span><span class="s">"Run2"</span><span class="p">)</span><span class="x">
-	</span><span class="n">b</span><span class="o">.</span><span class="n">ResetTimer</span><span class="p">()</span><span class="x">
-	</span><span class="k">for</span><span class="x"> </span><span class="n">i</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="m">0</span><span class="p">;</span><span class="x"> </span><span class="n">i</span><span class="x"> </span><span class="o">&lt;</span><span class="x"> </span><span class="n">b</span><span class="o">.</span><span class="n">N</span><span class="p">;</span><span class="x"> </span><span class="n">i</span><span class="o">++</span><span class="x"> </span><span class="p">{</span><span class="x">
-		</span><span class="n">v</span><span class="o">.</span><span class="n">Call</span><span class="p">([]</span><span class="n">reflect</span><span class="o">.</span><span class="n">Value</span><span class="p">{})</span><span class="x">
-	</span><span class="p">}</span><span class="x">
-</span><span class="p">}</span></pre></td></tr></tbody></table></code></pre></figure>
+<span class="k">func</span> <span class="n">BenchmarkCallRun2</span><span class="p">(</span><span class="n">b</span> <span class="o">*</span><span class="n">testing</span><span class="o">.</span><span class="n">B</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">p</span> <span class="o">:=</span> <span class="nb">new</span><span class="p">(</span><span class="n">process</span><span class="p">)</span>
+	<span class="n">v</span> <span class="o">:=</span> <span class="n">reflect</span><span class="o">.</span><span class="n">ValueOf</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="o">.</span><span class="n">MethodByName</span><span class="p">(</span><span class="s">"Run2"</span><span class="p">)</span>
+	<span class="n">b</span><span class="o">.</span><span class="n">ResetTimer</span><span class="p">()</span>
+	<span class="k">for</span> <span class="n">i</span> <span class="o">:=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">b</span><span class="o">.</span><span class="n">N</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">{</span>
+		<span class="n">v</span><span class="o">.</span><span class="n">Call</span><span class="p">([]</span><span class="n">reflect</span><span class="o">.</span><span class="n">Value</span><span class="p">{})</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></code></pre></figure>
 
 <h2 id="测试结果">测试结果</h2>
 
-<p>执行<code class="highlighter-rouge">go test -bench-.</code>来运行测试：</p>
+<p>执行<code class="language-plaintext highlighter-rouge">go test -bench-.</code>来运行测试：</p>
 
 <figure class="highlight"><pre><code class="language-shell" data-lang="shell">➜ ~/go/src/goexamples/bench  <span class="nv">$ </span>go <span class="nb">test</span> <span class="nt">-bench</span><span class="o">=</span><span class="nb">.</span>
 testing: warning: no tests to run

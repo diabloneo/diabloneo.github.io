@@ -128,7 +128,7 @@
 
 <p>那么如何在没有测试服务器的情况下进行上面这种情况的单元测试呢？<strong>Mock</strong>模块就是答案。上面已经说过了，mock模块可以替换Python对象。我们假设<em>a.b.c</em>的代码如下：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import requests
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import requests
 
 def c(url):
     resp = requests.get(url)
@@ -141,17 +141,17 @@ def c(url):
 
 <p>在Python 3.3以前的版本中，需要另外安装mock模块，可以使用pip命令来安装：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sudo pip install mock
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sudo pip install mock
 </code></pre></div></div>
 
 <p>然后在代码中就可以直接import进来：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import mock
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import mock
 </code></pre></div></div>
 
 <p>从Python 3.3开始，mock模块已经被合并到标准库中，被命名为<strong>unittest.mock</strong>，可以直接import进来使用：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from unittest import mock
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from unittest import mock
 </code></pre></div></div>
 
 <h2 id="mock对象">Mock对象</h2>
@@ -160,7 +160,7 @@ def c(url):
 
 <p>Mock对象是mock模块中最重要的概念。Mock对象就是mock模块中的一个类的实例，这个类的实例可以用来替换其他的Python对象，来达到模拟的效果。Mock类的定义如下：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class Mock(spec=None, side_effect=None, return_value=DEFAULT, wraps=None, name=None, spec_set=None, **kwargs)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class Mock(spec=None, side_effect=None, return_value=DEFAULT, wraps=None, name=None, spec_set=None, **kwargs)
 </code></pre></div></div>
 
 <p>这里给出这个定义只是要说明下Mock对象其实就是个Python类而已，当然，它内部的实现是很巧妙的，有兴趣的可以去看mock模块的代码。</p>
@@ -176,51 +176,51 @@ def c(url):
 
 <p>举个例子来说：我们有一个简单的客户端实现，用来访问一个URL，当访问正常时，需要返回状态码200，不正常时，需要返回状态码404。首先，我们的客户端代码实现如下：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/usr/bin/env python</span>
-<span class="c">## -*- coding: utf-8 -*-</span>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#!/usr/bin/env python
+## -*- coding: utf-8 -*-
 
-<span class="kn">import</span> <span class="nn">requests</span>
-
-
-<span class="k">def</span> <span class="nf">send_request</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
-    <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">r</span><span class="o">.</span><span class="n">status_code</span>
+import requests
 
 
-<span class="k">def</span> <span class="nf">visit_ustack</span><span class="p">():</span>
-    <span class="k">return</span> <span class="n">send_request</span><span class="p">(</span><span class="s">'http://www.ustack.com'</span><span class="p">)</span>
+def send_request(url):
+    r = requests.get(url)
+    return r.status_code
+
+
+def visit_ustack():
+    return send_request('http://www.ustack.com')
 </code></pre></div></div>
 
-<p>外部模块调用<code class="highlighter-rouge">visit_ustack()</code>来访问<strong>UnitedStack</strong>的官网。下面我们使用mock对象在单元测试中分别测试访问正常和访问不正常的情况。</p>
+<p>外部模块调用<code class="language-plaintext highlighter-rouge">visit_ustack()</code>来访问<strong>UnitedStack</strong>的官网。下面我们使用mock对象在单元测试中分别测试访问正常和访问不正常的情况。</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/usr/bin/env python</span>
-<span class="c">## -*- coding: utf-8 -*-</span>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#!/usr/bin/env python
+## -*- coding: utf-8 -*-
 
-<span class="kn">import</span> <span class="nn">unittest</span>
+import unittest
 
-<span class="kn">import</span> <span class="nn">mock</span>
+import mock
 
-<span class="kn">import</span> <span class="nn">client</span>
+import client
 
 
-<span class="k">class</span> <span class="nc">TestClient</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+class TestClient(unittest.TestCase):
 
-    <span class="k">def</span> <span class="nf">test_success_request</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">success_send</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">(</span><span class="n">return_value</span><span class="o">=</span><span class="s">'200'</span><span class="p">)</span>
-        <span class="n">client</span><span class="o">.</span><span class="n">send_request</span> <span class="o">=</span> <span class="n">success_send</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">visit_ustack</span><span class="p">(),</span> <span class="s">'200'</span><span class="p">)</span>
+    def test_success_request(self):
+        success_send = mock.Mock(return_value='200')
+        client.send_request = success_send
+        self.assertEqual(client.visit_ustack(), '200')
 
-    <span class="k">def</span> <span class="nf">test_fail_request</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">fail_send</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">(</span><span class="n">return_value</span><span class="o">=</span><span class="s">'404'</span><span class="p">)</span>
-        <span class="n">client</span><span class="o">.</span><span class="n">send_request</span> <span class="o">=</span> <span class="n">fail_send</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">visit_ustack</span><span class="p">(),</span> <span class="s">'404'</span><span class="p">)</span>
+    def test_fail_request(self):
+        fail_send = mock.Mock(return_value='404')
+        client.send_request = fail_send
+        self.assertEqual(client.visit_ustack(), '404')
 </code></pre></div></div>
 
 <ol>
-  <li>找到要替换的对象：我们需要测试的是<code class="highlighter-rouge">visit_ustack</code>这个函数，那么我们需要替换掉<code class="highlighter-rouge">send_request</code>这个函数。</li>
+  <li>找到要替换的对象：我们需要测试的是<code class="language-plaintext highlighter-rouge">visit_ustack</code>这个函数，那么我们需要替换掉<code class="language-plaintext highlighter-rouge">send_request</code>这个函数。</li>
   <li>实例化Mock类得到一个mock对象，并且设置这个mock对象的行为。在成功测试中，我们设置mock对象的返回值为字符串“200”，在失败测试中，我们设置mock对象的返回值为字符串”404”。</li>
-  <li>使用这个mock对象替换掉我们想替换的对象。我们替换掉了<code class="highlighter-rouge">client.send_request</code></li>
-  <li>写测试代码。我们调用<code class="highlighter-rouge">client.visit_ustack()</code>，并且期望它的返回值和我们预设的一样。</li>
+  <li>使用这个mock对象替换掉我们想替换的对象。我们替换掉了<code class="language-plaintext highlighter-rouge">client.send_request</code></li>
+  <li>写测试代码。我们调用<code class="language-plaintext highlighter-rouge">client.visit_ustack()</code>，并且期望它的返回值和我们预设的一样。</li>
 </ol>
 
 <p>上面这个就是使用mock对象的基本步骤了。在上面的例子中我们替换了自己写的模块的对象，其实也可以替换标准库和第三方模块的对象，方法是一样的：先import进来，然后替换掉指定的对象就可以了。</p>
@@ -245,11 +245,11 @@ def c(url):
 
 <p>当访问一个mock对象中不存在的属性时，mock会自动建立一个子mock对象，并且把正在访问的属性指向它，这个功能对于实现多级属性的mock很方便。</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>client = mock.Mock()
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>client = mock.Mock()
 client.v2_client.get.return_value = '200'
 </code></pre></div></div>
 
-<p>这个时候，你就得到了一个mock过的client实例，调用该实例的<code class="highlighter-rouge">v2_client.get()</code>方法会得到的返回值是”200”。</p>
+<p>这个时候，你就得到了一个mock过的client实例，调用该实例的<code class="language-plaintext highlighter-rouge">v2_client.get()</code>方法会得到的返回值是”200”。</p>
 
 <p>从上面的例子中还可以看到，指定mock对象的<em>return_value</em>还可以使用属性赋值的方法。</p>
 
@@ -257,9 +257,9 @@ client.v2_client.get.return_value = '200'
 
 <p>mock对象有一些方法可以用来检查该对象是否被调用过、被调用时的参数如何、被调用了几次等。实现这些功能可以调用mock对象的方法，具体的可以查看mock的文档。这里我们举个例子。</p>
 
-<p>还是使用上面的代码，这次我们要检查<code class="highlighter-rouge">visit_ustack()</code>函数调用<code class="highlighter-rouge">send_request()</code>函数时，传递的参数类型是否正确。我们可以像下面这样使用mock对象。</p>
+<p>还是使用上面的代码，这次我们要检查<code class="language-plaintext highlighter-rouge">visit_ustack()</code>函数调用<code class="language-plaintext highlighter-rouge">send_request()</code>函数时，传递的参数类型是否正确。我们可以像下面这样使用mock对象。</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class TestClient(unittest.TestCase):
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class TestClient(unittest.TestCase):
 
     def test_call_send_request_with_right_arguments(self):
         client.send_request = mock.Mock()
@@ -272,20 +272,20 @@ client.v2_client.get.return_value = '200'
 
 <p>Mock对象的<strong>called</strong>属性表示该mock对象是否被调用过。</p>
 
-<p>Mock对象的call_args表示该mock对象被调用的tuple，tuple的每个成员都是一个<code class="highlighter-rouge">mock.call</code>对象。<code class="highlighter-rouge">mock.call</code>这个对象代表了一次对mock对象的调用，其内容是一个tuple，含有两个元素，第一个元素是调用mock对象时的位置参数（*args），第二个元素是调用mock对象时的关键字参数（**kwargs）。</p>
+<p>Mock对象的call_args表示该mock对象被调用的tuple，tuple的每个成员都是一个<code class="language-plaintext highlighter-rouge">mock.call</code>对象。<code class="language-plaintext highlighter-rouge">mock.call</code>这个对象代表了一次对mock对象的调用，其内容是一个tuple，含有两个元素，第一个元素是调用mock对象时的位置参数（*args），第二个元素是调用mock对象时的关键字参数（**kwargs）。</p>
 
 <p>现在来分析下上面的用例，我们要检查的项目有两个：</p>
 
 <ol>
-  <li><code class="highlighter-rouge">visit_ustack()</code>调用了<code class="highlighter-rouge">send_request()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">visit_ustack()</code>调用了<code class="language-plaintext highlighter-rouge">send_request()</code></li>
   <li>调用的参数是一个字符串</li>
 </ol>
 
 <h2 id="patch和patchobject">patch和patch.object</h2>
 
-<p>在了解了mock对象之后，我们来看两个方便测试的函数：<code class="highlighter-rouge">patch</code>和<code class="highlighter-rouge">patch.object</code>。这两个函数都会返回一个mock内部的类实例，这个类是<code class="highlighter-rouge">class _patch</code>。返回的这个类实例既可以作为函数的装饰器，也可以作为类的装饰器，也可以作为上下文管理器。使用<code class="highlighter-rouge">patch</code>或者<code class="highlighter-rouge">patch.object</code>的目的是为了控制mock的范围，意思就是在一个函数范围内，或者一个类的范围内，或者<code class="highlighter-rouge">with</code>语句的范围内mock掉一个对象。我们看个代码例子即可：</p>
+<p>在了解了mock对象之后，我们来看两个方便测试的函数：<code class="language-plaintext highlighter-rouge">patch</code>和<code class="language-plaintext highlighter-rouge">patch.object</code>。这两个函数都会返回一个mock内部的类实例，这个类是<code class="language-plaintext highlighter-rouge">class _patch</code>。返回的这个类实例既可以作为函数的装饰器，也可以作为类的装饰器，也可以作为上下文管理器。使用<code class="language-plaintext highlighter-rouge">patch</code>或者<code class="language-plaintext highlighter-rouge">patch.object</code>的目的是为了控制mock的范围，意思就是在一个函数范围内，或者一个类的范围内，或者<code class="language-plaintext highlighter-rouge">with</code>语句的范围内mock掉一个对象。我们看个代码例子即可：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class TestClient(unittest.TestCase):
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class TestClient(unittest.TestCase):
 
     def test_success_request(self):
         status_code = '200'
@@ -302,11 +302,11 @@ client.v2_client.get.return_value = '200'
             self.assertEqual(visit_ustack(), status_code)
 </code></pre></div></div>
 
-<p>这个测试类和我们刚才写的第一个测试类一样，包含两个测试，只不过这次不是显示创建一个mock对象并且进行替换，而是使用了<code class="highlighter-rouge">patch</code>函数（作为上下文管理器使用）。</p>
+<p>这个测试类和我们刚才写的第一个测试类一样，包含两个测试，只不过这次不是显示创建一个mock对象并且进行替换，而是使用了<code class="language-plaintext highlighter-rouge">patch</code>函数（作为上下文管理器使用）。</p>
 
-<p><code class="highlighter-rouge">patch.object</code>和<code class="highlighter-rouge">patch</code>的效果是一样的，只不过用法有点不同。举例来说，同样是上面这个例子，换成<code class="highlighter-rouge">patch.object</code>的话是这样的：</p>
+<p><code class="language-plaintext highlighter-rouge">patch.object</code>和<code class="language-plaintext highlighter-rouge">patch</code>的效果是一样的，只不过用法有点不同。举例来说，同样是上面这个例子，换成<code class="language-plaintext highlighter-rouge">patch.object</code>的话是这样的：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    def test_fail_request(self):
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    def test_fail_request(self):
         status_code = '404'
         fail_send = mock.Mock(return_value=status_code)
         with mock.patch.object(client, 'send_request', fail_send):
@@ -314,7 +314,7 @@ client.v2_client.get.return_value = '200'
             self.assertEqual(visit_ustack(), status_code)
 </code></pre></div></div>
 
-<p>就是替换掉一个对象的指定名称的属性，用法和<code class="highlighter-rouge">setattr</code>类似。</p>
+<p>就是替换掉一个对象的指定名称的属性，用法和<code class="language-plaintext highlighter-rouge">setattr</code>类似。</p>
 
 <h2 id="如何学习使用mock">如何学习使用mock？</h2>
 

@@ -142,52 +142,53 @@
 23
 24
 25
-</pre></td><td class="code"><pre><span class="k">package</span><span class="x"> </span><span class="n">main</span><span class="x">
+</pre></td><td class="code"><pre><span class="k">package</span> <span class="n">main</span>
 
-</span><span class="k">import</span><span class="x"> </span><span class="p">(</span><span class="x">
-	</span><span class="s">"fmt"</span><span class="x">
-	</span><span class="s">"time"</span><span class="x">
-</span><span class="p">)</span><span class="x">
+<span class="k">import</span> <span class="p">(</span>
+	<span class="s">"fmt"</span>
+	<span class="s">"time"</span>
+<span class="p">)</span>
 
-</span><span class="k">type</span><span class="x"> </span><span class="n">field</span><span class="x"> </span><span class="k">struct</span><span class="x"> </span><span class="p">{</span><span class="x">
-	</span><span class="n">name</span><span class="x"> </span><span class="kt">string</span><span class="x">
-</span><span class="p">}</span><span class="x">
+<span class="k">type</span> <span class="n">field</span> <span class="k">struct</span> <span class="p">{</span>
+	<span class="n">name</span> <span class="kt">string</span>
+<span class="p">}</span>
 
-</span><span class="k">func</span><span class="x"> </span><span class="p">(</span><span class="n">p</span><span class="x"> </span><span class="o">*</span><span class="n">field</span><span class="p">)</span><span class="x"> </span><span class="nb">print</span><span class="p">()</span><span class="x"> </span><span class="p">{</span><span class="x">
-	</span><span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="x">
-</span><span class="p">}</span><span class="x">
+<span class="k">func</span> <span class="p">(</span><span class="n">p</span> <span class="o">*</span><span class="n">field</span><span class="p">)</span> <span class="nb">print</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<span class="p">}</span>
 
-</span><span class="k">func</span><span class="x"> </span><span class="n">main</span><span class="p">()</span><span class="x"> </span><span class="p">{</span><span class="x">
-	</span><span class="n">data</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="p">[]</span><span class="n">field</span><span class="p">{{</span><span class="s">"one"</span><span class="p">},</span><span class="x"> </span><span class="p">{</span><span class="s">"two"</span><span class="p">},</span><span class="x"> </span><span class="p">{</span><span class="s">"three"</span><span class="p">}}</span><span class="x">
+<span class="k">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">data</span> <span class="o">:=</span> <span class="p">[]</span><span class="n">field</span><span class="p">{{</span><span class="s">"one"</span><span class="p">},</span> <span class="p">{</span><span class="s">"two"</span><span class="p">},</span> <span class="p">{</span><span class="s">"three"</span><span class="p">}}</span>
 
-	</span><span class="k">for</span><span class="x"> </span><span class="n">_</span><span class="p">,</span><span class="x"> </span><span class="n">v</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="k">range</span><span class="x"> </span><span class="n">data</span><span class="x"> </span><span class="p">{</span><span class="x">
-		</span><span class="k">go</span><span class="x"> </span><span class="n">v</span><span class="o">.</span><span class="nb">print</span><span class="p">()</span><span class="x">
-	</span><span class="p">}</span><span class="x">
+	<span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">v</span> <span class="o">:=</span> <span class="k">range</span> <span class="n">data</span> <span class="p">{</span>
+		<span class="k">go</span> <span class="n">v</span><span class="o">.</span><span class="nb">print</span><span class="p">()</span>
+	<span class="p">}</span>
 
-	</span><span class="n">time</span><span class="o">.</span><span class="n">Sleep</span><span class="p">(</span><span class="m">3</span><span class="x"> </span><span class="o">*</span><span class="x"> </span><span class="n">time</span><span class="o">.</span><span class="n">Second</span><span class="p">)</span><span class="x">
-	</span><span class="c">//goroutines print: three, three, three</span><span class="x">
-</span><span class="p">}</span></pre></td></tr></tbody></table></code></pre></figure>
+	<span class="n">time</span><span class="o">.</span><span class="n">Sleep</span><span class="p">(</span><span class="m">3</span> <span class="o">*</span> <span class="n">time</span><span class="o">.</span><span class="n">Second</span><span class="p">)</span>
+	<span class="c">//goroutines print: three, three, three</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></code></pre></figure>
 
 <p>上面这个例子会输出三个 <em>three</em>，原因是如下：</p>
 
 <ol>
-  <li>在第20行 <code class="highlighter-rouge">go v.print()</code>，每次循环都复用变量<code class="highlighter-rouge">v</code>，而且<code class="highlighter-rouge">field</code>类型的<code class="highlighter-rouge">print()</code>方法的receiver是一个<code class="highlighter-rouge">*field</code>，所以执行<code class="highlighter-rouge">v.print()</code>首先会获得<code class="highlighter-rouge">v</code>的地址，然后作为receiver的值来调用<code class="highlighter-rouge">func (p *field) print()</code>。</li>
-  <li>每次循环使用的都是同一个变量<code class="highlighter-rouge">v</code>，所以虽然调用了三次<code class="highlighter-rouge">v.print()</code>，实际上都是对同一个变量<code class="highlighter-rouge">v</code>进行的。<code class="highlighter-rouge">v</code>在range loop中是<code class="highlighter-rouge">data</code>中的元素的拷贝，最后的拷贝是<code class="highlighter-rouge">{"three"}</code>。</li>
+  <li>在第20行 <code class="language-plaintext highlighter-rouge">go v.print()</code>，每次循环都复用变量<code class="language-plaintext highlighter-rouge">v</code>，而且<code class="language-plaintext highlighter-rouge">field</code>类型的<code class="language-plaintext highlighter-rouge">print()</code>方法的receiver是一个<code class="language-plaintext highlighter-rouge">*field</code>，所以执行<code class="language-plaintext highlighter-rouge">v.print()</code>首先会获得<code class="language-plaintext highlighter-rouge">v</code>的地址，然后作为receiver的值来调用<code class="language-plaintext highlighter-rouge">func (p *field) print()</code>。</li>
+  <li>每次循环使用的都是同一个变量<code class="language-plaintext highlighter-rouge">v</code>，所以虽然调用了三次<code class="language-plaintext highlighter-rouge">v.print()</code>，实际上都是对同一个变量<code class="language-plaintext highlighter-rouge">v</code>进行的。<code class="language-plaintext highlighter-rouge">v</code>在range loop中是<code class="language-plaintext highlighter-rouge">data</code>中的元素的拷贝，最后的拷贝是<code class="language-plaintext highlighter-rouge">{"three"}</code>。</li>
 </ol>
 
 <p>修复这个问题的办法在Go代码中有标准做法，就是创建一个新的变量：</p>
 
-<figure class="highlight"><pre><code class="language-go" data-lang="go"><span class="k">func</span><span class="x"> </span><span class="n">main</span><span class="p">()</span><span class="x"> </span><span class="p">{</span><span class="x">
-	</span><span class="n">data</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="p">[]</span><span class="n">field</span><span class="p">{{</span><span class="s">"one"</span><span class="p">},</span><span class="x"> </span><span class="p">{</span><span class="s">"two"</span><span class="p">},</span><span class="x"> </span><span class="p">{</span><span class="s">"three"</span><span class="p">}}</span><span class="x">
+<figure class="highlight"><pre><code class="language-go" data-lang="go"><span class="k">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">data</span> <span class="o">:=</span> <span class="p">[]</span><span class="n">field</span><span class="p">{{</span><span class="s">"one"</span><span class="p">},</span> <span class="p">{</span><span class="s">"two"</span><span class="p">},</span> <span class="p">{</span><span class="s">"three"</span><span class="p">}}</span>
 
-	</span><span class="k">for</span><span class="x"> </span><span class="n">_</span><span class="p">,</span><span class="x"> </span><span class="n">v</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="k">range</span><span class="x"> </span><span class="n">data</span><span class="x"> </span><span class="p">{</span><span class="x">
-		</span><span class="n">vcopy</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">v</span><span class="x">
-		</span><span class="k">go</span><span class="x"> </span><span class="n">vcopy</span><span class="o">.</span><span class="nb">print</span><span class="p">()</span><span class="x">
-	</span><span class="p">}</span><span class="x">
+	<span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">v</span> <span class="o">:=</span> <span class="k">range</span> <span class="n">data</span> <span class="p">{</span>
+		<span class="n">vcopy</span> <span class="o">:=</span> <span class="n">v</span>
+		<span class="k">go</span> <span class="n">vcopy</span><span class="o">.</span><span class="nb">print</span><span class="p">()</span>
+	<span class="p">}</span>
 
-	</span><span class="n">time</span><span class="o">.</span><span class="n">Sleep</span><span class="p">(</span><span class="m">3</span><span class="x"> </span><span class="o">*</span><span class="x"> </span><span class="n">time</span><span class="o">.</span><span class="n">Second</span><span class="p">)</span><span class="x">
-	</span><span class="c">//goroutines print: three, three, three</span><span class="x">
-</span><span class="p">}</span></code></pre></figure>
+	<span class="n">time</span><span class="o">.</span><span class="n">Sleep</span><span class="p">(</span><span class="m">3</span> <span class="o">*</span> <span class="n">time</span><span class="o">.</span><span class="n">Second</span><span class="p">)</span>
+	<span class="c">//goroutines print: three, three, three</span>
+<span class="p">}</span></code></pre></figure>
 
 <p>上面这个代码就会输出 <em>one, two, three</em>。</p>
 
@@ -218,37 +219,38 @@
 23
 24
 25
-</pre></td><td class="code"><pre><span class="k">package</span><span class="x"> </span><span class="n">main</span><span class="x">
+</pre></td><td class="code"><pre><span class="k">package</span> <span class="n">main</span>
 
-</span><span class="k">import</span><span class="x"> </span><span class="p">(</span><span class="x">
-	</span><span class="s">"fmt"</span><span class="x">
-	</span><span class="s">"time"</span><span class="x">
-</span><span class="p">)</span><span class="x">
+<span class="k">import</span> <span class="p">(</span>
+	<span class="s">"fmt"</span>
+	<span class="s">"time"</span>
+<span class="p">)</span>
 
-</span><span class="k">type</span><span class="x"> </span><span class="n">field</span><span class="x"> </span><span class="k">struct</span><span class="x"> </span><span class="p">{</span><span class="x">
-	</span><span class="n">name</span><span class="x"> </span><span class="kt">string</span><span class="x">
-</span><span class="p">}</span><span class="x">
+<span class="k">type</span> <span class="n">field</span> <span class="k">struct</span> <span class="p">{</span>
+	<span class="n">name</span> <span class="kt">string</span>
+<span class="p">}</span>
 
-</span><span class="k">func</span><span class="x"> </span><span class="p">(</span><span class="n">p</span><span class="x"> </span><span class="o">*</span><span class="n">field</span><span class="p">)</span><span class="x"> </span><span class="nb">print</span><span class="p">()</span><span class="x"> </span><span class="p">{</span><span class="x">
-	</span><span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="x">
-</span><span class="p">}</span><span class="x">
+<span class="k">func</span> <span class="p">(</span><span class="n">p</span> <span class="o">*</span><span class="n">field</span><span class="p">)</span> <span class="nb">print</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<span class="p">}</span>
 
-</span><span class="k">func</span><span class="x"> </span><span class="n">main</span><span class="p">()</span><span class="x"> </span><span class="p">{</span><span class="x">
-	</span><span class="n">data</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="p">[]</span><span class="o">*</span><span class="n">field</span><span class="p">{{</span><span class="s">"one"</span><span class="p">},</span><span class="x"> </span><span class="p">{</span><span class="s">"two"</span><span class="p">},</span><span class="x"> </span><span class="p">{</span><span class="s">"three"</span><span class="p">}}</span><span class="x">
+<span class="k">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">data</span> <span class="o">:=</span> <span class="p">[]</span><span class="o">*</span><span class="n">field</span><span class="p">{{</span><span class="s">"one"</span><span class="p">},</span> <span class="p">{</span><span class="s">"two"</span><span class="p">},</span> <span class="p">{</span><span class="s">"three"</span><span class="p">}}</span>
 
-	</span><span class="k">for</span><span class="x"> </span><span class="n">_</span><span class="p">,</span><span class="x"> </span><span class="n">v</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="k">range</span><span class="x"> </span><span class="n">data</span><span class="x"> </span><span class="p">{</span><span class="x">
-		</span><span class="k">go</span><span class="x"> </span><span class="n">v</span><span class="o">.</span><span class="nb">print</span><span class="p">()</span><span class="x">
-	</span><span class="p">}</span><span class="x">
+	<span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">v</span> <span class="o">:=</span> <span class="k">range</span> <span class="n">data</span> <span class="p">{</span>
+		<span class="k">go</span> <span class="n">v</span><span class="o">.</span><span class="nb">print</span><span class="p">()</span>
+	<span class="p">}</span>
 
-	</span><span class="n">time</span><span class="o">.</span><span class="n">Sleep</span><span class="p">(</span><span class="m">3</span><span class="x"> </span><span class="o">*</span><span class="x"> </span><span class="n">time</span><span class="o">.</span><span class="n">Second</span><span class="p">)</span><span class="x">
-	</span><span class="c">//goroutines print: one, two, three</span><span class="x">
-</span><span class="p">}</span></pre></td></tr></tbody></table></code></pre></figure>
+	<span class="n">time</span><span class="o">.</span><span class="n">Sleep</span><span class="p">(</span><span class="m">3</span> <span class="o">*</span> <span class="n">time</span><span class="o">.</span><span class="n">Second</span><span class="p">)</span>
+	<span class="c">//goroutines print: one, two, three</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></code></pre></figure>
 
-<p>这个例子的输出是 <em>one, two, three</em>。和上个例子相比，只有第17行的<code class="highlighter-rouge">data</code>定义发生了变化，从直接存储<code class="highlighter-rouge">field</code>类型，变成了存储指向<code class="highlighter-rouge">field</code>类型的指针。为什么这个变化会使得得到的结果发生改变呢？</p>
+<p>这个例子的输出是 <em>one, two, three</em>。和上个例子相比，只有第17行的<code class="language-plaintext highlighter-rouge">data</code>定义发生了变化，从直接存储<code class="language-plaintext highlighter-rouge">field</code>类型，变成了存储指向<code class="language-plaintext highlighter-rouge">field</code>类型的指针。为什么这个变化会使得得到的结果发生改变呢？</p>
 
-<p><strong>首先，要先理解Go的方法的receiver的实际含义。在Go中，一个方法的receiver是实现为这个函数的第一个参数</strong>，所以在上面的<code class="highlighter-rouge">*field</code>类型的<code class="highlighter-rouge">print()</code>方法实际上是如下类型的一个函数：</p>
+<p><strong>首先，要先理解Go的方法的receiver的实际含义。在Go中，一个方法的receiver是实现为这个函数的第一个参数</strong>，所以在上面的<code class="language-plaintext highlighter-rouge">*field</code>类型的<code class="language-plaintext highlighter-rouge">print()</code>方法实际上是如下类型的一个函数：</p>
 
-<figure class="highlight"><pre><code class="language-go" data-lang="go"><span class="k">func</span><span class="x"> </span><span class="n">fieldPrint</span><span class="p">(</span><span class="n">f</span><span class="x"> </span><span class="o">*</span><span class="n">field</span><span class="p">)</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-go" data-lang="go"><span class="k">func</span> <span class="n">fieldPrint</span><span class="p">(</span><span class="n">f</span> <span class="o">*</span><span class="n">field</span><span class="p">)</span></code></pre></figure>
 
 <p><strong>另外，在传递receiver时，如果变量不是一个指针，而方法的receiver要求得到一个指针时，Go会先对变量取地址，然后再将这个地址作为receiver来调用方法。</strong></p>
 
@@ -282,34 +284,35 @@
 26
 27
 28
-</pre></td><td class="code"><pre><span class="k">package</span><span class="x"> </span><span class="n">main</span><span class="x">
+</pre></td><td class="code"><pre><span class="k">package</span> <span class="n">main</span>
 
-</span><span class="k">import</span><span class="x"> </span><span class="p">(</span><span class="x">
-	</span><span class="s">"fmt"</span><span class="x">
-	</span><span class="s">"time"</span><span class="x">
-</span><span class="p">)</span><span class="x">
+<span class="k">import</span> <span class="p">(</span>
+	<span class="s">"fmt"</span>
+	<span class="s">"time"</span>
+<span class="p">)</span>
 
-</span><span class="k">type</span><span class="x"> </span><span class="n">field</span><span class="x"> </span><span class="k">struct</span><span class="x"> </span><span class="p">{</span><span class="x">
-	</span><span class="n">name</span><span class="x"> </span><span class="kt">string</span><span class="x">
-</span><span class="p">}</span><span class="x">
+<span class="k">type</span> <span class="n">field</span> <span class="k">struct</span> <span class="p">{</span>
+	<span class="n">name</span> <span class="kt">string</span>
+<span class="p">}</span>
 
-</span><span class="c">// 用这个函数替代原来的v.print()方法</span><span class="x">
-</span><span class="k">func</span><span class="x"> </span><span class="n">fieldPrint</span><span class="p">(</span><span class="n">f</span><span class="x"> </span><span class="o">*</span><span class="n">field</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
-	</span><span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="x">
-</span><span class="p">}</span><span class="x">
+<span class="c">// 用这个函数替代原来的v.print()方法</span>
+<span class="k">func</span> <span class="n">fieldPrint</span><span class="p">(</span><span class="n">f</span> <span class="o">*</span><span class="n">field</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<span class="p">}</span>
 
-</span><span class="k">func</span><span class="x"> </span><span class="n">main</span><span class="p">()</span><span class="x"> </span><span class="p">{</span><span class="x">
-	</span><span class="n">data</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="p">[]</span><span class="n">field</span><span class="p">{{</span><span class="s">"one"</span><span class="p">},</span><span class="x"> </span><span class="p">{</span><span class="s">"two"</span><span class="p">},</span><span class="x"> </span><span class="p">{</span><span class="s">"three"</span><span class="p">}}</span><span class="x">
+<span class="k">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">data</span> <span class="o">:=</span> <span class="p">[]</span><span class="n">field</span><span class="p">{{</span><span class="s">"one"</span><span class="p">},</span> <span class="p">{</span><span class="s">"two"</span><span class="p">},</span> <span class="p">{</span><span class="s">"three"</span><span class="p">}}</span>
 
-	</span><span class="k">for</span><span class="x"> </span><span class="n">_</span><span class="p">,</span><span class="x"> </span><span class="n">v</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="k">range</span><span class="x"> </span><span class="n">data</span><span class="x"> </span><span class="p">{</span><span class="x">
-		</span><span class="c">// 这里Go自动对v取地址，因为参数是一个指针，参数传递给fieldPrint时是传值调用。</span><span class="x">
-		</span><span class="c">// 所以三次调用实际上传递的是同一个指针。</span><span class="x">
-		</span><span class="k">go</span><span class="x"> </span><span class="n">fieldPrint</span><span class="p">(</span><span class="o">&amp;</span><span class="n">v</span><span class="p">)</span><span class="x">
-	</span><span class="p">}</span><span class="x">
+	<span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">v</span> <span class="o">:=</span> <span class="k">range</span> <span class="n">data</span> <span class="p">{</span>
+		<span class="c">// 这里Go自动对v取地址，因为参数是一个指针，参数传递给fieldPrint时是传值调用。</span>
+		<span class="c">// 所以三次调用实际上传递的是同一个指针。</span>
+		<span class="k">go</span> <span class="n">fieldPrint</span><span class="p">(</span><span class="o">&amp;</span><span class="n">v</span><span class="p">)</span>
+	<span class="p">}</span>
 
-	</span><span class="n">time</span><span class="o">.</span><span class="n">Sleep</span><span class="p">(</span><span class="m">3</span><span class="x"> </span><span class="o">*</span><span class="x"> </span><span class="n">time</span><span class="o">.</span><span class="n">Second</span><span class="p">)</span><span class="x">
-	</span><span class="c">//goroutines print: three, three, three</span><span class="x">
-</span><span class="p">}</span></pre></td></tr></tbody></table></code></pre></figure>
+	<span class="n">time</span><span class="o">.</span><span class="n">Sleep</span><span class="p">(</span><span class="m">3</span> <span class="o">*</span> <span class="n">time</span><span class="o">.</span><span class="n">Second</span><span class="p">)</span>
+	<span class="c">//goroutines print: three, three, three</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></code></pre></figure>
 
 <p>在第二个例子中，代码上是这样工作的：</p>
 
@@ -341,34 +344,35 @@
 26
 27
 28
-</pre></td><td class="code"><pre><span class="k">package</span><span class="x"> </span><span class="n">main</span><span class="x">
+</pre></td><td class="code"><pre><span class="k">package</span> <span class="n">main</span>
 
-</span><span class="k">import</span><span class="x"> </span><span class="p">(</span><span class="x">
-	</span><span class="s">"fmt"</span><span class="x">
-	</span><span class="s">"time"</span><span class="x">
-</span><span class="p">)</span><span class="x">
+<span class="k">import</span> <span class="p">(</span>
+	<span class="s">"fmt"</span>
+	<span class="s">"time"</span>
+<span class="p">)</span>
 
-</span><span class="k">type</span><span class="x"> </span><span class="n">field</span><span class="x"> </span><span class="k">struct</span><span class="x"> </span><span class="p">{</span><span class="x">
-	</span><span class="n">name</span><span class="x"> </span><span class="kt">string</span><span class="x">
-</span><span class="p">}</span><span class="x">
+<span class="k">type</span> <span class="n">field</span> <span class="k">struct</span> <span class="p">{</span>
+	<span class="n">name</span> <span class="kt">string</span>
+<span class="p">}</span>
 
-</span><span class="c">// 用这个函数替代原来的v.print()方法</span><span class="x">
-</span><span class="k">func</span><span class="x"> </span><span class="n">fieldPrint</span><span class="p">(</span><span class="n">f</span><span class="x"> </span><span class="o">*</span><span class="n">field</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
-	</span><span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="x">
-</span><span class="p">}</span><span class="x">
+<span class="c">// 用这个函数替代原来的v.print()方法</span>
+<span class="k">func</span> <span class="n">fieldPrint</span><span class="p">(</span><span class="n">f</span> <span class="o">*</span><span class="n">field</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<span class="p">}</span>
 
-</span><span class="k">func</span><span class="x"> </span><span class="n">main</span><span class="p">()</span><span class="x"> </span><span class="p">{</span><span class="x">
-	</span><span class="n">data</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="p">[]</span><span class="o">*</span><span class="n">field</span><span class="p">{{</span><span class="s">"one"</span><span class="p">},</span><span class="x"> </span><span class="p">{</span><span class="s">"two"</span><span class="p">},</span><span class="x"> </span><span class="p">{</span><span class="s">"three"</span><span class="p">}}</span><span class="x">
+<span class="k">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">data</span> <span class="o">:=</span> <span class="p">[]</span><span class="o">*</span><span class="n">field</span><span class="p">{{</span><span class="s">"one"</span><span class="p">},</span> <span class="p">{</span><span class="s">"two"</span><span class="p">},</span> <span class="p">{</span><span class="s">"three"</span><span class="p">}}</span>
 
-	</span><span class="k">for</span><span class="x"> </span><span class="n">_</span><span class="p">,</span><span class="x"> </span><span class="n">v</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="k">range</span><span class="x"> </span><span class="n">data</span><span class="x"> </span><span class="p">{</span><span class="x">
-		</span><span class="c">// 这里不用对v取地址，因为v原来就是一个指针，参数传递给fieldPrint时是传值调用。</span><span class="x">
-		</span><span class="c">// 所以三次调用传递了不同的指针。</span><span class="x">
-		</span><span class="k">go</span><span class="x"> </span><span class="n">fieldPrint</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="x">
-	</span><span class="p">}</span><span class="x">
+	<span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">v</span> <span class="o">:=</span> <span class="k">range</span> <span class="n">data</span> <span class="p">{</span>
+		<span class="c">// 这里不用对v取地址，因为v原来就是一个指针，参数传递给fieldPrint时是传值调用。</span>
+		<span class="c">// 所以三次调用传递了不同的指针。</span>
+		<span class="k">go</span> <span class="n">fieldPrint</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+	<span class="p">}</span>
 
-	</span><span class="n">time</span><span class="o">.</span><span class="n">Sleep</span><span class="p">(</span><span class="m">3</span><span class="x"> </span><span class="o">*</span><span class="x"> </span><span class="n">time</span><span class="o">.</span><span class="n">Second</span><span class="p">)</span><span class="x">
-	</span><span class="c">//goroutines print: three, three, three</span><span class="x">
-</span><span class="p">}</span></pre></td></tr></tbody></table></code></pre></figure>
+	<span class="n">time</span><span class="o">.</span><span class="n">Sleep</span><span class="p">(</span><span class="m">3</span> <span class="o">*</span> <span class="n">time</span><span class="o">.</span><span class="n">Second</span><span class="p">)</span>
+	<span class="c">//goroutines print: three, three, three</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></code></pre></figure>
 
 
     <br />

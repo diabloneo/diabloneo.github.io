@@ -131,9 +131,9 @@
 
 <h3 id="unittest">unittest</h3>
 
-<p>unittest是Python的标准库，提供了最基本的单元测试功能，包括单元测试运行器（简称runner）和单元测试框架。项目的单元测试代码的测试类可以继承<code class="highlighter-rouge">unittest.TestCase</code>类，这样这个类就能够被runner发现并且执行。同时，<code class="highlighter-rouge">unittest.TestCase</code>这个类还定义了<code class="highlighter-rouge">setUp()</code>，<code class="highlighter-rouge">tearDown()</code>，<code class="highlighter-rouge">setUpClass()</code>和<code class="highlighter-rouge">tearDownClass()</code>方法，是用来运行单元测试前的设置工作代码和单元测试后的清理工作代码，这个也是所有Python代码遵守的规范，所以第三方的单元测试库和框架也都遵循这个规范。</p>
+<p>unittest是Python的标准库，提供了最基本的单元测试功能，包括单元测试运行器（简称runner）和单元测试框架。项目的单元测试代码的测试类可以继承<code class="language-plaintext highlighter-rouge">unittest.TestCase</code>类，这样这个类就能够被runner发现并且执行。同时，<code class="language-plaintext highlighter-rouge">unittest.TestCase</code>这个类还定义了<code class="language-plaintext highlighter-rouge">setUp()</code>，<code class="language-plaintext highlighter-rouge">tearDown()</code>，<code class="language-plaintext highlighter-rouge">setUpClass()</code>和<code class="language-plaintext highlighter-rouge">tearDownClass()</code>方法，是用来运行单元测试前的设置工作代码和单元测试后的清理工作代码，这个也是所有Python代码遵守的规范，所以第三方的单元测试库和框架也都遵循这个规范。</p>
 
-<p>unittest库也提供了一个runner，可以使用<code class="highlighter-rouge">$ python -m unittest test_module</code>的命令来执行某个模块的单元测试。另外，在Python中指定要运行的单元测试用例的完整语法是：<strong>path.to.your.module:ClassOfYourTest.test_method</strong>。</p>
+<p>unittest库也提供了一个runner，可以使用<code class="language-plaintext highlighter-rouge">$ python -m unittest test_module</code>的命令来执行某个模块的单元测试。另外，在Python中指定要运行的单元测试用例的完整语法是：<strong>path.to.your.module:ClassOfYourTest.test_method</strong>。</p>
 
 <p>unittest是学习Python单元测试最基本也最重要的一个库，完整的说明请查看官方文档：<a href="https://docs.python.org/2.7/library/unittest.html">https://docs.python.org/2.7/library/unittest.html</a>。</p>
 
@@ -147,11 +147,11 @@
 
 <h3 id="fixtures">fixtures</h3>
 
-<p>fixture的意思是固定装置，在Python的单元测试中，是指某段可以复用的单元测试<code class="highlighter-rouge">setUp</code>和<code class="highlighter-rouge">tearDown</code>代码组合。一个fixture一般用来实现某个组件的setUp和tearDown逻辑，比如测试前要先创建好某些数据，测试后要删掉这些数据，这些操作就可以封装到一个fixture中。这样不同的测试用例就不用重复写这些代码，只要使用fixture即可。fixtures模块是一个第三方模块，提供了一种简单的创建fixture类和对象的机制，并且也提供了一些内置的fixture。具体的使用方法可以查看官方文档：<a href="https://pypi.python.org/pypi/fixtures/">https://pypi.python.org/pypi/fixtures/</a>。</p>
+<p>fixture的意思是固定装置，在Python的单元测试中，是指某段可以复用的单元测试<code class="language-plaintext highlighter-rouge">setUp</code>和<code class="language-plaintext highlighter-rouge">tearDown</code>代码组合。一个fixture一般用来实现某个组件的setUp和tearDown逻辑，比如测试前要先创建好某些数据，测试后要删掉这些数据，这些操作就可以封装到一个fixture中。这样不同的测试用例就不用重复写这些代码，只要使用fixture即可。fixtures模块是一个第三方模块，提供了一种简单的创建fixture类和对象的机制，并且也提供了一些内置的fixture。具体的使用方法可以查看官方文档：<a href="https://pypi.python.org/pypi/fixtures/">https://pypi.python.org/pypi/fixtures/</a>。</p>
 
 <h3 id="testscenarios">testscenarios</h3>
 
-<p>testscenarios模块满足了场景测试的需求。它的基本用法是在测试类中添加一个类属性<code class="highlighter-rouge">scenarios</code>，该属性是一个元组，定义了每一种场景下不同的变量的值。比如说你测试一段数据访问代码，你需要测试该代码在使用不同的驱动时，比如MongoDB、SQL、File，是否都能正常工作。我们有三种办法：</p>
+<p>testscenarios模块满足了场景测试的需求。它的基本用法是在测试类中添加一个类属性<code class="language-plaintext highlighter-rouge">scenarios</code>，该属性是一个元组，定义了每一种场景下不同的变量的值。比如说你测试一段数据访问代码，你需要测试该代码在使用不同的驱动时，比如MongoDB、SQL、File，是否都能正常工作。我们有三种办法：</p>
 
 <ol>
   <li>最笨的办法是为不同的驱动把同一个测试用例编写3遍。</li>
@@ -163,7 +163,7 @@
 
 <h3 id="subunit">subunit</h3>
 
-<p>subunit是一个用于传输单元测试结果的流协议。一般来说，运行单元测试的时候是把单元测试的结果直接输出到标准输出，但是如果运行大量的测试用例，这些测试结果就很难被分析。因此就可以使用python-subunit模块来运行测试用例，并且把测试用例通过subunit协议输出，这样测试结果就可以被分析工具聚合以及分析。python-subunit模块自带了一些工具用来解析subunit协议，比如你可以这样运行测试用例：<code class="highlighter-rouge">$ python -m subunit.run test_module | subunit2pyunit</code>，<code class="highlighter-rouge">subunit2pyunit</code>命令会解析subunit协议，并且输出到标准输出。关于subunit的更多信息，请查看官方文档：<a href="https://pypi.python.org/pypi/python-subunit/">https://pypi.python.org/pypi/python-subunit/</a>。</p>
+<p>subunit是一个用于传输单元测试结果的流协议。一般来说，运行单元测试的时候是把单元测试的结果直接输出到标准输出，但是如果运行大量的测试用例，这些测试结果就很难被分析。因此就可以使用python-subunit模块来运行测试用例，并且把测试用例通过subunit协议输出，这样测试结果就可以被分析工具聚合以及分析。python-subunit模块自带了一些工具用来解析subunit协议，比如你可以这样运行测试用例：<code class="language-plaintext highlighter-rouge">$ python -m subunit.run test_module | subunit2pyunit</code>，<code class="language-plaintext highlighter-rouge">subunit2pyunit</code>命令会解析subunit协议，并且输出到标准输出。关于subunit的更多信息，请查看官方文档：<a href="https://pypi.python.org/pypi/python-subunit/">https://pypi.python.org/pypi/python-subunit/</a>。</p>
 
 <h3 id="testrepository">testrepository</h3>
 
@@ -208,18 +208,18 @@ testrepository调用subunit来执行测试用例，对测试结果进行聚合�
 
 <p>大部分情况下，我们都是通过<strong>tox</strong>命令来执行单元测试的，并且传递环境名称给tox命令：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>➜ ~/openstack/env/p/keystone git:(master) ✗ $ tox -e py27
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>➜ ~/openstack/env/p/keystone git:(master) ✗ $ tox -e py27
 </code></pre></div></div>
 
 <p>tox命令首先会读取项目根目录下的<em>tox.ini</em>文件，获取相关的信息，然后根据配置构建virtualenv，保存在<em>.tox/</em>目录下，以环境名称命名：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>➜ ~/openstack/env/p/keystone git:(master) ✗ $ ls .tox
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>➜ ~/openstack/env/p/keystone git:(master) ✗ $ ls .tox
 log  pep8  py27
 </code></pre></div></div>
 
 <p>除了<em>log</em>目录，其他的都是普通的virtualenv环境，你可以自己查看一下内容。我们来看下<em>py27</em>这个环境的相关配置（在tox.ini）中，我直接在内容上注释一些配置的用途：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[tox]
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[tox]
 minversion = 1.6
 skipsdist = True
 # envlist表示本文件中配置的环境都有哪些
@@ -257,7 +257,7 @@ commands =
 
 <p>上面提到的<a href="https://www.python.org/dev/peps/pep-0508/">PEP-0508</a>是依赖格式的完整说明。setup.cfg的<em>extra</em>部分如下：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[extras]
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[extras]
 ldap =
   python-ldap&gt;=2.4:python_version=='2.7' # PSF
   ldappool&gt;=1.0:python_version=='2.7' # MPL
@@ -271,29 +271,29 @@ bandit =
 
 <h3 id="使用testrepository管理测试的运行">使用testrepository管理测试的运行</h3>
 
-<p>上面我们看到<em>tox.ini</em>文件中的<code class="highlighter-rouge">commands</code>参数中执行的是<em>tools/pretty_tox.sh</em>命令。这个脚本的内容如下：</p>
+<p>上面我们看到<em>tox.ini</em>文件中的<code class="language-plaintext highlighter-rouge">commands</code>参数中执行的是<em>tools/pretty_tox.sh</em>命令。这个脚本的内容如下：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/usr/bin/env bash</span>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#!/usr/bin/env bash
 
-<span class="nb">set</span> <span class="nt">-o</span> pipefail
+set -o pipefail
 
-<span class="nv">TESTRARGS</span><span class="o">=</span><span class="nv">$1</span>
-<span class="c"># testr和setuptools已经集成，所以可以通过setup.py testr命令来执行</span>
-<span class="c"># --testr-args表示传递给testr命令的参数，告诉testr要传递给subunit的参数</span>
-<span class="c"># subunit-trace是os-testr包中的命令（os-testr是OpenStack的一个项目），用来解析subunit的输出的。</span>
-python setup.py testr <span class="nt">--testr-args</span><span class="o">=</span><span class="s2">"--subunit </span><span class="nv">$TESTRARGS</span><span class="s2">"</span> | subunit-trace <span class="nt">-f</span>
-<span class="nv">retval</span><span class="o">=</span><span class="nv">$?</span>
-<span class="c"># NOTE(mtreinish) The pipe above would eat the slowest display from pbr's testr</span>
-<span class="c"># wrapper so just manually print the slowest tests.</span>
-<span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">Slowest Tests:</span><span class="se">\n</span><span class="s2">"</span>
-<span class="c"># 测试结束后，让testr显示出执行时间最长的那些测试用例</span>
+TESTRARGS=$1
+# testr和setuptools已经集成，所以可以通过setup.py testr命令来执行
+# --testr-args表示传递给testr命令的参数，告诉testr要传递给subunit的参数
+# subunit-trace是os-testr包中的命令（os-testr是OpenStack的一个项目），用来解析subunit的输出的。
+python setup.py testr --testr-args="--subunit $TESTRARGS" | subunit-trace -f
+retval=$?
+# NOTE(mtreinish) The pipe above would eat the slowest display from pbr's testr
+# wrapper so just manually print the slowest tests.
+echo -e "\nSlowest Tests:\n"
+# 测试结束后，让testr显示出执行时间最长的那些测试用例
 testr slowest
-<span class="nb">exit</span> <span class="nv">$retval</span>
+exit $retval
 </code></pre></div></div>
 
 <p>tox就是从<em>tools/pretty_tox.sh</em>这个命令开始调用testr来执行单元测试的。testr本身的配置是放在项目根目录下的<em>.testr.conf</em>文件：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[DEFAULT]
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[DEFAULT]
 test_command=
     ${PYTHON:-python} -m subunit.run discover -t ./ ${OS_TEST_PATH:-./keystone/tests/unit} $LISTOPT $IDOPTION
 
@@ -310,7 +310,7 @@ group_regex=.*(test_cert_setup)
 test_run_concurrency=echo ${TEST_RUN_CONCURRENCY:-0}
 </code></pre></div></div>
 
-<p>这个文件中的配置项可以从<a href="http://testrepository.readthedocs.org/en/latest/">testr官方文档</a>中找到。其中<code class="highlighter-rouge">test_command</code>命令表示要执行什么命令来运行测试用例，这里使用的是<code class="highlighter-rouge">subunit.run</code>，这个我们在上面提到过了。</p>
+<p>这个文件中的配置项可以从<a href="http://testrepository.readthedocs.org/en/latest/">testr官方文档</a>中找到。其中<code class="language-plaintext highlighter-rouge">test_command</code>命令表示要执行什么命令来运行测试用例，这里使用的是<code class="language-plaintext highlighter-rouge">subunit.run</code>，这个我们在上面提到过了。</p>
 
 <p>到目前为止的流程就是：</p>
 
@@ -326,9 +326,9 @@ test_run_concurrency=echo ${TEST_RUN_CONCURRENCY:-0}
 
 <p>下面我们来看一下Keystone的单元测试代码是如何写的，主要是看一下其层次结构。每个OpenStack项目的单元测试代码结构可能都不一样，不过你了解完Keystone的结构之后，看其他项目的就会比较快了。</p>
 
-<p>我们以一个测试类为例来分析测试代码的结构：<code class="highlighter-rouge">keystone.tests.unit.test_v3_assignment:AssignmentTestCase</code>。下面是这个类的继承结构，同一级别的缩进表示多重继承，增加缩进表示父类，这里删掉了不必要的路径前缀（从unit目录开始），如下所示：</p>
+<p>我们以一个测试类为例来分析测试代码的结构：<code class="language-plaintext highlighter-rouge">keystone.tests.unit.test_v3_assignment:AssignmentTestCase</code>。下面是这个类的继承结构，同一级别的缩进表示多重继承，增加缩进表示父类，这里删掉了不必要的路径前缀（从unit目录开始），如下所示：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># 这个测试类是测RoleAssignment的API的
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># 这个测试类是测RoleAssignment的API的
 unit.test_v3_assignment.RoleAssignmentBaseTestCase
 -&gt; unit.test_v3.AssignmentTestMixin  这个类包含了一下测试Assignment的工具函数
 -&gt; unit.test_v3.RestfulTestCase      这个类是进行V3 REST API测试的基类，实现了V3 API的请求发起和校验

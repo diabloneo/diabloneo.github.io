@@ -167,14 +167,14 @@
 
 <p>这个定位信息，也很容易看，<em>y</em> 表示当前的第一行是第几个 task 以及一共有几个 task；<em>x</em> 表示当前的第一列是第几列，以及一共有多少列。</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scroll coordinates: y = 1/145 (tasks), x = 1/12 (fields)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scroll coordinates: y = 1/145 (tasks), x = 1/12 (fields)
 </code></pre></div></div>
 
 <h2 id="summary-area">Summary Area</h2>
 
 <p>Summary area 展示了系统的全局监控信息，如下所示。整个区域从上到下分为 3 个部分： <strong>load average</strong>, <strong>tasks and cpu</strong>, <strong>memory</strong>。</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
 top - 14:24:54 up 26 days, 22:13,  1 user,  load average: 0.08, 0.05, 0.05        # load average
 Tasks: 145 total,   1 running, 144 sleeping,   0 stopped,   0 zombie              # tasks and cpu
 %Cpu(s):  0.2 us,  0.2 sy,  0.0 ni, 99.5 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st   # tasks and cpu
@@ -186,7 +186,7 @@ KiB Swap:        0 total,        0 free,        0 used.  7757480 avail Mem      
 
 <p><em>Load average</em> 部分主要展示系统的负载。</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
 #     Now      Uptime              User     Load average
 #                                  count                  1m    5m    15m
 top - 14:24:54 up 26 days, 22:13,  1 user,  load average: 0.08, 0.05, 0.05
@@ -202,7 +202,7 @@ top - 14:24:54 up 26 days, 22:13,  1 user,  load average: 0.08, 0.05, 0.05
 
 <p><em>Tasks</em> 部分主要展示系统的进程数或者线程数（根据 threads-mode 来决定）。</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
 #      Total        State      State           State        State
 #      tasks or     running    sleeping        stopped      zombie
 #      threads
@@ -211,7 +211,7 @@ Tasks: 145 total,   1 running, 144 sleeping,   0 stopped,   0 zombie
 
 <p><em>CPU</em> 的部分主要是展示不同状态的任务的 CPU 消耗占比：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>%Cpu(s):  0.2 us,  0.2 sy,  0.0 ni, 99.5 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>%Cpu(s):  0.2 us,  0.2 sy,  0.0 ni, 99.5 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
 </code></pre></div></div>
 
 <p>具体的缩写含义如下：</p>
@@ -241,7 +241,7 @@ Tasks: 145 total,   1 running, 144 sleeping,   0 stopped,   0 zombie
 
 <p>*Memory** 的部分展示了系统的内存信息和交换分区的信息。</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
 KiB Mem : 12138004 total,  2857072 free,   548312 used,  8732620 buff/cache
 KiB Swap:        0 total,        0 free,        0 used.  7757480 avail Mem
 </code></pre></div></div>
@@ -404,7 +404,7 @@ KiB Swap:        0 total,        0 free,        0 used.  7757480 avail Mem
 
 <p>top 提供了 <strong>Other Filter</strong> 的功能，通过快捷键 <strong>o</strong> (大小写不敏感) 或者 <strong>O</strong> (大小写敏感) 来启用。过滤条件的格式如下：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{!}Field-Name?include-if-value
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{!}Field-Name?include-if-value
               exclude-if-value
 </code></pre></div></div>
 
@@ -431,8 +431,8 @@ KiB Swap:        0 total,        0 free,        0 used.  7757480 avail Mem
 <p>举些例子：</p>
 
 <ol>
-  <li>过滤 nice 值小于 0 的任务，即以减号开头的 nice 值：<code class="highlighter-rouge">NI=-</code>。</li>
-  <li>过滤所有 postgres 进程：<code class="highlighter-rouge">COMMAND=postgres</code>。</li>
+  <li>过滤 nice 值小于 0 的任务，即以减号开头的 nice 值：<code class="language-plaintext highlighter-rouge">NI=-</code>。</li>
+  <li>过滤所有 postgres 进程：<code class="language-plaintext highlighter-rouge">COMMAND=postgres</code>。</li>
 </ol>
 
 <h4 id="搜索">搜索</h4>
@@ -455,7 +455,7 @@ KiB Swap:        0 total,        0 free,        0 used.  7757480 avail Mem
 
 <p>有时候不想看层级太深的任务，可以使用 other filter。除了第二级是一个空格，往下的每一级都是每级三个空格，最后再加上一个反引号开头。所以要过滤掉第三级以下的，可以使用如下条件（COMMAND=后面跟7个空格）：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>!COMMAND=       `
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>!COMMAND=       `
 </code></pre></div></div>
 
 <h2 id="界面颜色">界面颜色</h2>
@@ -491,7 +491,7 @@ KiB Swap:        0 total,        0 free,        0 used.  7757480 avail Mem
 
 <p>top 有一个模式，可以允许你执行指定的命令来查看一个任务的更多信息，这个模式可以称为 <strong>Inspect Mode</strong>，通过快捷键 <strong>Y</strong> 可以进入这个模式，top 会提示你输入一个要 inspect 的 PID。不过，要使用这个模式，你需要先定义可以使用的 inspect entries，否则 top 不会进入这个模式。下面是一个最简单的配置，可以先体会下这个配置是如何写的：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
 [root@user ~]# cat .toprc
 top's Config File (Linux processes with windows)
 Id:i, Mode_altscr=0, Mode_irixps=1, Delay_time=3.0, Curwin=0
@@ -520,18 +520,18 @@ pipe    Open Files      lsof -P -p %d 2&gt;&amp;1
 
 <p><img src="http://diabloneo.github.io//assets/imgs/00028_top_cmd_8.png" alt="top_cmd_8" /></p>
 
-<p>在上面这个界面，可以使用 PgUp, PgDown, Home, End 等进行滚动，也可以使用 <em>less</em> 命令的语法（ <code class="highlighter-rouge">/</code> 表示搜索）。</p>
+<p>在上面这个界面，可以使用 PgUp, PgDown, Home, End 等进行滚动，也可以使用 <em>less</em> 命令的语法（ <code class="language-plaintext highlighter-rouge">/</code> 表示搜索）。</p>
 
 <p>下面来看 entry 的定制语法。</p>
 
 <p>首先，<strong>#</strong> 开头的行是被注释掉的。</p>
 
-<p>一行 inspect entry 包含三个部分： <strong>type</strong>, <strong>name</strong>, <strong>fmts</strong>，每个部分之间使用制表符 <code class="highlighter-rouge">\t</code> 分隔。</p>
+<p>一行 inspect entry 包含三个部分： <strong>type</strong>, <strong>name</strong>, <strong>fmts</strong>，每个部分之间使用制表符 <code class="language-plaintext highlighter-rouge">\t</code> 分隔。</p>
 
 <ul>
-  <li><strong>type</strong>: 可以是 <em>file</em> 或者 <em>pipe</em>。<em>file</em> 就是打开一个文件，读它的内容。<em>pipe</em> 就是用 <code class="highlighter-rouge">popen</code> 接口执行命令，然后获取输出。</li>
+  <li><strong>type</strong>: 可以是 <em>file</em> 或者 <em>pipe</em>。<em>file</em> 就是打开一个文件，读它的内容。<em>pipe</em> 就是用 <code class="language-plaintext highlighter-rouge">popen</code> 接口执行命令，然后获取输出。</li>
   <li><strong>name</strong>: 名字，比如你上面看到的 <em>Open Files</em>。</li>
-  <li><strong>fmts</strong>：一个文件路径，或者一行命令。这个部分可以使用变量 <code class="highlighter-rouge">%d</code> 表示 PID，比如 <code class="highlighter-rouge">/proc/%d/numa_maps</code> 或者 <code class="highlighter-rouge">lsof -P -p %d 2&gt;&amp;1</code>。</li>
+  <li><strong>fmts</strong>：一个文件路径，或者一行命令。这个部分可以使用变量 <code class="language-plaintext highlighter-rouge">%d</code> 表示 PID，比如 <code class="language-plaintext highlighter-rouge">/proc/%d/numa_maps</code> 或者 <code class="language-plaintext highlighter-rouge">lsof -P -p %d 2&gt;&amp;1</code>。</li>
 </ul>
 
 <h2 id="我的定制">我的定制</h2>
@@ -542,7 +542,7 @@ pipe    Open Files      lsof -P -p %d 2&gt;&amp;1
 
 <p>我在 CentOS 7 下的定制文件如下：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>top's Config File (Linux processes with windows)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>top's Config File (Linux processes with windows)
 Id:i, Mode_altscr=0, Mode_irixps=1, Delay_time=3.0, Curwin=0
 Cpu     fieldscur=ķ9')*+,-./0126&lt;&gt;?ABCFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghij
         winflags=195380, sortindx=18, maxtasks=0, graph_cpus=0, graph_mems=0
@@ -574,7 +574,7 @@ file    NUMAInfo        /proc/%d/numa_maps
 
 <p>如果要直接使用的话，用 base64 解码下面的内容，直接从网页上拷贝会有字符问题：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dG9wJ3MgQ29uZmlnIEZpbGUgKExpbnV4IHByb2Nlc3NlcyB3aXRoIHdpbmRvd3MpCklkOmksIE1v
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dG9wJ3MgQ29uZmlnIEZpbGUgKExpbnV4IHByb2Nlc3NlcyB3aXRoIHdpbmRvd3MpCklkOmksIE1v
 ZGVfYWx0c2NyPTAsIE1vZGVfaXJpeHBzPTEsIERlbGF5X3RpbWU9My4wLCBDdXJ3aW49MApDcHUJ
 ZmllbGRzY3VyPaWmqLWztLu9wMS3urg5xScpKissLS4vMDEyNjw+P0FCQ0ZHSElKS0xNTk9QUVJT
 VFVWV1hZWltcXV5fYGFiY2RlZmdoaWoKCXdpbmZsYWdzPTE5NTM4MCwgc29ydGluZHg9MTgsIG1h

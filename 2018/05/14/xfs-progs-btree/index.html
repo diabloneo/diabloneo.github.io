@@ -135,21 +135,21 @@
 
 <h3 id="叶子节点">叶子节点</h3>
 
-<p>BTree的叶子节点只需要保存数据。不同类型的btree的数据格式不一样，本文以BNO btree和CNT btree为例，所以叶子节点保存的数据的数据结构为<code class="highlighter-rouge">xfs_alloc_rec_t</code>。一个叶子节点的数据存储方式如下：</p>
+<p>BTree的叶子节点只需要保存数据。不同类型的btree的数据格式不一样，本文以BNO btree和CNT btree为例，所以叶子节点保存的数据的数据结构为<code class="language-plaintext highlighter-rouge">xfs_alloc_rec_t</code>。一个叶子节点的数据存储方式如下：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   header             data1                   dataN
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   header             data1                   dataN
 +-----------------+-----------------+-----+-----------------+
 | xfs_btree_block | xfs_alloc_rec_t | ... | xfs_alloc_rec_t |
 +-----------------+-----------------+-----+-----------------+
 </code></pre></div></div>
 
-<p>叶子节点使用<code class="highlighter-rouge">xfs_alloc_rec_t</code>类型存储数据，因为是用来管理文件系统的block的，所以其内容就是代表一定数量的连续的block：</p>
+<p>叶子节点使用<code class="language-plaintext highlighter-rouge">xfs_alloc_rec_t</code>类型存储数据，因为是用来管理文件系统的block的，所以其内容就是代表一定数量的连续的block：</p>
 
 <h3 id="非叶子节点">非叶子节点</h3>
 
-<p>BTree的非叶子节点保存key和节点指针。在BNO btree和CNT btree中，key的类型为<code class="highlighter-rouge">xfs_alloc_key_t</code>，节点指针的类型为<code class="highlighter-rouge">xfs_alloc_ptr_t</code>。</p>
+<p>BTree的非叶子节点保存key和节点指针。在BNO btree和CNT btree中，key的类型为<code class="language-plaintext highlighter-rouge">xfs_alloc_key_t</code>，节点指针的类型为<code class="language-plaintext highlighter-rouge">xfs_alloc_ptr_t</code>。</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   header             key1                   keyN              ptr1                    ptrN
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   header             key1                   keyN              ptr1                    ptrN
 +-----------------+-----------------+-----+-----------------+-----------------+-----+-----------------+
 | xfs_btree_block | xfs_alloc_key_t | ... | xfs_alloc_key_t | xfs_alloc_ptr_t | ... | xfs_alloc_ptr_t |
 +-----------------+-----------------+-----+-----------------+-----------------+-----+-----------------+
@@ -159,7 +159,7 @@
 
 <h3 id="节点header">节点header</h3>
 
-<p>不论是叶子节点还是非叶子节点，其header都是<code class="highlighter-rouge">struc xfs_btree_block</code>类型：</p>
+<p>不论是叶子节点还是非叶子节点，其header都是<code class="language-plaintext highlighter-rouge">struc xfs_btree_block</code>类型：</p>
 
 <figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="k">struct</span> <span class="n">xfs_btree_block</span> <span class="p">{</span>
 	<span class="n">__be32</span>		<span class="n">bb_magic</span><span class="p">;</span>	<span class="cm">/* magic number for block type */</span>
@@ -191,30 +191,30 @@
 
 <h2 id="xfs_btree_lookupcur-dir-stat">xfs_btree_lookup(cur, dir, stat)</h2>
 
-<p>这个函数用于在btree中查找满足<code class="highlighter-rouge">dir</code>条件的记录，查找的值存放在<code class="highlighter-rouge">cur-&gt;bc_rec</code>中。</p>
+<p>这个函数用于在btree中查找满足<code class="language-plaintext highlighter-rouge">dir</code>条件的记录，查找的值存放在<code class="language-plaintext highlighter-rouge">cur-&gt;bc_rec</code>中。</p>
 
-<p><code class="highlighter-rouge">dir</code>表示查找的方向，有三个值：</p>
+<p><code class="language-plaintext highlighter-rouge">dir</code>表示查找的方向，有三个值：</p>
 
 <ul>
-  <li><code class="highlighter-rouge">XFS_LOOKUP_LE</code>：查找小于<code class="highlighter-rouge">bc_rec</code>中的值的记录。</li>
-  <li><code class="highlighter-rouge">XFS_LOOKUP_EQ</code>：查找等于<code class="highlighter-rouge">bc_rec</code>中的值的记录。</li>
-  <li><code class="highlighter-rouge">XFS_LOOKUP_GE</code>：查找大于<code class="highlighter-rouge">bc_rec</code>中的值的记录。</li>
+  <li><code class="language-plaintext highlighter-rouge">XFS_LOOKUP_LE</code>：查找小于<code class="language-plaintext highlighter-rouge">bc_rec</code>中的值的记录。</li>
+  <li><code class="language-plaintext highlighter-rouge">XFS_LOOKUP_EQ</code>：查找等于<code class="language-plaintext highlighter-rouge">bc_rec</code>中的值的记录。</li>
+  <li><code class="language-plaintext highlighter-rouge">XFS_LOOKUP_GE</code>：查找大于<code class="language-plaintext highlighter-rouge">bc_rec</code>中的值的记录。</li>
 </ul>
 
-<p>查找是要进行到叶子节点的，最后的查找结果会存放在<code class="highlighter-rouge">cur-&gt;bc_ptrs[0]</code>中，表示叶子节点的哪个record满足查找的条件，是否查找成功则通过<code class="highlighter-rouge">stat</code>参数返回。</p>
+<p>查找是要进行到叶子节点的，最后的查找结果会存放在<code class="language-plaintext highlighter-rouge">cur-&gt;bc_ptrs[0]</code>中，表示叶子节点的哪个record满足查找的条件，是否查找成功则通过<code class="language-plaintext highlighter-rouge">stat</code>参数返回。</p>
 
 <h3 id="xfs_btree_lookup_get_blockcur-level-pp-blkp">xfs_btree_lookup_get_block(cur, level, pp, blkp)</h3>
 
-<p>这个函数读取<code class="highlighter-rouge">pp</code>指向的block，作为<code class="highlighter-rouge">cur</code>的第<code class="highlighter-rouge">level</code>级的节点，主要操作如下：</p>
+<p>这个函数读取<code class="language-plaintext highlighter-rouge">pp</code>指向的block，作为<code class="language-plaintext highlighter-rouge">cur</code>的第<code class="language-plaintext highlighter-rouge">level</code>级的节点，主要操作如下：</p>
 
 <ol>
-  <li><code class="highlighter-rouge">xfs_btree_read_buf_block(cur, ptr, ..)</code>读取当前<code class="highlighter-rouge">cur</code>和<code class="highlighter-rouge">ptr</code>所指向的block。</li>
-  <li><code class="highlighter-rouge">xfs_btree_setbuf(cur, lev, bp)</code>函数将<code class="highlighter-rouge">bp</code>设置到<code class="highlighter-rouge">cur</code>的<code class="highlighter-rouge">lev</code>层，表示<code class="highlighter-rouge">cur</code>的第<code class="highlighter-rouge">lev</code>层读取的是<code class="highlighter-rouge">bp</code>指向的节点。如果<code class="highlighter-rouge">bp</code>的左兄弟或者右兄弟不存在，那么设置<code class="highlighter-rouge">cur-&gt;bc_ra[lev]</code>的相应位。</li>
+  <li><code class="language-plaintext highlighter-rouge">xfs_btree_read_buf_block(cur, ptr, ..)</code>读取当前<code class="language-plaintext highlighter-rouge">cur</code>和<code class="language-plaintext highlighter-rouge">ptr</code>所指向的block。</li>
+  <li><code class="language-plaintext highlighter-rouge">xfs_btree_setbuf(cur, lev, bp)</code>函数将<code class="language-plaintext highlighter-rouge">bp</code>设置到<code class="language-plaintext highlighter-rouge">cur</code>的<code class="language-plaintext highlighter-rouge">lev</code>层，表示<code class="language-plaintext highlighter-rouge">cur</code>的第<code class="language-plaintext highlighter-rouge">lev</code>层读取的是<code class="language-plaintext highlighter-rouge">bp</code>指向的节点。如果<code class="language-plaintext highlighter-rouge">bp</code>的左兄弟或者右兄弟不存在，那么设置<code class="language-plaintext highlighter-rouge">cur-&gt;bc_ra[lev]</code>的相应位。</li>
 </ol>
 
 <h3 id="xfs_lookup_get_search_keycur-level-keyno-block-kp">xfs_lookup_get_search_key(cur, level, keyno, block, kp)</h3>
 
-<p>这个函数获取由<code class="highlighter-rouge">block</code>和<code class="highlighter-rouge">keyno</code>确定的key。如果是叶子节点，即<code class="highlighter-rouge">level == 0</code>，那么这个函数返回的其实是record的内容，因为叶子节点没有key。</p>
+<p>这个函数获取由<code class="language-plaintext highlighter-rouge">block</code>和<code class="language-plaintext highlighter-rouge">keyno</code>确定的key。如果是叶子节点，即<code class="language-plaintext highlighter-rouge">level == 0</code>，那么这个函数返回的其实是record的内容，因为叶子节点没有key。</p>
 
 <h3 id="lookup的算法">Lookup的算法</h3>
 
@@ -227,15 +227,15 @@
       <li>如果当前层不是叶子节点，那么进入下一层继续搜索；如果当前层是叶子节点，那么结束对树的搜索。</li>
     </ol>
   </li>
-  <li>根据最后一次比较的<code class="highlighter-rouge">diff</code>结果，以及参数<code class="highlighter-rouge">dir</code>，调整结果，并且返回查找是否成功。</li>
+  <li>根据最后一次比较的<code class="language-plaintext highlighter-rouge">diff</code>结果，以及参数<code class="language-plaintext highlighter-rouge">dir</code>，调整结果，并且返回查找是否成功。</li>
 </ol>
 
 <h2 id="xfs_btree_incrementcur-level-stat">xfs_btree_increment(cur, level, stat)</h2>
 
-<p>在<code class="highlighter-rouge">(cur, level)</code>指向的节点增加一个record，即在这个btree中查找指定record在同一级的右边的record，查找的过程可能需要调整每一级的节点。</p>
+<p>在<code class="language-plaintext highlighter-rouge">(cur, level)</code>指向的节点增加一个record，即在这个btree中查找指定record在同一级的右边的record，查找的过程可能需要调整每一级的节点。</p>
 
 <ol>
-  <li>首先处理最简单的情况，就是<code class="highlighter-rouge">++cur-&gt;bc_ptrs[level] &lt;= xfs_btree_get_numrecs(block)</code>，即增加的record还在block的有效范围内，此时可以直接返回。</li>
+  <li>首先处理最简单的情况，就是<code class="language-plaintext highlighter-rouge">++cur-&gt;bc_ptrs[level] &lt;= xfs_btree_get_numrecs(block)</code>，即增加的record还在block的有效范围内，此时可以直接返回。</li>
   <li>接下来获取当前节点的右兄弟。如果右兄弟不存在，那么说明我们已经处于这一层的最右侧节点，无法再继续increment操作。</li>
   <li>然后开始向上层节点遍历，直到找到一个节点，右移一个record后还在节点内。找不到说明increment失败。</li>
   <li>从上面找到的节点开始，向下遍历，调整每一层的节点，把ptr的位置指向新节点的第一个key。</li>
@@ -249,58 +249,58 @@
 
 <h2 id="xfs_btree_insertcur-stat">xfs_btree_insert(cur, stat)</h2>
 
-<p>将一个record插入到<code class="highlighter-rouge">cur</code>指定的位置。</p>
+<p>将一个record插入到<code class="language-plaintext highlighter-rouge">cur</code>指定的位置。</p>
 
-<p>这个函数循环调用<code class="highlighter-rouge">xfs_btree_insrec()</code>函数插入一个record，然后判断是否发生了分裂，如果发生了分裂（此时key和父节点的ptr都已经被修改），那么就将游标向上移动一层，然后继续循环，直到不再发生分裂为止。</p>
+<p>这个函数循环调用<code class="language-plaintext highlighter-rouge">xfs_btree_insrec()</code>函数插入一个record，然后判断是否发生了分裂，如果发生了分裂（此时key和父节点的ptr都已经被修改），那么就将游标向上移动一层，然后继续循环，直到不再发生分裂为止。</p>
 
 <h3 id="xfs_btree_insreccur-level-ptrp-rec-key-curp-stat">xfs_btree_insrec(cur, level, ptrp, rec, key, curp, stat)</h3>
 
-<p>将<code class="highlighter-rouge">rec</code>插入到<code class="highlighter-rouge">(cur, level)</code>指向的节点。因为插入一个记录可能导致节点的数据被移动，或者节点被分裂，所以这个函数会返回插入的物理位置。</p>
+<p>将<code class="language-plaintext highlighter-rouge">rec</code>插入到<code class="language-plaintext highlighter-rouge">(cur, level)</code>指向的节点。因为插入一个记录可能导致节点的数据被移动，或者节点被分裂，所以这个函数会返回插入的物理位置。</p>
 
-<p>当当前的节点空间不够时，会调用<code class="highlighter-rouge">xfs_btree_make_block_unfull()</code>函数来获得新的空间用于插入新的record。如果调用这个函数导致节点分裂，那么会产生新的游标，会通过<code class="highlighter-rouge">curp</code>返回。在分裂的情况下，这个函数并不会更新父节点的内容，但是会更新游标，以及指向新节点的key，由调用者负责更新父节点。</p>
+<p>当当前的节点空间不够时，会调用<code class="language-plaintext highlighter-rouge">xfs_btree_make_block_unfull()</code>函数来获得新的空间用于插入新的record。如果调用这个函数导致节点分裂，那么会产生新的游标，会通过<code class="language-plaintext highlighter-rouge">curp</code>返回。在分裂的情况下，这个函数并不会更新父节点的内容，但是会更新游标，以及指向新节点的key，由调用者负责更新父节点。</p>
 
 <h4 id="xfs_btree_make_block_unfullcur-level-numrecs-oindex-index-nptr-ncur-key-stat">xfs_btree_make_block_unfull(cur, level, numrecs, oindex, index, nptr, ncur, key, stat)</h4>
 
-<p>通过移动数据或者分裂节点的方式，使得<code class="highlighter-rouge">(cur, level)</code>指向的节点有空间存放一个新的记录，这个操作会顺序尝试三个操作：</p>
+<p>通过移动数据或者分裂节点的方式，使得<code class="language-plaintext highlighter-rouge">(cur, level)</code>指向的节点有空间存放一个新的记录，这个操作会顺序尝试三个操作：</p>
 
 <ol>
-  <li>尝试将当前节点的最后一个记录右移一个节点：<code class="highlighter-rouge">xfs_btree_rshift()</code>。</li>
-  <li>如果右移不成功，则尝试将当前节点的第一个记录左移一个节点：<code class="highlighter-rouge">xfs_btree_lshift()</code>。</li>
+  <li>尝试将当前节点的最后一个记录右移一个节点：<code class="language-plaintext highlighter-rouge">xfs_btree_rshift()</code>。</li>
+  <li>如果右移不成功，则尝试将当前节点的第一个记录左移一个节点：<code class="language-plaintext highlighter-rouge">xfs_btree_lshift()</code>。</li>
   <li>如果左右移动都不成功，则分裂当前节点为两个节点，即创建当前节点的右兄弟，然后把记录平分存储在两个节点中。</li>
 </ol>
 
 <h5 id="xfs_btree_rshiftcur-level-stat">xfs_btree_rshift(cur, level, stat)</h5>
 
-<p>将<code class="highlighter-rouge">cur</code>指向的节点的最右侧record移动到右侧的节点，这样可以给当<code class="highlighter-rouge">cur</code>指向的节点空出一个位置。</p>
+<p>将<code class="language-plaintext highlighter-rouge">cur</code>指向的节点的最右侧record移动到右侧的节点，这样可以给当<code class="language-plaintext highlighter-rouge">cur</code>指向的节点空出一个位置。</p>
 
 <h5 id="xfs_btree_update_keyscur-level">xfs_btree_update_keys(cur, level)</h5>
 
-<p>更新从<code class="highlighter-rouge">level + 1</code>层往上的每个节点的key。只有当当前level的第一个位置（record或者key）发生变化时才需要更新，原因是btree节点的第一个位置的值是其父节点中的key，所以当第一个位置的值变化之后，需要更新父节点中对应的key，这样才能保证搜索可以正确执行。更新key的操作如下图所示：</p>
+<p>更新从<code class="language-plaintext highlighter-rouge">level + 1</code>层往上的每个节点的key。只有当当前level的第一个位置（record或者key）发生变化时才需要更新，原因是btree节点的第一个位置的值是其父节点中的key，所以当第一个位置的值变化之后，需要更新父节点中对应的key，这样才能保证搜索可以正确执行。更新key的操作如下图所示：</p>
 
 <p><img src="http://diabloneo.github.io//assets/imgs/00020_xfs_btree_update_keys.jpg" alt="update-keys" /></p>
 
 <h5 id="xfs_btree_splitcur-level-ptrp-key-curp-stat">xfs_btree_split(cur, level, ptrp, key, curp, stat)</h5>
 
-<p>实际调用的是<code class="highlighter-rouge">__xfs_btree_split()</code>，将<code class="highlighter-rouge">(cur, level)</code>指向的节点分裂为两个节点。分裂之后，<code class="highlighter-rouge">cur</code>可能指向新节点，也可能指向旧节点，取决于原来的ptr落在哪个节点。</p>
+<p>实际调用的是<code class="language-plaintext highlighter-rouge">__xfs_btree_split()</code>，将<code class="language-plaintext highlighter-rouge">(cur, level)</code>指向的节点分裂为两个节点。分裂之后，<code class="language-plaintext highlighter-rouge">cur</code>可能指向新节点，也可能指向旧节点，取决于原来的ptr落在哪个节点。</p>
 
 <p>如果发生了分裂，那么有两个事情需要注意：</p>
 
 <ol>
-  <li>如果分裂前<code class="highlighter-rouge">cur</code>指向的位置现在位于新的block中，那么就需要更新<code class="highlighter-rouge">cur-&gt;bc_bufs</code>和<code class="highlighter-rouge">cur-&gt;bc_ptrs</code>对应内容。</li>
-  <li>如果<code class="highlighter-rouge">cur</code>当前指向的节点还有父节点，那么会复制一个游标到<code class="highlighter-rouge">curp</code>，并且把父节点的ptr右移一个记录，这个位置需要插入一个指针指向这次创建的节点。</li>
+  <li>如果分裂前<code class="language-plaintext highlighter-rouge">cur</code>指向的位置现在位于新的block中，那么就需要更新<code class="language-plaintext highlighter-rouge">cur-&gt;bc_bufs</code>和<code class="language-plaintext highlighter-rouge">cur-&gt;bc_ptrs</code>对应内容。</li>
+  <li>如果<code class="language-plaintext highlighter-rouge">cur</code>当前指向的节点还有父节点，那么会复制一个游标到<code class="language-plaintext highlighter-rouge">curp</code>，并且把父节点的ptr右移一个记录，这个位置需要插入一个指针指向这次创建的节点。</li>
 </ol>
 
-<p>该函数会通过<code class="highlighter-rouge">ptrp</code>返回新增的block的number，通过<code class="highlighter-rouge">key</code>返回新增的block的第一个record。</p>
+<p>该函数会通过<code class="language-plaintext highlighter-rouge">ptrp</code>返回新增的block的number，通过<code class="language-plaintext highlighter-rouge">key</code>返回新增的block的第一个record。</p>
 
 <h2 id="xfs_btree_deletecur-stat">xfs_btree_delete(cur, stat)</h2>
 
 <h3 id="xfs_btree_delreccur-level-stat">xfs_btree_delrec(cur, level, stat)</h3>
 
-<p>先从当前节点删除ptr位置的数据，然后重平衡整棵树。这个函数会被<code class="highlighter-rouge">xfs_btree_delete()</code>调用多次，从level 0开始往上，直到不再需要重平衡为止。</p>
+<p>先从当前节点删除ptr位置的数据，然后重平衡整棵树。这个函数会被<code class="language-plaintext highlighter-rouge">xfs_btree_delete()</code>调用多次，从level 0开始往上，直到不再需要重平衡为止。</p>
 
 <h2 id="xfs_btree_updatecur-rec">xfs_btree_update(cur, rec)</h2>
 
-<p>更新当前<code class="highlighter-rouge">cur</code>指向的记录的值为<code class="highlighter-rouge">rec</code>的值。更新指定的记录之后，会调用函数<code class="highlighter-rouge">xfs_btree_needs_key_update()</code>判断是否需要更新父节点的key，对于标准的btree，只有当更新的是节点的第一个位置的记录的时候，才需要更新父节点的key。如果需要更新，则调用<code class="highlighter-rouge">xfs_btree_update_keys()</code>执行更新。</p>
+<p>更新当前<code class="language-plaintext highlighter-rouge">cur</code>指向的记录的值为<code class="language-plaintext highlighter-rouge">rec</code>的值。更新指定的记录之后，会调用函数<code class="language-plaintext highlighter-rouge">xfs_btree_needs_key_update()</code>判断是否需要更新父节点的key，对于标准的btree，只有当更新的是节点的第一个位置的记录的时候，才需要更新父节点的key。如果需要更新，则调用<code class="language-plaintext highlighter-rouge">xfs_btree_update_keys()</code>执行更新。</p>
 
 <p>需要注意的是，这个函数并不检查更新后的数据是否满足btree的搜索正确性，这点由调用者保证。</p>
 

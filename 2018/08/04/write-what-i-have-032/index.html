@@ -131,13 +131,13 @@
 
 <p><em><a href="https://dave.cheney.net/2018/05/29/how-the-go-runtime-implements-maps-efficiently-without-generics">https://dave.cheney.net/2018/05/29/how-the-go-runtime-implements-maps-efficiently-without-generics</a></em></p>
 
-<p>前半部分介绍了hashmap的基本概念，后半部分介绍了Go的runtime如何实现map key的hash计算。Go没有泛型，也不是用<code class="highlighter-rouge">interface{}</code>来实现。map操作的实现会编译器重写为对runtime函数的调用，比如<code class="highlighter-rouge">runtime.mapaccess1()</code>。然后使用一个结构体maptype来保存key的信息，因为编译的时候就能知道key的类型，所以会为不同类型的key指定好hash函数，在运行的时候直接调用即可。</p>
+<p>前半部分介绍了hashmap的基本概念，后半部分介绍了Go的runtime如何实现map key的hash计算。Go没有泛型，也不是用<code class="language-plaintext highlighter-rouge">interface{}</code>来实现。map操作的实现会编译器重写为对runtime函数的调用，比如<code class="language-plaintext highlighter-rouge">runtime.mapaccess1()</code>。然后使用一个结构体maptype来保存key的信息，因为编译的时候就能知道key的类型，所以会为不同类型的key指定好hash函数，在运行的时候直接调用即可。</p>
 
 <h2 id="verifying-postgresql-backups-made-easier-with-new-open-source-tool">Verifying PostgreSQL backups made easier with new open-source tool</h2>
 
 <p><em><a href="https://cloudplatform.googleblog.com/2018/07/verifying-postgresql-backups-made-easier-with-new-open-source-tool.html">https://cloudplatform.googleblog.com/2018/07/verifying-postgresql-backups-made-easier-with-new-open-source-tool.html</a></em></p>
 
-<p>Google Cloud开源了自己开发的Postgres backup校验工具，使用Postgres的checksum功能来校验一个backup数据是否正确。Checksum功能需要在初始化数据库的时候开启，<code class="highlighter-rouge">initdb --data-checksums</code>。</p>
+<p>Google Cloud开源了自己开发的Postgres backup校验工具，使用Postgres的checksum功能来校验一个backup数据是否正确。Checksum功能需要在初始化数据库的时候开启，<code class="language-plaintext highlighter-rouge">initdb --data-checksums</code>。</p>
 
 <h2 id="xars-an-efficient-system-for-self-contained-executables">XARs: An efficient system for self-contained executables</h2>
 
@@ -169,7 +169,7 @@
 
 <p><em><a href="http://ghodss.com/2014/the-right-way-to-handle-yaml-in-golang/">http://ghodss.com/2014/the-right-way-to-handle-yaml-in-golang/</a></em></p>
 
-<p>原来YAML可以简写成JSON的形式，然后用 <code class="highlighter-rouge">json.Unmarshal()</code>来解析到一个结构体。</p>
+<p>原来YAML可以简写成JSON的形式，然后用 <code class="language-plaintext highlighter-rouge">json.Unmarshal()</code>来解析到一个结构体。</p>
 
 <h2 id="go-code-refactoring--the-23x-performance-hunt">Go code refactoring : the 23x performance hunt</h2>
 

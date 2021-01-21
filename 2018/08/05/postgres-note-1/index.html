@@ -124,7 +124,7 @@
 	<span class="k">left</span> <span class="k">join</span> <span class="n">osd</span> <span class="n">O</span> <span class="k">on</span> <span class="n">o</span><span class="p">.</span><span class="n">partition_id</span><span class="o">=</span><span class="n">P</span><span class="p">.</span><span class="n">id</span>
 <span class="k">GROUP</span> <span class="k">BY</span> <span class="n">used</span><span class="p">,</span> <span class="n">D</span><span class="p">.</span><span class="n">status</span><span class="p">;</span></code></pre></figure>
 
-<p>当结果中的<code class="highlighter-rouge">O.id IS NULL</code>时，<code class="highlighter-rouge">used</code>列的值为<code class="highlighter-rouge">false</code>，否则为<code class="highlighter-rouge">true</code>。</p>
+<p>当结果中的<code class="language-plaintext highlighter-rouge">O.id IS NULL</code>时，<code class="language-plaintext highlighter-rouge">used</code>列的值为<code class="language-plaintext highlighter-rouge">false</code>，否则为<code class="language-plaintext highlighter-rouge">true</code>。</p>
 
 <h2 id="with语句">WITH语句</h2>
 
@@ -132,19 +132,19 @@
 
 <figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">WITH</span> <span class="n">timerange</span> <span class="k">AS</span> <span class="p">(</span>
 	<span class="k">SELECT</span>
-		<span class="k">timestamp</span> <span class="k">with</span> <span class="n">time</span> <span class="k">zone</span> <span class="s1">'2018-07-27 14:00:00+08:00'</span> <span class="k">AS</span> <span class="n">begin_time</span><span class="p">,</span>
-		<span class="k">timestamp</span> <span class="k">with</span> <span class="n">time</span> <span class="k">zone</span> <span class="s1">'2018-08-30 10:00:00+08:00'</span> <span class="k">AS</span> <span class="n">end_time</span>
+		<span class="nb">timestamp</span> <span class="k">with</span> <span class="nb">time</span> <span class="k">zone</span> <span class="s1">'2018-07-27 14:00:00+08:00'</span> <span class="k">AS</span> <span class="n">begin_time</span><span class="p">,</span>
+		<span class="nb">timestamp</span> <span class="k">with</span> <span class="nb">time</span> <span class="k">zone</span> <span class="s1">'2018-08-30 10:00:00+08:00'</span> <span class="k">AS</span> <span class="n">end_time</span>
 <span class="p">)</span>
 <span class="k">SELECT</span> <span class="n">V</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">V</span><span class="p">.</span><span class="n">name</span><span class="p">,</span>
-	<span class="k">CAST</span><span class="p">(</span><span class="k">avg</span><span class="p">(</span><span class="n">VS</span><span class="p">.</span><span class="n">total_iops</span><span class="p">)</span> <span class="k">AS</span> <span class="n">bigint</span><span class="p">)</span> <span class="k">AS</span> <span class="n">total_iops</span><span class="p">,</span>
-	<span class="k">CAST</span><span class="p">(</span><span class="k">avg</span><span class="p">(</span><span class="n">VS</span><span class="p">.</span><span class="n">total_bandwidth_kbyte</span><span class="p">)</span> <span class="k">AS</span> <span class="n">bigint</span><span class="p">)</span> <span class="k">AS</span> <span class="n">total_bandwidth_kbyte</span><span class="p">,</span>
+	<span class="k">CAST</span><span class="p">(</span><span class="k">avg</span><span class="p">(</span><span class="n">VS</span><span class="p">.</span><span class="n">total_iops</span><span class="p">)</span> <span class="k">AS</span> <span class="nb">bigint</span><span class="p">)</span> <span class="k">AS</span> <span class="n">total_iops</span><span class="p">,</span>
+	<span class="k">CAST</span><span class="p">(</span><span class="k">avg</span><span class="p">(</span><span class="n">VS</span><span class="p">.</span><span class="n">total_bandwidth_kbyte</span><span class="p">)</span> <span class="k">AS</span> <span class="nb">bigint</span><span class="p">)</span> <span class="k">AS</span> <span class="n">total_bandwidth_kbyte</span><span class="p">,</span>
 	<span class="k">max</span><span class="p">(</span><span class="n">VS</span><span class="p">.</span><span class="n">created_at</span><span class="p">)</span> <span class="k">AS</span> <span class="nv">"created_at"</span>
 <span class="k">FROM</span> <span class="n">volume</span> <span class="n">V</span> <span class="k">join</span> <span class="n">volume_stat</span> <span class="n">VS</span> <span class="k">on</span> <span class="n">V</span><span class="p">.</span><span class="n">id</span><span class="o">=</span><span class="n">VS</span><span class="p">.</span><span class="n">volume_id</span>
 <span class="k">WHERE</span> <span class="n">VS</span><span class="p">.</span><span class="n">created_at</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="k">SELECT</span> <span class="n">begin_time</span> <span class="k">FROM</span> <span class="n">timerange</span><span class="p">)</span> <span class="k">AND</span> <span class="n">VS</span><span class="p">.</span><span class="n">created_at</span> <span class="o">&lt;</span> <span class="p">(</span><span class="k">SELECT</span> <span class="n">end_time</span> <span class="k">FROM</span> <span class="n">timerange</span><span class="p">)</span>
 <span class="k">GROUP</span> <span class="k">BY</span> <span class="n">V</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">V</span><span class="p">.</span><span class="n">name</span>
 <span class="k">ORDER</span> <span class="k">BY</span> <span class="n">total_iops</span> <span class="k">DESC</span><span class="p">,</span> <span class="n">total_bandwidth_kbyte</span> <span class="k">DESC</span><span class="p">;</span></code></pre></figure>
 
-<p>这个例子中，前面的<code class="highlighter-rouge">WITH</code>语句指定了匹配的数据的起止时间。</p>
+<p>这个例子中，前面的<code class="language-plaintext highlighter-rouge">WITH</code>语句指定了匹配的数据的起止时间。</p>
 
     <br />
 

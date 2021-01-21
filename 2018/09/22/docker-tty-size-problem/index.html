@@ -112,10 +112,10 @@
     
     <br />
       <h2 id="问题">问题</h2>
-<p>由于把 Postgres 运行在 Docker 容器里，所以经常使用如下命令登录到数据库 <code class="highlighter-rouge">docker exec -it -u postgres mypg psql mydb</code>。然后在 psql 提示符下执行操作。然后经常会出现输入太长的 sql 语句时，psql 会在还没遇到终端宽度限制之前就开始换行，而且是把把输入回显换行到上面一行。这个行为说明了在容器内的 tty 的配置出现了问题。但是，很奇怪的是，退出 <code class="highlighter-rouge">docker exec</code> 之后，再次进入，就不会遇到这个问题了。</p>
+<p>由于把 Postgres 运行在 Docker 容器里，所以经常使用如下命令登录到数据库 <code class="language-plaintext highlighter-rouge">docker exec -it -u postgres mypg psql mydb</code>。然后在 psql 提示符下执行操作。然后经常会出现输入太长的 sql 语句时，psql 会在还没遇到终端宽度限制之前就开始换行，而且是把把输入回显换行到上面一行。这个行为说明了在容器内的 tty 的配置出现了问题。但是，很奇怪的是，退出 <code class="language-plaintext highlighter-rouge">docker exec</code> 之后，再次进入，就不会遇到这个问题了。</p>
 
 <h2 id="现象分析">现象分析</h2>
-<p>这个问题看起来应该出在是 Docker 容器对于 tty size 的处理上。当出现这个问题的时候，通过 <code class="highlighter-rouge">docker exec</code> 进入容器的 shell，执行 <code class="highlighter-rouge">stty size</code> 会得到如下结果：</p>
+<p>这个问题看起来应该出在是 Docker 容器对于 tty size 的处理上。当出现这个问题的时候，通过 <code class="language-plaintext highlighter-rouge">docker exec</code> 进入容器的 shell，执行 <code class="language-plaintext highlighter-rouge">stty size</code> 会得到如下结果：</p>
 
 <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>docker <span class="nb">exec</span> <span class="nt">-it</span> <span class="nt">-u</span> postgres postgres bash
 bash-4.3<span class="nv">$ </span><span class="nb">stty </span>size
@@ -145,15 +145,15 @@ bash-4.3<span class="nv">$ </span><span class="nb">echo</span> <span class="nv">
 bash-4.3<span class="nv">$ </span><span class="nb">stty </span>size
 40 100</code></pre></figure>
 
-<p>从上面的命令可以看出，<code class="highlighter-rouge">stty</code> 获取当前终端的窗口大小失败了，所以 <code class="highlighter-rouge">psql</code> 程序的回显就错乱了。不过，这里要注意的是，<code class="highlighter-rouge">stty size</code> 命令没有返回失败（返回值为0）。但是，通过 <code class="highlighter-rouge">stty rows 40 cols 100</code> 命令设置 tty 的参数确实可以成功的，说明问题可能是因为 tty 参数没有被正常初始化造成的。另外需要说明的是，<strong>这个问题不是必现的</strong>。</p>
+<p>从上面的命令可以看出，<code class="language-plaintext highlighter-rouge">stty</code> 获取当前终端的窗口大小失败了，所以 <code class="language-plaintext highlighter-rouge">psql</code> 程序的回显就错乱了。不过，这里要注意的是，<code class="language-plaintext highlighter-rouge">stty size</code> 命令没有返回失败（返回值为0）。但是，通过 <code class="language-plaintext highlighter-rouge">stty rows 40 cols 100</code> 命令设置 tty 的参数确实可以成功的，说明问题可能是因为 tty 参数没有被正常初始化造成的。另外需要说明的是，<strong>这个问题不是必现的</strong>。</p>
 
 <p>这个问题在 Docker 项目的 issue 里被提到过，地址是 <a href="https://github.com/moby/moby/issues/33794">https://github.com/moby/moby/issues/33794</a>。根据该 issue 的记录，目前该问题还没有找到原因。</p>
 
-<p>关于这个问题，我不确定是 kernel 引起的，还是 shell 程序引起的，因为 <code class="highlighter-rouge">termio</code> 结构体会从内核拷贝到用户空间。</p>
+<p>关于这个问题，我不确定是 kernel 引起的，还是 shell 程序引起的，因为 <code class="language-plaintext highlighter-rouge">termio</code> 结构体会从内核拷贝到用户空间。</p>
 
-<h3 id="stty-size-的返回值为什么是0"><code class="highlighter-rouge">stty size</code> 的返回值为什么是0？</h3>
+<h3 id="stty-size-的返回值为什么是0"><code class="language-plaintext highlighter-rouge">stty size</code> 的返回值为什么是0？</h3>
 
-<p>我想知道为什么<code class="highlighter-rouge">stty</code>命令没有返回失败，所以去看了一下代码。我使用的是 Postgres Alpine 的镜像，安装的 shell 环境是 BusyBox，通过查看 BusyBox 的代码可以找到这里：<a href="https://github.com/mirror/busybox/blob/master/coreutils/stty.c#L899">https://github.com/mirror/busybox/blob/master/coreutils/stty.c#L899</a>，对应的代码是：</p>
+<p>我想知道为什么<code class="language-plaintext highlighter-rouge">stty</code>命令没有返回失败，所以去看了一下代码。我使用的是 Postgres Alpine 的镜像，安装的 shell 环境是 BusyBox，通过查看 BusyBox 的代码可以找到这里：<a href="https://github.com/mirror/busybox/blob/master/coreutils/stty.c#L899">https://github.com/mirror/busybox/blob/master/coreutils/stty.c#L899</a>，对应的代码是：</p>
 
 <figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="k">static</span> <span class="kt">void</span> <span class="nf">display_window_size</span><span class="p">(</span><span class="kt">int</span> <span class="n">fancy</span><span class="p">)</span>
 <span class="p">{</span>
@@ -170,7 +170,7 @@ bash-4.3<span class="nv">$ </span><span class="nb">stty </span>size
 	<span class="p">}</span>
 <span class="p">}</span></code></pre></figure>
 
-<p>这个函数获取当前窗口的大小，<code class="highlighter-rouge">stty size</code>命令会直接调用这个函数。这个函数继续调用了下面这个函数 <a href="https://github.com/mirror/busybox/blob/master/libbb/xfuncs.c#L263">https://github.com/mirror/busybox/blob/master/libbb/xfuncs.c#L263</a>：</p>
+<p>这个函数获取当前窗口的大小，<code class="language-plaintext highlighter-rouge">stty size</code>命令会直接调用这个函数。这个函数继续调用了下面这个函数 <a href="https://github.com/mirror/busybox/blob/master/libbb/xfuncs.c#L263">https://github.com/mirror/busybox/blob/master/libbb/xfuncs.c#L263</a>：</p>
 
 <figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="cm">/* It is perfectly ok to pass in a NULL for either width or for
  * height, in which case that value will not be set.  */</span>
@@ -209,15 +209,15 @@ bash-4.3<span class="nv">$ </span><span class="nb">stty </span>size
 	<span class="k">return</span> <span class="n">err</span><span class="p">;</span>
 <span class="p">}</span></code></pre></figure>
 
-<p>这里的关键点就在于 <code class="highlighter-rouge">get_terminal_width_height</code> 函数的内部注释，即 <code class="highlighter-rouge">ioctl</code> 可能返回0，但是却没有获取到窗口大小。这种情况下，该函数返回 <code class="highlighter-rouge">win.ws_row == 0</code>，即 <code class="highlighter-rouge">1</code>。当 <code class="highlighter-rouge">get_terminal_width_height</code> 函数返回 <code class="highlighter-rouge">1</code>时，调用者 <code class="highlighter-rouge">display_window_size</code> 的处理逻辑如下：因为返回值不等于 <code class="highlighter-rouge">EINVAL</code>，所以直接调用 <code class="highlighter-rouge">perror_on_device</code>，这个函数会调用 <em>libbb/perror_msg.c</em> 中的 <code class="highlighter-rouge">bb_perror_msg</code> 函数，输出一个错误信息，然后就返回了（<strong>并不会导致程序错误退出</strong>）。随后，<code class="highlighter-rouge">display_window_size</code> 函数返回，<code class="highlighter-rouge">stty size</code>命令正常返回。</p>
+<p>这里的关键点就在于 <code class="language-plaintext highlighter-rouge">get_terminal_width_height</code> 函数的内部注释，即 <code class="language-plaintext highlighter-rouge">ioctl</code> 可能返回0，但是却没有获取到窗口大小。这种情况下，该函数返回 <code class="language-plaintext highlighter-rouge">win.ws_row == 0</code>，即 <code class="language-plaintext highlighter-rouge">1</code>。当 <code class="language-plaintext highlighter-rouge">get_terminal_width_height</code> 函数返回 <code class="language-plaintext highlighter-rouge">1</code>时，调用者 <code class="language-plaintext highlighter-rouge">display_window_size</code> 的处理逻辑如下：因为返回值不等于 <code class="language-plaintext highlighter-rouge">EINVAL</code>，所以直接调用 <code class="language-plaintext highlighter-rouge">perror_on_device</code>，这个函数会调用 <em>libbb/perror_msg.c</em> 中的 <code class="language-plaintext highlighter-rouge">bb_perror_msg</code> 函数，输出一个错误信息，然后就返回了（<strong>并不会导致程序错误退出</strong>）。随后，<code class="language-plaintext highlighter-rouge">display_window_size</code> 函数返回，<code class="language-plaintext highlighter-rouge">stty size</code>命令正常返回。</p>
 
 <p>这个看起来是个 BusyBox 的 bug，所以有点怀疑是否是 Docker 和 BusyBox 的配合有问题，导致了bug。</p>
 
 <h2 id="解决办法">解决办法</h2>
 
-<p>虽然没有找到原因，但是解决办法还是有的，就是在进入 shell 前显示的设定终端窗口的大小，通过指定 <code class="highlighter-rouge">COLUMNS</code> 和 <code class="highlighter-rouge">LINES</code> 两个环境变量的方式，命令如下：</p>
+<p>虽然没有找到原因，但是解决办法还是有的，就是在进入 shell 前显示的设定终端窗口的大小，通过指定 <code class="language-plaintext highlighter-rouge">COLUMNS</code> 和 <code class="language-plaintext highlighter-rouge">LINES</code> 两个环境变量的方式，命令如下：</p>
 
-<figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>docker <span class="nb">exec</span> <span class="nt">-it</span> <span class="nt">-u</span> postgres <span class="nt">-e</span> <span class="nv">COLUMNS</span><span class="o">=</span><span class="k">$(</span>tput cols<span class="k">)</span> <span class="nt">-e</span> <span class="nv">LINES</span><span class="o">=</span><span class="k">$(</span>tput lines<span class="k">)</span> postgres bash
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>docker <span class="nb">exec</span> <span class="nt">-it</span> <span class="nt">-u</span> postgres <span class="nt">-e</span> <span class="nv">COLUMNS</span><span class="o">=</span><span class="si">$(</span>tput cols<span class="si">)</span> <span class="nt">-e</span> <span class="nv">LINES</span><span class="o">=</span><span class="si">$(</span>tput lines<span class="si">)</span> postgres bash
 bash-4.3<span class="nv">$ </span><span class="nb">stty </span>size
 47 272</code></pre></figure>
 

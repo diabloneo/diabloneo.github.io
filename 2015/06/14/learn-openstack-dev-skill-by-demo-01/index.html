@@ -148,26 +148,26 @@
 <h4 id="distutils-before-2000">distutils (before 2000)</h4>
 <p>disutils自从1998年起就是Python标准库的一部分了，不过它在2000年就停止了开发。disutils是最早的Python打包工具和标准，也奠定了对Python软件进行打包的一个基本工作方式：<em>使用setup.py文件</em>。来看一个setup.py文件的例子：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/usr/bin/env python</span>
-<span class="c">## -*- coding: utf-8 -*-</span>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#!/usr/bin/env python
+## -*- coding: utf-8 -*-
 
-<span class="kn">from</span> <span class="nn">disutils.core</span> <span class="kn">import</span> <span class="n">setup</span>
+from disutils.core import setup
 
-<span class="n">setup</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'webdemo'</span><span class="p">,</span>
-      <span class="n">description</span><span class="o">=</span><span class="s">'A simple web demo.'</span><span class="p">,</span>
-      <span class="n">author</span><span class="o">=</span><span class="s">'author name'</span><span class="p">,</span>
-      <span class="n">author_email</span><span class="o">=</span><span class="s">'author_name@example.com'</span>
-      <span class="n">url</span><span class="o">=</span><span class="s">'http://example.com'</span><span class="p">,</span>
-      <span class="n">packages</span><span class="o">=</span><span class="p">[</span><span class="s">'webdemo'</span><span class="p">])</span>
+setup(name='webdemo',
+      description='A simple web demo.',
+      author='author name',
+      author_email='author_name@example.com'
+      url='http://example.com',
+      packages=['webdemo'])
 </code></pre></div></div>
 
 <p><em>setup.py</em>文件是放在项目根目录下的：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>➜ ~/programming/python/webdemo git:(master) ✗ $ ls
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>➜ ~/programming/python/webdemo git:(master) ✗ $ ls
 LICENSE  README.md  setup.py  webdemo 
 </code></pre></div></div>
 
-<p>然后你就可以使用命令<code class="highlighter-rouge">python setup.py build</code>来编译包，可以使用<code class="highlighter-rouge">python setup.py install</code>来安装这个项目。如果需要帮助，可以通过<code class="highlighter-rouge">python setup.py --help-commands</code>来查看支持的命令。</p>
+<p>然后你就可以使用命令<code class="language-plaintext highlighter-rouge">python setup.py build</code>来编译包，可以使用<code class="language-plaintext highlighter-rouge">python setup.py install</code>来安装这个项目。如果需要帮助，可以通过<code class="language-plaintext highlighter-rouge">python setup.py --help-commands</code>来查看支持的命令。</p>
 
 <h4 id="setuptools">setuptools</h4>
 <p>disutils停止开发后，setuptools成了继任者。setuptools提供了很多高级功能，包括自动依赖处理、Egg分发格式以及easy_install命令。setuptools的使用方式和disutils差不多，也是以一个setup函数作为入口，只不过该函数来自于setuptools模块，而且支持更多的参数，比如classifiers, setup_requires等，参数更多意味着功能更多。</p>
@@ -194,7 +194,7 @@ LICENSE  README.md  setup.py  webdemo
 
 <p>先说一下pbr如何使用：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import setuptools
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import setuptools
 
 setuptools.setup(setup_requires=['pbr'], pbr=True)
 </code></pre></div></div>
@@ -248,7 +248,7 @@ setuptools.setup(setup_requires=['pbr'], pbr=True)
   <li>在得到目标版本号之后，开始计算开发版本号。开发版本号的形式如下：<strong>MAJOR.MINOR.PATCH.devN</strong>。这里要计算的是<strong>devN</strong>中的<strong>N</strong>。这个值等于从最近的git tag开始的提交数量。计算完开发版本号之后，就得到了最终版本号。</li>
 </ol>
 
-<p>总的来说，从上面的规则计算出来的版本号只有两种形式，一种是发布版本号（对应到某个tag），另一种是开发版本号。<strong>注意：pbr要求tag都是要签名的</strong>，也就是打tag时要使用<code class="highlighter-rouge">git tag -a -s X.Y.Z</code>的形式。</p>
+<p>总的来说，从上面的规则计算出来的版本号只有两种形式，一种是发布版本号（对应到某个tag），另一种是开发版本号。<strong>注意：pbr要求tag都是要签名的</strong>，也就是打tag时要使用<code class="language-plaintext highlighter-rouge">git tag -a -s X.Y.Z</code>的形式。</p>
 
 <h4 id="setupcfg和requirementstxt">setup.cfg和requirements.txt</h4>
 
@@ -256,7 +256,7 @@ setuptools.setup(setup_requires=['pbr'], pbr=True)
 
 <p>由于OpenStack项目都使用了setuptools和pbr来执行打包工作，因此项目的元数据都放在<em>setup.cfg</em>文件中。我们以<em>keystone</em>项目的setup.cfg文件为例来说明这个文件里一般会包含什么内容。以下是写这篇文章时最新的keystone项目的setup.cfg文件的内容（以<strong>#</strong>开头的是我加的注释）：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[metadata]  # 元数据段
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[metadata]  # 元数据段
 name = keystone  # 软件包名称
 version = 8.0.0  # 软件包版本号，还可以指定preversoining, postversioning等值，具体的作用看pbr的文档。
 summary = OpenStack Identity  # 简介
@@ -329,13 +329,13 @@ console_scripts =  # 指定要生成的可执行文件
 
 <p>这里说说一下<strong>classifier</strong>这个参数。这个参数是用来指定一个软件包的分类、许可证、允许运行的操作系统、允许运行的Python的版本的信息。这些信息是在一个叫trove的项目。关于Python和trove的关系，请参考<a href="http://stackoverflow.com/questions/9094220/trove-classifiers-definition">http://stackoverflow.com/questions/9094220/trove-classifiers-definition</a>。</p>
 
-<p>你可以在PyPI上找到完整的classifier值列表，地址是：<a href="https://pypi.python.org/pypi?:action=list_classifiers">https://pypi.python.org/pypi?%3Aaction=list_classifiers</a>。另外，你也可以通过setuptools的命令来获取这个列表，在项目根目录下执行：<code class="highlighter-rouge">python setup.py register --list-classifiers</code>。</p>
+<p>你可以在PyPI上找到完整的classifier值列表，地址是：<a href="https://pypi.python.org/pypi?:action=list_classifiers">https://pypi.python.org/pypi?%3Aaction=list_classifiers</a>。另外，你也可以通过setuptools的命令来获取这个列表，在项目根目录下执行：<code class="language-plaintext highlighter-rouge">python setup.py register --list-classifiers</code>。</p>
 
 <h5 id="requirementstxt">requirements.txt</h5>
 
 <p>这个文件指定了一个项目依赖的包有哪些，并且支出了依赖的包的版本需求，可以看看keystone项目的requirements.txt：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## The order of packages is significant, because pip processes them in the order
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## The order of packages is significant, because pip processes them in the order
 ## of appearance. Changing the order has an impact on the overall integration
 ## process, which may cause wedges in the gate later.
 
@@ -378,9 +378,9 @@ msgpack-python&gt;=0.4.0
 <p>Python的软件包一开始是没有官方的标准分发格式的。比如Java有jar包或者war包作为分发格式，Python则什么都没有。后来不同的工具都开始引入一些比较通用的归档格式。比如，setuptools引入了Egg格式。但是，这些都不是官方支持的，存在元数据和包结构彼此不兼容的问题。因此，为了解决这个问题，<strong>PEP 427</strong>定义了新的分发包标准，名为<strong>Wheel</strong>。目前pip和setuptools工具都支持Wheel格式。这里我们简单总结一下常用的分发格式：</p>
 
 <ul>
-  <li><strong>tar.gz</strong>格式：这个就是标准压缩格式，里面包含了项目元数据和代码，可以使用<code class="highlighter-rouge">python setup.py sdist</code>命令生成。</li>
-  <li><strong>.egg</strong>格式：这个本质上也是一个压缩文件，只是扩展名换了，里面也包含了项目元数据以及源代码。这个格式由setuptools项目引入。可以通过命令<code class="highlighter-rouge">python setup.py bdist_egg</code>命令生成。</li>
-  <li><strong>.whl</strong>格式：这个是Wheel包，也是一个压缩文件，只是扩展名换了，里面也包含了项目元数据和代码，还支持免安装直接运行。whl分发包内的元数据和egg包是有些不同的。这个格式是由PEP 427引入的。可以通过命令<code class="highlighter-rouge">python setup.py bdist_wheel</code>生成。</li>
+  <li><strong>tar.gz</strong>格式：这个就是标准压缩格式，里面包含了项目元数据和代码，可以使用<code class="language-plaintext highlighter-rouge">python setup.py sdist</code>命令生成。</li>
+  <li><strong>.egg</strong>格式：这个本质上也是一个压缩文件，只是扩展名换了，里面也包含了项目元数据以及源代码。这个格式由setuptools项目引入。可以通过命令<code class="language-plaintext highlighter-rouge">python setup.py bdist_egg</code>命令生成。</li>
+  <li><strong>.whl</strong>格式：这个是Wheel包，也是一个压缩文件，只是扩展名换了，里面也包含了项目元数据和代码，还支持免安装直接运行。whl分发包内的元数据和egg包是有些不同的。这个格式是由PEP 427引入的。可以通过命令<code class="language-plaintext highlighter-rouge">python setup.py bdist_wheel</code>生成。</li>
 </ul>
 
 <h4 id="egg-info和dist-info目录">.egg-info和.dist-info目录</h4>
@@ -402,19 +402,19 @@ msgpack-python&gt;=0.4.0
 <ul>
   <li>在Debian系的系统上（比如Ubuntu）
     <ul>
-      <li>使用<code class="highlighter-rouge">apt-get install</code>从系统软件源安装
+      <li>使用<code class="language-plaintext highlighter-rouge">apt-get install</code>从系统软件源安装
         <ul>
           <li>Python 2.7: /usr/lib/python2.7/dist-packages</li>
           <li>Python 3.4: /usr/lib/python3.4/dist-packages</li>
         </ul>
       </li>
-      <li>使用<code class="highlighter-rouge">pip install</code>命令安装
+      <li>使用<code class="language-plaintext highlighter-rouge">pip install</code>命令安装
         <ul>
           <li>Python 2.7: /usr/local/lib/python2.7/dist-packages</li>
           <li>Python 3.4: /usr/local/lib/python3.4/dist-packages</li>
         </ul>
       </li>
-      <li>在virtualenv中使用<code class="highlighter-rouge">pip install</code>安装
+      <li>在virtualenv中使用<code class="language-plaintext highlighter-rouge">pip install</code>安装
         <ul>
           <li>Python 2.7: lib/python2.7/site-packages</li>
           <li>Python 3.4: lib/python3.4/site-packages</li>
@@ -424,7 +424,7 @@ msgpack-python&gt;=0.4.0
   </li>
   <li>在CentOS系的系统上
     <ul>
-      <li>使用<code class="highlighter-rouge">yum install</code>命令安装
+      <li>使用<code class="language-plaintext highlighter-rouge">yum install</code>命令安装
         <ul>
           <li>Python 2.7: /usr/lib/python2.7/site-packages</li>
         </ul>
@@ -443,7 +443,7 @@ msgpack-python&gt;=0.4.0
 
 <h3 id="项目目录结构">项目目录结构</h3>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>➜ ~/programming/python/webdemo git:(master) ✗ $ tree .
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>➜ ~/programming/python/webdemo git:(master) ✗ $ tree .
 .
 ├── LICENSE
 ├── README.md
@@ -468,28 +468,28 @@ msgpack-python&gt;=0.4.0
 
 <p>首先是setup.py，就是这么简单：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/usr/bin/env python</span>
-<span class="c">## -*- coding: utf-8 -*-</span>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#!/usr/bin/env python
+## -*- coding: utf-8 -*-
 
-<span class="kn">import</span> <span class="nn">setuptools</span>
-
-
-<span class="c">## In python &lt; 2.7.4, a lazy loading of package `pbr` will break</span>
-<span class="c">## setuptools if some other modules registered functions in `atexit`.</span>
-<span class="c">## solution from: http://bugs.python.org/issue15881#msg170215</span>
-<span class="k">try</span><span class="p">:</span>
-        <span class="kn">import</span> <span class="nn">multiprocessing</span>  <span class="c"># noqa</span>
-<span class="k">except</span> <span class="nb">ImportError</span><span class="p">:</span>
-        <span class="k">pass</span>
+import setuptools
 
 
-<span class="n">setuptools</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span>
-    <span class="n">setup_requires</span><span class="o">=</span><span class="p">[</span><span class="s">'pbr'</span><span class="p">],</span> <span class="n">pbr</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+## In python &lt; 2.7.4, a lazy loading of package `pbr` will break
+## setuptools if some other modules registered functions in `atexit`.
+## solution from: http://bugs.python.org/issue15881#msg170215
+try:
+        import multiprocessing  # noqa
+except ImportError:
+        pass
+
+
+setuptools.setup(
+    setup_requires=['pbr'], pbr=True)
 </code></pre></div></div>
 
 <p>然后是setup.cfg：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[metadata]
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[metadata]
 name = webdemo
 version = 0.0.1
 summary = Web Application Demo
@@ -520,7 +520,7 @@ console_scripts =
 
 <p>只包含最基本的信息。接下来是requirements.txt文件：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## The order of packages is significant, because pip processes them in the order
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## The order of packages is significant, because pip processes them in the order
 ## of appearance. Changing the order has an impact on the overall integration
 ## process, which may cause wedges in the gate later.
 
@@ -529,7 +529,7 @@ pbr&lt;2.0,&gt;=0.11
 
 <p>目前只依赖于pbr库。源代码目录下现在只有一个空的<strong>__init__.py</strong>文件。我们已经搭建好了这个最简单的项目框架了。首先，我们要把这些代码提交到git库，然后打上tag <em>0.0.1</em>：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>➜ ~/programming/python/webdemo git:(master) ✗ $ git log --oneline
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>➜ ~/programming/python/webdemo git:(master) ✗ $ git log --oneline
 697427c Add packaging information
 2cbbf4d Initial commit
 ➜ ~/programming/python/webdemo git:(master) ✗ $ git tag -a -s 0.0.1
@@ -537,9 +537,9 @@ pbr&lt;2.0,&gt;=0.11
 0.0.1
 </code></pre></div></div>
 
-<p>然后就可以使用<code class="highlighter-rouge">python setup.py sdist</code>命令来生成一个0.0.1版本的源码归档了：</p>
+<p>然后就可以使用<code class="language-plaintext highlighter-rouge">python setup.py sdist</code>命令来生成一个0.0.1版本的源码归档了：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>➜ ~/programming/python/webdemo git:(master) ✗ $ python setup.py sdist
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>➜ ~/programming/python/webdemo git:(master) ✗ $ python setup.py sdist
 running sdist
 [pbr] Writing ChangeLog
 [pbr] Generating ChangeLog

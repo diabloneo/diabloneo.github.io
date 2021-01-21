@@ -113,17 +113,17 @@
     <br />
       <p><em><a href="https://github.com/junegunn/fzf">https://github.com/junegunn/fzf</a></em> 是 VIM 常用的文件查找工具。fzf 可以使用 find 或者 <em><a href="https://github.com/sharkdp/fd">https://github.com/sharkdp/fd</a></em> 作为查找工具，官方的文档里给了很多 fd 的配置，但是 find 的较少。这里提供了一个使用 find 的配置，可以根据自己需要修改：</p>
 
-<figure class="highlight"><pre><code class="language-vim" data-lang="vim"><span class="k">let</span> $FZF_DEFAULT_COMMAND<span class="p">=</span>"find <span class="p">.</span> <span class="p">-</span>regextype egrep
-<span class="se">			\</span>    \\<span class="p">(</span> <span class="p">-</span>path <span class="p">.</span>/vendor <span class="p">-</span>prune \\<span class="p">)</span>             ;; ignore some dirs
-<span class="se">			\</span> <span class="p">-</span><span class="k">o</span> \\<span class="p">(</span> <span class="p">-</span>path <span class="p">.</span>/_site <span class="p">-</span>prune \\<span class="p">)</span>
-<span class="se">			\</span> <span class="p">-</span><span class="k">o</span> \\<span class="p">(</span> <span class="p">-</span>path <span class="p">.</span>/_output <span class="p">-</span>prune \\<span class="p">)</span>
-<span class="se">			\</span> <span class="p">-</span><span class="k">o</span> \\<span class="p">(</span> <span class="p">-</span>path <span class="p">.</span>/<span class="p">.</span>git <span class="p">-</span>prune \\<span class="p">)</span>
-<span class="se">			\</span> <span class="p">-</span><span class="k">o</span> \\<span class="p">(</span> <span class="p">-</span>path <span class="p">.</span>/<span class="p">.</span>svn <span class="p">-</span>prune \\<span class="p">)</span>
-<span class="se">			\</span> <span class="p">-</span><span class="k">o</span> \\<span class="p">(</span> <span class="p">-</span>path <span class="p">.</span>/<span class="p">.</span>tox <span class="p">-</span>prune \\<span class="p">)</span>
-<span class="se">			\</span> <span class="p">-</span><span class="k">o</span> \\<span class="p">(</span> <span class="p">-</span>type <span class="k">f</span> 
+<figure class="highlight"><pre><code class="language-vim" data-lang="vim"><span class="k">let</span> $FZF_DEFAULT_COMMAND<span class="p">=</span>"<span class="k">find</span> <span class="p">.</span> <span class="p">-</span>regextype egrep
+<span class="se">			\</span>    \\<span class="p">(</span> <span class="p">-</span><span class="nb">path</span> <span class="p">.</span>/vendor <span class="p">-</span>prune \\<span class="p">)</span>             ;; ignore some dirs
+<span class="se">			\</span> <span class="p">-</span><span class="k">o</span> \\<span class="p">(</span> <span class="p">-</span><span class="nb">path</span> <span class="p">.</span>/_site <span class="p">-</span>prune \\<span class="p">)</span>
+<span class="se">			\</span> <span class="p">-</span><span class="k">o</span> \\<span class="p">(</span> <span class="p">-</span><span class="nb">path</span> <span class="p">.</span>/_output <span class="p">-</span>prune \\<span class="p">)</span>
+<span class="se">			\</span> <span class="p">-</span><span class="k">o</span> \\<span class="p">(</span> <span class="p">-</span><span class="nb">path</span> <span class="p">.</span>/<span class="p">.</span>git <span class="p">-</span>prune \\<span class="p">)</span>
+<span class="se">			\</span> <span class="p">-</span><span class="k">o</span> \\<span class="p">(</span> <span class="p">-</span><span class="nb">path</span> <span class="p">.</span>/<span class="p">.</span>svn <span class="p">-</span>prune \\<span class="p">)</span>
+<span class="se">			\</span> <span class="p">-</span><span class="k">o</span> \\<span class="p">(</span> <span class="p">-</span><span class="nb">path</span> <span class="p">.</span>/<span class="p">.</span>tox <span class="p">-</span>prune \\<span class="p">)</span>
+<span class="se">			\</span> <span class="p">-</span><span class="k">o</span> \\<span class="p">(</span> <span class="p">-</span><span class="nb">type</span> <span class="k">f</span> 
 <span class="se">			\</span>    <span class="p">-</span><span class="k">a</span> \\<span class="p">(</span> <span class="p">-</span>not <span class="p">-</span>regex <span class="s1">'.*\.(pyc|pyo)$'</span> \\<span class="p">)</span>   ;; ignore some <span class="k">files</span>
 <span class="se">			\</span>    \\<span class="p">)</span>
-<span class="se">			\</span> <span class="p">-</span>print"</code></pre></figure>
+<span class="se">			\</span> <span class="p">-</span><span class="k">print</span>"</code></pre></figure>
 
 
     <br />

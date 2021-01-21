@@ -139,46 +139,46 @@
 
 <span class="kn">from</span> <span class="nn">keystone.server</span> <span class="kn">import</span> <span class="n">wsgi</span> <span class="k">as</span> <span class="n">wsgi_server</span>
 
-<span class="n">name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span>
+<span class="n">name</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">basename</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span>
 
-<span class="n">application</span> <span class="o">=</span> <span class="n">wsgi_server</span><span class="o">.</span><span class="n">initialize_application</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></code></pre></figure>
+<span class="n">application</span> <span class="o">=</span> <span class="n">wsgi_server</span><span class="p">.</span><span class="n">initialize_application</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></code></pre></figure>
 
-<p>文件中创建了WSGI入口需要使用的<code class="highlighter-rouge">application</code>对象。</p>
+<p>文件中创建了WSGI入口需要使用的<code class="language-plaintext highlighter-rouge">application</code>对象。</p>
 
 <p><strong>keystone-all</strong>命令则是采用eventlet来进行部署时的入口，可以从<em>setup.cfg</em>文件按中确定keystone-all命令的入口：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[entry_points]
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[entry_points]
 console_scripts =
     keystone-all = keystone.cmd.all:main
     keystone-manage = keystone.cmd.manage:main
 </code></pre></div></div>
 
-<p>从<em>setup.cfg</em>文件的entry_points部分可以看出，keystone-all的入口是<em>keystone/cmd/all.py</em>文件中的<code class="highlighter-rouge">main()</code>函数，这个函数的内容也很简单：</p>
+<p>从<em>setup.cfg</em>文件的entry_points部分可以看出，keystone-all的入口是<em>keystone/cmd/all.py</em>文件中的<code class="language-plaintext highlighter-rouge">main()</code>函数，这个函数的内容也很简单：</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-    <span class="n">eventlet_server</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">possible_topdir</span><span class="p">)</span></code></pre></figure>
+    <span class="n">eventlet_server</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">possible_topdir</span><span class="p">)</span></code></pre></figure>
 
-<p><code class="highlighter-rouge">main()</code>函数的主要作用就是启动一个eventlet_server，配置文件从<code class="highlighter-rouge">possible_topdir</code>中查找。因为eventlet的部署方式涉及到eventlet库的使用方法，本文不再展开说明。读者可以在学会确定URL路由后再回来看这个代码。下面，继续以<em>httpd/keystone.py</em>文件作为入口来说明如何阅读代码。</p>
+<p><code class="language-plaintext highlighter-rouge">main()</code>函数的主要作用就是启动一个eventlet_server，配置文件从<code class="language-plaintext highlighter-rouge">possible_topdir</code>中查找。因为eventlet的部署方式涉及到eventlet库的使用方法，本文不再展开说明。读者可以在学会确定URL路由后再回来看这个代码。下面，继续以<em>httpd/keystone.py</em>文件作为入口来说明如何阅读代码。</p>
 
 <h4 id="paste和pastedeploy">Paste和PasteDeploy</h4>
 
-<p><em>httpd/keystone.py</em>中调用的<code class="highlighter-rouge">initialize_application(name)</code>函数载入了整个WSGI应用，这里主要用到了Paste和PasteDeploy库。</p>
+<p><em>httpd/keystone.py</em>中调用的<code class="language-plaintext highlighter-rouge">initialize_application(name)</code>函数载入了整个WSGI应用，这里主要用到了Paste和PasteDeploy库。</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">initialize_application</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
-    <span class="o">...</span>
+    <span class="p">...</span>
     <span class="k">def</span> <span class="nf">loadapp</span><span class="p">():</span>
-        <span class="k">return</span> <span class="n">keystone_service</span><span class="o">.</span><span class="n">loadapp</span><span class="p">(</span>
-            <span class="s">'config:</span><span class="si">%</span><span class="s">s'</span> <span class="o">%</span> <span class="n">config</span><span class="o">.</span><span class="n">find_paste_config</span><span class="p">(),</span> <span class="n">name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">keystone_service</span><span class="p">.</span><span class="n">loadapp</span><span class="p">(</span>
+            <span class="s">'config:%s'</span> <span class="o">%</span> <span class="n">config</span><span class="p">.</span><span class="n">find_paste_config</span><span class="p">(),</span> <span class="n">name</span><span class="p">)</span>
 
-    <span class="n">_unused</span><span class="p">,</span> <span class="n">application</span> <span class="o">=</span> <span class="n">common</span><span class="o">.</span><span class="n">setup_backends</span><span class="p">(</span>
+    <span class="n">_unused</span><span class="p">,</span> <span class="n">application</span> <span class="o">=</span> <span class="n">common</span><span class="p">.</span><span class="n">setup_backends</span><span class="p">(</span>
         <span class="n">startup_application_fn</span><span class="o">=</span><span class="n">loadapp</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">application</span></code></pre></figure>
 
-<p>上面是删掉无关代码后的<code class="highlighter-rouge">initialize_application()</code>函数。<code class="highlighter-rouge">config.find_paste_config()</code>用来查找PasteDeploy需要用到的WSGI配置文件，这个文件在源码中是<em>etc/keystone-paste.ini</em>文件，如果在线上环境中，一般是<em>/etc/keystone-paste.init</em>。<code class="highlighter-rouge">keystone_service.loadapp()</code>函数内部则调用了<code class="highlighter-rouge">paste.deploy.loadapp()</code>函数来加载WSGI应用，如何加载则使用了刚才提到的<em>keystone-paste.ini</em>文件，这个文件也是看懂整个程序的关键。</p>
+<p>上面是删掉无关代码后的<code class="language-plaintext highlighter-rouge">initialize_application()</code>函数。<code class="language-plaintext highlighter-rouge">config.find_paste_config()</code>用来查找PasteDeploy需要用到的WSGI配置文件，这个文件在源码中是<em>etc/keystone-paste.ini</em>文件，如果在线上环境中，一般是<em>/etc/keystone-paste.init</em>。<code class="language-plaintext highlighter-rouge">keystone_service.loadapp()</code>函数内部则调用了<code class="language-plaintext highlighter-rouge">paste.deploy.loadapp()</code>函数来加载WSGI应用，如何加载则使用了刚才提到的<em>keystone-paste.ini</em>文件，这个文件也是看懂整个程序的关键。</p>
 
 <h5 id="name很关键">name很关键</h5>
 
-<p>在上面的代码中我们可以看到，<code class="highlighter-rouge">name</code>这个变量从<em>httpd/keystone.py</em>文件传递到<code class="highlighter-rouge">initialize_application()</code>函数，又被传递到<code class="highlighter-rouge">keystone_service.loadapp()</code>函数，最终被传递到<code class="highlighter-rouge">paste.deploy.loadapp()</code>函数。那么，<strong>这个<code class="highlighter-rouge">name</code>变量到底起什么作用呢</strong>？先把这个问题放在一边，我们后面再来解决它。</p>
+<p>在上面的代码中我们可以看到，<code class="language-plaintext highlighter-rouge">name</code>这个变量从<em>httpd/keystone.py</em>文件传递到<code class="language-plaintext highlighter-rouge">initialize_application()</code>函数，又被传递到<code class="language-plaintext highlighter-rouge">keystone_service.loadapp()</code>函数，最终被传递到<code class="language-plaintext highlighter-rouge">paste.deploy.loadapp()</code>函数。那么，<strong>这个<code class="language-plaintext highlighter-rouge">name</code>变量到底起什么作用呢</strong>？先把这个问题放在一边，我们后面再来解决它。</p>
 
 <h5 id="pasteini">paste.ini</h5>
 
@@ -199,7 +199,7 @@ console_scripts =
 
 <p>这种section用来决定如何分发HTTP请求。Keystone的paste.ini文件中有两个composite的section：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[composite:main]
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[composite:main]
 use = egg:Paste#urlmap
 /v2.0 = public_api
 /v3 = api_v3
@@ -212,9 +212,9 @@ use = egg:Paste#urlmap
 / = admin_version_api
 </code></pre></div></div>
 
-<p>在composite seciont中，<strong>use</strong>是一个关键字，指定处理请求的代码。<code class="highlighter-rouge">egg:Paste#urlmap</code>表示到Paste模块的egg-info中去查找urlmap关键字所对应的函数。在virtualenv环境下，是文件<em>/lib/python2.7/site-packages/Paste-2.0.2.dist-info/metadata.json</em>：</p>
+<p>在composite seciont中，<strong>use</strong>是一个关键字，指定处理请求的代码。<code class="language-plaintext highlighter-rouge">egg:Paste#urlmap</code>表示到Paste模块的egg-info中去查找urlmap关键字所对应的函数。在virtualenv环境下，是文件<em>/lib/python2.7/site-packages/Paste-2.0.2.dist-info/metadata.json</em>：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
     ...
     "extensions": {
         ...
@@ -227,11 +227,11 @@ use = egg:Paste#urlmap
 }
 </code></pre></div></div>
 
-<p>在这个文件中，你可以找到<code class="highlighter-rouge">urlmap</code>对应的是<code class="highlighter-rouge">paste.urlmap:urlmap_factory</code>，也就是<em>paste/urlmap.py</em>文件中的<code class="highlighter-rouge">urlmap_factory()</code>函数。</p>
+<p>在这个文件中，你可以找到<code class="language-plaintext highlighter-rouge">urlmap</code>对应的是<code class="language-plaintext highlighter-rouge">paste.urlmap:urlmap_factory</code>，也就是<em>paste/urlmap.py</em>文件中的<code class="language-plaintext highlighter-rouge">urlmap_factory()</code>函数。</p>
 
-<p>composite section中其他的关键字则是<code class="highlighter-rouge">urlmap_factory()</code>函数的参数，用于表示不同的URL path前缀。<code class="highlighter-rouge">urlmap_factory()</code>函数会返回一个WSGI app，其功能是根据不同的URL path前缀，把请求路由给不同的app。以<em>[composite:main]</em>为例：</p>
+<p>composite section中其他的关键字则是<code class="language-plaintext highlighter-rouge">urlmap_factory()</code>函数的参数，用于表示不同的URL path前缀。<code class="language-plaintext highlighter-rouge">urlmap_factory()</code>函数会返回一个WSGI app，其功能是根据不同的URL path前缀，把请求路由给不同的app。以<em>[composite:main]</em>为例：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[composite:main]
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[composite:main]
 use = egg:Paste#urlmap
 /v2.0 = public_api       # /v2.0　开头的请求会路由给public_api处理
 /v3 = api_v3             # /v3　开头的请求会路由个api_v3处理
@@ -244,7 +244,7 @@ use = egg:Paste#urlmap
 
 <p>pipeline是把filter和app串起来的一种section。它只有一个关键字就是<strong>pipeline</strong>。我们以<em>api_v3</em>这个pipeline为例：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[pipeline:api_v3]
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[pipeline:api_v3]
 ## The last item in this pipeline must be service_v3 or an equivalent
 ## application. It cannot be a filter.
 pipeline = sizelimit url_normalize request_id build_auth_context token_auth admin_token_auth json_body ec2_extension_v3 s3_extension simple_cert_extension revoke_extension federation_extension oauth1_extension endpoint_filter_extension endpoint_policy_extension service_v3
@@ -261,7 +261,7 @@ pipeline = sizelimit url_normalize request_id build_auth_context token_auth admi
 
 <p>filter是用来过滤请求和响应的，以WSGI中间件的方式实现。</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[filter:sizelimit]
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[filter:sizelimit]
 paste.filter_factory = oslo_middleware.sizelimit:RequestBodySizeLimiter.factory
 </code></pre></div></div>
 
@@ -271,7 +271,7 @@ paste.filter_factory = oslo_middleware.sizelimit:RequestBodySizeLimiter.factory
 
 <p>app表示实现主要功能的应用，是一个标准的WSGI application。</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[app:service_v3]
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[app:service_v3]
 paste.app_factory = keystone.service:v3_app_factory
 </code></pre></div></div>
 
@@ -283,7 +283,7 @@ paste.app_factory = keystone.service:v3_app_factory
 
 <p><strong>name是用来确定入口的</strong></p>
 
-<p>上面我们提到了一个问题，就是<code class="highlighter-rouge">name</code>变量的作用到底是什么？<code class="highlighter-rouge">name</code>变量表示paste.ini中一个section的名字，指定这个section作为HTTP请求处理的第一站。在Keystone的paste.ini中，请求必须先由[composite:main]或者[composite:admin]处理，所以在keystone项目中，<code class="highlighter-rouge">name</code>的值必须是<em>main</em>或者<em>admin</em>。</p>
+<p>上面我们提到了一个问题，就是<code class="language-plaintext highlighter-rouge">name</code>变量的作用到底是什么？<code class="language-plaintext highlighter-rouge">name</code>变量表示paste.ini中一个section的名字，指定这个section作为HTTP请求处理的第一站。在Keystone的paste.ini中，请求必须先由[composite:main]或者[composite:admin]处理，所以在keystone项目中，<code class="language-plaintext highlighter-rouge">name</code>的值必须是<em>main</em>或者<em>admin</em>。</p>
 
 <p>上面提到的<em>httpd/keystone.py</em>文件中，name等于文件名的basename，所以实际部署中，必须把<em>keystone.py</em>重命名为<em>main.py</em>或者<em>admin.py</em>。</p>
 
@@ -291,14 +291,14 @@ paste.app_factory = keystone.service:v3_app_factory
 
 <p>一般情况下，从Keystone服务获取一个token时，会使用下面这个API：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST http://hostname:35357/v3/auth/tokens
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST http://hostname:35357/v3/auth/tokens
 </code></pre></div></div>
 
 <p>我们根据Keystone的paste.ini来说明这个API是如何被处理的：</p>
 
 <ol>
-  <li>hostname:35357 这一部分是由Web服务器处理的，比如Apache。然后，请求会被转到WSGI的入口，也就是<em>httpd/keystone.py</em>中的<code class="highlighter-rouge">application</code>对象取处理。</li>
-  <li><code class="highlighter-rouge">application</code>对象是根据paste.ini中的配置来处理的。这里会先由[composite:admin]来处理（一般是admin监听35357端口，main监听5000端口）。</li>
+  <li>hostname:35357 这一部分是由Web服务器处理的，比如Apache。然后，请求会被转到WSGI的入口，也就是<em>httpd/keystone.py</em>中的<code class="language-plaintext highlighter-rouge">application</code>对象取处理。</li>
+  <li><code class="language-plaintext highlighter-rouge">application</code>对象是根据paste.ini中的配置来处理的。这里会先由[composite:admin]来处理（一般是admin监听35357端口，main监听5000端口）。</li>
   <li>[composite:admin]发现请求的path是<em>/v3</em>开头的，于是就把请求转发给[pipeline:api_v3]去处理，转发之前，会把<em>/v3</em>这个部分去掉。</li>
   <li>[pipeline:api_v3]收到请求，path是/auth/tokens，然后开始调用各个filter来处理请求。最后会把请求交给[app:service_v3]进行处理。</li>
   <li>[app:service_v3]收到请求，path是/auth/tokens，然后交给最终的WSGI app去处理。</li>
@@ -312,13 +312,13 @@ paste.app_factory = keystone.service:v3_app_factory
 
 <p>上面我们提到paste.ini中用到了许多的WSGI中间件，那么这些中间件是如何实现的呢？我们来看一个例子就知道了。</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[filter:build_auth_context]
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[filter:build_auth_context]
 paste.filter_factory = keystone.middleware:AuthContextMiddleware.factory
 </code></pre></div></div>
 
 <p>build_auth_context这个中间件的作用是在WSGI的environ中添加<em>KEYSTONE_AUTH_CONTEXT</em>这个键，包含的内容是认证信息的上下文。实现这个中间件的类继承关系如下：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>keystone.middleware.core.AuthContextMiddleware
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>keystone.middleware.core.AuthContextMiddleware
   -&gt; keystone.common.wsgi.Middleware
     -&gt; keystone.common.wsgi.Application
       -&gt; keystone.common.wsgi.BaseApplication
@@ -326,57 +326,57 @@ paste.filter_factory = keystone.middleware:AuthContextMiddleware.factory
 
 <p>这里实现的关键主要在前面两个类中。</p>
 
-<p><em>keystone.common.wsgi.Middleware</em>类实现了<code class="highlighter-rouge">__call__()</code>方法，这个就是WSGI中application端被调用时运行的方法。</p>
+<p><em>keystone.common.wsgi.Middleware</em>类实现了<code class="language-plaintext highlighter-rouge">__call__()</code>方法，这个就是WSGI中application端被调用时运行的方法。</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">Middleware</span><span class="p">(</span><span class="n">Application</span><span class="p">):</span>
-    <span class="o">...</span>
-    <span class="nd">@webob.dec.wsgify</span><span class="p">()</span>
+    <span class="p">...</span>
+    <span class="o">@</span><span class="n">webob</span><span class="p">.</span><span class="n">dec</span><span class="p">.</span><span class="n">wsgify</span><span class="p">()</span>
     <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">process_request</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">process_request</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">response</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">response</span>
-            <span class="n">response</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">get_response</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">application</span><span class="p">)</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">process_response</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
-        <span class="k">except</span> <span class="n">exceptin</span><span class="o">.</span><span class="n">Error</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="o">...</span>
-        <span class="o">...</span></code></pre></figure>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">request</span><span class="p">.</span><span class="n">get_response</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">application</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">process_response</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">exceptin</span><span class="p">.</span><span class="n">Error</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="p">...</span>
+        <span class="p">...</span></code></pre></figure>
 
-<p><strong>__call__()</strong>方法实现为接收一个request对象，返回一个response对象的形式，然后使用WebOB模块的装饰器<code class="highlighter-rouge">webob.dec.wsgify()</code>将它变成标准的WSGI application接口。这里的request和response对象分别是 <code class="highlighter-rouge">webob.Request</code> 和<code class="highlighter-rouge">webob.Response</code>。这里，<code class="highlighter-rouge">__call__()</code>方法内部调用了<code class="highlighter-rouge">self.process_request()</code>方法，这个方法在<em>keystone.middleware.core.AuthContextMiddleware</em>中实现：</p>
+<p><strong>__call__()</strong>方法实现为接收一个request对象，返回一个response对象的形式，然后使用WebOB模块的装饰器<code class="language-plaintext highlighter-rouge">webob.dec.wsgify()</code>将它变成标准的WSGI application接口。这里的request和response对象分别是 <code class="language-plaintext highlighter-rouge">webob.Request</code> 和<code class="language-plaintext highlighter-rouge">webob.Response</code>。这里，<code class="language-plaintext highlighter-rouge">__call__()</code>方法内部调用了<code class="language-plaintext highlighter-rouge">self.process_request()</code>方法，这个方法在<em>keystone.middleware.core.AuthContextMiddleware</em>中实现：</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">AuthContextMiddleware</span><span class="p">(</span><span class="n">wsgi</span><span class="o">.</span><span class="n">Middleware</span><span class="p">):</span>
-    <span class="o">...</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">AuthContextMiddleware</span><span class="p">(</span><span class="n">wsgi</span><span class="p">.</span><span class="n">Middleware</span><span class="p">):</span>
+    <span class="p">...</span>
     <span class="k">def</span> <span class="nf">process_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
-        <span class="o">...</span>
-        <span class="n">request</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="n">authorization</span><span class="o">.</span><span class="n">AUTH_CONTEXT_ENV</span><span class="p">]</span> <span class="o">=</span> <span class="n">auth_context</span></code></pre></figure>
+        <span class="p">...</span>
+        <span class="n">request</span><span class="p">.</span><span class="n">environ</span><span class="p">[</span><span class="n">authorization</span><span class="p">.</span><span class="n">AUTH_CONTEXT_ENV</span><span class="p">]</span> <span class="o">=</span> <span class="n">auth_context</span></code></pre></figure>
 
-<p>这个函数会根据功能设计创建<code class="highlighter-rouge">auth_context</code>，然后赋值给<code class="highlighter-rouge">request.environ['KEYSTONE_AUTH_CONTEXT</code>]`，这样就能通过WSGI application方法的environ传递到下一个WSGI application中去了。</p>
+<p>这个函数会根据功能设计创建<code class="language-plaintext highlighter-rouge">auth_context</code>，然后赋值给<code class="language-plaintext highlighter-rouge">request.environ['KEYSTONE_AUTH_CONTEXT</code>]`，这样就能通过WSGI application方法的environ传递到下一个WSGI application中去了。</p>
 
 <h3 id="最后的application">最后的Application</h3>
 
-<p>上面我们已经看到了，对于/v3开头的请求，在paste.ini中会被路由到[app:service_v3]这个section，会交给<code class="highlighter-rouge">keystone.service:v3_app_factory</code>这个函数生成的application处理。最后这个application需要根据URL path中剩下的部分，<strong>/auth/tokens</strong>，来实现URL路由。从这里开始，就需要用到<strong>Routes</strong>模块了。</p>
+<p>上面我们已经看到了，对于/v3开头的请求，在paste.ini中会被路由到[app:service_v3]这个section，会交给<code class="language-plaintext highlighter-rouge">keystone.service:v3_app_factory</code>这个函数生成的application处理。最后这个application需要根据URL path中剩下的部分，<strong>/auth/tokens</strong>，来实现URL路由。从这里开始，就需要用到<strong>Routes</strong>模块了。</p>
 
 <p>同样由于篇幅限制，我们只能展示Routes模块的大概用法。Routes模块是用Python实现的类似Rails的URL路由系统，它的主要功能就是把path映射到对应的动作。</p>
 
-<p>Routes模块的一般用法是创建一个<code class="highlighter-rouge">Mapper</code>对象，然后调用该对象的<code class="highlighter-rouge">connect()</code>方法把path和method映射到一个controller的某个action上，这里controller是一个自定义的类实例，action是表示controller对象的方法的字符串。一般调用的时候还会指定映射哪些方法，比如GET或者POST之类的。</p>
+<p>Routes模块的一般用法是创建一个<code class="language-plaintext highlighter-rouge">Mapper</code>对象，然后调用该对象的<code class="language-plaintext highlighter-rouge">connect()</code>方法把path和method映射到一个controller的某个action上，这里controller是一个自定义的类实例，action是表示controller对象的方法的字符串。一般调用的时候还会指定映射哪些方法，比如GET或者POST之类的。</p>
 
 <p>举个例子，来看下<em>keystone/auth/routers.py</em>的代码：</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">Routers</span><span class="p">(</span><span class="n">wsgi</span><span class="o">.</span><span class="n">RoutersBase</span><span class="p">):</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">Routers</span><span class="p">(</span><span class="n">wsgi</span><span class="p">.</span><span class="n">RoutersBase</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="nf">append_v3_routers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mapper</span><span class="p">,</span> <span class="n">routers</span><span class="p">):</span>
-        <span class="n">auth_controller</span> <span class="o">=</span> <span class="n">controllers</span><span class="o">.</span><span class="n">Auth</span><span class="p">()</span>
+        <span class="n">auth_controller</span> <span class="o">=</span> <span class="n">controllers</span><span class="p">.</span><span class="n">Auth</span><span class="p">()</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_add_resource</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">_add_resource</span><span class="p">(</span>
             <span class="n">mapper</span><span class="p">,</span> <span class="n">auth_controller</span><span class="p">,</span>
             <span class="n">path</span><span class="o">=</span><span class="s">'/auth/tokens'</span><span class="p">,</span>
             <span class="n">get_action</span><span class="o">=</span><span class="s">'validate_token'</span><span class="p">,</span>
             <span class="n">head_action</span><span class="o">=</span><span class="s">'check_token'</span><span class="p">,</span>
             <span class="n">post_action</span><span class="o">=</span><span class="s">'authenticate_for_token'</span><span class="p">,</span>
             <span class="n">delete_action</span><span class="o">=</span><span class="s">'revoke_token'</span><span class="p">,</span>
-            <span class="n">rel</span><span class="o">=</span><span class="n">json_home</span><span class="o">.</span><span class="n">build_v3_resource_relation</span><span class="p">(</span><span class="s">'auth_tokens'</span><span class="p">))</span>
+            <span class="n">rel</span><span class="o">=</span><span class="n">json_home</span><span class="p">.</span><span class="n">build_v3_resource_relation</span><span class="p">(</span><span class="s">'auth_tokens'</span><span class="p">))</span>
 
-    <span class="o">...</span></code></pre></figure>
+    <span class="p">...</span></code></pre></figure>
 
 <p>这里调用了自己Keystone自己封装的<em>_add_resource()</em>方法批量为一个<em>/auth/tokens</em>这个path添加多个方法的处理函数。其中，controller是一个<em>controllers.Auth</em>实例，也就是 <em>keystone.auth.controllers.Auth</em>。其他的参数，我们从名称可以猜出其作用是指定对应方法的处理函数，比如get_action用于指定<strong>GET</strong>方法的处理函数为<em>validate_token</em>。我们再深入一下，看下<em>_add_resource()</em>这个方法的实现：</p>
 
@@ -384,13 +384,13 @@ paste.filter_factory = keystone.middleware:AuthContextMiddleware.factory
                       <span class="n">get_action</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">head_action</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">get_head_action</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
                       <span class="n">put_action</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">post_action</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">patch_action</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
                       <span class="n">delete_action</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">get_post_action</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                      <span class="n">path_vars</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">json_home</span><span class="o">.</span><span class="n">Status</span><span class="o">.</span><span class="n">STABLE</span><span class="p">):</span>
-        <span class="o">...</span>
+                      <span class="n">path_vars</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">json_home</span><span class="p">.</span><span class="n">Status</span><span class="p">.</span><span class="n">STABLE</span><span class="p">):</span>
+        <span class="p">...</span>
         <span class="k">if</span> <span class="n">get_action</span><span class="p">:</span>
-            <span class="nb">getattr</span><span class="p">(</span><span class="n">controller</span><span class="p">,</span> <span class="n">get_action</span><span class="p">)</span>  <span class="c"># ensure the attribute exists</span>
-            <span class="n">mapper</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">controller</span><span class="o">=</span><span class="n">controller</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="n">get_action</span><span class="p">,</span>
+            <span class="nb">getattr</span><span class="p">(</span><span class="n">controller</span><span class="p">,</span> <span class="n">get_action</span><span class="p">)</span>  <span class="c1"># ensure the attribute exists
+</span>            <span class="n">mapper</span><span class="p">.</span><span class="n">connect</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">controller</span><span class="o">=</span><span class="n">controller</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="n">get_action</span><span class="p">,</span>
                            <span class="n">conditions</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="p">[</span><span class="s">'GET'</span><span class="p">]))</span>
-        <span class="o">...</span></code></pre></figure>
+        <span class="p">...</span></code></pre></figure>
 
 <p>这个函数其实很简单，就是调用mapper对象的<em>connect</em>方法指定一个path的某些method的处理函数。</p>
 
@@ -402,12 +402,12 @@ paste.filter_factory = keystone.middleware:AuthContextMiddleware.factory
 
 <h4 id="keystone中的路由汇总">Keystone中的路由汇总</h4>
 
-<p>每个模块都定义了自己的路由，但是这些路由最终要还是要通过一个WSGI application来调用的。上面已经提到了，在Keystone中，/v3开头的请求最终都会交给<code class="highlighter-rouge">keystone.service.v3_app_factory</code>这个函数生成的application来处理。这个函数里也包含了路由最后分发的秘密，我们来看代码：</p>
+<p>每个模块都定义了自己的路由，但是这些路由最终要还是要通过一个WSGI application来调用的。上面已经提到了，在Keystone中，/v3开头的请求最终都会交给<code class="language-plaintext highlighter-rouge">keystone.service.v3_app_factory</code>这个函数生成的application来处理。这个函数里也包含了路由最后分发的秘密，我们来看代码：</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">v3_app_factory</span><span class="p">(</span><span class="n">global_conf</span><span class="p">,</span> <span class="o">**</span><span class="n">local_conf</span><span class="p">):</span>
-    <span class="o">...</span>
-    <span class="n">mapper</span> <span class="o">=</span> <span class="n">routes</span><span class="o">.</span><span class="n">Mapper</span><span class="p">()</span>
-    <span class="o">...</span>
+    <span class="p">...</span>
+    <span class="n">mapper</span> <span class="o">=</span> <span class="n">routes</span><span class="p">.</span><span class="n">Mapper</span><span class="p">()</span>
+    <span class="p">...</span>
     
     <span class="n">router_modules</span> <span class="o">=</span> <span class="p">[</span><span class="n">auth</span><span class="p">,</span>
                       <span class="n">assignment</span><span class="p">,</span>
@@ -416,40 +416,40 @@ paste.filter_factory = keystone.middleware:AuthContextMiddleware.factory
                       <span class="n">identity</span><span class="p">,</span>
                       <span class="n">policy</span><span class="p">,</span>
                       <span class="n">resource</span><span class="p">]</span>
-    <span class="o">...</span>
+    <span class="p">...</span>
 
     <span class="k">for</span> <span class="n">module</span> <span class="ow">in</span> <span class="n">router_modules</span><span class="p">:</span>
-        <span class="n">routers_instance</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">routers</span><span class="o">.</span><span class="n">Routers</span><span class="p">()</span>
-        <span class="n">_routers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">routers_instance</span><span class="p">)</span>
-        <span class="n">routers_instance</span><span class="o">.</span><span class="n">append_v3_routers</span><span class="p">(</span><span class="n">mapper</span><span class="p">,</span> <span class="n">sub_routers</span><span class="p">)</span>
+        <span class="n">routers_instance</span> <span class="o">=</span> <span class="n">module</span><span class="p">.</span><span class="n">routers</span><span class="p">.</span><span class="n">Routers</span><span class="p">()</span>
+        <span class="n">_routers</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">routers_instance</span><span class="p">)</span>
+        <span class="n">routers_instance</span><span class="p">.</span><span class="n">append_v3_routers</span><span class="p">(</span><span class="n">mapper</span><span class="p">,</span> <span class="n">sub_routers</span><span class="p">)</span>
 
-    <span class="c"># Add in the v3 version api</span>
-    <span class="n">sub_routers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">routers</span><span class="o">.</span><span class="n">VersionV3</span><span class="p">(</span><span class="s">'public'</span><span class="p">,</span> <span class="n">_routers</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">wsgi</span><span class="o">.</span><span class="n">ComposingRouter</span><span class="p">(</span><span class="n">mapper</span><span class="p">,</span> <span class="n">sub_routers</span><span class="p">)</span></code></pre></figure>
+    <span class="c1"># Add in the v3 version api
+</span>    <span class="n">sub_routers</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">routers</span><span class="p">.</span><span class="n">VersionV3</span><span class="p">(</span><span class="s">'public'</span><span class="p">,</span> <span class="n">_routers</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">wsgi</span><span class="p">.</span><span class="n">ComposingRouter</span><span class="p">(</span><span class="n">mapper</span><span class="p">,</span> <span class="n">sub_routers</span><span class="p">)</span></code></pre></figure>
 
-<p><code class="highlighter-rouge">v3_app_factory()</code>函数中先遍历了所有的模块，将每个模块的路由都添加到同一个mapper对象中，然后把mapper对象作为参数用于初始化<em>wsgi.ComposingRouter</em>对象，所以我们可以判断，这个<em>wsgi.ComposingRouter</em>对象一定是一个WSGI application，我们看看代码就知道了：</p>
+<p><code class="language-plaintext highlighter-rouge">v3_app_factory()</code>函数中先遍历了所有的模块，将每个模块的路由都添加到同一个mapper对象中，然后把mapper对象作为参数用于初始化<em>wsgi.ComposingRouter</em>对象，所以我们可以判断，这个<em>wsgi.ComposingRouter</em>对象一定是一个WSGI application，我们看看代码就知道了：</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">Router</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="s">"""WSGI middleware that maps incoming requests to WSGI apps."""</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mapper</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="nb">map</span> <span class="o">=</span> <span class="n">mapper</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_router</span> <span class="o">=</span> <span class="n">routes</span><span class="o">.</span><span class="n">middleware</span><span class="o">.</span><span class="n">RoutesMiddleware</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dispatch</span><span class="p">,</span>
-                                                          <span class="bp">self</span><span class="o">.</span><span class="nb">map</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="nb">map</span> <span class="o">=</span> <span class="n">mapper</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">_router</span> <span class="o">=</span> <span class="n">routes</span><span class="p">.</span><span class="n">middleware</span><span class="p">.</span><span class="n">RoutesMiddleware</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">_dispatch</span><span class="p">,</span>
+                                                          <span class="bp">self</span><span class="p">.</span><span class="nb">map</span><span class="p">)</span>
 
-    <span class="nd">@webob.dec.wsgify</span><span class="p">()</span>
+    <span class="o">@</span><span class="n">webob</span><span class="p">.</span><span class="n">dec</span><span class="p">.</span><span class="n">wsgify</span><span class="p">()</span>
     <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_router</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">_router</span>
 
-    <span class="o">...</span>
+    <span class="p">...</span>
     
 <span class="k">class</span> <span class="nc">ComposingRouter</span><span class="p">(</span><span class="n">Router</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mapper</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">routers</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="o">...</span></code></pre></figure>
+        <span class="p">...</span></code></pre></figure>
 
 <p>上述代码证实了我们的猜测。这个ComposingRouter对象被调用时（在其父类Router中实现），会返回一个WSGI application。这个application中则使用了routes模块的中间件来实现了请求路由，在<em>routes.middleware.RoutesMiddleware</em>中实现。这里对path进行路由的结果就是返回各个模块的<em>controllers.py</em>中定义的controller。各个模块的controller都是一个WSGI application，这个你可以通过这些controller的类继承关系看出来。</p>
 
-<p>但是这里只讲到了，routes模块把path映射到了一个controller，但是如何把对path的处理映射到controller的方法呢？这个可以从controller的父类<em>keystone.common.wsgi.Application</em>的实现看出来。这个Application类中使用了<code class="highlighter-rouge">environ['wsgiorg.routing_args']</code>中的数据来确定调用controller的哪个方法，这些数据是由上面提到的<em>routes.middleware.RoutesMiddleware</em>设置的。</p>
+<p>但是这里只讲到了，routes模块把path映射到了一个controller，但是如何把对path的处理映射到controller的方法呢？这个可以从controller的父类<em>keystone.common.wsgi.Application</em>的实现看出来。这个Application类中使用了<code class="language-plaintext highlighter-rouge">environ['wsgiorg.routing_args']</code>中的数据来确定调用controller的哪个方法，这些数据是由上面提到的<em>routes.middleware.RoutesMiddleware</em>设置的。</p>
 
 <h3 id="总结">总结</h3>
 

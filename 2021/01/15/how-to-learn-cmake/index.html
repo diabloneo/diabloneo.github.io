@@ -6,12 +6,12 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Ubuntu 17.10升级问题</title>
-  <meta name="description" content="本周Ubuntu 17.10已经正式发布，我在周末进行了升级，遇到了一些问题。">
+  <title>如何学习 cmake</title>
+  <meta name="description" content="  首先，官方的入门文档 不建议去看，因为不够简单明了。推荐看这篇 CMake by Example，简单明了，你可以直接了解到 cmake 的整体情况。  然后，学习一个大项目的 cmake 文件，在学习的过程中，查询 reference 文档来了解细节。我推荐大家学习 FoundationDB 的 cmake...">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="/css/main.css">
   <link rel="stylesheet" href="/css/pygments-rainbow_dash.css">
-  <link rel="canonical" href="http://diabloneo.github.io//2017/10/22/ubuntu-17.10-upgrade/">
+  <link rel="canonical" href="http://diabloneo.github.io//2021/01/15/how-to-learn-cmake/">
   <link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
 </head>
 
@@ -91,12 +91,16 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Ubuntu 17.10升级问题</h1>
-    <p class="post-meta"><time datetime="2017-10-22T00:00:00+08:00" itemprop="datePublished">Oct 22, 2017</time></p>
+    <h1 class="post-title" itemprop="name headline">如何学习 cmake</h1>
+    <p class="post-meta"><time datetime="2021-01-15T00:00:00+08:00" itemprop="datePublished">Jan 15, 2021</time></p>
   </header>
 
   <div class="post-tags">
     <ul>
+      
+      <li>
+        <a href="/tags/linux/">linux</a>
+      </li>
       
     </ul>
   </div>
@@ -107,49 +111,10 @@
       <div class="addthis_inline_share_toolbox"></div>
     
     <br />
-      <p>本周Ubuntu 17.10已经正式发布，我在周末进行了升级，遇到了一些问题。</p>
-
-<h2 id="tmux配置有错">tmux配置有错</h2>
-
-<p>tmux版本升级到2.5版本，我原来使用的配置如下几行有问题：</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bind-key -t vi-copy 'v' begin-selection
-bind-key -t vi-copy 'y' copy-selection
-bind-key -t vi-copy Escape cancel
-</code></pre></div></div>
-
-<h2 id="synaptic无法启动">synaptic无法启动</h2>
-
-<p>Bug: <a href="https://bugs.launchpad.net/ubuntu/+source/synaptic/+bug/1551951">https://bugs.launchpad.net/ubuntu/+source/synaptic/+bug/1551951</a></p>
-
-<h2 id="virtualbox虚拟机无法启动">virtualbox虚拟机无法启动</h2>
-
-<p>升级后有内核兼容性问题，我的解决办法如下：</p>
-
-<ol>
-  <li>卸载，然后从oracle添加源，安装最新的5.2版本: <a href="https://www.virtualbox.org/wiki/Linux_Downloads">https://www.virtualbox.org/wiki/Linux_Downloads</a></li>
-  <li>然后安装 linux-headers-lowlatency</li>
-  <li>然后执行 /sbin/vboxconfig</li>
+      <ol>
+  <li>首先，<a href="https://cmake.org/cmake/help/latest/guide/tutorial/index.html">官方的入门文档</a> 不建议去看，因为不够简单明了。推荐看这篇 <em><a href="https://mirkokiefer.com/cmake-by-example-f95eb47d45b1">CMake by Example</a></em>，简单明了，你可以直接了解到 cmake 的整体情况。</li>
+  <li>然后，学习一个大项目的 cmake 文件，在学习的过程中，查询 reference 文档来了解细节。我推荐大家学习 FoundationDB 的 cmake 文件 <a href="https://github.com/apple/foundationdb">https://github.com/apple/foundationdb</a>。</li>
 </ol>
-
-<h2 id="sougou输入法不能用">sougou输入法不能用</h2>
-
-<p>没办法解决，只能等更新了，可以先用ibus。</p>
-
-<h2 id="dns解析问题">dns解析问题</h2>
-
-<p>Bug: <a href="https://bugs.launchpad.net/ubuntu/+source/netcfg/+bug/1712283">https://bugs.launchpad.net/ubuntu/+source/netcfg/+bug/1712283</a></p>
-
-<p>有个解决办法：</p>
-
-<blockquote>
-  <p>I can confirm that for me removing /etc/resolv.conf and replacing it with a link to stub-resolv.conf using
-sudo ln -s /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf</p>
-</blockquote>
-
-<h2 id="网易云音乐无法打开">网易云音乐无法打开</h2>
-
-<p>和synaptic无法打开可能是一样的问题。</p>
 
     <br />
 
@@ -170,8 +135,8 @@ sudo ln -s /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf</p>
 <div id="disqus_thread"></div>
 <script>
 var disqus_config = function () {
-  this.page.url = "http://diabloneo.github.io/2017/10/22/ubuntu-17.10-upgrade/"; // <--- use canonical URL
-  this.page.identifier = "/2017/10/22/ubuntu-17.10-upgrade";
+  this.page.url = "http://diabloneo.github.io/2021/01/15/how-to-learn-cmake/"; // <--- use canonical URL
+  this.page.identifier = "/2021/01/15/how-to-learn-cmake";
 };
 (function() { // DON'T EDIT BELOW THIS LINE
   var d = document, s = d.createElement('script');

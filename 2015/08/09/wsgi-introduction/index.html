@@ -153,24 +153,24 @@
 
 <p>接下来，server端需要知道去哪里找application的入口。这个需要在server端指定一个Python模块，也就是Python应用中的一个文件，并且这个模块中需要包含一个名称为<strong>application</strong>的可调用对象（函数和类都可以），这个<strong>application</strong>对象就是这个应用程序的唯一入口了。WSGI还定义了<strong>application</strong>对象的形式：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def simple_app(environ, start_response):
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def simple_app(environ, start_response):
       pass
 </code></pre></div></div>
 
-<p>上面代码中的<code class="highlighter-rouge">environ</code>和<code class="highlighter-rouge">start_response</code>就是server端调用<strong>application</strong>对象时传递的两个参数。</p>
+<p>上面代码中的<code class="language-plaintext highlighter-rouge">environ</code>和<code class="language-plaintext highlighter-rouge">start_response</code>就是server端调用<strong>application</strong>对象时传递的两个参数。</p>
 
-<p>我们来看具体的例子。假设我们的应用程序的入口文件是<code class="highlighter-rouge">/var/www/index.py</code>，那么我们就需要在server端配置好这个路径（如何配置取决于server端的实现），然后在<code class="highlighter-rouge">index.py</code>中的代码如下所示：</p>
+<p>我们来看具体的例子。假设我们的应用程序的入口文件是<code class="language-plaintext highlighter-rouge">/var/www/index.py</code>，那么我们就需要在server端配置好这个路径（如何配置取决于server端的实现），然后在<code class="language-plaintext highlighter-rouge">index.py</code>中的代码如下所示：</p>
 
 <p>使用标准库（这个只是demo）</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import wsgiref
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import wsgiref
 
 application = wsgiref.simple_server.demo_app
 </code></pre></div></div>
 
 <p>使用web.py框架</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import web
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import web
 
 urls = (
     '/.*', 'hello',
@@ -191,7 +191,7 @@ application = web.application(urls, globals()).wsgifunc()
 
 <p>上面已经提到了，application对象需要是一个可调用对象，而且其定义需要满足如下形式：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def simple_app(environ, start_response):
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def simple_app(environ, start_response):
       pass
 </code></pre></div></div>
 
@@ -239,7 +239,7 @@ application = web.application(urls, globals()).wsgifunc()
   <li><strong>exc_info</strong>（可选）: 用于出错时，server需要返回给浏览器的信息</li>
 </ul>
 
-<p>当application对象根据environ参数的内容执行完业务逻辑后，就需要返回结果给server端。我们知道HTTP的响应需要包含status，headers和body，所以在application对象将body作为返回值return之前，需要先调用<code class="highlighter-rouge">start_response()</code>，将status和headers的内容返回给server，这同时也是告诉server，application对象要开始返回body了。</p>
+<p>当application对象根据environ参数的内容执行完业务逻辑后，就需要返回结果给server端。我们知道HTTP的响应需要包含status，headers和body，所以在application对象将body作为返回值return之前，需要先调用<code class="language-plaintext highlighter-rouge">start_response()</code>，将status和headers的内容返回给server，这同时也是告诉server，application对象要开始返回body了。</p>
 
 <h4 id="application对象的返回值">application对象的返回值</h4>
 
@@ -249,7 +249,7 @@ application = web.application(urls, globals()).wsgifunc()
 
 <p>PEP-3333中有一个application的实现demo，我把它再简化之后如下：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def simple_app(environ, start_response):
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def simple_app(environ, start_response):
       status = '200 OK'
       response_headers = [('Content-type', 'text/plain')]
       start_response(status, response_headers)
@@ -260,7 +260,7 @@ application = web.application(urls, globals()).wsgifunc()
 
 <h3 id="再谈server如何调用application">再谈server如何调用application</h3>
 
-<p>前面已经知道server如何定位到application的入口了，也知道了application的入口的形式以及application对象内部需要完成的工作。那么，我们还需要再说一下，<code class="highlighter-rouge">environ</code>和<code class="highlighter-rouge">start_response()</code>是需要在server端的生成和定义的，其中关于<code class="highlighter-rouge">start_response()</code>的部分在规范中也有明确的要求。这部分内容太长了，不适合放在本文中，有兴趣的读者可以去看下PEP-3333，里面有一段server端的demo实现。</p>
+<p>前面已经知道server如何定位到application的入口了，也知道了application的入口的形式以及application对象内部需要完成的工作。那么，我们还需要再说一下，<code class="language-plaintext highlighter-rouge">environ</code>和<code class="language-plaintext highlighter-rouge">start_response()</code>是需要在server端的生成和定义的，其中关于<code class="language-plaintext highlighter-rouge">start_response()</code>的部分在规范中也有明确的要求。这部分内容太长了，不适合放在本文中，有兴趣的读者可以去看下PEP-3333，里面有一段server端的demo实现。</p>
 
 <h2 id="wsgi中间件">WSGI中间件</h2>
 
@@ -273,11 +273,11 @@ application = web.application(urls, globals()).wsgifunc()
 <p>上图中最上面的三个彩色框表示角色，中间的白色框表示操作，操作的发生顺序按照1 ~ 5进行了排序，我们直接对着上图来说明middleware是如何工作的：</p>
 
 <ol>
-  <li>Server收到客户端的HTTP请求后，生成了<code class="highlighter-rouge">environ_s</code>，并且已经定义了<code class="highlighter-rouge">start_response_s</code>。</li>
-  <li>Server调用Middleware的application对象，传递的参数是<code class="highlighter-rouge">environ_s</code>和<code class="highlighter-rouge">start_response_s</code>。</li>
-  <li>Middleware会根据<code class="highlighter-rouge">environ</code>执行业务逻辑，生成<code class="highlighter-rouge">environ_m</code>，并且已经定义了<code class="highlighter-rouge">start_response_m</code>。</li>
-  <li>Middleware决定调用Application的application对象，传递参数是<code class="highlighter-rouge">environ_m</code>和<code class="highlighter-rouge">start_response_m</code>。Application的application对象处理完成后，会调用<code class="highlighter-rouge">start_response_m</code>并且返回结果给Middleware，存放在<code class="highlighter-rouge">result_m</code>中。</li>
-  <li>Middleware处理<code class="highlighter-rouge">result_m</code>，然后生成<code class="highlighter-rouge">result_s</code>，接着调用<code class="highlighter-rouge">start_response_s</code>，并返回结果<code class="highlighter-rouge">result_s</code>给Server端。Server端获取到result_s后就可以发送结果给客户端了。</li>
+  <li>Server收到客户端的HTTP请求后，生成了<code class="language-plaintext highlighter-rouge">environ_s</code>，并且已经定义了<code class="language-plaintext highlighter-rouge">start_response_s</code>。</li>
+  <li>Server调用Middleware的application对象，传递的参数是<code class="language-plaintext highlighter-rouge">environ_s</code>和<code class="language-plaintext highlighter-rouge">start_response_s</code>。</li>
+  <li>Middleware会根据<code class="language-plaintext highlighter-rouge">environ</code>执行业务逻辑，生成<code class="language-plaintext highlighter-rouge">environ_m</code>，并且已经定义了<code class="language-plaintext highlighter-rouge">start_response_m</code>。</li>
+  <li>Middleware决定调用Application的application对象，传递参数是<code class="language-plaintext highlighter-rouge">environ_m</code>和<code class="language-plaintext highlighter-rouge">start_response_m</code>。Application的application对象处理完成后，会调用<code class="language-plaintext highlighter-rouge">start_response_m</code>并且返回结果给Middleware，存放在<code class="language-plaintext highlighter-rouge">result_m</code>中。</li>
+  <li>Middleware处理<code class="language-plaintext highlighter-rouge">result_m</code>，然后生成<code class="language-plaintext highlighter-rouge">result_s</code>，接着调用<code class="language-plaintext highlighter-rouge">start_response_s</code>，并返回结果<code class="language-plaintext highlighter-rouge">result_s</code>给Server端。Server端获取到result_s后就可以发送结果给客户端了。</li>
 </ol>
 
 <p>从上面的流程可以看出middleware应用的几个特点：</p>

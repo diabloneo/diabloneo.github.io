@@ -111,9 +111,9 @@
       <div class="addthis_inline_share_toolbox"></div>
     
     <br />
-      <h2 id="pg_cancel_backend-和-pg_terminate_backend-函数"><code class="highlighter-rouge">pg_cancel_backend</code> 和 <code class="highlighter-rouge">pg_terminate_backend</code> 函数</h2>
+      <h2 id="pg_cancel_backend-和-pg_terminate_backend-函数"><code class="language-plaintext highlighter-rouge">pg_cancel_backend</code> 和 <code class="language-plaintext highlighter-rouge">pg_terminate_backend</code> 函数</h2>
 
-<p>当你从 <em>pg_stat_activity</em> 确认了一个慢查询的时候，你可以获取这个慢查询所在的 <strong>pid</strong>。然后，你就可以使用 <code class="highlighter-rouge">pg_cancel_backend</code> 或者 <code class="highlighter-rouge">pg_terminate_backend</code>来终止这个慢查询。这两个函数的使用方法如下：</p>
+<p>当你从 <em>pg_stat_activity</em> 确认了一个慢查询的时候，你可以获取这个慢查询所在的 <strong>pid</strong>。然后，你就可以使用 <code class="language-plaintext highlighter-rouge">pg_cancel_backend</code> 或者 <code class="language-plaintext highlighter-rouge">pg_terminate_backend</code>来终止这个慢查询。这两个函数的使用方法如下：</p>
 
 <figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="n">mydb</span><span class="o">=#</span> <span class="k">select</span> <span class="n">pg_cancel_backend</span><span class="p">(</span><span class="mi">40955</span><span class="p">);</span>
  <span class="n">pg_cancel_backend</span>
@@ -128,7 +128,7 @@
 
 <p>这两个函数的参数都是 <em>pid</em>，返回值是 <em>true</em> 或者 <em>false</em>，表示向进程发送信号是否成功。</p>
 
-<p>这两个函数的区别如下：<code class="highlighter-rouge">pg_cancel_backend</code> 是终止当前这次的查询，连接依旧被保持，其发送的是 <em>SIGINT</em> 信号。<code class="highlighter-rouge">pg_terminate_backend</code>会终止连接，其发送的是 <em>SIGTERM</em> 信号。</p>
+<p>这两个函数的区别如下：<code class="language-plaintext highlighter-rouge">pg_cancel_backend</code> 是终止当前这次的查询，连接依旧被保持，其发送的是 <em>SIGINT</em> 信号。<code class="language-plaintext highlighter-rouge">pg_terminate_backend</code>会终止连接，其发送的是 <em>SIGTERM</em> 信号。</p>
 
 <h3 id="示例">示例</h3>
 
@@ -162,7 +162,7 @@
  <span class="n">mydb</span>    <span class="o">|</span> <span class="mi">37564</span> <span class="o">|</span> <span class="n">postgres</span> <span class="o">|</span>                 <span class="o">|</span>               <span class="o">|</span> <span class="n">active</span>              <span class="o">|</span> <span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">pg_stat_activity</span> <span class="k">where</span> <span class="n">usename</span><span class="o">=</span><span class="s1">'postgres'</span><span class="p">;</span>
 <span class="p">(</span><span class="mi">3</span> <span class="k">rows</span><span class="p">)</span></code></pre></figure>
 
-<p>其中 <em>pid</em> 为 <strong>37159</strong> 的连接所执行的查询，正在等待锁。这个时候我们就可以用 <code class="highlighter-rouge">pg_cancel_backend</code> 来取消这次查询：</p>
+<p>其中 <em>pid</em> 为 <strong>37159</strong> 的连接所执行的查询，正在等待锁。这个时候我们就可以用 <code class="language-plaintext highlighter-rouge">pg_cancel_backend</code> 来取消这次查询：</p>
 
 <figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="n">mydb</span><span class="o">=#</span> <span class="k">select</span> <span class="n">pg_cancel_backend</span><span class="p">(</span><span class="mi">37159</span><span class="p">);</span>
  <span class="n">pg_cancel_backend</span>
@@ -176,7 +176,7 @@
 <span class="n">ERROR</span><span class="p">:</span>  <span class="n">canceling</span> <span class="k">statement</span> <span class="n">due</span> <span class="k">to</span> <span class="k">user</span> <span class="n">request</span>
 <span class="n">CONTEXT</span><span class="p">:</span>  <span class="n">while</span> <span class="n">locking</span> <span class="n">tuple</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">7</span><span class="p">)</span> <span class="k">in</span> <span class="n">relation</span> <span class="nv">"host"</span></code></pre></figure>
 
-<p>此时，在 <strong>psql Manage</strong> 中查看 <code class="highlighter-rouge">pg_stat_activity</code> 可以看到 <strong>psql B</strong> 的连接还在，pid 不变，但是连接已经处于 <strong>idle</strong> 状态：</p>
+<p>此时，在 <strong>psql Manage</strong> 中查看 <code class="language-plaintext highlighter-rouge">pg_stat_activity</code> 可以看到 <strong>psql B</strong> 的连接还在，pid 不变，但是连接已经处于 <strong>idle</strong> 状态：</p>
 
 <figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="n">mydb</span><span class="o">=#</span> <span class="k">select</span> <span class="n">datname</span><span class="p">,</span> <span class="n">pid</span><span class="p">,</span> <span class="n">usename</span><span class="p">,</span> <span class="n">wait_event_type</span><span class="p">,</span> <span class="n">wait_event</span><span class="p">,</span> <span class="k">state</span><span class="p">,</span> <span class="n">query</span> <span class="k">from</span> <span class="n">pg_stat_activity</span> <span class="k">where</span> <span class="n">usename</span><span class="o">=</span><span class="s1">'postgres'</span><span class="p">;</span>
  <span class="n">datname</span> <span class="o">|</span>  <span class="n">pid</span>  <span class="o">|</span> <span class="n">usename</span>  <span class="o">|</span> <span class="n">wait_event_type</span> <span class="o">|</span> <span class="n">wait_event</span> <span class="o">|</span>        <span class="k">state</span>        <span class="o">|</span>                                                        <span class="n">query</span>
@@ -208,7 +208,7 @@
         <span class="k">before</span> <span class="k">or</span> <span class="n">while</span> <span class="n">processing</span> <span class="n">the</span> <span class="n">request</span><span class="p">.</span>
 <span class="n">The</span> <span class="k">connection</span> <span class="k">to</span> <span class="n">the</span> <span class="n">server</span> <span class="n">was</span> <span class="n">lost</span><span class="p">.</span> <span class="n">Attempting</span> <span class="k">reset</span><span class="p">:</span> <span class="n">Succeeded</span><span class="p">.</span></code></pre></figure>
 
-<p>表明，连接已经断开了。此时，再次查看 <code class="highlighter-rouge">pg_stat_activity</code> 可以发现 pid 已经变了，变成了 <strong>39248</strong>：</p>
+<p>表明，连接已经断开了。此时，再次查看 <code class="language-plaintext highlighter-rouge">pg_stat_activity</code> 可以发现 pid 已经变了，变成了 <strong>39248</strong>：</p>
 
 <figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="n">mydb</span><span class="o">=#</span> <span class="k">select</span> <span class="n">datname</span><span class="p">,</span> <span class="n">pid</span><span class="p">,</span> <span class="n">usename</span><span class="p">,</span> <span class="n">wait_event_type</span><span class="p">,</span> <span class="n">wait_event</span><span class="p">,</span> <span class="k">state</span><span class="p">,</span> <span class="n">query</span> <span class="k">from</span> <span class="n">pg_stat_activity</span> <span class="k">where</span> <span class="n">usename</span><span class="o">=</span><span class="s1">'postgres'</span><span class="p">;</span>
  <span class="n">datname</span> <span class="o">|</span>  <span class="n">pid</span>  <span class="o">|</span> <span class="n">usename</span>  <span class="o">|</span> <span class="n">wait_event_type</span> <span class="o">|</span> <span class="n">wait_event</span> <span class="o">|</span>        <span class="k">state</span>        <span class="o">|</span>                                                          <span class="n">query</span>

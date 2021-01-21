@@ -171,11 +171,11 @@
 
 <p><strong>hdparm</strong> 工具是通过 kernel 的 <strong>libata</strong> 子系统和 IDE 子系统来和硬盘交互，达到读取或者设置硬盘参数的目的。这个工具并不能百分百兼容 SAS 硬盘，只有部分选项对 SAS 硬盘是有效的，比如 <em>write-caching</em> 参数就不兼容 SAS 盘。</p>
 
-<p>hdparm 直接通过指定参数即可和硬盘交互，更详细的文档请参考： <em><a href="https://wiki.archlinux.org/index.php/hdparm">https://wiki.archlinux.org/index.php/hdparm</a></em> 或者 <code class="highlighter-rouge">man hdparm</code>。</p>
+<p>hdparm 直接通过指定参数即可和硬盘交互，更详细的文档请参考： <em><a href="https://wiki.archlinux.org/index.php/hdparm">https://wiki.archlinux.org/index.php/hdparm</a></em> 或者 <code class="language-plaintext highlighter-rouge">man hdparm</code>。</p>
 
 <p>例如可以用 <strong>-W</strong> 来设置 SATA 盘的 <em>write-caching</em> 属性：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root ~]# hdparm -W 1 /dev/sda
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root ~]# hdparm -W 1 /dev/sda
 [root ~]# hdparm -W /dev/sda
 
 /dev/sda:
@@ -192,7 +192,7 @@
 
 <p>sdparm 可以使用 <strong>-all</strong> 参数来查看设备所支持的 page:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root ~]# sdparm --all --long /dev/sdb | grep page
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root ~]# sdparm --all --long /dev/sdb | grep page
 Read write error recovery [rw] mode page:
 Disconnect-reconnect (SPC + transports) [dr] mode page:
 Format (SBC) [fo] mode page:
@@ -210,7 +210,7 @@ Background control (SBC) [bc] mode page:
 
 <p>每一行是一个 mode page，其中中括号内的是 page 的缩写。要查询一个 page 的指定内容，每行一个域：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root ~]# sdparm --all --page=ca /dev/sdb
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root ~]# sdparm --all --page=ca /dev/sdb
     /dev/sdb: TOSHIBA   MG03SCA200        5702
 Caching (SBC) mode page:
   IC          0  [cha: y, def:  0, sav:  0]
@@ -236,9 +236,9 @@ Caching (SBC) mode page:
   CSS         0  [cha: n, def:  0, sav:  0]
 </code></pre></div></div>
 
-<p>还可以通过 <code class="highlighter-rouge">--get</code> 和 <code class="highlighter-rouge">--set</code> 来设置一个指定域的值。域的缩写就是上面第一列的大写字母，这个缩写是全局唯一的，在不同的 page 内也不重复。比如查看和设置一个硬盘的 write-caching 的方法如下：</p>
+<p>还可以通过 <code class="language-plaintext highlighter-rouge">--get</code> 和 <code class="language-plaintext highlighter-rouge">--set</code> 来设置一个指定域的值。域的缩写就是上面第一列的大写字母，这个缩写是全局唯一的，在不同的 page 内也不重复。比如查看和设置一个硬盘的 write-caching 的方法如下：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root ~]# sdparm --set WCE=0 --save /dev/sdb
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root ~]# sdparm --set WCE=0 --save /dev/sdb
     /dev/sdb: TOSHIBA   MG03SCA200        5702
 [root ~]#
 [root ~]# sdparm --get=WCE /dev/sdb
@@ -250,9 +250,9 @@ WCE         0  [cha: y, def:  0, sav:  0]
 
 <p>VPD (Vital Product Data) 是指软件或者硬件提供的一组配置和信息，一般在硬件中都用来存储硬件的关键信息。SCSI 协议是在 SBC 中定义了 VPD 相关的内容，最重要的就是 <strong>Device Identification VPD page (page number: 0x83)</strong>，这个 page 包含了磁盘序列号等信息。</p>
 
-<p>在 sdparm 参数中，可以通过指定 <code class="highlighter-rouge">--inquiry</code> 参数来指定要查询的是 VPD pages：</p>
+<p>在 sdparm 参数中，可以通过指定 <code class="language-plaintext highlighter-rouge">--inquiry</code> 参数来指定要查询的是 VPD pages：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root ~]# sdparm --inquiry --all /dev/sdb
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root ~]# sdparm --inquiry --all /dev/sdb
     /dev/sdb: TOSHIBA   MG03SCA200        5702
 Supported VPD pages VPD page:
   Supported VPD pages [sv]
@@ -266,7 +266,7 @@ Supported VPD pages VPD page:
 
 <p>一般我们是通过 <strong>sn</strong> page 来查询硬盘的序列号：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root ~]# sdparm --inquiry --page=sn /dev/sdb
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root ~]# sdparm --inquiry --page=sn /dev/sdb
     /dev/sdb: TOSHIBA   MG03SCA200        5702
 Unit serial number VPD page:
   Z3M0AXXXXXU6

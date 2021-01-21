@@ -111,9 +111,9 @@
       <div class="addthis_inline_share_toolbox"></div>
     
     <br />
-      <h2 id="pg_stat_activity-视图"><code class="highlighter-rouge">pg_stat_activity</code> 视图</h2>
+      <h2 id="pg_stat_activity-视图"><code class="language-plaintext highlighter-rouge">pg_stat_activity</code> 视图</h2>
 
-<p>在 Postgres 中，<code class="highlighter-rouge">pg_stat_activity</code> 是一个视图，每行对应一个服务器进程，用来显示进程当前活动有关的信息。因此，我们可以使用如下的查询来获取长时间执行的查询或者操作。</p>
+<p>在 Postgres 中，<code class="language-plaintext highlighter-rouge">pg_stat_activity</code> 是一个视图，每行对应一个服务器进程，用来显示进程当前活动有关的信息。因此，我们可以使用如下的查询来获取长时间执行的查询或者操作。</p>
 
 <figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">SELECT</span>
 	<span class="n">datname</span><span class="p">,</span>
@@ -155,16 +155,16 @@
 <p>用到的几个字段的含义如下：</p>
 
 <ul>
-  <li><code class="highlighter-rouge">datname</code>: 数据库名称。</li>
-  <li><code class="highlighter-rouge">username</code>: 用户名。</li>
-  <li><code class="highlighter-rouge">client_addr</code>: 客户端地址。</li>
-  <li><code class="highlighter-rouge">state</code>: 连接的当前状态，一共有6种，这里需要显示的是其中3种<strong>非空闲</strong>的。</li>
-  <li><code class="highlighter-rouge">backend_start</code>: 连接开始时间。</li>
-  <li><code class="highlighter-rouge">xact_start</code>: 当前事务开始时间。</li>
-  <li><code class="highlighter-rouge">EXTRACT(EPOCH FROM (now() - pgsa.xact_start)) AS xact_duration</code>: 计算当前事务进行了多久，单位是秒。</li>
-  <li><code class="highlighter-rouge">query_start</code>: 当前查询开始的时间，一个事务内可能有多个查询。</li>
-  <li><code class="highlighter-rouge">EXTRACT(EPOCH FROM (now() - pgsa.query_start)) AS query_duration</code>: 计算当前查询进行了多久，单位是秒。</li>
-  <li><code class="highlighter-rouge">REGEXP_REPLACE(REPLACE(pgsa.query, CHR(10), ' '), '^SELECT.*FROM', 'FROM', 'i') AS query</code>: 查询语句的内容，这里把换行符替换成空格，而且会尝试把 <em>SELECT … FROM</em> 替换为 <em>FROM</em>（方便查看查询的是哪个表，不过如果语句过长，原始查询语句只会保留前 1024 个字符，这个是由 <strong>track_activity_query_size</strong> 参数决定的）。</li>
+  <li><code class="language-plaintext highlighter-rouge">datname</code>: 数据库名称。</li>
+  <li><code class="language-plaintext highlighter-rouge">username</code>: 用户名。</li>
+  <li><code class="language-plaintext highlighter-rouge">client_addr</code>: 客户端地址。</li>
+  <li><code class="language-plaintext highlighter-rouge">state</code>: 连接的当前状态，一共有6种，这里需要显示的是其中3种<strong>非空闲</strong>的。</li>
+  <li><code class="language-plaintext highlighter-rouge">backend_start</code>: 连接开始时间。</li>
+  <li><code class="language-plaintext highlighter-rouge">xact_start</code>: 当前事务开始时间。</li>
+  <li><code class="language-plaintext highlighter-rouge">EXTRACT(EPOCH FROM (now() - pgsa.xact_start)) AS xact_duration</code>: 计算当前事务进行了多久，单位是秒。</li>
+  <li><code class="language-plaintext highlighter-rouge">query_start</code>: 当前查询开始的时间，一个事务内可能有多个查询。</li>
+  <li><code class="language-plaintext highlighter-rouge">EXTRACT(EPOCH FROM (now() - pgsa.query_start)) AS query_duration</code>: 计算当前查询进行了多久，单位是秒。</li>
+  <li><code class="language-plaintext highlighter-rouge">REGEXP_REPLACE(REPLACE(pgsa.query, CHR(10), ' '), '^SELECT.*FROM', 'FROM', 'i') AS query</code>: 查询语句的内容，这里把换行符替换成空格，而且会尝试把 <em>SELECT … FROM</em> 替换为 <em>FROM</em>（方便查看查询的是哪个表，不过如果语句过长，原始查询语句只会保留前 1024 个字符，这个是由 <strong>track_activity_query_size</strong> 参数决定的）。</li>
 </ul>
 
     <br />

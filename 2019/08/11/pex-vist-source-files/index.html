@@ -115,49 +115,49 @@
 
 <p>当使用 PEX (<em><a href="https://github.com/pantsbuild/pex">https://github.com/pantsbuild/pex</a></em>) 来打包一个 Python 项目时，会发现有些动态的源码访问方式无法使用。例如下面这段代码，通过动态遍历 Python 源文件来载入一个 package 下的所有模块：</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># -*- coding: utf-8 -*-</span>
-
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># -*- coding: utf-8 -*-
+</span>
 <span class="kn">import</span> <span class="nn">glob</span>
 <span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">dirname</span><span class="p">,</span> <span class="n">basename</span><span class="p">,</span> <span class="n">join</span><span class="p">,</span> <span class="n">isfile</span>
 
-<span class="n">modules</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">),</span> <span class="s">"*.py"</span><span class="p">))</span>
+<span class="n">modules</span> <span class="o">=</span> <span class="n">glob</span><span class="p">.</span><span class="n">glob</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">),</span> <span class="s">"*.py"</span><span class="p">))</span>
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="n">basename</span><span class="p">(</span><span class="n">f</span><span class="p">)[:</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">modules</span> <span class="k">if</span> <span class="n">isfile</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="ow">and</span> <span class="n">f</span> <span class="o">!=</span> <span class="s">"__init__.py"</span>
 <span class="p">]</span>
 
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="o">*</span>  <span class="c"># noqa</span>
-</code></pre></div></div>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="o">*</span>  <span class="c1"># noqa
+</span></code></pre></div></div>
 
-<p>当使用 PEX 进行打包的时候，程序默认会使用 <code class="highlighter-rouge">--zip-safe</code> 参数，即在 PEX 程序执行的过程中，源码不会存在到磁盘上，因此 <code class="highlighter-rouge">glob.glob()</code> 会返回一个空列表，所以就无法载入任何模块。如果遇到这个情况，当你需要访问某些子模块时，就会触发如下的错误：</p>
+<p>当使用 PEX 进行打包的时候，程序默认会使用 <code class="language-plaintext highlighter-rouge">--zip-safe</code> 参数，即在 PEX 程序执行的过程中，源码不会存在到磁盘上，因此 <code class="language-plaintext highlighter-rouge">glob.glob()</code> 会返回一个空列表，所以就无法载入任何模块。如果遇到这个情况，当你需要访问某些子模块时，就会触发如下的错误：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>AttributeError: 'module' object has no attribute 'submodule_name'
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>AttributeError: 'module' object has no attribute 'submodule_name'
 </code></pre></div></div>
 
 <h2 id="解决方案">解决方案</h2>
 
-<p>如果要支持这样的代码逻辑，需要使用 PEX 的 <code class="highlighter-rouge">--not-zip-safe</code> 模式。当启用该模式时，PEX 在运行程序前，会先把程序的代码解压到 <code class="highlighter-rouge">${PEX_ROOT}/code</code> 目录下 （ PEX_ROOT 可以通过 <code class="highlighter-rouge">--pex-root</code> 参数指定，默认值是 <em>~/.pex/</em>），然后再运行程序。这样代码中就可以使用上面这样的逻辑来动态的访问源码文件了。</p>
+<p>如果要支持这样的代码逻辑，需要使用 PEX 的 <code class="language-plaintext highlighter-rouge">--not-zip-safe</code> 模式。当启用该模式时，PEX 在运行程序前，会先把程序的代码解压到 <code class="language-plaintext highlighter-rouge">${PEX_ROOT}/code</code> 目录下 （ PEX_ROOT 可以通过 <code class="language-plaintext highlighter-rouge">--pex-root</code> 参数指定，默认值是 <em>~/.pex/</em>），然后再运行程序。这样代码中就可以使用上面这样的逻辑来动态的访问源码文件了。</p>
 
-<p>但是，使用这个方法有个问题，就是每运行一次，代码就会被保留一份到 <code class="highlighter-rouge">${PEX_ROOT}/code</code> 目录下一次，不仅会占用空间，而且会让别人可以方便的访问到源代码（虽然，直接解压 PEX 文件也能获得源代码）。所以，可以使用类似如下的代码，在程序退出前删除 PEX 解压出来的源代码：</p>
+<p>但是，使用这个方法有个问题，就是每运行一次，代码就会被保留一份到 <code class="language-plaintext highlighter-rouge">${PEX_ROOT}/code</code> 目录下一次，不仅会占用空间，而且会让别人可以方便的访问到源代码（虽然，直接解压 PEX 文件也能获得源代码）。所以，可以使用类似如下的代码，在程序退出前删除 PEX 解压出来的源代码：</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">clean_pex_code_dir</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
-    <span class="c"># We use default PEX_ROOT setting.</span>
-    <span class="n">pex_root</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s">"~/.pex"</span><span class="p">)</span>
-    <span class="n">code_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pex_root</span><span class="p">,</span> <span class="s">"code"</span><span class="p">)</span>
+    <span class="c1"># We use default PEX_ROOT setting.
+</span>    <span class="n">pex_root</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s">"~/.pex"</span><span class="p">)</span>
+    <span class="n">code_path</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="n">pex_root</span><span class="p">,</span> <span class="s">"code"</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">deco</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="c"># It's necessary to raise catched exception for dumping traceback.</span>
-            <span class="k">raise</span> <span class="n">e</span>
+            <span class="c1"># It's necessary to raise catched exception for dumping traceback.
+</span>            <span class="k">raise</span> <span class="n">e</span>
         <span class="k">finally</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">code_path</span><span class="p">):</span>
-                <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">code_path</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">exists</span><span class="p">(</span><span class="n">code_path</span><span class="p">):</span>
+                <span class="n">shutil</span><span class="p">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">code_path</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">deco</span>
 
 
-<span class="nd">@clean_pex_code_dir</span>
+<span class="o">@</span><span class="n">clean_pex_code_dir</span>
 <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
     <span class="k">pass</span>
 

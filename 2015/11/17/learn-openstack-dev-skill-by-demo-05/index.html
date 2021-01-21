@@ -145,7 +145,7 @@
 
 <p>这些就是我们要实现的用户管理的API了。其中， <strong>&lt;UUID&gt;</strong>表示使用一个UUID字符串，这个是OpenStack中最经常被用来作为各种资源ID的形式，如下所示：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>In [5]: import uuid
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>In [5]: import uuid
 In [6]: print uuid.uuid4()
 adb92482-baab-4832-84bc-f842f3eabd66
 In [7]: print uuid.uuid4().hex
@@ -162,7 +162,7 @@ In [7]: print uuid.uuid4().hex
 
 <p>一般来说，OpenStack项目中，使用Pecan来开发API服务时，都会在代码目录下有一个专门的API目录，用来保存API相关的代码。比如Magnum项目的<em>magnum/api</em>，或者Ceilometer项目的<em>ceilometer/api</em>等。我们的代码也遵守这个规范，让我们直接来看下我们的代码目录结构（#后面的表示注释）：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>➜ ~/programming/python/webdemo/webdemo/api git:(master) ✗ $ tree .
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>➜ ~/programming/python/webdemo/webdemo/api git:(master) ✗ $ tree .
 .
 ├── app.py           # 这个文件存放WSGI application的入口
 ├── config.py        # 这个文件存放Pecan的配置
@@ -195,32 +195,32 @@ In [7]: print uuid.uuid4().hex
 
 
 <span class="k">def</span> <span class="nf">get_pecan_config</span><span class="p">():</span>
-    <span class="n">filename</span> <span class="o">=</span> <span class="n">api_config</span><span class="o">.</span><span class="n">__file__</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">'.pyc'</span><span class="p">,</span> <span class="s">'.py'</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">pecan</span><span class="o">.</span><span class="n">configuration</span><span class="o">.</span><span class="n">conf_from_file</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="n">api_config</span><span class="p">.</span><span class="n">__file__</span><span class="p">.</span><span class="n">replace</span><span class="p">(</span><span class="s">'.pyc'</span><span class="p">,</span> <span class="s">'.py'</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">pecan</span><span class="p">.</span><span class="n">configuration</span><span class="p">.</span><span class="n">conf_from_file</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">setup_app</span><span class="p">():</span>
     <span class="n">config</span> <span class="o">=</span> <span class="n">get_pecan_config</span><span class="p">()</span>
 
-    <span class="n">app_conf</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">app</span><span class="p">)</span>
-    <span class="n">app</span> <span class="o">=</span> <span class="n">pecan</span><span class="o">.</span><span class="n">make_app</span><span class="p">(</span>
-        <span class="n">app_conf</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">'root'</span><span class="p">),</span>
+    <span class="n">app_conf</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">config</span><span class="p">.</span><span class="n">app</span><span class="p">)</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">pecan</span><span class="p">.</span><span class="n">make_app</span><span class="p">(</span>
+        <span class="n">app_conf</span><span class="p">.</span><span class="n">pop</span><span class="p">(</span><span class="s">'root'</span><span class="p">),</span>
         <span class="n">logging</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s">'logging'</span><span class="p">,</span> <span class="p">{}),</span>
         <span class="o">**</span><span class="n">app_conf</span>
     <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">app</span></code></pre></figure>
 
-<p>然后，我们至少还需要实现一下root controller，也就是<em>webdemo/api/controllers/root.py</em>这个文件中的<code class="highlighter-rouge">RootController</code>类：</p>
+<p>然后，我们至少还需要实现一下root controller，也就是<em>webdemo/api/controllers/root.py</em>这个文件中的<code class="language-plaintext highlighter-rouge">RootController</code>类：</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">pecan</span> <span class="kn">import</span> <span class="n">rest</span>
 <span class="kn">from</span> <span class="nn">wsme</span> <span class="kn">import</span> <span class="n">types</span> <span class="k">as</span> <span class="n">wtypes</span>
 <span class="kn">import</span> <span class="nn">wsmeext.pecan</span> <span class="k">as</span> <span class="n">wsme_pecan</span>
 
 
-<span class="k">class</span> <span class="nc">RootController</span><span class="p">(</span><span class="n">rest</span><span class="o">.</span><span class="n">RestController</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">RootController</span><span class="p">(</span><span class="n">rest</span><span class="p">.</span><span class="n">RestController</span><span class="p">):</span>
 
-    <span class="nd">@wsme_pecan.wsexpose</span><span class="p">(</span><span class="n">wtypes</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+    <span class="o">@</span><span class="n">wsme_pecan</span><span class="p">.</span><span class="n">wsexpose</span><span class="p">(</span><span class="n">wtypes</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s">"webdemo"</span></code></pre></figure>
 
@@ -237,10 +237,10 @@ In [7]: print uuid.uuid4().hex
     <span class="n">host</span> <span class="o">=</span> <span class="s">'0.0.0.0'</span>
     <span class="n">port</span> <span class="o">=</span> <span class="mi">8080</span>
 
-    <span class="n">application</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">setup_app</span><span class="p">()</span>
-    <span class="n">srv</span> <span class="o">=</span> <span class="n">simple_server</span><span class="o">.</span><span class="n">make_server</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">application</span><span class="p">)</span>
+    <span class="n">application</span> <span class="o">=</span> <span class="n">app</span><span class="p">.</span><span class="n">setup_app</span><span class="p">()</span>
+    <span class="n">srv</span> <span class="o">=</span> <span class="n">simple_server</span><span class="p">.</span><span class="n">make_server</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">application</span><span class="p">)</span>
 
-    <span class="n">srv</span><span class="o">.</span><span class="n">serve_forever</span><span class="p">()</span>
+    <span class="n">srv</span><span class="p">.</span><span class="n">serve_forever</span><span class="p">()</span>
 
 
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
@@ -252,14 +252,14 @@ In [7]: print uuid.uuid4().hex
 
 <p>首先，完善一下<strong>requirements.txt</strong>这个文件，包含我们需要的包：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pbr&lt;2.0,&gt;=0.11
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pbr&lt;2.0,&gt;=0.11
 pecan
 WSME
 </code></pre></div></div>
 
 <p>然后，我们手动创建一个virtualenv环境，并且安装requirements.txt中要求的包：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>➜ ~/programming/python/webdemo git:(master) ✗ $ virtualenv .venv
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>➜ ~/programming/python/webdemo git:(master) ✗ $ virtualenv .venv
 New python executable in .venv/bin/python
 Installing setuptools, pip, wheel...done.
 ➜ ~/programming/python/webdemo git:(master) ✗ $ source .venv/bin/activate
@@ -272,7 +272,7 @@ Successfully installed Mako-1.0.3 MarkupSafe-0.23 WSME-0.8.0 WebOb-1.5.1 WebTest
 
 <p>启动服务需要技巧，因为我们的webdemo还没有安装到系统的Python路径中，也不在上面创建virtualenv环境中，所以我们需要通过指定<strong>PYTHONPATH</strong>这个环境变量来为Python程序增加库的查找路径：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(.venv)➜ ~/programming/python/webdemo git:(master) ✗ $ PYTHONPATH=. python webdemo/cmd/api.py
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(.venv)➜ ~/programming/python/webdemo git:(master) ✗ $ PYTHONPATH=. python webdemo/cmd/api.py
 </code></pre></div></div>
 
 <p>现在测试服务器已经起来了，可以通过浏览器访问<em>http://localhost:8080/</em> 这个地址来查看结果。（你可能会发现，返回的是XML格式的结果，而我们想要的是JSON格式的。这个是WSME的问题，我们后面再来处理）。</p>
@@ -285,7 +285,7 @@ Successfully installed Mako-1.0.3 MarkupSafe-0.23 WSME-0.8.0 WebOb-1.5.1 WebTest
 
 <h3 id="让api返回json格式的数据">让API返回JSON格式的数据</h3>
 
-<p>现在，所有的OpenStack项目的REST API的返回格式都是使用JSON标准，所以我们也要这么做。那么有什么办法能够让WSME框架返回JSON数据呢？可以通过设置<code class="highlighter-rouge">wsmeext.pecan.wsexpose()</code>的<em>rest_content_types</em>参数来是先。这里，我们借鉴一段Magnum项目中的代码，把这段代码存放在文件<em>webdemo/api/expose.py</em>中：</p>
+<p>现在，所有的OpenStack项目的REST API的返回格式都是使用JSON标准，所以我们也要这么做。那么有什么办法能够让WSME框架返回JSON数据呢？可以通过设置<code class="language-plaintext highlighter-rouge">wsmeext.pecan.wsexpose()</code>的<em>rest_content_types</em>参数来是先。这里，我们借鉴一段Magnum项目中的代码，把这段代码存放在文件<em>webdemo/api/expose.py</em>中：</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">wsmeext.pecan</span> <span class="k">as</span> <span class="n">wsme_pecan</span>
 
@@ -295,9 +295,9 @@ Successfully installed Mako-1.0.3 MarkupSafe-0.23 WSME-0.8.0 WebOb-1.5.1 WebTest
     <span class="k">if</span> <span class="s">'rest_content_types'</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
         <span class="n">kwargs</span><span class="p">[</span><span class="s">'rest_content_types'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s">'json'</span><span class="p">,)</span>
 
-    <span class="k">return</span> <span class="n">wsme_pecan</span><span class="o">.</span><span class="n">wsexpose</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code></pre></figure>
+    <span class="k">return</span> <span class="n">wsme_pecan</span><span class="p">.</span><span class="n">wsexpose</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code></pre></figure>
 
-<p>这样我们就封装了自己的<code class="highlighter-rouge">expose</code>装饰器，每次都会设置响应的content-type为JSON。上面的root controller代码也就可以修改为：</p>
+<p>这样我们就封装了自己的<code class="language-plaintext highlighter-rouge">expose</code>装饰器，每次都会设置响应的content-type为JSON。上面的root controller代码也就可以修改为：</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">pecan</span> <span class="kn">import</span> <span class="n">rest</span>
 <span class="kn">from</span> <span class="nn">wsme</span> <span class="kn">import</span> <span class="n">types</span> <span class="k">as</span> <span class="n">wtypes</span>
@@ -305,9 +305,9 @@ Successfully installed Mako-1.0.3 MarkupSafe-0.23 WSME-0.8.0 WebOb-1.5.1 WebTest
 <span class="kn">from</span> <span class="nn">webdemo.api</span> <span class="kn">import</span> <span class="n">expose</span>
 
 
-<span class="k">class</span> <span class="nc">RootController</span><span class="p">(</span><span class="n">rest</span><span class="o">.</span><span class="n">RestController</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">RootController</span><span class="p">(</span><span class="n">rest</span><span class="p">.</span><span class="n">RestController</span><span class="p">):</span>
 
-    <span class="nd">@expose.expose</span><span class="p">(</span><span class="n">wtypes</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+    <span class="o">@</span><span class="n">expose</span><span class="p">.</span><span class="n">expose</span><span class="p">(</span><span class="n">wtypes</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s">"webdemo"</span></code></pre></figure>
 
@@ -330,23 +330,23 @@ Successfully installed Mako-1.0.3 MarkupSafe-0.23 WSME-0.8.0 WebOb-1.5.1 WebTest
 <span class="kn">from</span> <span class="nn">webdemo.api</span> <span class="kn">import</span> <span class="n">expose</span>
 
 
-<span class="k">class</span> <span class="nc">V1Controller</span><span class="p">(</span><span class="n">rest</span><span class="o">.</span><span class="n">RestController</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">V1Controller</span><span class="p">(</span><span class="n">rest</span><span class="p">.</span><span class="n">RestController</span><span class="p">):</span>
 
-    <span class="nd">@expose.expose</span><span class="p">(</span><span class="n">wtypes</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+    <span class="o">@</span><span class="n">expose</span><span class="p">.</span><span class="n">expose</span><span class="p">(</span><span class="n">wtypes</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s">'webdemo v1controller'</span></code></pre></figure>
 
 <p>然后把这个controller加入到root controller中：</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="o">...</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="p">...</span>
 <span class="kn">from</span> <span class="nn">webdemo.api.controllers.v1</span> <span class="kn">import</span> <span class="n">controller</span> <span class="k">as</span> <span class="n">v1_controller</span>
 <span class="kn">from</span> <span class="nn">webdemo.api</span> <span class="kn">import</span> <span class="n">expose</span>
 
 
-<span class="k">class</span> <span class="nc">RootController</span><span class="p">(</span><span class="n">rest</span><span class="o">.</span><span class="n">RestController</span><span class="p">):</span>
-    <span class="n">v1</span> <span class="o">=</span> <span class="n">v1_controller</span><span class="o">.</span><span class="n">V1Controller</span><span class="p">()</span>
+<span class="k">class</span> <span class="nc">RootController</span><span class="p">(</span><span class="n">rest</span><span class="p">.</span><span class="n">RestController</span><span class="p">):</span>
+    <span class="n">v1</span> <span class="o">=</span> <span class="n">v1_controller</span><span class="p">.</span><span class="n">V1Controller</span><span class="p">()</span>
 
-    <span class="nd">@expose.expose</span><span class="p">(</span><span class="n">wtypes</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+    <span class="o">@</span><span class="n">expose</span><span class="p">.</span><span class="n">expose</span><span class="p">(</span><span class="n">wtypes</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s">"webdemo"</span></code></pre></figure>
 
@@ -362,7 +362,7 @@ Successfully installed Mako-1.0.3 MarkupSafe-0.23 WSME-0.8.0 WebOb-1.5.1 WebTest
 
 <p>上篇文章中，我们已经提到了WSME可以用来规范API的请求和响应的值，这里我们就要用上它。首先，我们要参考OpenStack的惯例来设计这个API的返回值：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
   "users": [
     {
       "name": "Alice",
@@ -385,20 +385,20 @@ Successfully installed Mako-1.0.3 MarkupSafe-0.23 WSME-0.8.0 WebOb-1.5.1 WebTest
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">wsme</span> <span class="kn">import</span> <span class="n">types</span> <span class="k">as</span> <span class="n">wtypes</span>
 
 
-<span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">wtypes</span><span class="o">.</span><span class="n">Base</span><span class="p">):</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="n">wtypes</span><span class="o">.</span><span class="n">text</span>
+<span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">wtypes</span><span class="p">.</span><span class="n">Base</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">wtypes</span><span class="p">.</span><span class="n">text</span>
     <span class="n">age</span> <span class="o">=</span> <span class="nb">int</span>
 
 
-<span class="k">class</span> <span class="nc">Users</span><span class="p">(</span><span class="n">wtypes</span><span class="o">.</span><span class="n">Base</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">Users</span><span class="p">(</span><span class="n">wtypes</span><span class="p">.</span><span class="n">Base</span><span class="p">):</span>
     <span class="n">users</span> <span class="o">=</span> <span class="p">[</span><span class="n">User</span><span class="p">]</span></code></pre></figure>
 
-<p>这里我们定义了<code class="highlighter-rouge">class User</code>，表示一个用户信息，包含两个字段，name是一个文本，age是一个整型。<code class="highlighter-rouge">class Users</code>表示一组用户信息，包含一个字段users，是一个列表，列表的元素是上面定义的<code class="highlighter-rouge">class User</code>。完成这些定义后，我们就使用WSME来检查我们的API是否返回了合格的值；另一方面，只要我们的API返回了这些类型，那么就能通过WSME的检查。我们先来完成利用WSME来检查API返回值的代码：</p>
+<p>这里我们定义了<code class="language-plaintext highlighter-rouge">class User</code>，表示一个用户信息，包含两个字段，name是一个文本，age是一个整型。<code class="language-plaintext highlighter-rouge">class Users</code>表示一组用户信息，包含一个字段users，是一个列表，列表的元素是上面定义的<code class="language-plaintext highlighter-rouge">class User</code>。完成这些定义后，我们就使用WSME来检查我们的API是否返回了合格的值；另一方面，只要我们的API返回了这些类型，那么就能通过WSME的检查。我们先来完成利用WSME来检查API返回值的代码：</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">UsersController</span><span class="p">(</span><span class="n">rest</span><span class="o">.</span><span class="n">RestController</span><span class="p">):</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">UsersController</span><span class="p">(</span><span class="n">rest</span><span class="p">.</span><span class="n">RestController</span><span class="p">):</span>
 
-    <span class="c"># expose方法的第一个参数表示返回值的类型</span>
-    <span class="nd">@expose.expose</span><span class="p">(</span><span class="n">Users</span><span class="p">)</span>
+    <span class="c1"># expose方法的第一个参数表示返回值的类型
+</span>    <span class="o">@</span><span class="n">expose</span><span class="p">.</span><span class="n">expose</span><span class="p">(</span><span class="n">Users</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">pass</span></code></pre></figure>
 
@@ -408,9 +408,9 @@ Successfully installed Mako-1.0.3 MarkupSafe-0.23 WSME-0.8.0 WebOb-1.5.1 WebTest
 
 <p>我们现在来完成API的逻辑部分。不过为了方便大家理解，我们直接返回一个写好的数据，就是上面贴出来的那个。</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">UsersController</span><span class="p">(</span><span class="n">rest</span><span class="o">.</span><span class="n">RestController</span><span class="p">):</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">UsersController</span><span class="p">(</span><span class="n">rest</span><span class="p">.</span><span class="n">RestController</span><span class="p">):</span>
 
-    <span class="nd">@expose.expose</span><span class="p">(</span><span class="n">Users</span><span class="p">)</span>
+    <span class="o">@</span><span class="n">expose</span><span class="p">.</span><span class="n">expose</span><span class="p">(</span><span class="n">Users</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">user_info_list</span> <span class="o">=</span> <span class="p">[</span>
             <span class="p">{</span>
@@ -425,21 +425,21 @@ Successfully installed Mako-1.0.3 MarkupSafe-0.23 WSME-0.8.0 WebOb-1.5.1 WebTest
         <span class="n">users_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">User</span><span class="p">(</span><span class="o">**</span><span class="n">user_info</span><span class="p">)</span> <span class="k">for</span> <span class="n">user_info</span> <span class="ow">in</span> <span class="n">user_info_list</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">Users</span><span class="p">(</span><span class="n">users</span><span class="o">=</span><span class="n">users_list</span><span class="p">)</span></code></pre></figure>
 
-<p>代码中，会先根据user信息生成User实例的列表<code class="highlighter-rouge">users_list</code>，然后再生成Users实例。此时，重启测试服务器后，你就可以从浏览器访问http://localhost:8080/v1/users，就能看到结果了。</p>
+<p>代码中，会先根据user信息生成User实例的列表<code class="language-plaintext highlighter-rouge">users_list</code>，然后再生成Users实例。此时，重启测试服务器后，你就可以从浏览器访问http://localhost:8080/v1/users，就能看到结果了。</p>
 
 <h3 id="实现-post-v1users">实现 POST /v1/users</h3>
 
 <p>这个API会接收用户上传的一个JSON格式的数据，然后打印出来（实际中一般是存到数据库之类的），要求用户上传的数据符合User类型的规范，并且返回的状态码为201。代码如下：</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">UsersController</span><span class="p">(</span><span class="n">rest</span><span class="o">.</span><span class="n">RestController</span><span class="p">):</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">UsersController</span><span class="p">(</span><span class="n">rest</span><span class="p">.</span><span class="n">RestController</span><span class="p">):</span>
 
-    <span class="nd">@expose.expose</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">User</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="mi">201</span><span class="p">)</span>
+    <span class="o">@</span><span class="n">expose</span><span class="p">.</span><span class="n">expose</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">User</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="mi">201</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
         <span class="k">print</span> <span class="n">user</span></code></pre></figure>
 
 <p>可以使用curl程序来测试：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> ~/programming/python/webdemo git:(master) ✗ $ curl -X POST http://localhost:8080/v1/users -H "Content-Type: application/json" -d '{"name": "Cook", "age": 50}' -v
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> ~/programming/python/webdemo git:(master) ✗ $ curl -X POST http://localhost:8080/v1/users -H "Content-Type: application/json" -d '{"name": "Cook", "age": 50}' -v
 *   Trying 127.0.0.1...
 * Connected to localhost (127.0.0.1) port 8080 (#0)
 &gt; POST /v1/users HTTP/1.1
@@ -461,13 +461,13 @@ Successfully installed Mako-1.0.3 MarkupSafe-0.23 WSME-0.8.0 WebOb-1.5.1 WebTest
 
 <p>同时，服务器上也会打印出：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>127.0.0.1 - - [16/Nov/2015 23:16:28] "POST /v1/users HTTP/1.1" 201 0
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>127.0.0.1 - - [16/Nov/2015 23:16:28] "POST /v1/users HTTP/1.1" 201 0
 &lt;webdemo.api.controllers.v1.users.User object at 0x7f65e058d550&gt;
 </code></pre></div></div>
 
-<p>我们用3行代码就实现了这个POST的逻辑。现在来说明一下这里的秘密。<code class="highlighter-rouge">expose</code>装饰器的第一个参数表示这个方法没有返回值；第三个参数表示这个API的响应状态码是201，如果不加这个参数，在没有返回值的情况下，默认会返回204。第二个参数要说明一下，这里用的是<code class="highlighter-rouge">body=User</code>，你也可以直接写<code class="highlighter-rouge">User</code>。使用<code class="highlighter-rouge">body=User</code>这种形式，你可以直接发送符合User规范的JSON字符串；如果是用<code class="highlighter-rouge">expose(None, User, status_code=201)</code>那么你需要发送下面这样的数据：</p>
+<p>我们用3行代码就实现了这个POST的逻辑。现在来说明一下这里的秘密。<code class="language-plaintext highlighter-rouge">expose</code>装饰器的第一个参数表示这个方法没有返回值；第三个参数表示这个API的响应状态码是201，如果不加这个参数，在没有返回值的情况下，默认会返回204。第二个参数要说明一下，这里用的是<code class="language-plaintext highlighter-rouge">body=User</code>，你也可以直接写<code class="language-plaintext highlighter-rouge">User</code>。使用<code class="language-plaintext highlighter-rouge">body=User</code>这种形式，你可以直接发送符合User规范的JSON字符串；如果是用<code class="language-plaintext highlighter-rouge">expose(None, User, status_code=201)</code>那么你需要发送下面这样的数据：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{ "user": {"name": "Cook", "age": 50} }
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{ "user": {"name": "Cook", "age": 50} }
 </code></pre></div></div>
 <p>你可以自己测试一下区别。要更多的了解本节提到的expose参数，请参考WSM文档<a href="http://wsme.readthedocs.org/en/latest/functions.html">Functions</a>。</p>
 
@@ -479,53 +479,53 @@ Successfully installed Mako-1.0.3 MarkupSafe-0.23 WSME-0.8.0 WebOb-1.5.1 WebTest
 
 <ol>
   <li>在UsersController中解析出<UUID>的部分，然后把请求传递给这个一个新的UserController。从命名可以看出，UsersController是针对多个用户的，UserController是针对一个用户的。</UUID></li>
-  <li>在UserController中实现<code class="highlighter-rouge">get()</code>方法。</li>
+  <li>在UserController中实现<code class="language-plaintext highlighter-rouge">get()</code>方法。</li>
 </ol>
 
 <h4 id="使用_lookup方法">使用_lookup()方法</h4>
 
-<p>Pecan的<code class="highlighter-rouge">_lookup()</code>方法是controller中的一个特殊方法，Pecan会在特定的时候调用这个方法来实现更灵活的URL路由。Pecan还支持用户实现<code class="highlighter-rouge">_default()</code>和<code class="highlighter-rouge">_route()</code>方法。这些方法的具体说明，请阅读Pecan的文档：<a href="https://pecan.readthedocs.org/en/latest/routing.html">routing</a>。</p>
+<p>Pecan的<code class="language-plaintext highlighter-rouge">_lookup()</code>方法是controller中的一个特殊方法，Pecan会在特定的时候调用这个方法来实现更灵活的URL路由。Pecan还支持用户实现<code class="language-plaintext highlighter-rouge">_default()</code>和<code class="language-plaintext highlighter-rouge">_route()</code>方法。这些方法的具体说明，请阅读Pecan的文档：<a href="https://pecan.readthedocs.org/en/latest/routing.html">routing</a>。</p>
 
-<p>我们这里只用到<code class="highlighter-rouge">_lookup()</code>方法，这个方法会在controller中没有其他方法可以执行且没有<code class="highlighter-rouge">_default()</code>方法的时候执行。比如上面的UsersController中，没有定义*/v1/users/<UUID>*如何处理，它只能返回404；如果你定义了`_lookup()`方法，那么它就会调用该方法。</UUID></p>
+<p>我们这里只用到<code class="language-plaintext highlighter-rouge">_lookup()</code>方法，这个方法会在controller中没有其他方法可以执行且没有<code class="language-plaintext highlighter-rouge">_default()</code>方法的时候执行。比如上面的UsersController中，没有定义*/v1/users/<UUID>*如何处理，它只能返回404；如果你定义了`_lookup()`方法，那么它就会调用该方法。</UUID></p>
 
-<p><code class="highlighter-rouge">_lookup()</code>方法需要返回一个元组，元组的第一个元素是下一个controller的实例，第二个元素是URL path中剩余的部分。</p>
+<p><code class="language-plaintext highlighter-rouge">_lookup()</code>方法需要返回一个元组，元组的第一个元素是下一个controller的实例，第二个元素是URL path中剩余的部分。</p>
 
-<p>在这里，我们就需要在<code class="highlighter-rouge">_lookup()</code>方法中解析出UUID的部分并传递给新的controller作为新的参数，并且返回剩余的URL path。来看下代码：</p>
+<p>在这里，我们就需要在<code class="language-plaintext highlighter-rouge">_lookup()</code>方法中解析出UUID的部分并传递给新的controller作为新的参数，并且返回剩余的URL path。来看下代码：</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">UserController</span><span class="p">(</span><span class="n">rest</span><span class="o">.</span><span class="n">RestController</span><span class="p">):</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">UserController</span><span class="p">(</span><span class="n">rest</span><span class="p">.</span><span class="n">RestController</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="n">user_id</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="n">user_id</span>
 
 
-<span class="k">class</span> <span class="nc">UsersController</span><span class="p">(</span><span class="n">rest</span><span class="o">.</span><span class="n">RestController</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">UsersController</span><span class="p">(</span><span class="n">rest</span><span class="p">.</span><span class="n">RestController</span><span class="p">):</span>
 
-    <span class="nd">@pecan.expose</span><span class="p">()</span>
+    <span class="o">@</span><span class="n">pecan</span><span class="p">.</span><span class="n">expose</span><span class="p">()</span>
     <span class="k">def</span> <span class="nf">_lookup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="o">*</span><span class="n">remainder</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">UserController</span><span class="p">(</span><span class="n">user_id</span><span class="p">),</span> <span class="n">remainder</span></code></pre></figure>
 
-<p><code class="highlighter-rouge">_lookup()</code>方法的形式为<code class="highlighter-rouge">_lookup(self, user_id, *remainder)</code>，意思就是会把/v1/users/<UUID>中的<UUID>部分作为user_id这个参数，剩余的按照**"/"**分割为一个数组参数（这里remainder为空）。然后，`_lookup()`方法里会初始化一个UserController实例，使用user_id作为初始化参数。这么做之后，这个初始化的控制器就能知道是要查找哪个用户了。然后这个控制器会被返回，作为下一个控制被调用。请求的处理流程就这么转移到UserController中了。</UUID></UUID></p>
+<p><code class="language-plaintext highlighter-rouge">_lookup()</code>方法的形式为<code class="language-plaintext highlighter-rouge">_lookup(self, user_id, *remainder)</code>，意思就是会把/v1/users/<UUID>中的<UUID>部分作为user_id这个参数，剩余的按照**"/"**分割为一个数组参数（这里remainder为空）。然后，`_lookup()`方法里会初始化一个UserController实例，使用user_id作为初始化参数。这么做之后，这个初始化的控制器就能知道是要查找哪个用户了。然后这个控制器会被返回，作为下一个控制被调用。请求的处理流程就这么转移到UserController中了。</UUID></UUID></p>
 
 <h4 id="实现api逻辑-1">实现API逻辑</h4>
 
 <p>实现前，我们要先修改一下我们返回的数据，里面需要增加一个id字段。对应的User定义如下：</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">wtypes</span><span class="o">.</span><span class="n">Base</span><span class="p">):</span>
-    <span class="nb">id</span> <span class="o">=</span> <span class="n">wtypes</span><span class="o">.</span><span class="n">text</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="n">wtypes</span><span class="o">.</span><span class="n">text</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">wtypes</span><span class="p">.</span><span class="n">Base</span><span class="p">):</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">wtypes</span><span class="p">.</span><span class="n">text</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">wtypes</span><span class="p">.</span><span class="n">text</span>
     <span class="n">age</span> <span class="o">=</span> <span class="nb">int</span></code></pre></figure>
 
 <p>现在，完整的UserController代码如下：</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">UserController</span><span class="p">(</span><span class="n">rest</span><span class="o">.</span><span class="n">RestController</span><span class="p">):</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">UserController</span><span class="p">(</span><span class="n">rest</span><span class="p">.</span><span class="n">RestController</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="n">user_id</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="n">user_id</span>
 
-    <span class="nd">@expose.expose</span><span class="p">(</span><span class="n">User</span><span class="p">)</span>
+    <span class="o">@</span><span class="n">expose</span><span class="p">.</span><span class="n">expose</span><span class="p">(</span><span class="n">User</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">user_info</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s">'id'</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_id</span><span class="p">,</span>
+            <span class="s">'id'</span><span class="p">:</span> <span class="bp">self</span><span class="p">.</span><span class="n">user_id</span><span class="p">,</span>
             <span class="s">'name'</span><span class="p">:</span> <span class="s">'Alice'</span><span class="p">,</span>
             <span class="s">'age'</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span>
         <span class="p">}</span>
@@ -533,7 +533,7 @@ Successfully installed Mako-1.0.3 MarkupSafe-0.23 WSME-0.8.0 WebOb-1.5.1 WebTest
 
 <p>使用curl来检查一下效果：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>➜ ~/programming/python/webdemo git:(master) ✗ $ curl http://localhost:8080/v1/users/29520c88de6b4c76ae8deb48db0a71e7
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>➜ ~/programming/python/webdemo git:(master) ✗ $ curl http://localhost:8080/v1/users/29520c88de6b4c76ae8deb48db0a71e7
 {"age": 30, "id": "29520c88de6b4c76ae8deb48db0a71e7", "name": "Alice"}
 </code></pre></div></div>
 
@@ -545,9 +545,9 @@ Successfully installed Mako-1.0.3 MarkupSafe-0.23 WSME-0.8.0 WebOb-1.5.1 WebTest
 
 <p>像下面这样做就可以了（你可以测试一下，改成这样后，不传递id的<em>POST /v1/users</em>会失败）：</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">wtypes</span><span class="o">.</span><span class="n">Base</span><span class="p">):</span>
-    <span class="nb">id</span> <span class="o">=</span> <span class="n">wtypes</span><span class="o">.</span><span class="n">wsattr</span><span class="p">(</span><span class="n">wtypes</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">mandatory</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="n">wtypes</span><span class="o">.</span><span class="n">text</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">wtypes</span><span class="p">.</span><span class="n">Base</span><span class="p">):</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">wtypes</span><span class="p">.</span><span class="n">wsattr</span><span class="p">(</span><span class="n">wtypes</span><span class="p">.</span><span class="n">text</span><span class="p">,</span> <span class="n">mandatory</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">wtypes</span><span class="p">.</span><span class="n">text</span>
     <span class="n">age</span> <span class="o">=</span> <span class="nb">int</span></code></pre></figure>
 
 <p><strong>如何检查一个可选字段的值是否存在</strong></p>
@@ -556,22 +556,22 @@ Successfully installed Mako-1.0.3 MarkupSafe-0.23 WSME-0.8.0 WebOb-1.5.1 WebTest
 
 <h3 id="实现-put-v1users">实现 PUT /v1/users/<UUID></UUID></h3>
 
-<p>这个和上一个API一样，不过<code class="highlighter-rouge">_lookup()</code>方法已经实现过了，直接添加方法到UserController中即可：</p>
+<p>这个和上一个API一样，不过<code class="language-plaintext highlighter-rouge">_lookup()</code>方法已经实现过了，直接添加方法到UserController中即可：</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">UserController</span><span class="p">(</span><span class="n">rest</span><span class="o">.</span><span class="n">RestController</span><span class="p">):</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">UserController</span><span class="p">(</span><span class="n">rest</span><span class="p">.</span><span class="n">RestController</span><span class="p">):</span>
 
-    <span class="nd">@expose.expose</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">User</span><span class="p">)</span>
+    <span class="o">@</span><span class="n">expose</span><span class="p">.</span><span class="n">expose</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">User</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
         <span class="n">user_info</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s">'id'</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_id</span><span class="p">,</span>
-            <span class="s">'name'</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-            <span class="s">'age'</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">age</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s">'id'</span><span class="p">:</span> <span class="bp">self</span><span class="p">.</span><span class="n">user_id</span><span class="p">,</span>
+            <span class="s">'name'</span><span class="p">:</span> <span class="n">user</span><span class="p">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="s">'age'</span><span class="p">:</span> <span class="n">user</span><span class="p">.</span><span class="n">age</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
         <span class="p">}</span>
         <span class="k">return</span> <span class="n">User</span><span class="p">(</span><span class="o">**</span><span class="n">user_info</span><span class="p">)</span></code></pre></figure>
 
 <p>通过curl来测试：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>➜ ~/programming/python/webdemo git:(master) ✗ $ curl -X PUT http://localhost:8080/v1/users/29520c88de6b4c76ae8deb48db0a71e7 -H "Content-Type: application/json" -d '{"name": "Cook", "age": 50}'
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>➜ ~/programming/python/webdemo git:(master) ✗ $ curl -X PUT http://localhost:8080/v1/users/29520c88de6b4c76ae8deb48db0a71e7 -H "Content-Type: application/json" -d '{"name": "Cook", "age": 50}'
 {"age": 51, "id": "29520c88de6b4c76ae8deb48db0a71e7", "name": "Cook"}% 
 </code></pre></div></div>
 
@@ -579,11 +579,11 @@ Successfully installed Mako-1.0.3 MarkupSafe-0.23 WSME-0.8.0 WebOb-1.5.1 WebTest
 
 <p>同上，没有什么新的内容：</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">UserController</span><span class="p">(</span><span class="n">rest</span><span class="o">.</span><span class="n">RestController</span><span class="p">):</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">UserController</span><span class="p">(</span><span class="n">rest</span><span class="p">.</span><span class="n">RestController</span><span class="p">):</span>
 
-    <span class="nd">@expose.expose</span><span class="p">()</span>
+    <span class="o">@</span><span class="n">expose</span><span class="p">.</span><span class="n">expose</span><span class="p">()</span>
     <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">print</span> <span class="s">'Delete user_id: </span><span class="si">%</span><span class="s">s'</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_id</span></code></pre></figure>
+        <span class="k">print</span> <span class="s">'Delete user_id: %s'</span> <span class="o">%</span> <span class="bp">self</span><span class="p">.</span><span class="n">user_id</span></code></pre></figure>
 
 <h2 id="总结">总结</h2>
 
