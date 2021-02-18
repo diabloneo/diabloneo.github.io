@@ -6,9 +6,183 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 01 Feb 2021 11:38:25 +0800</pubDate>
-    <lastBuildDate>Mon, 01 Feb 2021 11:38:25 +0800</lastBuildDate>
+    <pubDate>Thu, 18 Feb 2021 19:59:06 +0800</pubDate>
+    <lastBuildDate>Thu, 18 Feb 2021 19:59:06 +0800</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
+    
+      <item>
+        <title>FoundationDB flow -- Part 1</title>
+        <description>&lt;h1 id=&quot;introduction&quot;&gt;Introduction&lt;/h1&gt;
+
+&lt;p&gt;flow 其实是一种语言，提供了一种在 C++ 中编写异步程序的方式。在 Linux 上，flow 的底层依赖于&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;boost::asio，用于实现网络异步。&lt;/li&gt;
+  &lt;li&gt;kernel 的 ASIO，用于实现 IO 异步。&lt;/li&gt;
+  &lt;li&gt;以及自己实现的定时器调度，用于实现定时器异步。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;在 flow 最常见的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;loop choose ... when&lt;/code&gt; 其实类似于 Golang 的 &lt;strong&gt;for + select + channel&lt;/strong&gt; 的方式。一个 ACTOR 可以理解为一个 goroutine。但是，因为 flow 是以 C++ 为基础的，所以它看起来会比较奇怪，比较难以理解。&lt;/p&gt;
+
+&lt;p&gt;这个系列文章主要用于梳理 FoundationDB (fdb) flow 是如何工作的，以帮助大家看懂代码（官方文档实在太少）。&lt;/p&gt;
+
+&lt;h1 id=&quot;future-and-promise&quot;&gt;Future and Promise&lt;/h1&gt;
+
+&lt;p&gt;Future 和 Promise 相当于一个简化的 Golang 的 channel，Future 可以用来等待和接受，Promise 则用来触发和发送。&lt;/p&gt;
+
+&lt;p&gt;在 flow 的语境下，Future 表示一个 ACTOR 等待的值，Promise  表示一个 ACTOR 会承诺提供的值。当一个 ACTOR 创建了一个 Promise 之后，需要把该 Promise 对应的 future 提供给等待者 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;(promise.getFuture())&lt;/code&gt;，等待者会 wait 这个 future，达到传递值的目的。&lt;/p&gt;
+
+&lt;p&gt;Future 和 Promise 都采用了 Pimpl 的模式来实现，主要实现放在成员 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SAV&amp;lt;T&amp;gt; *sav&lt;/code&gt; 中。&lt;/p&gt;
+
+&lt;h2 id=&quot;sav-single-assignment-variable&quot;&gt;SAV: Single Assignment Variable&lt;/h2&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SAV&lt;/code&gt; 申请了一段连续内存来保存一个对象，同时绑定了一个 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Error&lt;/code&gt; ，当 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Error&lt;/code&gt; 已经被设置过时，获取这个对象会抛出异常。这个错误主要用来控制给对象只能被设置一次，比如各种 send 函数，只能调用一次。&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SAV&lt;/code&gt; 初始化的时候，需要指定有几个 futures，有几个 promises。futures 表示有多少个对象在等待回调，promises 表示有多少个对象会触发这个回调。futures 为 0，表示没有人在等待回调，意味着这个 SAV 可以被删除了。&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SAV&lt;/code&gt; 继承自 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Callback&lt;/code&gt; ，通过一个双向链表来保存需要回调的函数。&lt;/p&gt;
+
+&lt;h3 id=&quot;savsendvalue&quot;&gt;sav.send(value)&lt;/h3&gt;
+
+&lt;p&gt;将 value 移动到 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sav.value_storage&lt;/code&gt; 中，将 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;error_state&lt;/code&gt; 设置为 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SET_ERROR_CODE&lt;/code&gt;，然后调用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Callback&amp;lt;T&amp;gt;::next-&amp;gt;fire(value)&lt;/code&gt;。这个函数是整个 flow 语言的核心，对一个 promise 调用 send 时，相当于触发了它对应的回调函数，从而让等待在对应 future 上的函数继续执行。&lt;/p&gt;
+
+&lt;h3 id=&quot;savsenderror&quot;&gt;sav.send(Error)&lt;/h3&gt;
+
+&lt;p&gt;这个和 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sav.send(value)&lt;/code&gt; 的类似，不过 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;error_state&lt;/code&gt; 会设置为参数传递进来的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;err&lt;/code&gt;，然后调用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Callback&amp;lt;T&amp;gt;::next-&amp;gt;error(err)&lt;/code&gt;。&lt;/p&gt;
+
+&lt;h3 id=&quot;promise-相关的函数&quot;&gt;Promise 相关的函数&lt;/h3&gt;
+
+&lt;p&gt;以下几个函数是和 promise 相关的。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;finishSendAndDelPromiseRef&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;error_state&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SET_ERROR_CODE&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;callback&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!--&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;promises&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;futures&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;destroy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;一个 promise 已经完成，判断是否还有 promise 或者 future，都没有则 destroy。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;sendAndDelPromiseRef&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-jsx highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;promises&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;futures&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;destroy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;调用&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fnishSendAndDelPromiseRef&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;作为一个 promise 提供者，调用这个方法发送 promise，然后减少引用计数。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;sendErrorAndDelPromiseRef&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;和上面的方法作用类似，只不过用于 sendError 的情况&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;addCallbackAndDelFutureRef(cb)&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;将当前对象 this 添加到 cb 的队列中&lt;/p&gt;
+
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Callback&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;next&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sav&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;futures&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;如果当前对象和回调的对象不同，则减少当前对象的 futures。对于一个刚创建的对象，其 next == this，所以这里不会调用。如果添加过 callback 了，那么这里会执行  futures–。根据注释，这个是逻辑上保持 futures 计数平衡的措施。不过，这个代码太绕，注释也不清晰，不知道是什么含义。&lt;/p&gt;
+
+&lt;h2 id=&quot;callback&quot;&gt;Callback&lt;/h2&gt;
+
+&lt;p&gt;本质上是一个双向链表，提供了 fire, error, wait 等虚函数。&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Callback&lt;/code&gt; 被继承使用，例如 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SAV&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ActorCallback&lt;/code&gt;，继承者指定如何实现 fire 等函数。&lt;/p&gt;
+
+&lt;p&gt;例如 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ActorCallback&lt;/code&gt; 会指定调用注册的对象的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;a_callback_fire&lt;/code&gt; 函数和 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;a_callback_error&lt;/code&gt; 函数。这两个函数是在 ACTOR 生成的代码中自动生成的，属于 XxxActorState 类。&lt;/p&gt;
+
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;template&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ActorType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CallbackNumber&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ValueType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ActorCallback&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Callback&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ValueType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;virtual&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fire&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ValueType&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;override&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;static_cast&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ActorType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a_callback_fire&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;virtual&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Error&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;override&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;static_cast&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ActorType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a_callback_error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;在整个 flow 程序里，有一点是比较难理解的： future 和 actor 都是 callback。&lt;/p&gt;
+
+&lt;h1 id=&quot;actor&quot;&gt;Actor&lt;/h1&gt;
+
+&lt;p&gt;每个 ACTOR 会被生成一系列的代码，包括原始函数，一个 Actor 类，和一个用于保存状态的 ActorState 类，主要的逻辑在 ActorState 类里。&lt;/p&gt;
+
+&lt;p&gt;Actor 和 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;g_network&lt;/code&gt; 对象强绑定，也就是和 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Net2&lt;/code&gt; 类 (flow/Net2.actor.cpp) 强绑定，所有的 delay 和 yield 调用都作用于 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;g_network&lt;/code&gt; 对象，用于将当前 coroutine 的回调添加到 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Net2&lt;/code&gt; 的 ready 队列中。&lt;/p&gt;
+
+&lt;h2 id=&quot;net2&quot;&gt;Net2&lt;/h2&gt;
+
+&lt;p&gt;flow 的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Net2&lt;/code&gt; 是一个 flow 应用的起点，开始于 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;g_network-&amp;gt;run()&lt;/code&gt;， &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;g_network&lt;/code&gt; 是一个 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Net2&lt;/code&gt; 实例，run 方法主要的逻辑是把 ready 队列中的 task 取出并执行。&lt;/p&gt;
+
+&lt;p&gt;所有的 flow ACTOR 的执行，都需要先提交到 Net2 的 ready 队列。这里有四个方法，三个是 delay，一个是 yield （见 flow/flow.h 文件的最下面）。所以，ACTOR 生成的后的代码，主要通过调用 delay 和 yield 来实现 coroutine 的运行控制。&lt;/p&gt;
+
+&lt;h2 id=&quot;tutorial&quot;&gt;Tutorial&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;documentation/tutorial/tutorial.actor.cpp&lt;/em&gt; 包含了很多 ACTOR 示例，这个也可以用来理解 flow 的实现细节。从这里开始，我会基于 tutorial 中的例子来分析 flow 应用是如何运行的，&lt;/p&gt;
+
+&lt;p&gt;tutorial 文件按照从上到下的顺序提供了从简单到复杂的 flow 程序。我们可以通过对比源代码，和编译器转换后的代码来学习一个 ACTOR 的运行流程。&lt;/p&gt;
+
+&lt;p&gt;编译的方法可以在官方 README 查到，编译后的文件变成了 &lt;em&gt;PATH_TO_BUILD&lt;/em&gt;/documentation/tutorial/&lt;em&gt;tutorial.actor.g.cpp。&lt;/em&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;simpletimer&quot;&gt;simpleTimer&lt;/h1&gt;
+
+&lt;p&gt;这个方法实现一个简单的循环定时器，每个一定时间，打印一条输出。&lt;/p&gt;
+
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;ACTOR&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Future&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Void&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;simpleTimer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;state&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;start_time&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;g_network&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;now&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;loop&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;wait&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;delay&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;1.0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cout&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Time: %.2f&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;g_network&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;now&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;start_time&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;这个函数会被编译器转换为三个部分： &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;simpleTimer&lt;/code&gt; 函数， &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SimpleTimerActor&lt;/code&gt; 和  &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SimpleTimerActorState&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;simpleTimer&lt;/code&gt; 函数的 signature 和原来一样，但是内部的实现全部被放到 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SimpletTimeActor&lt;/code&gt; 中：&lt;/p&gt;
+
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;SimpleTimerActor&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Actor&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Void&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ActorCallback&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SimpleTimerActor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Void&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;FastAllocated&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SimpleTimerActor&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SimpleTimerActorState&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SimpleTimerActor&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SimpleTimerActor&lt;/code&gt; 类的基类 Actor 的基类是个 SAV，用来保存一个 ACTOR 的状态：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;1: actor is cancelled&lt;/li&gt;
+  &lt;li&gt;0: actor is not waiting&lt;/li&gt;
+  &lt;li&gt;1-N: waiting in callback group #，就是等待的 callback group 的编号。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;基类 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ActorCallback&lt;/code&gt; 提供了对 Callback 的 fire, error 的实现，分别映射到 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;a_callback_fire&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;a_callback_error&lt;/code&gt; 两个调用。这两个调用都是由 XxxxActorState 类实现的。&lt;/p&gt;
+
+&lt;p&gt;一个 actor 被转换为 Actor 类之后，其执行入口就是这个 Actor 类的构造函数。Actor 类还支持了 cancel 操作。&lt;/p&gt;
+
+&lt;p&gt;XxxActorState 类用于封装 ACTOR 的逻辑，所有的 state (flow 的 state 关键字定义的变量) 都是该类的类成员，该类会根据用户写的 flow 关键字，生成很多个类函数，一般来说。另外，对于所有的 wait 和 waitNext  操作，都会生成对应的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;a_callback_fire&lt;/code&gt; 和 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;a_callback_error&lt;/code&gt; 函数，实现异步回调。XxxActorState 类的入口是在 XxxActor 中调用的，一般是 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;this-&amp;gt;a_body1()&lt;/code&gt;. 自动生成的 XxxActorState 类帮助用户解决了异步编程中的 callback hell 问题。&lt;/p&gt;
+
+&lt;p&gt;simpleTimer 的逻辑很简单，就是等待定时器到期后，打印一个字符串。 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;delay&lt;/code&gt; 是一个关键点的函数（上文提到过），对应到 Net2::delay 函数。&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SimpleTimerActorState.a_body1loopBody1&lt;/code&gt; 封装了对 delay 的调用。这里有两个关键点：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;delay 调用本身会生成一个 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;DelayedTask&lt;/code&gt;，其中会封装一个 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PromiseTask&lt;/code&gt;，然后 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;DelayedTask&lt;/code&gt; 加入到 ready 队列中。&lt;/li&gt;
+  &lt;li&gt;delay 调用本身会返回一个 Future，名字是 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;__when_expr_0&lt;/code&gt;，然后会执行 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;__when_expr_0.addCallbackAndClear(this)&lt;/code&gt;，这个调用最终会把当前对象 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;this&lt;/code&gt;，也就是 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SimpleTimerActorState&lt;/code&gt; 实例作为一个 callback，加入到 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;__when_expr_0&lt;/code&gt; 的回调队列中。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;当 delay 生成的 DelayedTask 在 Net2::run 中被调用时，会执行的是其中封装的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PromiseTask&lt;/code&gt;，这个 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PromiseTask&lt;/code&gt; 被执行时，会调用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Promise.send&lt;/code&gt; 方法，激活自己所对应的 Future ，也就是前面 delay 函数返回的那个。因为 send 的结果是调用 SAV 对应的 callback 操作，所以这里就会调用前面通过 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;__when_expr_0.addCallbackAndClear(this)&lt;/code&gt; 对应的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;this&lt;/code&gt;，也就是 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SimpleTimerActorState&lt;/code&gt; 的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;a_callback_fire&lt;/code&gt; 函数。&lt;/p&gt;
+
+&lt;p&gt;这个函数会调用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;a_body1loopBody1when1 -&amp;gt; a_body1loopBody1cont1&lt;/code&gt;，在这个函数里会调用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;std::cout&lt;/code&gt; 打印函数。&lt;/p&gt;
+</description>
+        <pubDate>Thu, 18 Feb 2021 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2021/02/18/FoundationDB-flow-part-1/</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2021/02/18/FoundationDB-flow-part-1/</guid>
+        
+        <category>programming</category>
+        
+        
+      </item>
     
       <item>
         <title>模拟一个处于 D 状态的进程</title>
@@ -1243,64 +1417,6 @@ Write cache enabled
         <guid isPermaLink="true">http://diabloneo.github.io//2019/08/11/pex-vist-source-files/</guid>
         
         <category>python</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>想到什么写什么周报 第46期 - 2019-06-16</title>
-        <description>&lt;h2 id=&quot;lessons-learned-porting-50k-loc-from-java-to-go&quot;&gt;Lessons learned porting 50k loc from Java to Go&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://blog.kowalczyk.info/article/19f2fe97f06a47c3b1f118fd06851fad/lessons-learned-porting-50k-loc-from-java-to-go.html&quot;&gt;https://blog.kowalczyk.info/article/19f2fe97f06a47c3b1f118fd06851fad/lessons-learned-porting-50k-loc-from-java-to-go.html&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;作者使用将 RavenDB 的 Java Client 移植了一个 Go 版本，文章列举了一些移植策略，以及如何使用 Go 实现一些 Java 的特性，比如异常和泛型。&lt;/p&gt;
-
-&lt;h2 id=&quot;stack-history-a-timeline-of-ubers-tech-stack-evolution&quot;&gt;Stack History: A Timeline of Uber’s Tech Stack Evolution&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://stackshare.io/stack-history-timeline-uber-tech-stack-evolution&quot;&gt;https://stackshare.io/stack-history-timeline-uber-tech-stack-evolution&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Uber 的架构进化史。&lt;/p&gt;
-
-&lt;h2 id=&quot;how-to-use-sorted-and-sort-in-python&quot;&gt;How to Use sorted() and sort() in Python&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://realpython.com/python-sort/&quot;&gt;https://realpython.com/python-sort/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;一篇很详细的介绍 Python 的 sorted() 和 sort() 的用法的文章。&lt;/p&gt;
-
-&lt;h2 id=&quot;goodbye-microservices-from-100s-of-problem-children-to-1-superstar&quot;&gt;Goodbye Microservices: From 100s of problem children to 1 superstar&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://segment.com/blog/goodbye-microservices/&quot;&gt;https://segment.com/blog/goodbye-microservices/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;先从一个单体服务变成 100 多个微服务，好处是做到了服务隔离。但是随着服务数量不断的上升，维护成本开始增加，运营效率下降。最后又改回了单体的服务，采用了一些技术来保证单体服务的可靠性，虽然损失了一些微服务的优点，但是获得了巨大的运营效益。&lt;/p&gt;
-
-&lt;p&gt;这个算是一个架构设计的失败案例么？&lt;/p&gt;
-
-&lt;h2 id=&quot;introducing-pg_auto_failover-open-source-extension-for-automated-failover-and-high-availability-in-postgresql&quot;&gt;Introducing pg_auto_failover: Open source extension for automated failover and high-availability in PostgreSQL&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://cloudblogs.microsoft.com/opensource/2019/05/06/introducing-pg_auto_failover-postgresql-open-source-extension-automated-failover-high-availability/&quot;&gt;https://cloudblogs.microsoft.com/opensource/2019/05/06/introducing-pg_auto_failover-postgresql-open-source-extension-automated-failover-high-availability/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Citus （已经被微软收购）出的一个 Postgres 自动 failover 方案，通过一个 monitor 来监控主备数据库，在主挂掉的时候，将备切换为主。同时，从 Postgres 10 开始，一个客户端可以连接多个服务端，会自动选择可以写入的服务端。所以，这个是一套完整的 failover 方案。&lt;/p&gt;
-
-&lt;h2 id=&quot;is-high-quality-software-worth-the-cost&quot;&gt;Is HIgh Quality Software Worth the Cost?&lt;/h2&gt;
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://martinfowler.com/articles/is-quality-worth-cost.html&quot;&gt;https://martinfowler.com/articles/is-quality-worth-cost.html&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;作者把软件质量分为外部质量（UI 或者 缺陷，用户可以看到的）和内部质量（架构等用户看不到的）。用户很容易就能看出一个软件是否有很高的外部质量，但是无法看出其内部质量的水平。&lt;/p&gt;
-
-&lt;p&gt;内部质量不好，会导致技术债务快速累积，技术债务会这导致增加新功能的速度变慢，并且容易导致缺陷。所以提升内部质量有助于增加新功能。增加新功能的速度越快，质量越好，软件就越便宜。&lt;/p&gt;
-</description>
-        <pubDate>Sun, 16 Jun 2019 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2019/06/16/write-what-i-have-046/</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2019/06/16/write-what-i-have-046/</guid>
-        
-        <category>cloud</category>
-        
-        <category>golang</category>
-        
-        <category>python</category>
-        
-        <category>database</category>
-        
-        <category>distributed-computing</category>
         
         
       </item>

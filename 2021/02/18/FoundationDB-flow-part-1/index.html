@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>FoundationDB flow -- Part 1</title>
+  <meta name="description" content="Introduction">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/pygments-rainbow_dash.css">
+  <link rel="canonical" href="http://diabloneo.github.io//2021/02/18/FoundationDB-flow-part-1/">
+  <link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
+</head>
+
+
+  <body>
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">Coffee, Coke and Code</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <a class="page-link" href="/tags">Tags</a>
+        <a class="page-link" href="/feed.xml">RSS</a>
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">FoundationDB flow -- Part 1</h1>
+    <p class="post-meta"><time datetime="2021-02-18T00:00:00+08:00" itemprop="datePublished">Feb 18, 2021</time></p>
+  </header>
+
+  <div class="post-tags">
+    <ul>
+      
+      <li>
+        <a href="/tags/programming/">programming</a>
+      </li>
+      
+    </ul>
+  </div>
+
+  <div class="post-content" itemprop="articleBody">
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+    <br />
+      <h1 id="introduction">Introduction</h1>
+
+<p>flow 其实是一种语言，提供了一种在 C++ 中编写异步程序的方式。在 Linux 上，flow 的底层依赖于</p>
+
+<ul>
+  <li>boost::asio，用于实现网络异步。</li>
+  <li>kernel 的 ASIO，用于实现 IO 异步。</li>
+  <li>以及自己实现的定时器调度，用于实现定时器异步。</li>
+</ul>
+
+<p>在 flow 最常见的 <code class="language-plaintext highlighter-rouge">loop choose ... when</code> 其实类似于 Golang 的 <strong>for + select + channel</strong> 的方式。一个 ACTOR 可以理解为一个 goroutine。但是，因为 flow 是以 C++ 为基础的，所以它看起来会比较奇怪，比较难以理解。</p>
+
+<p>这个系列文章主要用于梳理 FoundationDB (fdb) flow 是如何工作的，以帮助大家看懂代码（官方文档实在太少）。</p>
+
+<h1 id="future-and-promise">Future and Promise</h1>
+
+<p>Future 和 Promise 相当于一个简化的 Golang 的 channel，Future 可以用来等待和接受，Promise 则用来触发和发送。</p>
+
+<p>在 flow 的语境下，Future 表示一个 ACTOR 等待的值，Promise  表示一个 ACTOR 会承诺提供的值。当一个 ACTOR 创建了一个 Promise 之后，需要把该 Promise 对应的 future 提供给等待者 <code class="language-plaintext highlighter-rouge">(promise.getFuture())</code>，等待者会 wait 这个 future，达到传递值的目的。</p>
+
+<p>Future 和 Promise 都采用了 Pimpl 的模式来实现，主要实现放在成员 <code class="language-plaintext highlighter-rouge">SAV&lt;T&gt; *sav</code> 中。</p>
+
+<h2 id="sav-single-assignment-variable">SAV: Single Assignment Variable</h2>
+
+<p><code class="language-plaintext highlighter-rouge">SAV</code> 申请了一段连续内存来保存一个对象，同时绑定了一个 <code class="language-plaintext highlighter-rouge">Error</code> ，当 <code class="language-plaintext highlighter-rouge">Error</code> 已经被设置过时，获取这个对象会抛出异常。这个错误主要用来控制给对象只能被设置一次，比如各种 send 函数，只能调用一次。</p>
+
+<p><code class="language-plaintext highlighter-rouge">SAV</code> 初始化的时候，需要指定有几个 futures，有几个 promises。futures 表示有多少个对象在等待回调，promises 表示有多少个对象会触发这个回调。futures 为 0，表示没有人在等待回调，意味着这个 SAV 可以被删除了。</p>
+
+<p><code class="language-plaintext highlighter-rouge">SAV</code> 继承自 <code class="language-plaintext highlighter-rouge">Callback</code> ，通过一个双向链表来保存需要回调的函数。</p>
+
+<h3 id="savsendvalue">sav.send(value)</h3>
+
+<p>将 value 移动到 <code class="language-plaintext highlighter-rouge">sav.value_storage</code> 中，将 <code class="language-plaintext highlighter-rouge">error_state</code> 设置为 <code class="language-plaintext highlighter-rouge">SET_ERROR_CODE</code>，然后调用 <code class="language-plaintext highlighter-rouge">Callback&lt;T&gt;::next-&gt;fire(value)</code>。这个函数是整个 flow 语言的核心，对一个 promise 调用 send 时，相当于触发了它对应的回调函数，从而让等待在对应 future 上的函数继续执行。</p>
+
+<h3 id="savsenderror">sav.send(Error)</h3>
+
+<p>这个和 <code class="language-plaintext highlighter-rouge">sav.send(value)</code> 的类似，不过 <code class="language-plaintext highlighter-rouge">error_state</code> 会设置为参数传递进来的 <code class="language-plaintext highlighter-rouge">err</code>，然后调用 <code class="language-plaintext highlighter-rouge">Callback&lt;T&gt;::next-&gt;error(err)</code>。</p>
+
+<h3 id="promise-相关的函数">Promise 相关的函数</h3>
+
+<p>以下几个函数是和 promise 相关的。</p>
+
+<p><strong>finishSendAndDelPromiseRef</strong></p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">this</span><span class="o">-&gt;</span><span class="n">error_state</span> <span class="o">=</span> <span class="n">SET_ERROR_CODE</span>
+
+<span class="n">callback</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="o">!--</span><span class="n">promises</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">futures</span><span class="p">)</span> <span class="n">destroy</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>一个 promise 已经完成，判断是否还有 promise 或者 future，都没有则 destroy。</p>
+
+<p><strong>sendAndDelPromiseRef</strong></p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="p">(</span><span class="nx">promises</span> <span class="o">==</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">futures</span><span class="p">)</span> <span class="nx">destroy</span><span class="p">()</span>
+
+<span class="k">else</span> <span class="nx">调用</span> <span class="nx">fnishSendAndDelPromiseRef</span>
+</code></pre></div></div>
+
+<p>作为一个 promise 提供者，调用这个方法发送 promise，然后减少引用计数。</p>
+
+<p><strong>sendErrorAndDelPromiseRef</strong></p>
+
+<p>和上面的方法作用类似，只不过用于 sendError 的情况</p>
+
+<p><strong>addCallbackAndDelFutureRef(cb)</strong></p>
+
+<p>将当前对象 this 添加到 cb 的队列中</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="p">(</span><span class="n">Callback</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">next</span> <span class="o">!=</span> <span class="k">this</span><span class="p">)</span> <span class="n">sav</span><span class="p">.</span><span class="n">futures</span><span class="o">-</span>
+</code></pre></div></div>
+
+<p>如果当前对象和回调的对象不同，则减少当前对象的 futures。对于一个刚创建的对象，其 next == this，所以这里不会调用。如果添加过 callback 了，那么这里会执行  futures–。根据注释，这个是逻辑上保持 futures 计数平衡的措施。不过，这个代码太绕，注释也不清晰，不知道是什么含义。</p>
+
+<h2 id="callback">Callback</h2>
+
+<p>本质上是一个双向链表，提供了 fire, error, wait 等虚函数。</p>
+
+<p><code class="language-plaintext highlighter-rouge">Callback</code> 被继承使用，例如 <code class="language-plaintext highlighter-rouge">SAV</code>, <code class="language-plaintext highlighter-rouge">ActorCallback</code>，继承者指定如何实现 fire 等函数。</p>
+
+<p>例如 <code class="language-plaintext highlighter-rouge">ActorCallback</code> 会指定调用注册的对象的 <code class="language-plaintext highlighter-rouge">a_callback_fire</code> 函数和 <code class="language-plaintext highlighter-rouge">a_callback_error</code> 函数。这两个函数是在 ACTOR 生成的代码中自动生成的，属于 XxxActorState 类。</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">ActorType</span><span class="p">,</span> <span class="kt">int</span> <span class="n">CallbackNumber</span><span class="p">,</span> <span class="k">class</span> <span class="nc">ValueType</span><span class="p">&gt;</span>
+
+<span class="k">struct</span> <span class="nc">ActorCallback</span> <span class="o">:</span> <span class="n">Callback</span><span class="o">&lt;</span><span class="n">ValueType</span><span class="o">&gt;</span> <span class="p">{</span>
+
+<span class="k">virtual</span> <span class="kt">void</span> <span class="n">fire</span><span class="p">(</span><span class="n">ValueType</span> <span class="k">const</span><span class="o">&amp;</span> <span class="n">value</span><span class="p">)</span> <span class="k">override</span> <span class="p">{</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="n">ActorType</span><span class="o">*&gt;</span><span class="p">(</span><span class="k">this</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">a_callback_fire</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="n">value</span><span class="p">);</span> <span class="p">}</span>
+
+<span class="k">virtual</span> <span class="kt">void</span> <span class="n">error</span><span class="p">(</span><span class="n">Error</span> <span class="n">e</span><span class="p">)</span> <span class="k">override</span> <span class="p">{</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="n">ActorType</span><span class="o">*&gt;</span><span class="p">(</span><span class="k">this</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">a_callback_error</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="n">e</span><span class="p">);</span> <span class="p">}</span>
+
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>在整个 flow 程序里，有一点是比较难理解的： future 和 actor 都是 callback。</p>
+
+<h1 id="actor">Actor</h1>
+
+<p>每个 ACTOR 会被生成一系列的代码，包括原始函数，一个 Actor 类，和一个用于保存状态的 ActorState 类，主要的逻辑在 ActorState 类里。</p>
+
+<p>Actor 和 <code class="language-plaintext highlighter-rouge">g_network</code> 对象强绑定，也就是和 <code class="language-plaintext highlighter-rouge">Net2</code> 类 (flow/Net2.actor.cpp) 强绑定，所有的 delay 和 yield 调用都作用于 <code class="language-plaintext highlighter-rouge">g_network</code> 对象，用于将当前 coroutine 的回调添加到 <code class="language-plaintext highlighter-rouge">Net2</code> 的 ready 队列中。</p>
+
+<h2 id="net2">Net2</h2>
+
+<p>flow 的 <code class="language-plaintext highlighter-rouge">Net2</code> 是一个 flow 应用的起点，开始于 <code class="language-plaintext highlighter-rouge">g_network-&gt;run()</code>， <code class="language-plaintext highlighter-rouge">g_network</code> 是一个 <code class="language-plaintext highlighter-rouge">Net2</code> 实例，run 方法主要的逻辑是把 ready 队列中的 task 取出并执行。</p>
+
+<p>所有的 flow ACTOR 的执行，都需要先提交到 Net2 的 ready 队列。这里有四个方法，三个是 delay，一个是 yield （见 flow/flow.h 文件的最下面）。所以，ACTOR 生成的后的代码，主要通过调用 delay 和 yield 来实现 coroutine 的运行控制。</p>
+
+<h2 id="tutorial">Tutorial</h2>
+
+<p><em>documentation/tutorial/tutorial.actor.cpp</em> 包含了很多 ACTOR 示例，这个也可以用来理解 flow 的实现细节。从这里开始，我会基于 tutorial 中的例子来分析 flow 应用是如何运行的，</p>
+
+<p>tutorial 文件按照从上到下的顺序提供了从简单到复杂的 flow 程序。我们可以通过对比源代码，和编译器转换后的代码来学习一个 ACTOR 的运行流程。</p>
+
+<p>编译的方法可以在官方 README 查到，编译后的文件变成了 <em>PATH_TO_BUILD</em>/documentation/tutorial/<em>tutorial.actor.g.cpp。</em></p>
+
+<h1 id="simpletimer">simpleTimer</h1>
+
+<p>这个方法实现一个简单的循环定时器，每个一定时间，打印一条输出。</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ACTOR</span> <span class="n">Future</span><span class="o">&lt;</span><span class="n">Void</span><span class="o">&gt;</span> <span class="n">simpleTimer</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">state</span> <span class="kt">double</span> <span class="n">start_time</span> <span class="o">=</span> <span class="n">g_network</span><span class="o">-&gt;</span><span class="n">now</span><span class="p">();</span>
+	<span class="n">loop</span> <span class="p">{</span>
+		<span class="n">wait</span><span class="p">(</span><span class="n">delay</span><span class="p">(</span><span class="mf">1.0</span><span class="p">));</span>
+		<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">format</span><span class="p">(</span><span class="s">"Time: %.2f</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">g_network</span><span class="o">-&gt;</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">);</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>这个函数会被编译器转换为三个部分： <code class="language-plaintext highlighter-rouge">simpleTimer</code> 函数， <code class="language-plaintext highlighter-rouge">SimpleTimerActor</code> 和  <code class="language-plaintext highlighter-rouge">SimpleTimerActorState</code>。</p>
+
+<p><code class="language-plaintext highlighter-rouge">simpleTimer</code> 函数的 signature 和原来一样，但是内部的实现全部被放到 <code class="language-plaintext highlighter-rouge">SimpletTimeActor</code> 中：</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">SimpleTimerActor</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Actor</span><span class="o">&lt;</span><span class="n">Void</span><span class="o">&gt;</span><span class="p">,</span> <span class="k">public</span> <span class="n">ActorCallback</span><span class="o">&lt;</span> <span class="n">SimpleTimerActor</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Void</span> <span class="o">&gt;</span><span class="p">,</span> <span class="k">public</span> <span class="n">FastAllocated</span><span class="o">&lt;</span><span class="n">SimpleTimerActor</span><span class="o">&gt;</span><span class="p">,</span> <span class="k">public</span> <span class="n">SimpleTimerActorState</span><span class="o">&lt;</span><span class="n">SimpleTimerActor</span><span class="o">&gt;</span> <span class="p">{</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">SimpleTimerActor</code> 类的基类 Actor 的基类是个 SAV，用来保存一个 ACTOR 的状态：</p>
+
+<ul>
+  <li>1: actor is cancelled</li>
+  <li>0: actor is not waiting</li>
+  <li>1-N: waiting in callback group #，就是等待的 callback group 的编号。</li>
+</ul>
+
+<p>基类 <code class="language-plaintext highlighter-rouge">ActorCallback</code> 提供了对 Callback 的 fire, error 的实现，分别映射到 <code class="language-plaintext highlighter-rouge">a_callback_fire</code>, <code class="language-plaintext highlighter-rouge">a_callback_error</code> 两个调用。这两个调用都是由 XxxxActorState 类实现的。</p>
+
+<p>一个 actor 被转换为 Actor 类之后，其执行入口就是这个 Actor 类的构造函数。Actor 类还支持了 cancel 操作。</p>
+
+<p>XxxActorState 类用于封装 ACTOR 的逻辑，所有的 state (flow 的 state 关键字定义的变量) 都是该类的类成员，该类会根据用户写的 flow 关键字，生成很多个类函数，一般来说。另外，对于所有的 wait 和 waitNext  操作，都会生成对应的 <code class="language-plaintext highlighter-rouge">a_callback_fire</code> 和 <code class="language-plaintext highlighter-rouge">a_callback_error</code> 函数，实现异步回调。XxxActorState 类的入口是在 XxxActor 中调用的，一般是 <code class="language-plaintext highlighter-rouge">this-&gt;a_body1()</code>. 自动生成的 XxxActorState 类帮助用户解决了异步编程中的 callback hell 问题。</p>
+
+<p>simpleTimer 的逻辑很简单，就是等待定时器到期后，打印一个字符串。 <code class="language-plaintext highlighter-rouge">delay</code> 是一个关键点的函数（上文提到过），对应到 Net2::delay 函数。</p>
+
+<p><code class="language-plaintext highlighter-rouge">SimpleTimerActorState.a_body1loopBody1</code> 封装了对 delay 的调用。这里有两个关键点：</p>
+
+<ol>
+  <li>delay 调用本身会生成一个 <code class="language-plaintext highlighter-rouge">DelayedTask</code>，其中会封装一个 <code class="language-plaintext highlighter-rouge">PromiseTask</code>，然后 <code class="language-plaintext highlighter-rouge">DelayedTask</code> 加入到 ready 队列中。</li>
+  <li>delay 调用本身会返回一个 Future，名字是 <code class="language-plaintext highlighter-rouge">__when_expr_0</code>，然后会执行 <code class="language-plaintext highlighter-rouge">__when_expr_0.addCallbackAndClear(this)</code>，这个调用最终会把当前对象 <code class="language-plaintext highlighter-rouge">this</code>，也就是 <code class="language-plaintext highlighter-rouge">SimpleTimerActorState</code> 实例作为一个 callback，加入到 <code class="language-plaintext highlighter-rouge">__when_expr_0</code> 的回调队列中。</li>
+</ol>
+
+<p>当 delay 生成的 DelayedTask 在 Net2::run 中被调用时，会执行的是其中封装的 <code class="language-plaintext highlighter-rouge">PromiseTask</code>，这个 <code class="language-plaintext highlighter-rouge">PromiseTask</code> 被执行时，会调用 <code class="language-plaintext highlighter-rouge">Promise.send</code> 方法，激活自己所对应的 Future ，也就是前面 delay 函数返回的那个。因为 send 的结果是调用 SAV 对应的 callback 操作，所以这里就会调用前面通过 <code class="language-plaintext highlighter-rouge">__when_expr_0.addCallbackAndClear(this)</code> 对应的 <code class="language-plaintext highlighter-rouge">this</code>，也就是 <code class="language-plaintext highlighter-rouge">SimpleTimerActorState</code> 的 <code class="language-plaintext highlighter-rouge">a_callback_fire</code> 函数。</p>
+
+<p>这个函数会调用 <code class="language-plaintext highlighter-rouge">a_body1loopBody1when1 -&gt; a_body1loopBody1cont1</code>，在这个函数里会调用 <code class="language-plaintext highlighter-rouge">std::cout</code> 打印函数。</p>
+
+    <br />
+
+    <div>
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议</a>进行许可。
+    </div>
+
+    <br />
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+  </div>
+
+  
+    <div class="post-comment">
+      
+<div id="disqus_thread"></div>
+<script>
+var disqus_config = function () {
+  this.page.url = "http://diabloneo.github.io/2021/02/18/FoundationDB-flow-part-1/"; // <--- use canonical URL
+  this.page.identifier = "/2021/02/18/FoundationDB-flow-part-1";
+};
+(function() { // DON'T EDIT BELOW THIS LINE
+  var d = document, s = d.createElement('script');
+
+  s.src = 'https://coffee-coke-and-code.disqus.com/embed.js';
+
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+    </div>
+  
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Coffee, Coke and Code</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>Coffee, Coke and Code</li>
+          <li><a href="mailto:diabloneo@gmail.com">diabloneo@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <i class="fa fa-github"></i>
+            <a href="https://github.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <i class="fa fa-twitter"></i>
+            <a href="https://twitter.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <i class="fa fa-weibo"></i>
+            <a href="https://weibo.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Archive diabloneo's articles.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+    
+      <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-78067453-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+    
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
+  </body>
+
+</html>
