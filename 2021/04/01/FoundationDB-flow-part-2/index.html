@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>FoundationDB flow -- Part 2</title>
+  <meta name="description" content="Tutorial 中的 promiseDemo 和 triggerDemo 的实现和 simipleTimer 类似，就不具体分析了。本文主要来分析一下 echoServer 的实现，这个程序涉及网络收发包，代码非常绕。">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/pygments-rainbow_dash.css">
+  <link rel="canonical" href="http://diabloneo.github.io//2021/04/01/FoundationDB-flow-part-2/">
+  <link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
+</head>
+
+
+  <body>
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">Coffee, Coke and Code</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <a class="page-link" href="/tags">Tags</a>
+        <a class="page-link" href="/feed.xml">RSS</a>
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">FoundationDB flow -- Part 2</h1>
+    <p class="post-meta"><time datetime="2021-04-01T00:00:00+08:00" itemprop="datePublished">Apr 1, 2021</time></p>
+  </header>
+
+  <div class="post-tags">
+    <ul>
+      
+      <li>
+        <a href="/tags/programming/">programming</a>
+      </li>
+      
+    </ul>
+  </div>
+
+  <div class="post-content" itemprop="articleBody">
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+    <br />
+      <p>Tutorial 中的 <code class="language-plaintext highlighter-rouge">promiseDemo</code> 和 <code class="language-plaintext highlighter-rouge">triggerDemo</code> 的实现和 <code class="language-plaintext highlighter-rouge">simipleTimer</code> 类似，就不具体分析了。本文主要来分析一下 <code class="language-plaintext highlighter-rouge">echoServer</code> 的实现，这个程序涉及网络收发包，代码非常绕。</p>
+
+<h1 id="echoserver">echoServer</h1>
+
+<p>这个是一个网络应用程序，其异步回调流程更难理解，涉及到 <code class="language-plaintext highlighter-rouge">RequestStream</code> 和 <code class="language-plaintext highlighter-rouge">waitNext</code> 的使用。</p>
+
+<h2 id="接口定义">接口定义</h2>
+
+<p>首先注意到， <code class="language-plaintext highlighter-rouge">EchoServerInterface</code>  的定义，以及每个 Request 的定义都包含一个 <code class="language-plaintext highlighter-rouge">serialize</code> 方法。</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="nc">EchoServerInterface</span> <span class="p">{</span>
+	<span class="k">constexpr</span> <span class="k">static</span> <span class="n">FileIdentifier</span> <span class="n">file_identifier</span> <span class="o">=</span> <span class="mi">3152015</span><span class="p">;</span>
+	<span class="n">RequestStream</span><span class="o">&lt;</span><span class="k">struct</span> <span class="nc">GetInterfaceRequest</span><span class="o">&gt;</span> <span class="n">getInterface</span><span class="p">;</span>
+	<span class="n">RequestStream</span><span class="o">&lt;</span><span class="k">struct</span> <span class="nc">EchoRequest</span><span class="o">&gt;</span> <span class="n">echo</span><span class="p">;</span>
+	<span class="n">RequestStream</span><span class="o">&lt;</span><span class="k">struct</span> <span class="nc">ReverseRequest</span><span class="o">&gt;</span> <span class="n">reverse</span><span class="p">;</span>
+
+	<span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">Ar</span><span class="p">&gt;</span>
+	<span class="kt">void</span> <span class="n">serialize</span><span class="p">(</span><span class="n">Ar</span><span class="o">&amp;</span> <span class="n">ar</span><span class="p">)</span> <span class="p">{</span>
+		<span class="n">serializer</span><span class="p">(</span><span class="n">ar</span><span class="p">,</span> <span class="n">echo</span><span class="p">,</span> <span class="n">reverse</span><span class="p">);</span>
+	<span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">struct</span> <span class="nc">GetInterfaceRequest</span> <span class="p">{</span>
+	<span class="k">constexpr</span> <span class="k">static</span> <span class="n">FileIdentifier</span> <span class="n">file_identifier</span> <span class="o">=</span> <span class="mi">12004156</span><span class="p">;</span>
+	<span class="n">ReplyPromise</span><span class="o">&lt;</span><span class="n">EchoServerInterface</span><span class="o">&gt;</span> <span class="n">reply</span><span class="p">;</span>
+
+	<span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">Ar</span><span class="p">&gt;</span>
+	<span class="kt">void</span> <span class="n">serialize</span><span class="p">(</span><span class="n">Ar</span><span class="o">&amp;</span> <span class="n">ar</span><span class="p">)</span> <span class="p">{</span>
+		<span class="n">serializer</span><span class="p">(</span><span class="n">ar</span><span class="p">,</span> <span class="n">reply</span><span class="p">);</span>
+	<span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">struct</span> <span class="nc">EchoRequest</span> <span class="p">{</span>
+	<span class="k">constexpr</span> <span class="k">static</span> <span class="n">FileIdentifier</span> <span class="n">file_identifier</span> <span class="o">=</span> <span class="mi">10624019</span><span class="p">;</span>
+	<span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">message</span><span class="p">;</span>
+	<span class="c1">// this variable has to be called reply!</span>
+	<span class="n">ReplyPromise</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">reply</span><span class="p">;</span>
+
+	<span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">Ar</span><span class="p">&gt;</span>
+	<span class="kt">void</span> <span class="n">serialize</span><span class="p">(</span><span class="n">Ar</span><span class="o">&amp;</span> <span class="n">ar</span><span class="p">)</span> <span class="p">{</span>
+		<span class="n">serializer</span><span class="p">(</span><span class="n">ar</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">reply</span><span class="p">);</span>
+	<span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">struct</span> <span class="nc">ReverseRequest</span> <span class="p">{</span>
+	<span class="k">constexpr</span> <span class="k">static</span> <span class="n">FileIdentifier</span> <span class="n">file_identifier</span> <span class="o">=</span> <span class="mi">10765955</span><span class="p">;</span>
+	<span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">message</span><span class="p">;</span>
+	<span class="c1">// this variable has to be called reply!</span>
+	<span class="n">ReplyPromise</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">reply</span><span class="p">;</span>
+
+	<span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">Ar</span><span class="p">&gt;</span>
+	<span class="kt">void</span> <span class="n">serialize</span><span class="p">(</span><span class="n">Ar</span><span class="o">&amp;</span> <span class="n">ar</span><span class="p">)</span> <span class="p">{</span>
+		<span class="n">serializer</span><span class="p">(</span><span class="n">ar</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">reply</span><span class="p">);</span>
+	<span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<h2 id="服务的实现">服务的实现</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ACTOR</span> <span class="n">Future</span><span class="o">&lt;</span><span class="n">Void</span><span class="o">&gt;</span> <span class="n">echoServer</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">state</span> <span class="n">EchoServerInterface</span> <span class="n">echoServer</span><span class="p">;</span>
+	<span class="n">echoServer</span><span class="p">.</span><span class="n">getInterface</span><span class="p">.</span><span class="n">makeWellKnownEndpoint</span><span class="p">(</span><span class="n">UID</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">++</span><span class="n">tokenCounter</span><span class="p">),</span> <span class="n">TaskPriority</span><span class="o">::</span><span class="n">DefaultEndpoint</span><span class="p">);</span>
+	<span class="n">loop</span> <span class="p">{</span>
+		<span class="n">choose</span> <span class="p">{</span>
+			<span class="n">when</span><span class="p">(</span><span class="n">GetInterfaceRequest</span> <span class="n">req</span> <span class="o">=</span> <span class="n">waitNext</span><span class="p">(</span><span class="n">echoServer</span><span class="p">.</span><span class="n">getInterface</span><span class="p">.</span><span class="n">getFuture</span><span class="p">()))</span> <span class="p">{</span>
+				<span class="n">req</span><span class="p">.</span><span class="n">reply</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">echoServer</span><span class="p">);</span>
+			<span class="p">}</span>
+			<span class="n">when</span><span class="p">(</span><span class="n">EchoRequest</span> <span class="n">req</span> <span class="o">=</span> <span class="n">waitNext</span><span class="p">(</span><span class="n">echoServer</span><span class="p">.</span><span class="n">echo</span><span class="p">.</span><span class="n">getFuture</span><span class="p">()))</span> <span class="p">{</span> <span class="n">req</span><span class="p">.</span><span class="n">reply</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">req</span><span class="p">.</span><span class="n">message</span><span class="p">);</span> <span class="p">}</span>
+			<span class="n">when</span><span class="p">(</span><span class="n">ReverseRequest</span> <span class="n">req</span> <span class="o">=</span> <span class="n">waitNext</span><span class="p">(</span><span class="n">echoServer</span><span class="p">.</span><span class="n">reverse</span><span class="p">.</span><span class="n">getFuture</span><span class="p">()))</span> <span class="p">{</span>
+				<span class="n">req</span><span class="p">.</span><span class="n">reply</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="n">req</span><span class="p">.</span><span class="n">message</span><span class="p">.</span><span class="n">rbegin</span><span class="p">(),</span> <span class="n">req</span><span class="p">.</span><span class="n">message</span><span class="p">.</span><span class="n">rend</span><span class="p">()));</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>这个代码经过 flow 编译器处理后，生成的代码结构其实和 <code class="language-plaintext highlighter-rouge">simpleTimer</code> 差不多，这里就不展开了，<strong>理解这个代码的难点在于理解报文是如何收发的，以及报文的收发如何和 ACTOR 结合起来</strong>。</p>
+
+<h3 id="注册-well-known-endpoint">注册 well known endpoint</h3>
+
+<p>这个服务的实现函数，首先调用了 <code class="language-plaintext highlighter-rouge">echoServer.getInterface.makeWellKnownEndpoint()</code> 方法。</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">RequestStream</code>  有个私有成员 <code class="language-plaintext highlighter-rouge">NetNotifiedQueue&lt;T&gt;* queue;</code></li>
+  <li><code class="language-plaintext highlighter-rouge">makeWellKnownEndpoint(token, taskID)</code> 会调用 <code class="language-plaintext highlighter-rouge">queue-&gt;makeWellKnownEndpoint(token, taskID)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">NetNotifiedQueue</code> 是用于网络应用的 <code class="language-plaintext highlighter-rouge">NotifiedQueue</code>，同时也继承了 <code class="language-plaintext highlighter-rouge">FlowReceiver</code>。</li>
+  <li><code class="language-plaintext highlighter-rouge">makeWellKnownEndpoint</code> 就是  <code class="language-plaintext highlighter-rouge">FlowReceiver</code>  的成员函数。 <code class="language-plaintext highlighter-rouge">FlowReceiver</code>  对一个应用的接收者，表示某个服务端的收包的一方。该成员函数会调用 <code class="language-plaintext highlighter-rouge">lowTransport::transport().addWellKnownEndpoint(endpoint, this, taskID)</code></li>
+  <li>
+    <p>这个 <code class="language-plaintext highlighter-rouge">FlowTransport::transport()</code> 指向的是 <code class="language-plaintext highlighter-rouge">Net2.global(INetwork::enFlowTransport))</code>，就是一个 <code class="language-plaintext highlighter-rouge">FlowTransport</code> 实例，这个函数的作用是把这个应用，也就是 Endpoint，注册到一个列表中（后续收到报文时，会从这个列表中查找，得到对应的 receiver）：</p>
+
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kt">void</span> <span class="n">FlowTransport</span><span class="o">::</span><span class="n">addWellKnownEndpoint</span><span class="p">(</span> <span class="n">Endpoint</span><span class="o">&amp;</span> <span class="n">endpoint</span><span class="p">,</span> <span class="n">NetworkMessageReceiver</span><span class="o">*</span> <span class="n">receiver</span><span class="p">,</span> <span class="n">TaskPriority</span> <span class="n">taskID</span> <span class="p">)</span> <span class="p">{</span>
+  	<span class="n">endpoint</span><span class="p">.</span><span class="n">addresses</span> <span class="o">=</span> <span class="n">self</span><span class="o">-&gt;</span><span class="n">localAddresses</span><span class="p">;</span>
+  	<span class="n">ASSERT</span><span class="p">(</span><span class="n">receiver</span><span class="o">-&gt;</span><span class="n">isStream</span><span class="p">());</span>
+  	<span class="n">self</span><span class="o">-&gt;</span><span class="n">endpoints</span><span class="p">.</span><span class="n">insertWellKnown</span><span class="p">(</span><span class="n">receiver</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">.</span><span class="n">token</span><span class="p">,</span> <span class="n">taskID</span><span class="p">);</span>
+  <span class="p">}</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>这行代码之后，剩下的代码逻辑就是：循环接收消息，然后发送响应。但是，看完这些代码，你会发现，自己根本不知道网络报文是怎么收上来的。</p>
+
+<h3 id="listen-and-accept-connections">Listen and Accept Connections</h3>
+
+<p>网络应用程序，肯定需要监听和接受新的连接，所以在一个 flow 应用的代码流程上，肯定有地方做这些事情。</p>
+
+<p>这里就要看一下整个应用的启动代码： <code class="language-plaintext highlighter-rouge">FlowTransport::transport()::bind(publicAddress, publicAddress)</code> ， <code class="language-plaintext highlighter-rouge">bind</code>  函数会调用一个全局定义的 <code class="language-plaintext highlighter-rouge">listen</code> 函数。</p>
+
+<p><code class="language-plaintext highlighter-rouge">listen</code> 函数，准确的说，是一个 ACTOR，会循环接受新的连接：</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ACTOR</span> <span class="k">static</span> <span class="n">Future</span><span class="o">&lt;</span><span class="n">Void</span><span class="o">&gt;</span> <span class="n">listen</span><span class="p">(</span> <span class="n">TransportData</span><span class="o">*</span> <span class="n">self</span><span class="p">,</span> <span class="n">NetworkAddress</span> <span class="n">listenAddr</span> <span class="p">)</span> <span class="p">{</span>
+	<span class="n">state</span> <span class="n">ActorCollectionNoErrors</span> <span class="n">incoming</span><span class="p">;</span>  <span class="c1">// Actors monitoring incoming connections that haven't yet been associated with a peer</span>
+	<span class="n">state</span> <span class="n">Reference</span><span class="o">&lt;</span><span class="n">IListener</span><span class="o">&gt;</span> <span class="n">listener</span> <span class="o">=</span> <span class="n">INetworkConnections</span><span class="o">::</span><span class="n">net</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">listen</span><span class="p">(</span> <span class="n">listenAddr</span> <span class="p">);</span>
+	<span class="n">state</span> <span class="kt">uint64_t</span> <span class="n">connectionCount</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="k">try</span> <span class="p">{</span>
+		<span class="n">loop</span> <span class="p">{</span>
+			<span class="n">Reference</span><span class="o">&lt;</span><span class="n">IConnection</span><span class="o">&gt;</span> <span class="n">conn</span> <span class="o">=</span> <span class="n">wait</span><span class="p">(</span> <span class="n">listener</span><span class="o">-&gt;</span><span class="n">accept</span><span class="p">()</span> <span class="p">);</span>
+			<span class="k">if</span><span class="p">(</span><span class="n">conn</span><span class="p">)</span> <span class="p">{</span>
+				<span class="n">TraceEvent</span><span class="p">(</span><span class="s">"ConnectionFrom"</span><span class="p">,</span> <span class="n">conn</span><span class="o">-&gt;</span><span class="n">getDebugID</span><span class="p">()).</span><span class="n">suppressFor</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+					<span class="p">.</span><span class="n">detail</span><span class="p">(</span><span class="s">"FromAddress"</span><span class="p">,</span> <span class="n">conn</span><span class="o">-&gt;</span><span class="n">getPeerAddress</span><span class="p">())</span>
+					<span class="p">.</span><span class="n">detail</span><span class="p">(</span><span class="s">"ListenAddress"</span><span class="p">,</span> <span class="n">listenAddr</span><span class="p">.</span><span class="n">toString</span><span class="p">());</span>
+				<span class="n">incoming</span><span class="p">.</span><span class="n">add</span><span class="p">(</span> <span class="n">connectionIncoming</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">conn</span><span class="p">)</span> <span class="p">);</span>
+			<span class="p">}</span>
+			<span class="n">connectionCount</span><span class="o">++</span><span class="p">;</span>
+			<span class="k">if</span><span class="p">(</span> <span class="n">connectionCount</span><span class="o">%</span><span class="p">(</span><span class="n">FLOW_KNOBS</span><span class="o">-&gt;</span><span class="n">ACCEPT_BATCH_SIZE</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">)</span> <span class="p">{</span>
+				<span class="n">wait</span><span class="p">(</span><span class="n">delay</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">TaskPriority</span><span class="o">::</span><span class="n">AcceptSocket</span><span class="p">));</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">Error</span><span class="o">&amp;</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span>
+		<span class="n">TraceEvent</span><span class="p">(</span><span class="n">SevError</span><span class="p">,</span> <span class="s">"ListenError"</span><span class="p">).</span><span class="n">error</span><span class="p">(</span><span class="n">e</span><span class="p">);</span>
+		<span class="k">throw</span><span class="p">;</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">listerner = INetworkConnections::net()-&gt;listen(listenAddr)</code> ，这里其实就是调用了 <code class="language-plaintext highlighter-rouge">Net2::listen()</code>。<code class="language-plaintext highlighter-rouge">Net2::listen()</code> 会返回一个 <code class="language-plaintext highlighter-rouge">Listener</code> 实例，这个对象使用 <code class="language-plaintext highlighter-rouge">boost::asio</code> 来实现异步网络应用。<code class="language-plaintext highlighter-rouge">Listener</code>  的 <code class="language-plaintext highlighter-rouge">doAccept</code> 函数，会使用 asio  的 <code class="language-plaintext highlighter-rouge">async_accept</code> 来等待连接完成（会立即返回），当连接完成后，设置一个 <code class="language-plaintext highlighter-rouge">BindPromise</code> 来通知调用者。</li>
+  <li>全局 <code class="language-plaintext highlighter-rouge">listen</code> 函数会 <code class="language-plaintext highlighter-rouge">wait (listener-&gt;accept())</code>，如果返回成功，那么就会对返回的 <code class="language-plaintext highlighter-rouge">conn</code> 调用  <code class="language-plaintext highlighter-rouge">connectionIncoming()</code>. <code class="language-plaintext highlighter-rouge">listen</code> 函数中还使用了 <code class="language-plaintext highlighter-rouge">ActorCollection</code> 来保存所有的监听连接。</li>
+  <li><code class="language-plaintext highlighter-rouge">connectionIncoming()</code> 里会先调用  <code class="language-plaintext highlighter-rouge">wait(conn-&gt;acceptHandshake()</code> 完成连接的握手，然后调用一个 <code class="language-plaintext highlighter-rouge">connectionReader()</code> 执行读操作。</li>
+</ul>
+
+<h3 id="read-from-connection">Read from connection</h3>
+
+<p><code class="language-plaintext highlighter-rouge">connectionReader()</code> 就是不停的从连接读取数据，然后执行回调。</p>
+
+<ul>
+  <li>该函数里会直接处理第一个连接报文，就是当一个新的客户端连接上来时，会先发送的一些私有协议连接报文。</li>
+  <li>然后调用 <code class="language-plaintext highlighter-rouge">scanPackets</code> 来处理收到的报文. <code class="language-plaintext highlighter-rouge">scanPackets</code> 里会检查 checksum, 然后创建一个 <code class="language-plaintext highlighter-rouge">ArenaReader</code> 来读取报文的内容，首先会读取 <code class="language-plaintext highlighter-rouge">UID</code>, 然后调用 <code class="language-plaintext highlighter-rouge">deliver()</code> 函数，将报文传递给应用协议，也就是本例中的 EchoServer。
+    <ul>
+      <li>在 flow 中，识别应用是靠 <code class="language-plaintext highlighter-rouge">Endpoint.token</code>，所以要先读出 <code class="language-plaintext highlighter-rouge">UID</code>。通过 UID 在 <code class="language-plaintext highlighter-rouge">TransportData</code> 中找到对应的 endpoint。这个时候，结合上面的提到的对 <code class="language-plaintext highlighter-rouge">FlowTransport::addWellKnownEndpoint</code> 的调用，我们就可以把我们定义的 EchoServer 和 flow 的收包流程连接上，也就是在收包的 ACTOR 中，会通过 UID 找到对应的 receiver，也就是我们的调用 <code class="language-plaintext highlighter-rouge">FlowTransport::addWellKnownEndpoint</code> 方法时使用的 <code class="language-plaintext highlighter-rouge">RequestStream</code> 对象。</li>
+    </ul>
+  </li>
+  <li>
+    <p>接下来，就是看看收到报文时，在 <code class="language-plaintext highlighter-rouge">deliver</code> 函数中，回到了哪个函数？从代码中，可以看到，调用的是 <code class="language-plaintext highlighter-rouge">receiver-&gt;receive()</code> 函数，这个方法，在 <code class="language-plaintext highlighter-rouge">NetNotifiedQueue</code> 中实现，参数是一个 <code class="language-plaintext highlighter-rouge">ArenaObjectReader</code> 。</p>
+
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="p">&gt;</span>
+  <span class="k">struct</span> <span class="nc">NetNotifiedQueue</span> <span class="k">final</span> <span class="o">:</span> <span class="n">NotifiedQueue</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">FlowReceiver</span><span class="p">,</span> <span class="n">FastAllocated</span><span class="o">&lt;</span><span class="n">NetNotifiedQueue</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&gt;</span> <span class="p">{</span>
+  	<span class="k">using</span> <span class="n">FastAllocated</span><span class="o">&lt;</span><span class="n">NetNotifiedQueue</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&gt;::</span><span class="k">operator</span> <span class="k">new</span><span class="p">;</span>
+  	<span class="k">using</span> <span class="n">FastAllocated</span><span class="o">&lt;</span><span class="n">NetNotifiedQueue</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&gt;::</span><span class="k">operator</span> <span class="k">delete</span><span class="p">;</span>
+
+  	<span class="n">NetNotifiedQueue</span><span class="p">(</span><span class="kt">int</span> <span class="n">futures</span><span class="p">,</span> <span class="kt">int</span> <span class="n">promises</span><span class="p">)</span> <span class="o">:</span> <span class="n">NotifiedQueue</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">futures</span><span class="p">,</span> <span class="n">promises</span><span class="p">)</span> <span class="p">{}</span>
+  	<span class="n">NetNotifiedQueue</span><span class="p">(</span><span class="kt">int</span> <span class="n">futures</span><span class="p">,</span> <span class="kt">int</span> <span class="n">promises</span><span class="p">,</span> <span class="k">const</span> <span class="n">Endpoint</span><span class="o">&amp;</span> <span class="n">remoteEndpoint</span><span class="p">)</span>
+  	  <span class="o">:</span> <span class="n">NotifiedQueue</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">futures</span><span class="p">,</span> <span class="n">promises</span><span class="p">),</span> <span class="n">FlowReceiver</span><span class="p">(</span><span class="n">remoteEndpoint</span><span class="p">,</span> <span class="nb">true</span><span class="p">)</span> <span class="p">{}</span>
+
+  	<span class="kt">void</span> <span class="n">destroy</span><span class="p">()</span> <span class="k">override</span> <span class="p">{</span> <span class="k">delete</span> <span class="k">this</span><span class="p">;</span> <span class="p">}</span>
+  	<span class="kt">void</span> <span class="n">receive</span><span class="p">(</span><span class="n">ArenaObjectReader</span><span class="o">&amp;</span> <span class="n">reader</span><span class="p">)</span> <span class="k">override</span> <span class="p">{</span>
+  		<span class="k">this</span><span class="o">-&gt;</span><span class="n">addPromiseRef</span><span class="p">();</span>
+  		<span class="n">T</span> <span class="n">message</span><span class="p">;</span>
+  		<span class="n">reader</span><span class="p">.</span><span class="n">deserialize</span><span class="p">(</span><span class="n">message</span><span class="p">);</span>
+  		<span class="k">this</span><span class="o">-&gt;</span><span class="n">send</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">message</span><span class="p">));</span>
+  		<span class="k">this</span><span class="o">-&gt;</span><span class="n">delPromiseRef</span><span class="p">();</span>
+  	<span class="p">}</span>
+  	<span class="kt">bool</span> <span class="n">isStream</span><span class="p">()</span> <span class="k">const</span> <span class="k">override</span> <span class="p">{</span> <span class="k">return</span> <span class="nb">true</span><span class="p">;</span> <span class="p">}</span>
+  <span class="p">};</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>这个方法先调用了 reader  的 <code class="language-plaintext highlighter-rouge">deserialize</code> 方法来，然后调用了 send 方法来触发回调。回调的是 flow 生成的代码，在这个例子中，主要的部分是 EchoServer 的 <code class="language-plaintext highlighter-rouge">req.reply.send(echoServer)</code> 。到这里，我们可以衔接上如下的 flow 代码：</p>
+
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">when</span><span class="p">(</span><span class="n">GetInterfaceRequest</span> <span class="n">req</span> <span class="o">=</span> <span class="n">waitNext</span><span class="p">(</span><span class="n">echoServer</span><span class="p">.</span><span class="n">getInterface</span><span class="p">.</span><span class="n">getFuture</span><span class="p">()))</span> <span class="p">{</span>
+  				<span class="n">req</span><span class="p">.</span><span class="n">reply</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">echoServer</span><span class="p">);</span>
+  			<span class="p">}</span>
+</code></pre></div>    </div>
+
+    <p><code class="language-plaintext highlighter-rouge">req</code> 就是上面 <code class="language-plaintext highlighter-rouge">this-&gt;send(std::move(message))</code> 函数的参数。</p>
+  </li>
+  <li>然后，我们的 flow 代码会执行 <code class="language-plaintext highlighter-rouge">req.reply.send(echoServer)</code> ，这个 <code class="language-plaintext highlighter-rouge">reply</code> 是什么时候初始化的？<strong>从整个代码流程看，只可能是在 <code class="language-plaintext highlighter-rouge">reader.deserialize(message)</code> 的时候初始化的</strong>。</li>
+</ul>
+
+<h3 id="write-to-connection">Write to connection</h3>
+
+<p><code class="language-plaintext highlighter-rouge">GetInterfaceRequest</code> 有一个成员 <code class="language-plaintext highlighter-rouge">reply</code> ，类型是 <code class="language-plaintext highlighter-rouge">ReplyPromise&lt;EchoServerInterface&gt;</code>。当我们调用 <code class="language-plaintext highlighter-rouge">waitNext(echoServer.getInterface.getFuture())</code> 时，得到了一个 <code class="language-plaintext highlighter-rouge">req</code> 对象，作为一个服务端程序来说，获得客户端发来的一个 request 对象，可以想象得到，其中的内容应该主要包含了客户端发送的请求内容，但是这个 <code class="language-plaintext highlighter-rouge">reply</code> 显然是一个响应对象，而且在服务端的代码中，还调用了它的 <code class="language-plaintext highlighter-rouge">send</code> 方法，我们必须要搞清楚，这个 reply 对象是怎么初始化的。</p>
+
+<p>这里就要再次回到上面的 <code class="language-plaintext highlighter-rouge">deliver()</code>  方法了的流程上。就是 <code class="language-plaintext highlighter-rouge">NetNotifiedQueue</code> 的 <code class="language-plaintext highlighter-rouge">receive()</code> 方法。</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">template</span> <span class="o">&lt;</span><span class="kd">class</span> <span class="nx">T</span><span class="o">&gt;</span>
+<span class="nx">struct</span> <span class="nx">NetNotifiedQueue</span> <span class="nx">final</span> <span class="p">:</span> <span class="nx">NotifiedQueue</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span><span class="p">,</span> <span class="nx">FlowReceiver</span><span class="p">,</span> <span class="nx">FastAllocated</span><span class="o">&lt;</span><span class="nx">NetNotifiedQueue</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;&gt;</span> <span class="p">{</span>
+  <span class="p">...</span>
+	<span class="k">void</span> <span class="nx">receive</span><span class="p">(</span><span class="nx">ArenaObjectReader</span><span class="o">&amp;</span> <span class="nx">reader</span><span class="p">)</span> <span class="nx">override</span> <span class="p">{</span>
+		<span class="k">this</span><span class="o">-&gt;</span><span class="nx">addPromiseRef</span><span class="p">();</span>
+		<span class="nx">T</span> <span class="nx">message</span><span class="p">;</span>
+		<span class="nx">reader</span><span class="p">.</span><span class="nx">deserialize</span><span class="p">(</span><span class="nx">message</span><span class="p">);</span>
+		<span class="k">this</span><span class="o">-&gt;</span><span class="nx">send</span><span class="p">(</span><span class="na">std</span><span class="p">::</span><span class="nx">move</span><span class="p">(</span><span class="nx">message</span><span class="p">));</span>
+		<span class="k">this</span><span class="o">-&gt;</span><span class="nx">delPromiseRef</span><span class="p">();</span>
+	<span class="p">}</span>
+	<span class="nx">bool</span> <span class="nx">isStream</span><span class="p">()</span> <span class="kd">const</span> <span class="nx">override</span> <span class="p">{</span> <span class="k">return</span> <span class="kc">true</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>这个方法会调用 <code class="language-plaintext highlighter-rouge">render.deserialzie(message)</code> 方法，将收到的报文反序列化为一个 C++ 对象。整个反序列化的过程涉及到 flat buffer 的实现（见 <em>flow/flat_buffers.h</em> 和 <em>flow/ObjectSerializer.h</em> 等文件），这部分不在本文的讨论范围中，这里提到这个，主要是要找出反序列化过程中，会执行的代码。在 flat buffer 的实现过程中，你会发现如下代码（flow/flat_buffers.h)：</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">template</span> <span class="o">&lt;</span><span class="kd">class</span> <span class="nx">Member</span><span class="o">&gt;</span>
+	<span class="nx">std</span><span class="p">::</span><span class="nx">enable_if_t</span><span class="o">&lt;</span><span class="nx">expect_serialize_member</span><span class="o">&lt;</span><span class="nx">Member</span><span class="o">&gt;&gt;</span> <span class="nx">load</span><span class="p">(</span><span class="nx">Member</span><span class="o">&amp;</span> <span class="nx">member</span><span class="p">,</span> <span class="kd">const</span> <span class="nx">uint8_t</span><span class="o">*</span> <span class="nx">current</span><span class="p">)</span> <span class="p">{</span>
+		<span class="nx">SerializeFun</span> <span class="nx">fun</span><span class="p">(</span><span class="nx">current</span><span class="p">,</span> <span class="k">this</span><span class="o">-&gt;</span><span class="nx">context</span><span class="p">());</span>
+		<span class="k">if</span> <span class="nx">constexpr</span> <span class="p">(</span><span class="nx">serializable_traits</span><span class="o">&lt;</span><span class="nx">Member</span><span class="o">&gt;</span><span class="p">::</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+			<span class="nx">serializable_traits</span><span class="o">&lt;</span><span class="nx">Member</span><span class="o">&gt;</span><span class="p">::</span><span class="nx">serialize</span><span class="p">(</span><span class="nx">fun</span><span class="p">,</span> <span class="nx">member</span><span class="p">);</span>
+		<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+			<span class="nx">member</span><span class="p">.</span><span class="nx">serialize</span><span class="p">(</span><span class="nx">fun</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+</code></pre></div></div>
+
+<p>这个代码使用了 C++ 的 traits 技术。上面代码中，高亮的那一行，调用了 <code class="language-plaintext highlighter-rouge">serializable_traits&lt;Member&gt;::value</code> ，用于判断一个对象是否实现了了一个 <code class="language-plaintext highlighter-rouge">serializable_traits</code> 的辅助对象，如果有的化，这里会返回 <code class="language-plaintext highlighter-rouge">true</code>，否则就是默认值 <code class="language-plaintext highlighter-rouge">false</code>。前面提到的 <code class="language-plaintext highlighter-rouge">ReplyPromise</code> 就实现了这个 traits，所以当反序列化程序遇到 <code class="language-plaintext highlighter-rouge">GetInterfaceRequest</code> 中的 <code class="language-plaintext highlighter-rouge">reply</code> 对象时，就会调用对应的 traits 实现，这个实现如下所示：</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">template</span> <span class="o">&lt;</span><span class="kd">class</span> <span class="nx">T</span><span class="o">&gt;</span>
+<span class="nx">struct</span> <span class="nx">serializable_traits</span><span class="o">&lt;</span><span class="nx">ReplyPromise</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;&gt;</span> <span class="p">:</span> <span class="nx">std</span><span class="p">::</span><span class="nx">true_type</span> <span class="p">{</span>
+	<span class="nx">template</span><span class="o">&lt;</span><span class="kd">class</span> <span class="nx">Archiver</span><span class="o">&gt;</span>
+	<span class="kd">static</span> <span class="k">void</span> <span class="nx">serialize</span><span class="p">(</span><span class="nx">Archiver</span><span class="o">&amp;</span> <span class="nx">ar</span><span class="p">,</span> <span class="nx">ReplyPromise</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;&amp;</span> <span class="nx">p</span><span class="p">)</span> <span class="p">{</span>
+		<span class="k">if</span> <span class="nx">constexpr</span> <span class="p">(</span><span class="nx">Archiver</span><span class="p">::</span><span class="nx">isDeserializing</span><span class="p">)</span> <span class="p">{</span>
+			<span class="nx">UID</span> <span class="nx">token</span><span class="p">;</span>
+			<span class="nx">serializer</span><span class="p">(</span><span class="nx">ar</span><span class="p">,</span> <span class="nx">token</span><span class="p">);</span>
+			<span class="nx">auto</span> <span class="nx">endpoint</span> <span class="o">=</span> <span class="nx">FlowTransport</span><span class="p">::</span><span class="nx">transport</span><span class="p">().</span><span class="nx">loadedEndpoint</span><span class="p">(</span><span class="nx">token</span><span class="p">);</span>
+			<span class="nx">p</span> <span class="o">=</span> <span class="nx">ReplyPromise</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span><span class="p">(</span><span class="nx">endpoint</span><span class="p">);</span>
+			<span class="nx">networkSender</span><span class="p">(</span><span class="nx">p</span><span class="p">.</span><span class="nx">getFuture</span><span class="p">(),</span> <span class="nx">endpoint</span><span class="p">);</span>
+		<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+			<span class="kd">const</span> <span class="nx">auto</span><span class="o">&amp;</span> <span class="nx">ep</span> <span class="o">=</span> <span class="nx">p</span><span class="p">.</span><span class="nx">getEndpoint</span><span class="p">().</span><span class="nx">token</span><span class="p">;</span>
+			<span class="nx">serializer</span><span class="p">(</span><span class="nx">ar</span><span class="p">,</span> <span class="nx">ep</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>从代码可以看出，在对一个 <code class="language-plaintext highlighter-rouge">ReplyPromise</code> 对象进行反序列化的时候，会初始化一个 <code class="language-plaintext highlighter-rouge">ReplyPromise</code> 对象，然后会调用  <code class="language-plaintext highlighter-rouge">networkSender()</code> 方法。这个方法看起来会起一个 ACTOR，然后等到应用代码告诉它发送响应的时候再发送响应（名字后面带 er 的，一种类似 Golang Interface 的命名方式，这么说是不是觉得这个很想一个动态创建的 goroutine？）。</p>
+
+<p><code class="language-plaintext highlighter-rouge">networkSender()</code> 当等待输入准备好之后，调用网络接口发送数据。</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">ACTOR</span> <span class="nx">template</span> <span class="o">&lt;</span><span class="kd">class</span> <span class="nx">T</span><span class="o">&gt;</span>
+<span class="k">void</span> <span class="nx">networkSender</span><span class="p">(</span><span class="nx">Future</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span> <span class="nx">input</span><span class="p">,</span> <span class="nx">Endpoint</span> <span class="nx">endpoint</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">try</span> <span class="p">{</span>
+		<span class="nx">T</span> <span class="nx">value</span> <span class="o">=</span> <span class="nx">wait</span><span class="p">(</span><span class="nx">input</span><span class="p">);</span>
+		<span class="nl">FlowTransport</span><span class="p">::</span><span class="nx">transport</span><span class="p">().</span><span class="nx">sendUnreliable</span><span class="p">(</span><span class="nx">SerializeSource</span><span class="o">&lt;</span><span class="nx">ErrorOr</span><span class="o">&lt;</span><span class="nx">EnsureTable</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;&gt;&gt;</span><span class="p">(</span><span class="nx">value</span><span class="p">),</span> <span class="nx">endpoint</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+	<span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nb">Error</span><span class="o">&amp;</span> <span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+		<span class="c1">// if (err.code() == error_code_broken_promise) return;</span>
+		<span class="nx">ASSERT</span><span class="p">(</span><span class="nx">err</span><span class="p">.</span><span class="nx">code</span><span class="p">()</span> <span class="o">!=</span> <span class="nx">error_code_actor_cancelled</span><span class="p">);</span>
+		<span class="nl">FlowTransport</span><span class="p">::</span><span class="nx">transport</span><span class="p">().</span><span class="nx">sendUnreliable</span><span class="p">(</span><span class="nx">SerializeSource</span><span class="o">&lt;</span><span class="nx">ErrorOr</span><span class="o">&lt;</span><span class="nx">EnsureTable</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;&gt;&gt;</span><span class="p">(</span><span class="nx">err</span><span class="p">),</span> <span class="nx">endpoint</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>在 <code class="language-plaintext highlighter-rouge">FlowTransport::transport().sendUnreliable()</code> 里会调用 <code class="language-plaintext highlighter-rouge">peer-&gt;send()</code> 来发送报文，不过这个发送报文是异步的，是将要发送的报文添加到 peer 的 <code class="language-plaintext highlighter-rouge">unsent</code> 队列中，然后等待 <code class="language-plaintext highlighter-rouge">connectionWriter</code>  ACTOR 来发送. <code class="language-plaintext highlighter-rouge">connectionWriter</code> 会在 <code class="language-plaintext highlighter-rouge">connectionKeeper</code> 中被调用，而 <code class="language-plaintext highlighter-rouge">connectionKeeper</code> 则会在我们上面提到的 <code class="language-plaintext highlighter-rouge">connectionIncoming</code> 中被调用。 <code class="language-plaintext highlighter-rouge">connectionWriter</code> 里会调用 <code class="language-plaintext highlighter-rouge">conn-&gt;write</code> 来发送报文，是在 <em>Net2.actor.cpp</em> 中的 <code class="language-plaintext highlighter-rouge">Conneciton</code> 对象的 <code class="language-plaintext highlighter-rouge">write</code> 方法。</p>
+
+<h2 id="总结">总结</h2>
+
+<ul>
+  <li>flow 应用启动的时候会启动对应的 ACTOR 来实现网络监听，以便接受客户端的新连接。</li>
+  <li>flow 使用 <code class="language-plaintext highlighter-rouge">Endpoint</code>  来标识应用，收到的报文会根据 <code class="language-plaintext highlighter-rouge">endpoint.token</code> 来进行分发。</li>
+  <li>flow 消息分发过程中的 deserialize 过程会附加上 reply 的处理，这个是利用 traits 特性实现的。</li>
+</ul>
+
+    <br />
+
+    <div>
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议</a>进行许可。
+    </div>
+
+    <br />
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+  </div>
+
+  
+    <div class="post-comment">
+      
+<div id="disqus_thread"></div>
+<script>
+var disqus_config = function () {
+  this.page.url = "http://diabloneo.github.io/2021/04/01/FoundationDB-flow-part-2/"; // <--- use canonical URL
+  this.page.identifier = "/2021/04/01/FoundationDB-flow-part-2";
+};
+(function() { // DON'T EDIT BELOW THIS LINE
+  var d = document, s = d.createElement('script');
+
+  s.src = 'https://coffee-coke-and-code.disqus.com/embed.js';
+
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+    </div>
+  
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Coffee, Coke and Code</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>Coffee, Coke and Code</li>
+          <li><a href="mailto:diabloneo@gmail.com">diabloneo@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <i class="fa fa-github"></i>
+            <a href="https://github.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <i class="fa fa-twitter"></i>
+            <a href="https://twitter.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <i class="fa fa-weibo"></i>
+            <a href="https://weibo.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Archive diabloneo's articles.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+    
+      <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-78067453-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+    
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
+  </body>
+
+</html>
