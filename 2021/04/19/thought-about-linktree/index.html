@@ -6,12 +6,12 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>想到什么写什么周报 第41期 - 2019-01-27</title>
-  <meta name="description" content="Optimising startup time of Prometheus 2.6.0 with pprof">
+  <title>关于 linktree 的一个观点</title>
+  <meta name="description" content="今天看到了一个产品的介绍 linktree，主页是： https://linktr.ee 。这个产品在 2016 年开发出了一个简单 demo，最新的消息是它融资了 4500 万美元。">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="/css/main.css">
   <link rel="stylesheet" href="/css/pygments-rainbow_dash.css">
-  <link rel="canonical" href="http://diabloneo.github.io//2019/01/27/write-what-i-have-041/">
+  <link rel="canonical" href="http://diabloneo.github.io//2021/04/19/thought-about-linktree/">
   <link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
 </head>
 
@@ -95,15 +95,15 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">想到什么写什么周报 第41期 - 2019-01-27</h1>
-    <p class="post-meta"><time datetime="2019-01-27T00:00:00+08:00" itemprop="datePublished">Jan 27, 2019</time></p>
+    <h1 class="post-title" itemprop="name headline">关于 linktree 的一个观点</h1>
+    <p class="post-meta"><time datetime="2021-04-19T00:00:00+08:00" itemprop="datePublished">Apr 19, 2021</time></p>
   </header>
 
   <div class="post-tags">
     <ul>
       
       <li>
-        <a href="/tags/golang/">golang</a>
+        <a href="/tags/product/">product</a>
       </li>
       
     </ul>
@@ -115,31 +115,11 @@
       <div class="addthis_inline_share_toolbox"></div>
     
     <br />
-      <h2 id="optimising-startup-time-of-prometheus-260-with-pprof">Optimising startup time of Prometheus 2.6.0 with pprof</h2>
+      <p>今天看到了一个产品的介绍 linktree，主页是： <em><a href="https://linktr.ee">https://linktr.ee</a></em> 。这个产品在 2016 年开发出了一个简单 demo，最新的消息是它融资了 4500 万美元。</p>
 
-<p><em><a href="https://www.robustperception.io/optimising-startup-time-of-prometheus-2-6-0-with-pprof">https://www.robustperception.io/optimising-startup-time-of-prometheus-2-6-0-with-pprof</a></em></p>
+<p>linktree 的基本功能很简单，你可以用它设计一个自己的主页，上面可以放上各种链接和按钮，形成一个关于自己所有信息的主页，而且可以链接到任何已经存在的平台。</p>
 
-<p>一个使用 pprof 来改进性能的实际例子。</p>
-
-<h2 id="scheduling-in-go">Scheduling In Go</h2>
-
-<ul>
-  <li><em><a href="https://www.ardanlabs.com/blog/2018/08/scheduling-in-go-part1.html">https://www.ardanlabs.com/blog/2018/08/scheduling-in-go-part1.html</a></em></li>
-  <li><em><a href="https://www.ardanlabs.com/blog/2018/08/scheduling-in-go-part2.html">https://www.ardanlabs.com/blog/2018/08/scheduling-in-go-part2.html</a></em></li>
-  <li><em><a href="https://www.ardanlabs.com/blog/2018/12/scheduling-in-go-part3.html">https://www.ardanlabs.com/blog/2018/12/scheduling-in-go-part3.html</a></em></li>
-</ul>
-
-<p>一个系列的入门文章，介绍了 Gorouting 调度的基本概念，并且给出了一些例子说明什么情况下基于 Gorouting 的并发会更快。</p>
-
-<h2 id="golangs-real-time-gc-in-theory-and-practice">Golang’s Real-time GC in Theory and Practice</h2>
-
-<p><em><a href="https://making.pusher.com/golangs-real-time-gc-in-theory-and-practice/">https://making.pusher.com/golangs-real-time-gc-in-theory-and-practice/</a></em></p>
-
-<p>一篇 2016 年的文章，有一个好看的动画介绍了 Go 的 GC 的工作原理： <strong>tricolor mark-and-sweep algorithm</strong>。</p>
-
-<p>这篇文章也对比了 Go 和 Haskell 的 GC 的不同应用场景：Go 注重低延迟，Haskell 注重高并发。所以选择语言的时候需要考虑 GC 的使用场景。文中也提到了一个仓库包含了对多种语言的 GC 导致处理延迟的 benchmark，并且给出了测试结果，Go 的延迟是比较好的。</p>
-
-<p>最后，提到了两个 GC 的 bug，不过在 1.8 版本都已经解决了。</p>
+<p>它的盈利主要靠售卖高级功能，比如提供修改背景，各种样式，访问分析功能等，和当年 QQ 空间一样。20 年过去了，这个模式还是可以盈利，说明人们愿意为自己的“外表”买单，不仅是衣着、化妆品、装饰品等，网络“外表” 如今也称为了个人的外表的一部分。在获得了一定的流行度以后，这个平台还开始做企业品牌塑造相关的业务，这个是当年 QQ 空间没有做的事情，却是当下很流行的做法。</p>
 
     <br />
 
@@ -160,8 +140,8 @@
 <div id="disqus_thread"></div>
 <script>
 var disqus_config = function () {
-  this.page.url = "http://diabloneo.github.io/2019/01/27/write-what-i-have-041/"; // <--- use canonical URL
-  this.page.identifier = "/2019/01/27/write-what-i-have-041";
+  this.page.url = "http://diabloneo.github.io/2021/04/19/thought-about-linktree/"; // <--- use canonical URL
+  this.page.identifier = "/2021/04/19/thought-about-linktree";
 };
 (function() { // DON'T EDIT BELOW THIS LINE
   var d = document, s = d.createElement('script');

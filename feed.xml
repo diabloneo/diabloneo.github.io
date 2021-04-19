@@ -6,9 +6,26 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 02 Apr 2021 00:01:09 +0800</pubDate>
-    <lastBuildDate>Fri, 02 Apr 2021 00:01:09 +0800</lastBuildDate>
+    <pubDate>Mon, 19 Apr 2021 23:46:44 +0800</pubDate>
+    <lastBuildDate>Mon, 19 Apr 2021 23:46:44 +0800</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
+    
+      <item>
+        <title>关于 linktree 的一个观点</title>
+        <description>&lt;p&gt;今天看到了一个产品的介绍 linktree，主页是： &lt;em&gt;&lt;a href=&quot;https://linktr.ee&quot;&gt;https://linktr.ee&lt;/a&gt;&lt;/em&gt; 。这个产品在 2016 年开发出了一个简单 demo，最新的消息是它融资了 4500 万美元。&lt;/p&gt;
+
+&lt;p&gt;linktree 的基本功能很简单，你可以用它设计一个自己的主页，上面可以放上各种链接和按钮，形成一个关于自己所有信息的主页，而且可以链接到任何已经存在的平台。&lt;/p&gt;
+
+&lt;p&gt;它的盈利主要靠售卖高级功能，比如提供修改背景，各种样式，访问分析功能等，和当年 QQ 空间一样。20 年过去了，这个模式还是可以盈利，说明人们愿意为自己的“外表”买单，不仅是衣着、化妆品、装饰品等，网络“外表” 如今也称为了个人的外表的一部分。在获得了一定的流行度以后，这个平台还开始做企业品牌塑造相关的业务，这个是当年 QQ 空间没有做的事情，却是当下很流行的做法。&lt;/p&gt;
+</description>
+        <pubDate>Mon, 19 Apr 2021 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2021/04/19/thought-about-linktree/</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2021/04/19/thought-about-linktree/</guid>
+        
+        <category>product</category>
+        
+        
+      </item>
     
       <item>
         <title>GORM 的使用 - 2</title>
@@ -1693,32 +1710,6 @@ X21hcHMK
         <guid isPermaLink="true">http://diabloneo.github.io//2019/08/29/How-to-use-top-command/</guid>
         
         <category>linux</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>在 VIM 中配置 fzf 使用 find</title>
-        <description>&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://github.com/junegunn/fzf&quot;&gt;https://github.com/junegunn/fzf&lt;/a&gt;&lt;/em&gt; 是 VIM 常用的文件查找工具。fzf 可以使用 find 或者 &lt;em&gt;&lt;a href=&quot;https://github.com/sharkdp/fd&quot;&gt;https://github.com/sharkdp/fd&lt;/a&gt;&lt;/em&gt; 作为查找工具，官方的文档里给了很多 fd 的配置，但是 find 的较少。这里提供了一个使用 find 的配置，可以根据自己需要修改：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-vim&quot; data-lang=&quot;vim&quot;&gt;&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; $FZF_DEFAULT_COMMAND&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&quot;&lt;span class=&quot;k&quot;&gt;find&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;regextype egrep
-&lt;span class=&quot;se&quot;&gt;			\&lt;/span&gt;    \\&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;path&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;/vendor &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;prune \\&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;             ;; ignore some dirs
-&lt;span class=&quot;se&quot;&gt;			\&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;o&lt;/span&gt; \\&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;path&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;/_site &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;prune \\&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;se&quot;&gt;			\&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;o&lt;/span&gt; \\&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;path&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;/_output &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;prune \\&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;se&quot;&gt;			\&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;o&lt;/span&gt; \\&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;path&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;/&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;git &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;prune \\&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;se&quot;&gt;			\&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;o&lt;/span&gt; \\&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;path&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;/&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;svn &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;prune \\&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;se&quot;&gt;			\&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;o&lt;/span&gt; \\&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;path&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;/&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;tox &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;prune \\&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;se&quot;&gt;			\&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;o&lt;/span&gt; \\&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;f&lt;/span&gt; 
-&lt;span class=&quot;se&quot;&gt;			\&lt;/span&gt;    &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;a&lt;/span&gt; \\&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;not &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;regex &lt;span class=&quot;s1&quot;&gt;'.*\.(pyc|pyo)$'&lt;/span&gt; \\&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;   ;; ignore some &lt;span class=&quot;k&quot;&gt;files&lt;/span&gt;
-&lt;span class=&quot;se&quot;&gt;			\&lt;/span&gt;    \\&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;se&quot;&gt;			\&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&quot;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-</description>
-        <pubDate>Mon, 26 Aug 2019 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2019/08/26/Using-fzf-with-find/</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2019/08/26/Using-fzf-with-find/</guid>
-        
-        <category>vim</category>
         
         
       </item>
