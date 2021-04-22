@@ -160,24 +160,40 @@
 <span class="p">}</span>
 
 <span class="k">func</span> <span class="n">callbackUpdateCheckEtag</span><span class="p">(</span><span class="n">db</span> <span class="o">*</span><span class="n">gorm</span><span class="o">.</span><span class="n">DB</span><span class="p">)</span> <span class="p">{</span>
-	<span class="n">etagField</span> <span class="o">:=</span> <span class="n">db</span><span class="o">.</span><span class="n">Statement</span><span class="o">.</span><span class="n">Schema</span><span class="o">.</span><span class="n">LookUpField</span><span class="p">(</span><span class="n">FieldEtag</span><span class="p">)</span>
+	<span class="n">stmt</span> <span class="o">:=</span> <span class="n">db</span><span class="o">.</span><span class="n">Statement</span>
+	<span class="k">if</span> <span class="n">stmt</span><span class="o">.</span><span class="n">Schema</span> <span class="o">==</span> <span class="no">nil</span> <span class="p">{</span>
+		<span class="c">// Schema will be nil if db was not called with Model() function.</span>
+		<span class="k">return</span>
+	<span class="p">}</span>
+
+	<span class="n">etagField</span> <span class="o">:=</span> <span class="n">stmt</span><span class="o">.</span><span class="n">Schema</span><span class="o">.</span><span class="n">LookUpField</span><span class="p">(</span><span class="n">FieldEtag</span><span class="p">)</span>
 	<span class="k">if</span> <span class="n">etagField</span> <span class="o">==</span> <span class="no">nil</span> <span class="p">{</span>
 		<span class="k">return</span>
 	<span class="p">}</span>
 	<span class="k">if</span> <span class="n">etagField</span><span class="o">.</span><span class="n">DataType</span> <span class="o">!=</span> <span class="n">schema</span><span class="o">.</span><span class="n">String</span> <span class="p">{</span>
 		<span class="k">return</span>
 	<span class="p">}</span>
-	<span class="n">etag</span><span class="p">,</span> <span class="n">isZero</span> <span class="o">:=</span> <span class="n">etagField</span><span class="o">.</span><span class="n">ValueOf</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Statement</span><span class="o">.</span><span class="n">ReflectValue</span><span class="p">)</span>
-	<span class="k">if</span> <span class="o">!</span><span class="n">isZero</span> <span class="p">{</span>
+	<span class="n">etag</span><span class="p">,</span> <span class="n">isZero</span> <span class="o">:=</span> <span class="n">etagField</span><span class="o">.</span><span class="n">ValueOf</span><span class="p">(</span><span class="n">stmt</span><span class="o">.</span><span class="n">ReflectValue</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">isZero</span> <span class="p">{</span>
 		<span class="k">return</span>
 	<span class="p">}</span>
 
 	<span class="n">where</span> <span class="o">:=</span> <span class="k">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="k">interface</span><span class="p">{}{</span>
 		<span class="n">ColEtag</span><span class="o">:</span> <span class="n">etag</span><span class="p">,</span>
 	<span class="p">}</span>
-	<span class="n">conds</span> <span class="o">:=</span> <span class="n">db</span><span class="o">.</span><span class="n">Statement</span><span class="o">.</span><span class="n">BuildCondition</span><span class="p">(</span><span class="n">where</span><span class="p">)</span>
+	<span class="n">conds</span> <span class="o">:=</span> <span class="n">stmt</span><span class="o">.</span><span class="n">BuildCondition</span><span class="p">(</span><span class="n">where</span><span class="p">)</span>
 	<span class="n">newWhereClause</span> <span class="o">:=</span> <span class="n">clause</span><span class="o">.</span><span class="n">Where</span><span class="p">{</span><span class="n">Exprs</span><span class="o">:</span> <span class="n">conds</span><span class="p">}</span>
-	<span class="n">db</span><span class="o">.</span><span class="n">Statement</span><span class="o">.</span><span class="n">AddClause</span><span class="p">(</span><span class="n">newWhereClause</span><span class="p">)</span>
+	<span class="n">stmt</span><span class="o">.</span><span class="n">AddClause</span><span class="p">(</span><span class="n">newWhereClause</span><span class="p">)</span>
+
+	<span class="n">destValue</span> <span class="o">:=</span> <span class="n">reflect</span><span class="o">.</span><span class="n">ValueOf</span><span class="p">(</span><span class="n">stmt</span><span class="o">.</span><span class="n">Dest</span><span class="p">)</span>
+	<span class="k">for</span> <span class="n">destValue</span><span class="o">.</span><span class="n">Kind</span><span class="p">()</span> <span class="o">==</span> <span class="n">reflect</span><span class="o">.</span><span class="n">Ptr</span> <span class="p">{</span>
+		<span class="n">destValue</span> <span class="o">=</span> <span class="n">destValue</span><span class="o">.</span><span class="n">Elem</span><span class="p">()</span>
+	<span class="p">}</span>
+	<span class="k">switch</span> <span class="n">dest</span> <span class="o">:=</span> <span class="n">destValue</span><span class="o">.</span><span class="n">Interface</span><span class="p">()</span><span class="o">.</span><span class="p">(</span><span class="k">type</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">case</span> <span class="k">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="k">interface</span><span class="p">{}</span><span class="o">:</span>
+		<span class="n">dest</span><span class="p">[</span><span class="n">ColEtag</span><span class="p">]</span> <span class="o">=</span> <span class="n">NewEtag</span><span class="p">()</span>
+	<span class="k">default</span><span class="o">:</span>
+	<span class="p">}</span>
 <span class="p">}</span>
 
 <span class="c">// RegisterDB registers a database as basicDB which is used in future operations</span>
@@ -201,7 +217,7 @@
 	<span class="n">basicDB</span><span class="o">.</span><span class="n">Callback</span><span class="p">()</span><span class="o">.</span><span class="n">Create</span><span class="p">()</span><span class="o">.</span>
 		<span class="n">Before</span><span class="p">(</span><span class="s">"gorm:before_create"</span><span class="p">)</span><span class="o">.</span>
 		<span class="n">Register</span><span class="p">(</span><span class="s">"add_etag"</span><span class="p">,</span> <span class="n">callbackAddEtag</span><span class="p">)</span>
-	<span class="n">basicDB</span><span class="o">.</span><span class="n">Callback</span><span class="p">()</span><span class="o">.</span><span class="n">Update</span><span class="p">()</span><span class="o">.</span><span class="n">Before</span><span class="p">(</span><span class="s">"gorm:before_update"</span><span class="p">)</span><span class="o">.</span>
+	<span class="n">basicDB</span><span class="o">.</span><span class="n">Callback</span><span class="p">()</span><span class="o">.</span><span class="n">Update</span><span class="p">()</span><span class="o">.</span><span class="n">Before</span><span class="p">(</span><span class="s">"gorm:update"</span><span class="p">)</span><span class="o">.</span>
 		<span class="n">Register</span><span class="p">(</span><span class="s">"check_etag"</span><span class="p">,</span> <span class="n">callbackUpdateCheckEtag</span><span class="p">)</span>
 
 	<span class="k">return</span> <span class="no">nil</span>
