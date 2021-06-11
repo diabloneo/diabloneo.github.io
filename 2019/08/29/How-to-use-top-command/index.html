@@ -130,9 +130,13 @@
     <br />
       <p><strong>top</strong> 命令是 Linux 下最常用的系统监控命令。默认执行 top 命令之后，我们就能看到系统的许多监控指标，也可以看到进程按照 CPU 利用率从高到低排列。但是，这个只是 top 命令的最简单用法，其实 top 可以进行很多的定制。</p>
 
-<h2 id="top-界面模式">top 界面模式</h2>
+<p>The <strong>top</strong> command is the most commonly used system monitoring command under Linux. After executing the top command by default, we can see many monitoring indicators of the system, and we can also see that the processes are arranged in order of CPU utilization from high to low. However, this is just the simplest usage of the top command. In fact, top can be customized a lot.</p>
+
+<h2 id="top-界面模式-top-display-modes">top 界面模式 top Display Modes</h2>
 
 <p>top 的界面其实有两个模式：<strong>full-screen mode</strong> 和 <strong>alternate-display mode</strong>，根据实际的效果来看，这两个模式就是<strong>全屏模式</strong>和<strong>多窗口模式</strong>。不做任何定制的时候，我们看到的就是全屏模式。如下图所示：</p>
+
+<p>The top interface actually has two modes: full-screen mode and alternate-display mode. According to the actual effect, these two modes are full-screen mode and multi-window mode. Without any customization, we see full-screen mode by default. As shown below:</p>
 
 <p><img src="http://diabloneo.github.io//assets/imgs/00021_top_cmd_1.png" alt="top_cmd_1" /></p>
 
@@ -140,15 +144,23 @@
 
 <p>全屏模式时，整个界面分为两个部分：<strong>summary area</strong> 和 <strong>tasks area</strong>，如上图所示。</p>
 
+<p>In full screen mode, the entire interface is divided into two parts: <strong>summary area</strong> and <strong>tasks area</strong>, as shown in the figure above.</p>
+
 <h3 id="alternate-display-mode">alternate-display mode</h3>
 
 <p>多窗口模式的界面如下：</p>
+
+<p>The interface of multi-window mode is as follows:</p>
 
 <p><img src="http://diabloneo.github.io//assets/imgs/00022_top_cmd_2.png" alt="top_cmd_2" /></p>
 
 <p>要进入多窗口模式，在全屏模式下，按 <strong>A</strong> 即可（这个可以在两个模式间来回切换）。多窗口模式有一个 summary area 和 4 个 window，4 个窗口从上到下编号，对应 1 到 4。summary area 默认为 window 1 的 summary area，可以切换为不同 window 的 summary area，这个可以从 summary area 左上角的提示看出来。这个提示区会展示 summary area 当前对应的 window 的编号和名字，比如 <strong>1:Def</strong>。要切换 summary area 对应不同的 window，可以按 <strong>a</strong> （从上到下） 或者 <strong>w</strong> （从下到上）。</p>
 
+<p>To enter multi-window mode, press <strong>A</strong> in full screen mode (this can switche between the two modes). The multi-window mode has a summary area and 4 windows. The 4 windows are numbered from top to bottom, corresponding to 1 to 4. The summary area defaults to the summary area of window 1, and can be switched to the summary area of other windows. This can be seen from the prompt in the upper left corner of the summary area. This prompt area will display the number and name of the window currently corresponding to the summary area, such as <strong>1:Def</strong>. To switch the summary area corresponding to different windows, you can press <strong>a</strong> (from top to bottom) or <strong>w</strong> (from bottom to top).</p>
+
 <p>top 默认定义了 4 个 window，这里先给出名字和编号，其他的下文再详述：</p>
+
+<p>top defines 4 windows by default, the names and numbers are given here first, and the rest will be detailed below:</p>
 
 <ol>
   <li>Def</li>
@@ -159,13 +171,19 @@
 
 <h4 id="field-group">Field Group</h4>
 
-<p>top 其实有两个概念是混合使用的，就是 window 和 Field Group，你可以认为他们就是等价的，本文除了这一小节，后面都使用 window 这个术语。。上面提到了，top 默认定义了 4 个 window，每个 window 配置要显示的列，就称为这个 window 的 <strong>Field Group</strong>。在全屏模式下，可以通过快捷键 <strong>g</strong> 切换当前要显示的 Field Group 是哪个，使用序号 1 到 4 到进行选择。修改当前展示的 Field Group 不仅是修改了要显示的内容，<strong>样式也会使用 window 的配置，包括过滤器和颜色配置等</strong>。</p>
+<p>top 其实有两个概念是混合使用的，就是 window 和 Field Group，你可以认为他们就是等价的，本文除了这一小节，后面都使用 window 这个术语。。上面提到了，top 默认定义了 4 个 window，每个 window 配置要显示的列，就称为这个 window 的 <strong>Field Group</strong>。在全屏模式下，可以通过快捷键 <strong>g</strong> 切换当前要显示的 Field Group 是哪个，使用序号 1 到 4 到进行选择。修改当前展示的 Field Group 不仅是改变要显示的内容，<strong>也会使用对应的 window 的样式，包括过滤器和颜色配置等</strong>。</p>
+
+<p>In fact, there are two concepts in top used alternatively, namely window and Field Group. You can simply take them as equivalent. Except for this section, the term window is used in the rest of this article.. As mentioned above, top defines 4 windows by default, and the column to be displayed in each window configuration is called the Field Group of this window. In the full screen mode, you can switch which Field Group is currently displayed by the shortcut key <strong>g</strong> , and use the serial number 1 to 4 to select. Modifying the currently displayed Field Group not only modifies the content to be displayed, <strong>but also the style configuration of the window, including filters and color configurations</strong>.</p>
 
 <p>在多窗口模式下，快捷键 <strong>g</strong> 就对应到切换 window，效果和 <strong>a</strong> <strong>w</strong> 是一样的。在多窗口模式下，快捷键 <strong>G</strong> 用来修改 window 的名字。</p>
 
-<h3 id="界面的滚动和定位">界面的滚动和定位</h3>
+<p>In multi-window mode, the shortcut key <strong>g</strong> corresponds to switching windows, and the effect is the same as <strong>a</strong> and <strong>w</strong>. In multi-window mode, the shortcut key <strong>G</strong> is used to modify the name of the window.</p>
+
+<h3 id="界面的滚动和定位-scrolling-and-positioning-on-the-interface">界面的滚动和定位 Scrolling and Positioning on the Interface</h3>
 
 <p>在任何一个 window 下，或者全屏模式下，top 都支持如下快捷键来进行界面的滚动：</p>
+
+<p>In any window or full screen mode, top supports the following shortcut keys to scroll the interface:</p>
 
 <ul>
   <li><strong>Up</strong> or <strong>alt+k</strong></li>
@@ -180,9 +198,13 @@
 
 <p>上面这些和大多数应用是一样的，就不展开说了。这里要说的是，top 支持显示一个定位信息，你可以看到自己现在处于第几行，第几个字段，通过快捷键 <strong>C</strong> 切换：</p>
 
+<p>The above are the same as most applications, so I won’t expand on that. What I want to say here is that top supports displaying a positioning information, you can see which row and field you are in now, you can switch by shortcut key <strong>C</strong>:</p>
+
 <p><img src="http://diabloneo.github.io//assets/imgs/00026_top_cmd_6.png" alt="top_cmd_6" /></p>
 
 <p>这个定位信息，也很容易看，<em>y</em> 表示当前的第一行是第几个 task 以及一共有几个 task；<em>x</em> 表示当前的第一列是第几列，以及一共有多少列。</p>
+
+<p>This positioning information is also easy to understand. <em>y</em> indicates the task number of current first row and how many tasks there are in total; <em>x</em> indicates the column number of current first column and how many columns are there in total.</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scroll coordinates: y = 1/145 (tasks), x = 1/12 (fields)
 </code></pre></div></div>
@@ -190,6 +212,8 @@
 <h2 id="summary-area">Summary Area</h2>
 
 <p>Summary area 展示了系统的全局监控信息，如下所示。整个区域从上到下分为 3 个部分： <strong>load average</strong>, <strong>tasks and cpu</strong>, <strong>memory</strong>。</p>
+
+<p>The Summary area displays the global monitoring information of the system, as shown below. The whole area is divided into 3 parts from top to bottom: <strong>load average</strong>, <strong>tasks and cpu</strong>, <strong>memory</strong>.</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
 top - 14:24:54 up 26 days, 22:13,  1 user,  load average: 0.08, 0.05, 0.05        # load average
@@ -203,6 +227,8 @@ KiB Swap:        0 total,        0 free,        0 used.  7757480 avail Mem      
 
 <p><em>Load average</em> 部分主要展示系统的负载。</p>
 
+<p>The <strong>load average</strong> part mainly displays the load of the system.</p>
+
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
 #     Now      Uptime              User     Load average
 #                                  count                  1m    5m    15m
@@ -211,13 +237,17 @@ top - 14:24:54 up 26 days, 22:13,  1 user,  load average: 0.08, 0.05, 0.05
 
 <p>如下快捷键可以用来控制这个区域：</p>
 
+<p>The following shortcut keys can be used to control this area:</p>
+
 <ul>
-  <li><strong>l</strong>(lower case L): 切换是否显示。</li>
+  <li><strong>l</strong>(lower case L): 切换是否显示。Switch whether to display.</li>
 </ul>
 
 <h3 id="tasks-and-cpu">Tasks and CPU</h3>
 
 <p><em>Tasks</em> 部分主要展示系统的进程数或者线程数（根据 threads-mode 来决定）。</p>
+
+<p>The <em>Tasks</em> section mainly displays the number of processes or threads of the system (determined according to threads-mode).</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
 #      Total        State      State           State        State
@@ -228,35 +258,43 @@ Tasks: 145 total,   1 running, 144 sleeping,   0 stopped,   0 zombie
 
 <p><em>CPU</em> 的部分主要是展示不同状态的任务的 CPU 消耗占比：</p>
 
+<p>The CPU part mainly shows the CPU consumption ratio of tasks in different states:</p>
+
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>%Cpu(s):  0.2 us,  0.2 sy,  0.0 ni, 99.5 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
 </code></pre></div></div>
 
 <p>具体的缩写含义如下：</p>
 
+<p>The abbreviations explanations:</p>
+
 <ul>
-  <li><strong>us</strong>: user, time running un-niced user processes, 普通进程的 CPU 消耗占比。</li>
-  <li><strong>sy</strong>: system, time running kernel processes, 内核任务的 CPU 消耗占比。</li>
-  <li><strong>ni</strong>: nice, time running niced user processes, 高优先级进程的 CPU 消耗占比。</li>
-  <li><strong>id</strong>: idle, time spent in the kernel idle handler, 空闲时间占比。</li>
-  <li><strong>wa</strong>: IO-wait, time waiting for I/O completion, 等待 IO 完成的 CPU 消耗占比（进程处于 D 状态）。</li>
-  <li><strong>hi</strong>: time spent servicing hardware interrupts, 用于处理硬中断的 CPU 消耗占比。</li>
-  <li><strong>si</strong>: time spent servicing software interrupts, 用于处理软中断的 CPU 消耗占比。</li>
-  <li><strong>st</strong>: time stolen from this vm by the hypervisor, 虚拟机管理进程从这个虚拟机偷走的 CPU 资源。</li>
+  <li><strong>us</strong>: user, time running un-niced user processes, 普通进程的 CPU 消耗占比。The percentage of CPU consumption of ordinary processes.</li>
+  <li><strong>sy</strong>: system, time running kernel processes, 内核任务的 CPU 消耗占比。The proportion of CPU consumption of kernel tasks</li>
+  <li><strong>ni</strong>: nice, time running niced user processes, 高优先级进程的 CPU 消耗占比。The percentage of CPU consumption of high-priority processes.</li>
+  <li><strong>id</strong>: idle, time spent in the kernel idle handler, 空闲时间占比。The percentage of idle time.</li>
+  <li><strong>wa</strong>: IO-wait, time waiting for I/O completion, 等待 IO 完成的 CPU 消耗占比（进程处于 D 状态）。The percentage of CPU consumption waiting for IO completion (process is in D state).</li>
+  <li><strong>hi</strong>: time spent servicing hardware interrupts, 用于处理硬中断的 CPU 消耗占比。The percentage of CPU consumption used to handle hard interrupts.</li>
+  <li><strong>si</strong>: time spent servicing software interrupts, 用于处理软中断的 CPU 消耗占比。The percentage of CPU consumption used to handle soft interrupts.</li>
+  <li><strong>st</strong>: time stolen from this vm by the hypervisor, 虚拟机管理进程从这个虚拟机偷走的 CPU 资源。The CPU resources stolen from this virtual machine by the virtual machine management process.</li>
 </ul>
 
 <p>如下快捷键可以用来控制这个区域：</p>
 
+<p>The following shortcut keys can be used to control this area:</p>
+
 <ul>
-  <li><strong>t</strong>: 切换 CPU 部分的展示方式，例如数值还是进度条，也可以切换到关闭这个区域。</li>
-  <li><strong>1</strong>(digit one): 切换单个 CPU 和总体 CPU 的显示。</li>
-  <li><strong>2</strong>: 按照 NUMA Node 展示。</li>
-  <li><strong>3</strong>: 展示指定 NUMA Node 下的所有 CPU。</li>
-  <li><strong>H</strong>: 显示线程显示，默认是进程。</li>
+  <li><strong>t</strong>: 切换 CPU 部分的展示方式，例如数值还是进度条，也可以切换到关闭这个区域。Switch the display mode of the CPU part, such as the value or the progress bar, and you can also switch to close this area.</li>
+  <li><strong>1</strong>(digit one): 切换单个 CPU 和总体 CPU 的显示。Switch the display of single CPU and overall CPU.</li>
+  <li><strong>2</strong>: 按照 NUMA Node 展示。Display according to NUMA Node.</li>
+  <li><strong>3</strong>: 展示指定 NUMA Node 下的所有 CPU。Show all CPUs under the specified NUMA Node.</li>
+  <li><strong>H</strong>: 显示线程显示，默认是进程。Using thread display, the default is process.</li>
 </ul>
 
 <h3 id="memory">Memory</h3>
 
-<p>*Memory** 的部分展示了系统的内存信息和交换分区的信息。</p>
+<p><strong>Memory</strong> 的部分展示了系统的内存信息和交换分区的信息。</p>
+
+<p>The <strong>Memory</strong> part shows the system’s memory information and swap partition information.</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
 KiB Mem : 12138004 total,  2857072 free,   548312 used,  8732620 buff/cache
@@ -264,40 +302,50 @@ KiB Swap:        0 total,        0 free,        0 used.  7757480 avail Mem
 </code></pre></div></div>
 
 <ul>
-  <li><strong>total</strong>: 总内存大小。</li>
-  <li><strong>free</strong>: 空闲内存大小。</li>
-  <li><strong>used</strong>: 已使用内存大小。</li>
-  <li><strong>buff/cache</strong>: block buffer + page cache 所占用的内存大小。</li>
-  <li><strong>avail Mem</strong>: 这个值是系统的估算值，表示可用于启动新程序的物理内存大小（不包括 swap 空间）。</li>
+  <li><strong>total</strong>: 总内存大小。Total memory size.</li>
+  <li><strong>free</strong>: 空闲内存大小。The size of free memory.</li>
+  <li><strong>used</strong>: 已使用内存大小。Used memory size.</li>
+  <li><strong>buff/cache</strong>: block buffer + page cache 所占用的内存大小。The memory size occupied by block buffer + page cache.</li>
+  <li><strong>avail Mem</strong>: 这个值是系统的估算值，表示可用于启动新程序的物理内存大小（不包括 swap 空间）。This value is the estimated value of the system, indicating the physical memory size (excluding swap space) that can be used to start new programs.</li>
 </ul>
 
 <p>如下快捷键可以用来控制这个区域：</p>
 
+<p>The following shortcut keys can be used to control this area:</p>
+
 <ul>
-  <li><strong>m</strong>: 切换 memory 部分的展示方式，例如数值还是进度条，也可以切换到关闭这个区域。</li>
-  <li><strong>E</strong>: 切换内存单位。</li>
+  <li><strong>m</strong>: 切换 memory 部分的展示方式，例如数值还是进度条，也可以切换到关闭这个区域。Switch the display mode of the memory part, such as the value or the progress bar, and you can also switch to close this area.</li>
+  <li><strong>E</strong>: 切换内存单位。Switch the memory unit.</li>
 </ul>
 
 <h2 id="tasks-area">Tasks Area</h2>
 
 <p>Tasks area 包含两个部分：字段名称和任务列表（根据指定的字段排序）。这里我们先介绍全屏模式下 tasks area，多窗口模式的 tasks area 后面介绍。。对于 tasks area，最主要考虑的是如下几个问题：</p>
 
+<p>The Tasks area contains two parts: the field name and the task list (sorted according to the specified field). Here we first introduce the tasks area in full-screen mode, and the tasks area in multi-window mode will be introduced later. For the tasks area, the main considerations are the following issues:</p>
+
 <ol>
-  <li>要显示哪些字段？要根据哪个字段排序？升序还是降序？</li>
-  <li>是否只展示符合某些条件的任务？</li>
+  <li>要显示哪些字段？要根据哪个字段排序？升序还是降序？Which fields do you want to display? Which field do you want to sort by? Ascending or descending?</li>
+  <li>是否只展示符合某些条件的任务？Do you only show tasks that meet certain conditions?</li>
 </ol>
 
-<h3 id="要展示哪些字段要根据哪个字段排序">要展示哪些字段？要根据哪个字段排序？</h3>
+<h3 id="要展示哪些字段要根据哪个字段排序which-fields-do-you-want-to-display-which-field-do-you-want-to-sort-by">要展示哪些字段？要根据哪个字段排序？Which fields do you want to display? Which field do you want to sort by?</h3>
 
 <p>top 其实可以展示很多内容，我们可以定义要展示哪些字段。在全屏模式下，按 <strong>F</strong> 进入字段管理界面，如下：</p>
 
+<p>top can actually display a lot of content, we can define which fields to display. In full screen mode, press <strong>F</strong> to enter the field management interface, as follows:</p>
+
 <p><img src="http://diabloneo.github.io//assets/imgs/00023_top_cmd_3.png" alt="top_cmd_3" /></p>
 
-<p>首先要注意的是第一行，这个界面可以为 4 个 window 分别设置要展示的字段，最上面一行提示当前正在为哪个 window 设置字段，以及当前使用的排序字段是哪个。同样的，可以通过可以按 <strong>a</strong> 或者 <strong>w</strong> 来切换 window。然后可以上下移动到想要处理的字段，按空格或者 <strong>d</strong> 切换是否展示，按 <strong>s</strong> 设置用该字段进行排序，按 <strong>q</strong> 或者 ESC 退出这个界面。前面型号的表示选中。要调整字段的排列顺序，先选中一个字段，按右键表示开始移动，然后上下移动，然后按左键表示移动结束。</p>
+<p>首先要注意的是第一行，这个界面可以为 4 个 window 分别设置要展示的字段，最上面一行提示当前正在为哪个 window 设置字段，以及当前使用的排序字段是哪个。同样的，可以通过可以按 <strong>a</strong> 或者 <strong>w</strong> 来切换 window。然后可以上下移动到想要处理的字段，按空格或者 <strong>d</strong> 切换是否展示，按 <strong>s</strong> 设置用该字段进行排序，按 <strong>q</strong> 或者 ESC 退出这个界面。前面的星号表示选中。要调整字段的排列顺序，先选中一个字段，按右键表示开始移动，然后上下移动，然后按左键表示移动结束。</p>
+
+<p>The first thing to note is the first line. This interface can set the fields to be displayed for the 4 windows. The top line prompts which window is currently being set and which sort field is currently used. Similarly, you can switch windows by pressing <strong>a</strong> or <strong>w</strong> . Then you can move up and down to the field you want to process, press <strong>space</strong> or <strong>d</strong> to switch whether to display, press <strong>s</strong> to set the field to sort, and press <strong>q</strong> or <strong>ESC</strong> to exit this interface. The leading star symbol indicates that it is selected. To adjust the order of the fields, first select a field, press the right arrow key to start moving, then move up and down, and then press the left arrow key to end the move.</p>
 
 <p>下面来看下可用的字段。</p>
 
-<h4 id="进程身份相关">进程身份相关</h4>
+<p>Let’s take a look at the available fields.</p>
+
+<h4 id="进程身份相关process-identity-related">进程身份相关Process Identity Related</h4>
 
 <ul>
   <li><strong>COMMAND</strong>:  Command Name/Line</li>
@@ -323,27 +371,31 @@ KiB Swap:        0 total,        0 free,        0 used.  7757480 avail Mem
 
 <p>如下快捷键可以用来控制这些字段：</p>
 
+<p>The following shortcut keys can be used to control these fields:</p>
+
 <ul>
-  <li><strong>c</strong>: 用于切换 COMMAND 列的内容是 command line 还是 program name。</li>
+  <li><strong>c</strong>: 用于切换 COMMAND 列的内容是 command line 还是 program name。Used to switch the content of the COMMAND column is the command line or the program name.</li>
 </ul>
 
-<h4 id="进程状态相关">进程状态相关</h4>
+<h4 id="进程状态相关process-state-related">进程状态相关Process State Related</h4>
 
 <ul>
   <li><strong>S</strong>:  Process Status</li>
   <li><strong>%CPU</strong>:  CPU Usage</li>
   <li><strong>nTH</strong>:  Number of Threads</li>
   <li><strong>P</strong>:  Last Used Cpu (SMP)</li>
-  <li><strong>TIME</strong>:  CPU Time。任务从启动到现在使用的 CPU 时间。</li>
-  <li><strong>TIME+</strong>:  CPU Time, hundredths。任务从启动到现在使用的 CPU 时间，精确到百分之一秒。</li>
-  <li><strong>WCHAN</strong>:  Sleeping in Function。对于 sleeping 的进程，当前所处的内核函数。</li>
+  <li><strong>TIME</strong>:  CPU Time。任务从启动到现在使用的 CPU 时间。The CPU time used by the task since it was started.</li>
+  <li><strong>TIME+</strong>:  CPU Time, hundredths。任务从启动到现在使用的 CPU 时间，精确到百分之一秒。The CPU time used by the task from the start to the present, accurate to one hundredth of a second.</li>
+  <li><strong>WCHAN</strong>:  Sleeping in Function。对于 sleeping 的进程，当前所处的内核函数。Sleeping in Function. For the sleeping process, the current kernel function.</li>
   <li><strong>Flags</strong>:  Task Flags <sched.h></sched.h></li>
 </ul>
 
 <p>进程状态有如下几种：</p>
 
+<p>The process status is as follows:</p>
+
 <ul>
-  <li><strong>D</strong> Uninterruptible sleep。不可中断休眠，就是等待 I/O 完成时的状态，会导致 CPU 统计的 wa 上升。</li>
+  <li><strong>D</strong> Uninterruptible sleep。不可中断休眠，就是等待 I/O 完成时的状态，会导致 CPU 统计的 wa 上升。Uninterruptible sleep is the state when waiting for the completion of I/O, which will cause the wa of CPU statistics to rise.</li>
   <li><strong>R</strong> Running</li>
   <li><strong>S</strong> Sleeping</li>
   <li><strong>T</strong> Stopped by job control signal</li>
@@ -353,43 +405,47 @@ KiB Swap:        0 total,        0 free,        0 used.  7757480 avail Mem
 
 <p>如下快捷键可以用来控制这些字段：</p>
 
-<ul>
-  <li><strong>I</strong> (upper case i): 切换 %CPU 的模式，Irix/Solaris 两个模式。Irix mode 的计算方式是跑满一个 CPU 为 100%，%CPU 可能会超过 100%。Solaris mode 则是会把总体利用率除以 CPU 核数，保证不会超过 100%。</li>
-  <li><strong>S</strong>: Cumulative time，off 展示两次刷新时间的即时值，而不是从进程启动到现在的累加值。</li>
-</ul>
-
-<h4 id="进程优先级相关">进程优先级相关</h4>
+<p>The following shortcut keys can be used to control these fields:</p>
 
 <ul>
-  <li><strong>NI</strong>:  Nice Value. 进程的优先级。这个是表示进程的用户态优先级，范围是 -20 到 +19，默认值是 0，值越低优先级越高。</li>
-  <li><strong>PR</strong>:  Priority. 进程的调度优先级，这个是内核实际使用的任务的优先级，范围是 0 到 39，映射到内核的值是 100 到 139；也可以是 rt ，表示实时任务。内核表示一个 task 的优先级的范围是 0 到 139。其中，0 到 99 是实时进程的优先级，100 到 139 是非实时进程的优先级。PR 的默认值是 20，对应到内核是 120，和 NI 的关系是: PR = 20 + NI。</li>
+  <li><strong>I</strong> (upper case i): 切换 %CPU 的模式，Irix/Solaris 两个模式。Irix mode 的计算方式是跑满一个 CPU 为 100%，%CPU 可能会超过 100%。Solaris mode 则是会把总体利用率除以 CPU 核数，保证不会超过 100%。Switch %CPU mode, there are two modes Irix/Solaris. The calculation method of Irix mode is to run a full CPU as 100%, and %CPU may exceed 100%. Solaris mode will divide the overall utilization by the number of CPU cores to ensure that it will not exceed 100%.</li>
+  <li><strong>S</strong>: Cumulative time，off 展示两次刷新时间的即时值，而不是从进程启动到现在的累加值。When set to off, displays the instantaneous value of the two refresh times, rather than the cumulative value from the start of the process to the present.</li>
 </ul>
 
-<h4 id="内存相关">内存相关</h4>
+<h4 id="进程优先级相关-process-priority-related">进程优先级相关 Process Priority Related</h4>
+
+<ul>
+  <li><strong>NI</strong>:  Nice Value. 进程的优先级。这个是表示进程的用户态优先级，范围是 -20 到 +19，默认值是 0，值越低优先级越高。The priority of the process. This is the user mode priority of the process, the range is -20 to +19, the default value is 0, the lower the value, the higher the priority.</li>
+  <li><strong>PR</strong>:  Priority. 进程的调度优先级，这个是内核实际使用的任务的优先级，范围是 0 到 39，映射到内核的值是 100 到 139；也可以是 rt ，表示实时任务。内核表示一个 task 的优先级的范围是 0 到 139。其中，0 到 99 是实时进程的优先级，100 到 139 是非实时进程的优先级。PR 的默认值是 20，对应到内核是 120，和 NI 的关系是: PR = 20 + NI。The scheduling priority of the process. This is the priority of the task actually used by the kernel. The range is 0 to 39. The value mapped to the kernel is 100 to 139; it can also be rt, which represents a real-time task. The kernel indicates that the priority of a task ranges from 0 to 139. Among them, 0 to 99 are the priorities of real-time processes, and 100 to 139 are the priorities of non-real-time processes. The default value of PR is 20, corresponding to the core is 120, and the relationship with NI is: PR = 20 + NI.</li>
+</ul>
+
+<h4 id="内存相关-memory-related">内存相关 Memory Related</h4>
 
 <ul>
   <li><strong>%MEM</strong>:  Memory Usage (RES)</li>
-  <li><strong>VIRT</strong>:  Virtual Image (KiB)。表示一个任务使用的虚拟内存总和，包括所有的代码段、数据段、链接的共享库、已经被 swap 的页和已经被映射但是没有使用的页。</li>
-  <li><strong>RES</strong>:  Resident Size (KiB)。表示一个任务使用的没有被 swap 的物理内存。</li>
-  <li><strong>SHR</strong>:  Shared Memory (KiB)。表示一个任务可能和其他任务共享的内存。</li>
-  <li><strong>SWAP</strong>:  Swapped Size (KiB)。表示一个任务的非驻留内存，也就是使用的交换空间。</li>
-  <li><strong>CODE</strong>:  Code Size (KiB)。表示任务的代码段的大小。</li>
-  <li><strong>DATA</strong>:  Data+Stack (KiB)。Data Resident Set size，包括了程序数据段和栈。</li>
-  <li><strong>USED</strong>:  Res+Swap Size (KiB)。就是 RES + SWAP。</li>
-  <li><strong>nDRT</strong>:  Dirty Pages Count。该 task 内存空间中的脏页的数量。</li>
-  <li><strong>nMaj</strong>:  Major Page Faults。该 task 遇到的 Major Page Faults 的数量。Major Page Fault 是指需要访问通过访问 swap 分区或者硬盘（mmap 一个文件，但是还没把内容读取到内存时）来处理的缺页异常。</li>
-  <li><strong>nMin</strong>:  Minor Page Faults。该 task 遇到的 Minor Page Faults 的数量。Minor Page Fault 是指不需要通过访问 swap 分区或者硬盘来处理的缺页异常，简单的说，没用到磁盘 I/O。</li>
-  <li><strong>vMj</strong>:  Major Faults delta。上次 top 刷新数据依赖的 Major Page Faults 增加数量。</li>
-  <li><strong>vMn</strong>:  Minor Faults delta。上次 top 刷新数据依赖的 Minor Page Faults 增加数量。</li>
+  <li><strong>VIRT</strong>:  Virtual Image (KiB)。表示一个任务使用的虚拟内存总和，包括所有的代码段、数据段、链接的共享库、已经被 swap 的页和已经被映射但是没有使用的页。 Represents the total virtual memory used by a task, including all code segments, data segments, linked shared libraries, pages that have been swapped, and pages that have been mapped but not used.</li>
+  <li><strong>RES</strong>:  Resident Size (KiB)。表示一个任务使用的没有被 swap 的物理内存。 Indicates the physical memory used by a task that has not been swapped.</li>
+  <li><strong>SHR</strong>:  Shared Memory (KiB)。表示一个任务可能和其他任务共享的内存。 Represents the memory that a task may share with other tasks.</li>
+  <li><strong>SWAP</strong>:  Swapped Size (KiB)。表示一个任务的非驻留内存，也就是使用的交换空间。 Represents the non-resident memory of a task, that is, the swap space used.</li>
+  <li><strong>CODE</strong>:  Code Size (KiB)。表示任务的代码段的大小。 Indicates the size of the code segment of the task.</li>
+  <li><strong>DATA</strong>:  Data+Stack (KiB)。Data Resident Set size，包括了程序数据段和栈。 Data Resident Set size, including program data segment and stack.</li>
+  <li><strong>USED</strong>:  Res+Swap Size (KiB)。就是 RES + SWAP。 It is RES + SWAP.</li>
+  <li><strong>nDRT</strong>:  Dirty Pages Count。该 task 内存空间中的脏页的数量。The number of dirty pages in the task memory space.</li>
+  <li><strong>nMaj</strong>:  Major Page Faults。该 task 遇到的 Major Page Faults 的数量。Major Page Fault 是指需要访问通过访问 swap 分区或者硬盘（mmap 一个文件，但是还没把内容读取到内存时）来处理的缺页异常。The number of Major Page Faults encountered by this task. Major Page Fault refers to the page fault exception that needs to be accessed by accessing the swap partition or the hard disk (when mmap is a file, but the content has not been read into the memory).</li>
+  <li><strong>nMin</strong>:  Minor Page Faults。该 task 遇到的 Minor Page Faults 的数量。Minor Page Fault 是指不需要通过访问 swap 分区或者硬盘来处理的缺页异常，简单的说，没用到磁盘 I/O。 The number of Minor Page Faults encountered by this task. Minor Page Fault refers to a page fault exception that does not need to be processed by accessing the swap partition or hard disk. Simply put, disk I/O is not used.</li>
+  <li><strong>vMj</strong>:  Major Faults delta。上次 top 刷新数据以来的 Major Page Faults 增加数量。The number of Major Page Faults increased since the last top refresh.</li>
+  <li><strong>vMn</strong>:  Minor Faults delta。上次 top 刷新数据以来的 Minor Page Faults 增加数量。The number of Minor Page Faults increased since the last top refresh.</li>
 </ul>
 
 <p>如下快捷键可以用来控制这些字段：</p>
 
+<p>The following shortcut keys can be used to control these fields:</p>
+
 <ul>
-  <li><strong>e</strong>: 切换内存单位。</li>
+  <li><strong>e</strong>: 切换内存单位。Switch the memory unit.</li>
 </ul>
 
-<h4 id="cgroup-相关">CGroup 相关</h4>
+<h4 id="cgroup-相关-cgroup-related">CGroup 相关 CGroup Related</h4>
 
 <ul>
   <li><strong>CGROUPS</strong>:  Control Groups</li>
@@ -401,25 +457,35 @@ KiB Swap:        0 total,        0 free,        0 used.  7757480 avail Mem
   <li><strong>nsUTS</strong>:  UTS namespace Inode</li>
 </ul>
 
-<h3 id="是否只展示符合某些条件的任务">是否只展示符合某些条件的任务？</h3>
+<h3 id="是否只展示符合某些条件的任务-do-you-only-show-tasks-that-meet-certain-conditions">是否只展示符合某些条件的任务？ Do you only show tasks that meet certain conditions?</h3>
 
 <p>这个问题，也就是如何过滤，只展示某些任务。也许你用过 <strong>htop</strong>，知道 htop 可以和方便的根据名称来过滤。top 其实也可以，而且可以根据很多字段来过滤。</p>
 
-<h4 id="只展示非空闲的任务">只展示非空闲的任务</h4>
+<p>This question, that is, how to filter, only show certain tasks. Maybe you have used htop and know that htop can and conveniently filter by name. In fact, top is also possible, and it can be filtered according to many fields.</p>
+
+<h4 id="只展示非空闲的任务-show-only-non-idle-tasks">只展示非空闲的任务 Show only non-idle tasks</h4>
 
 <p>快捷键 <strong>i</strong> 用来切换是否只展示非空闲任务。</p>
 
-<h4 id="限制展示任务的数量">限制展示任务的数量</h4>
+<p>The shortcut key <strong>i</strong> is used to switch whether to display only non-idle tasks.</p>
+
+<h4 id="限制展示任务的数量-limit-the-number-of-display-tasks">限制展示任务的数量 Limit the number of display tasks</h4>
 
 <p>快捷键 <strong>n</strong> 用于限制要展示的任务的数量，0 表示无限制。默认是全部展示（超过一页需要翻页）。</p>
 
-<h4 id="只展示指定用户的任务">只展示指定用户的任务</h4>
+<p>The shortcut key <strong>n</strong> is used to limit the number of tasks to be displayed, and 0 means unlimited. The default is to display all (more than one page needs to be turned).</p>
+
+<h4 id="只展示指定用户的任务-only-show-the-tasks-of-the-specified-user">只展示指定用户的任务 Only show the tasks of the specified user</h4>
 
 <p>快捷键 <strong>u</strong> 表示要过滤的用户，可以加 <strong>!</strong> 前缀表示反向条件。可以输入 UID 或者 username，直接回车表示取消这个过滤条件。</p>
 
-<h4 id="根据其他条件过滤">根据其他条件过滤</h4>
+<p>The shortcut key <strong>u</strong> indicates the user to be filtered, and you can add a <strong>!</strong> Prefix to indicate the reverse condition. You can enter UID or username and press Enter to cancel this filter condition.</p>
+
+<h4 id="根据其他条件过滤-filter-by-other-criteria">根据其他条件过滤 Filter by other criteria</h4>
 
 <p>top 提供了 <strong>Other Filter</strong> 的功能，通过快捷键 <strong>o</strong> (大小写不敏感) 或者 <strong>O</strong> (大小写敏感) 来启用。过滤条件的格式如下：</p>
+
+<p>top provides the function of <strong>Other Filter</strong>, which is enabled by the shortcut key <strong>o</strong> (case insensitive) or <strong>O</strong> (case sensitive). The format of the filter condition is as follows:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{!}Field-Name?include-if-value
               exclude-if-value
@@ -434,11 +500,23 @@ KiB Swap:        0 total,        0 free,        0 used.  7757480 avail Mem
       <li><strong>=</strong> 表示部分匹配</li>
     </ul>
   </li>
+  <li><strong>!</strong> Means not, it is not a required field, the others are all required fields.</li>
+  <li><strong>Field-Name</strong> represents the name of the field, which has been listed above. Note that this is case sensitive and must be exactly the same.</li>
+  <li><strong>?</strong> Represents a required separator and operator (=, &lt;, &gt;):
+    <ul>
+      <li><strong>&lt;</strong> or <strong>&gt;</strong> means string comparison or numerical comparison. Pay attention to the problem of the unit of the number when comparing, 100.0m will be larger than 1.0g, so you need to switch the unit first (for example, the unit of the memory, e)</li>
+      <li><strong>=</strong> Indicates partial match</li>
+    </ul>
+  </li>
 </ul>
 
 <p>可以使用多个条件进行过滤，每个按一次 o 或者 O 输入一个条件，所有条件会进行与操作。可以按 <strong>Ctrl-o</strong> 显示所有条件。</p>
 
+<p>You can use multiple conditions to filter, each press o or O once to enter a condition, and all conditions will be ANDed. You can press <strong>Ctrl-o</strong> to display all conditions.</p>
+
 <p>还有两个清理操作：</p>
+
+<p>There are also two cleanup operations:</p>
 
 <ul>
   <li><strong>=</strong>  reset filtering in current window</li>
@@ -452,39 +530,62 @@ KiB Swap:        0 total,        0 free,        0 used.  7757480 avail Mem
   <li>过滤所有 postgres 进程：<code class="language-plaintext highlighter-rouge">COMMAND=postgres</code>。</li>
 </ol>
 
-<h4 id="搜索">搜索</h4>
+<p>Give some examples:</p>
+
+<ol>
+  <li>Filter nice value less than 0, i.e., beginning with a leading minus: <code class="language-plaintext highlighter-rouge">NI=-</code>.</li>
+  <li>Filter all postgres processes: <code class="language-plaintext highlighter-rouge">COMMAND=postgres</code>.</li>
+</ol>
+
+<h4 id="搜索-searching">搜索 Searching</h4>
 
 <p>搜索和过滤不一样，搜索不考虑字段，会在 tasks area 显示的所有内容中找到指定的行。快捷键 <strong>L</strong> 用于输入要搜索的关键字，<strong>&amp;</strong> 表示跳转到下一个匹配项。搜索关键字会被高亮，除了使用 <strong>&amp;</strong> 以外，你也需要使用 PgUp 和 PgDown 等来调整展示的内容。</p>
 
-<h3 id="其他定制">其他定制</h3>
+<p>Searching is different from filtering. The search does not consider the fields, and will try to match the content of a row in the task area. The shortcut key <strong>L</strong> is used to enter the keyword to be searched, <strong>&amp;</strong> means to jump to the next matching item. Search keywords will be highlighted. In addition to using <strong>&amp;</strong>, you also need to use <strong>PgUp</strong> and <strong>PgDown</strong> to adjust the displayed content.</p>
+
+<h3 id="其他定制-other-customization">其他定制 Other Customization</h3>
 
 <ul>
   <li><strong>R</strong> 切换排序的方向，默认是从高到底，可以切换为从低到高。</li>
   <li><strong>x</strong> 切换是否高亮显示排序列。</li>
   <li><strong>y</strong> 切换是否高亮显示 running 的 task。</li>
   <li><strong>b</strong> bold/reverse，这个快捷键用于切换关键位置是粗体展示还是反色展示，会影响到 x, y 的展示效果，也会影响到 summary area 的 CPU 进度条 和 memory 进度条的展示效果。</li>
-  <li><strong>d</strong> 定时刷新间隔，默认是 3s。</li>
+  <li>
+    <p><strong>d</strong> 定时刷新间隔，默认是 3s。</p>
+  </li>
+  <li><strong>R</strong> switches the sorting direction. The default is from high to bottom, and it can be switched from low to high.</li>
+  <li><strong>x</strong> Toggle whether to highlight the sorting column.</li>
+  <li><strong>y</strong> Toggle whether to highlight the running task.</li>
+  <li><strong>b</strong> bold/reverse, this shortcut key is used to switch the key position to be displayed in bold or in reverse color, which will affect the display effect of x, y, and also affect the display effect of the CPU progress bar and memory progress bar of the summary area.</li>
+  <li><strong>d</strong> Regular refresh interval, the default is 3s.</li>
 </ul>
 
-<p><strong>V</strong> 切换成森林视图，也就是展示进程父子关系。这个模式下无法按照字段排序。效果如下图：</p>
+<p><strong>V</strong> 切换成森林视图，也就是展示进程父子关系。这个模式下无法按照字段排序。效果如下图：
+<strong>V</strong> switches to the forest view, which is to show the parent-child relationship of the process. It is not possible to sort by field in this mode. The effect is as follows:</p>
 
 <p><img src="http://diabloneo.github.io//assets/imgs/00024_top_cmd_4.png" alt="top_cmd_4" /></p>
 
 <p>有时候不想看层级太深的任务，可以使用 other filter。除了第二级是一个空格，往下的每一级都是每级三个空格，最后再加上一个反引号开头。所以要过滤掉第三级以下的，可以使用如下条件（COMMAND=后面跟7个空格）：</p>
 
+<p>Sometimes you don’t want to look at tasks that are too deep, you can use other filters. Except for the second level, which is a space, each level down is three spaces per level, and a backquote is added at the end. So to filter out those below the third level, you can use the following conditions (COMMAND= followed by 7 spaces):</p>
+
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>!COMMAND=       `
 </code></pre></div></div>
 
-<h2 id="界面颜色">界面颜色</h2>
+<h2 id="界面颜色-color">界面颜色 Color</h2>
 
 <p>为了更清晰的进行监控，定制颜色也是很有用的。可以按快捷键 <strong>Z</strong> 进入颜色定制界面，如下图所示：</p>
+
+<p>In order to monitor more clearly, custom colors are also useful. You can press the shortcut key <strong>Z</strong> to enter the color customization interface, as shown in the following figure:</p>
 
 <p><img src="http://diabloneo.github.io//assets/imgs/00025_top_cmd_5.png" alt="top_cmd_5" /></p>
 
 <p>首先可以看到上半部表示了当前正在设置哪个窗口，然后下半部有 1 2 3 三个步骤：</p>
 
+<p>First of all, you can see that the upper part represents which window is currently being set, and then there are three steps in the lower part:</p>
+
 <ol>
-  <li>选择要定制的区域：
+  <li>选择要定制的区域 Select the area to be customized：
     <ol>
       <li><strong>S</strong>: Summary Data</li>
       <li><strong>M</strong>: Messages/Prompts</li>
@@ -492,21 +593,29 @@ KiB Swap:        0 total,        0 free,        0 used.  7757480 avail Mem
       <li><strong>T</strong>: Task Information</li>
     </ol>
   </li>
-  <li>给选定的区域选择一个颜色，用数字 0 到 7 对应 8 个颜色。</li>
-  <li><strong>q</strong> 取消颜色设置，<strong>a</strong> 或者 <strong>g</strong> 提交颜色设置并且切换到下个窗口进行设置，回车提交颜色设置并且退出这个界面。</li>
+  <li>给选定的区域选择一个颜色，用数字 0 到 7 对应 8 个颜色。Choose a color for the selected area, and use the numbers 0 to 7 to correspond to 8 colors.</li>
+  <li><strong>q</strong> 取消颜色设置， <strong>a</strong> 或者 <strong>g</strong> 提交颜色设置并且切换到下个窗口进行设置，回车提交颜色设置并且退出这个界面。 <strong>q</strong> Cancel the color setting, <strong>a</strong> or <strong>g</strong> to submit the color setting and switch to the next window for setting, press Enter to submit the color setting and exit this interface.</li>
 </ol>
 
 <p>在 top 界面上，可以通过快捷键 <strong>z</strong> 来切换是否使用颜色。</p>
 
-<h2 id="配置文件">配置文件</h2>
+<p>On the top interface, you can use the shortcut key z to switch whether to use color.</p>
+
+<h2 id="配置文件-configuration-file">配置文件 Configuration File</h2>
 
 <p>上面讲的这些定制，都可以保存到一个配置文件，然后 top 每次启动都会载入它所找到的配置文件。配置文件中会保存一些全局模式，比如 Irix mode 的配置，刷新时间等，也会保存每个窗口的字段配置和颜色配置等，还会保存 inspect entries （见下文）。</p>
 
+<p>These customizations mentioned above can be saved to a configuration file, and then top will load the configuration file it could find when it starts. The configuration file will save some global modes, such as Irix mode configuration, refresh time, etc., field configuration and color configuration of each window, etc., and inspect entries (see below).</p>
+
 <p>生成配置文件的方式很简单，在你完成想要的定制后，按快捷键 <strong>W</strong> 即可。CentOS 7 上，配置文件的保存路径是 <em>/root/.toprc</em>；Ubuntu 上则是 <em>~/.config/procps/toprc</em>，每次你保存的时候，top 会显示这个路径。</p>
+
+<p>Generate configuration files is very easy, when you’re done customizing, shortcut keys <strong>W</strong> can be. On CentOS 7, the storage path of the configuration file is <em>/root/.toprc</em>; on Ubuntu, it is <em>~/.config/procps/toprc</em>. Each time you save, top will display this path.</p>
 
 <h2 id="inspect-mode">Inspect Mode</h2>
 
 <p>top 有一个模式，可以允许你执行指定的命令来查看一个任务的更多信息，这个模式可以称为 <strong>Inspect Mode</strong>，通过快捷键 <strong>Y</strong> 可以进入这个模式，top 会提示你输入一个要 inspect 的 PID。不过，要使用这个模式，你需要先定义可以使用的 inspect entries，否则 top 不会进入这个模式。下面是一个最简单的配置，可以先体会下这个配置是如何写的：</p>
+
+<p>top has a mode which allows you to execute specified commands to view more information about a task. This mode can be called <strong>Inspect Mode</strong>. You can enter this mode with the shortcut key <strong>Y</strong>. Top will prompt you to enter a PID to inspect. However, to use this mode, you need to define the inspect entries that can be used first, otherwise top will not enter this mode. The following is the simplest configuration, you can first experience how this configuration is written:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
 [root@user ~]# cat .toprc
@@ -531,17 +640,27 @@ pipe    Open Files      lsof -P -p %d 2&gt;&amp;1
 
 <p>上面的最后一行就是就是一个 inspect entry，表示获取进程打开的文件列表。使用这个配置文件后，打开 top，按 <strong>Y</strong> 进入 inspect 模式，效果如下：</p>
 
+<p>The last line above is an inspect entry, which means to get the list of files opened by the process. After using this configuration file, open top and press <strong>Y</strong> to enter inspect mode. The effect is as follows:</p>
+
 <p><img src="http://diabloneo.github.io//assets/imgs/00027_top_cmd_7.png" alt="top_cmd_7" /></p>
 
 <p>在这个界面，可以左右选择你自定义的 entry，然后回车就可以执行。比如上面这个 <em>Open Files</em> 执行后的效果如下，和直接使用 <em>lsof</em> 命令的效果一样：</p>
+
+<p>In this interface, you can select your customized entry using left and right, and then press Enter to execute it. For example, the effect of the execution of the above <em>Open Files</em> is as follows, which is the same as the effect of directly using the <em>lsof</em> command:</p>
 
 <p><img src="http://diabloneo.github.io//assets/imgs/00028_top_cmd_8.png" alt="top_cmd_8" /></p>
 
 <p>在上面这个界面，可以使用 PgUp, PgDown, Home, End 等进行滚动，也可以使用 <em>less</em> 命令的语法（ <code class="language-plaintext highlighter-rouge">/</code> 表示搜索）。</p>
 
+<p>In the above interface, you can use PgUp, PgDown, Home, End to scroll, or you can use the syntax of the less command ( <code class="language-plaintext highlighter-rouge">/</code> meaning search).</p>
+
 <p>下面来看 entry 的定制语法。</p>
 
+<p>Let’s look at the custom syntax of entry.</p>
+
 <p>首先，<strong>#</strong> 开头的行是被注释掉的。</p>
+
+<p>First of all, the line beginning with <strong>#</strong> is commented out.</p>
 
 <p>一行 inspect entry 包含三个部分： <strong>type</strong>, <strong>name</strong>, <strong>fmts</strong>，每个部分之间使用制表符 <code class="language-plaintext highlighter-rouge">\t</code> 分隔。</p>
 
@@ -551,13 +670,25 @@ pipe    Open Files      lsof -P -p %d 2&gt;&amp;1
   <li><strong>fmts</strong>：一个文件路径，或者一行命令。这个部分可以使用变量 <code class="language-plaintext highlighter-rouge">%d</code> 表示 PID，比如 <code class="language-plaintext highlighter-rouge">/proc/%d/numa_maps</code> 或者 <code class="language-plaintext highlighter-rouge">lsof -P -p %d 2&gt;&amp;1</code>。</li>
 </ul>
 
-<h2 id="我的定制">我的定制</h2>
+<p>One inspect entry consists of three parts: <strong>type</strong>, <strong>name</strong>, <strong>fmts</strong>, using the tab portions between each <code class="language-plaintext highlighter-rouge">\t</code> parts.</p>
+
+<ul>
+  <li><strong>type</strong> : Can be <em>file</em> or <em>pipe</em>. <em>file</em> is to open a file and read its contents. <em>pipe</em> is to use the popen interface to execute commands, and then get the output.</li>
+  <li><strong>name</strong> : The name, such as the <em>Open Files</em> you saw above .</li>
+  <li><strong>fmts</strong> : A file path, or a line of commands. This section can use variables <code class="language-plaintext highlighter-rouge">%d</code> represent PID, such as <code class="language-plaintext highlighter-rouge">/proc/%d/numa_maps</code> or <code class="language-plaintext highlighter-rouge">lsof -P -p %d 2&gt;&amp;1</code>.</li>
+</ul>
+
+<h2 id="我的定制-my-customization">我的定制 My Customization</h2>
 
 <p>效果如下：</p>
+
+<p>The effect is as follows:</p>
 
 <p><img src="http://diabloneo.github.io//assets/imgs/00029_top_cmd_9.png" alt="top_cmd_9" /></p>
 
 <p>我在 CentOS 7 下的定制文件如下：</p>
+
+<p>My customized files under CentOS 7 are as follows:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>top's Config File (Linux processes with windows)
 Id:i, Mode_altscr=0, Mode_irixps=1, Delay_time=3.0, Curwin=0
@@ -582,6 +713,8 @@ file    NUMAInfo        /proc/%d/numa_maps
 
 <p>主要是定制了 4 个 window 的字段和颜色，还有 3 个 inspect entries：</p>
 
+<p>Mainly customize the fields and colors of 4 windows, and 3 inspect entries:</p>
+
 <ol>
   <li>CPU (sort by %CPU): PID, PPID, USER, PR, NI, VIRT, RES, SHR, S, %CPU, %MEM, TIME+, COMMAND</li>
   <li>Mem (sort by %MEM): PID, VIRT, RES, SHR, SWAP, nDRT, nMaj, nMin, vMj, vMn, %MEM, COMMAND</li>
@@ -590,6 +723,8 @@ file    NUMAInfo        /proc/%d/numa_maps
 </ol>
 
 <p>如果要直接使用的话，用 base64 解码下面的内容，直接从网页上拷贝会有字符问题：</p>
+
+<p>If you want to use it directly, use base64 to decode the following content, and directly copy from the web page has character problems:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dG9wJ3MgQ29uZmlnIEZpbGUgKExpbnV4IHByb2Nlc3NlcyB3aXRoIHdpbmRvd3MpCklkOmksIE1v
 ZGVfYWx0c2NyPTAsIE1vZGVfaXJpeHBzPTEsIERlbGF5X3RpbWU9My4wLCBDdXJ3aW49MApDcHUJ
@@ -612,6 +747,12 @@ cGUJTmV0RmlsZXMJbHNvZiAtYSAtbCAtbiAtUCAtaTQgLXAgJWQgMj4mMQpwaXBlCU9wZW5GaWxl
 cwlsc29mIC1hIC1sIC1uIC1QIC1wICVkIDI+JjEKZmlsZQlOVU1BSW5mbwkvcHJvYy8lZC9udW1h
 X21hcHMK
 </code></pre></div></div>
+
+<h2 id="updates">Updates</h2>
+
+<ul>
+  <li>2021/6/11: Translate From Chinese to English with Google translate, then checking and editing. Cost me 1.5 hour.</li>
+</ul>
 
     <br />
 
