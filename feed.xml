@@ -6,9 +6,199 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 11 Jun 2021 23:11:33 +0800</pubDate>
-    <lastBuildDate>Fri, 11 Jun 2021 23:11:33 +0800</lastBuildDate>
+    <pubDate>Mon, 19 Jul 2021 01:01:55 +0800</pubDate>
+    <lastBuildDate>Mon, 19 Jul 2021 01:01:55 +0800</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
+    
+      <item>
+        <title>Postgres Logical Replication and CDC - 1</title>
+        <description>&lt;p&gt;Postgres 作为目前最流行的数据库之一，自身也在不断的发展。从 Postgres 10 开始，它内置了逻辑复制功能。逻辑复制不仅可以实现更灵活的数据备份，也可以作为 &lt;strong&gt;CDC (Change Data Capture)&lt;/strong&gt; 架构的基础。&lt;/p&gt;
+
+&lt;p&gt;As one of the most popular databases, Postgres itself is constantly evolving. Starting from Postgres 10, it has built-in logical replication. Logical replication can not only achieve more flexible data backup, but also serve as the basis of the CDC (Change Data Capture) architecture.&lt;/p&gt;
+
+&lt;h2 id=&quot;历史&quot;&gt;历史&lt;/h2&gt;
+
+&lt;p&gt;Postgres 对逻辑复制的支持经历了好几年的开发，主要由一家叫 &lt;strong&gt;2ndQuadrant&lt;/strong&gt; 的公司开发并且提交到 Postgres 的。&lt;/p&gt;
+
+&lt;p&gt;Postgres’ support for logical replication has gone through several years of development, I think it mainly developed by a company called 2ndQuadrant and submitted to Postgres.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;关于 2ndQuadrant  的历史，请参考： &lt;em&gt;&lt;a href=&quot;https://en.everybodywiki.com/2ndQuadrant&quot;&gt;https://en.everybodywiki.com/2ndQuadrant&lt;/a&gt;&lt;/em&gt;。2ndQuadrant 在 2020 年 9 月被 EDB 公司收购： &lt;em&gt;&lt;a href=&quot;https://www.2ndquadrant.com/en/blog/how-edb-became-the-leader-in-the-postgres-market/&quot;&gt;https://www.2ndquadrant.com/en/blog/how-edb-became-the-leader-in-the-postgres-market/&lt;/a&gt;&lt;/em&gt;。
+For the history of 2ndQuadrant, please refer to: &lt;em&gt;&lt;a href=&quot;https://en.everybodywiki.com/2ndQuadrant&quot;&gt;https://en.everybodywiki.com/2ndQuadrant&lt;/a&gt;&lt;/em&gt;. 2ndQuadrant was acquired by EDB in September 2020: &lt;em&gt;&lt;a href=&quot;https://www.2ndquadrant.com/en/blog/how-edb-became-the-leader-in-the-postgres-market/&quot;&gt;https://www.2ndquadrant.com/en/blog/how-edb-became-the-leader-in-the-postgres-market/&lt;/a&gt;&lt;/em&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;逻辑复制相关的功能主要是 2ndQuadrant 公司在开发自己的 &lt;strong&gt;Postgres-BDR&lt;/strong&gt; 产品时设计并开发的。BDR 是一个 Postgres 集群解决方案，在这个产品开发过程中，2ndQuadrant 产生了对逻辑复制的需求，那是在 Postgres 9.2 版本之前。这篇文章记录了 BDR 的开发历史， &lt;em&gt;&lt;a href=&quot;https://www.2ndquadrant.com/en/blog/bdr-history-and-future/&quot;&gt;https://www.2ndquadrant.com/en/blog/bdr-history-and-future/&lt;/a&gt;&lt;/em&gt;。逻辑复制的相关支持是慢慢提交到 Postgres 内核中的，从 9.2 版本增加对 trigger 的支持开始，9.4 版本支持 logical decoding，9.6 版本完成了所有的 logical decoding 必要 feature 的支持，10 版本开始支持 logical replication。整个过程是很漫长的。下图是 2ndQuadrant 提供的，描述了逻辑复制相关功能在 Postgres 上的演进。&lt;/p&gt;
+
+&lt;p&gt;The functions related to logical replication are mainly designed and developed by 2ndQuadrant when developing its own Postgres-BDR product. BDR is a Postgres cluster solution. During this product development process, 2ndQuadrant generated a need for logical replication, which was before Postgres 9.2. This article records the development history of BDR, &lt;em&gt;&lt;a href=&quot;https://www.2ndquadrant.com/en/blog/bdr-history-and-future/&quot;&gt;https://www.2ndquadrant.com/en/blog/bdr-history-and-future/&lt;/a&gt;&lt;/em&gt;. The support for logical replication is slowly submitted to the Postgres kernel. Starting with the addition of trigger support in version 9.2, version 9.4 supports logical decoding, version 9.6 completes the support for all necessary features of logical decoding, and version 10 starts to support logical replication . The whole process is very long. The following figure is provided by 2ndQuadrant and describes the evolution of logical replication related functions on Postgres.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://diabloneo.github.io//assets/imgs/00031_infograph_bdr_1.png&quot; alt=&quot;infograph_bdr_1&quot; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Picture from: &lt;em&gt;&lt;a href=&quot;https://www.2ndquadrant.com/wp-content/uploads/2016/10/infograph-bdr-1.png&quot;&gt;https://www.2ndquadrant.com/wp-content/uploads/2016/10/infograph-bdr-1.png&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;9.6 版本算是一个经典版本。在 9.6 版本发布了之后，BDR 可以在 Postgres 不打补丁的情况下就提供支持 （之前 9.4 版本需要打一个大 patch，&lt;em&gt;&lt;a href=&quot;https://www.2ndquadrant.com/en/blog/bdr-is-coming-to-postgresql-9-6/&quot;&gt;https://www.2ndquadrant.com/en/blog/bdr-is-coming-to-postgresql-9-6/&lt;/a&gt;&lt;/em&gt;）。&lt;/p&gt;
+
+&lt;p&gt;The 9.6 version is considered a classic version. After the release of version 9.6, BDR can support Postgres without patching (previous version 9.4 requires a large patch, &lt;em&gt;&lt;a href=&quot;https://www.2ndquadrant.com/en/blog/bdr-is-coming- to-postgresql-9-6/&quot;&gt;https://www.2ndquadrant.com/en/blog/bdr-is-coming- to-postgresql-9-6/&lt;/a&gt;&lt;/em&gt;).&lt;/p&gt;
+
+&lt;p&gt;此外，还有个扩展，叫做 pglogical。它是从 BDR 项目中剥离出来的，从 9.4 版本开始支持逻辑复制功能。虽然从 Postgres 10 版本开始，已经内置了逻辑复制，但是 pglogical 依旧继续在开发之中，主要的原因是 pglogical 作为一个扩展，可以更快的进行 feature 开发和升级。在这篇文章中，解释了为什么要把逻辑复制功能引入到 Postgres 中，以及为什么引入之后还继续开发 pglogical: &lt;em&gt;&lt;a href=&quot;https://www.2ndquadrant.com/en/blog/pglogical-logical-replication-postgresql-10/&quot;&gt;https://www.2ndquadrant.com/en/blog/pglogical-logical-replication-postgresql-10/&lt;/a&gt;&lt;/em&gt;。&lt;/p&gt;
+
+&lt;p&gt;In addition, there is an extension called pglogical. It is stripped from the BDR project and supports the logical replication function since version 9.4. Although the logical replication has been built-in since Postgres 10, pglogical is still under development. The main reason is that pglogical, as an extension, can develop and upgrade features faster. This article explained why the logical replication function was introduced into Postgres, and why the development of pglogical was continued after the introduction: &lt;em&gt;&lt;a href=&quot;https://www.2ndquadrant.com/en/blog/pglogical-logical-replication-postgresql- 10/&quot;&gt;https://www.2ndquadrant.com/en/blog/pglogical-logical-replication-postgresql- 10/&lt;/a&gt;&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;可以这么认为：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Postgres 9.4 ~ 9.6 版本，主要是引入了 logical decoding 功能，作为逻辑复制基础。&lt;/li&gt;
+  &lt;li&gt;Postgres 10 版本引入的逻辑复制功能，也就是把 pglogical 的核心功能集成到 Postgres 里。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Think of it this way:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Postgres 9.4 ~ 9.6 version, mainly introduces the logical decoding function, as the basis of logical replication.&lt;/li&gt;
+  &lt;li&gt;The logical replication function introduced in Postgres 10 version is to integrate the core function of pglogical into Postgres.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;logical-decoding&quot;&gt;Logical Decoding&lt;/h2&gt;
+
+&lt;p&gt;Logical decoding 是 Postgres 9.4 引入的，通过看 9.4 版本的文档 &lt;em&gt;&lt;a href=&quot;https://www.postgresql.org/docs/9.4/logicaldecoding.html&quot;&gt;https://www.postgresql.org/docs/9.4/logicaldecoding.html&lt;/a&gt;&lt;/em&gt;，可以知道，从 9.4 版本开始 logical decoding 的功能就已经比较完善了。&lt;/p&gt;
+
+&lt;p&gt;Logical decoding Postgres 9.4 is introduced, by the 9.4 version of the document &lt;em&gt;&lt;a href=&quot;https://www.postgresql.org/docs/9.4/logicaldecoding.html&quot;&gt;https://www.postgresql.org/docs/9.4/logicaldecoding.html&lt;/a&gt;&lt;/em&gt;, you can see that at version 9.4, logical decoding was almost fully functional.&lt;/p&gt;
+
+&lt;p&gt;Logical decoding 的功能主要在 Postgres 内部提供了一种将数据库中的数据上所发生的改变的事件导出的手段。官方文档的原文是：&lt;/p&gt;
+
+&lt;p&gt;The function of logical decoding mainly provides a means to export the events of changes in the data inside Postgres. The original text of the official document is:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;PostgreSQL provides infrastructure to stream the modifications performed via SQL to external consumers.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;实现原理&quot;&gt;实现原理&lt;/h3&gt;
+
+&lt;p&gt;它的根本原理是在数据库内部将 WAL 文件的内容按照一定的格式输出，事件输出的顺序等同于 WAL 的写入顺序（如果一个事件可以输出的话，否则该事件就会直接被忽略）。对于 Postgres 来说，实现 logical decoding 就是在 WAL flush 到磁盘之后，调用 replication slot 的指定的 plugin 的回调函数。官方文档解释了每个回调函数的作用: &lt;em&gt;&lt;a href=&quot;https://www.postgresql.org/docs/current/logicaldecoding-output-plugin.html&quot;&gt;https://www.postgresql.org/docs/current/logicaldecoding-output-plugin.html&lt;/a&gt;&lt;/em&gt;。在本文撰写的时候，Postgres 的最新版本是 13，14 版本正在开发中。从最新的代码中可以看到，在 14 版本中，Postgres 会开始支持未提交事务的逻辑复，所以 plugin 回调结构体 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;struct OutputPluginCallbacks&lt;/code&gt; 中增加了很多以 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;stream_&lt;/code&gt; 开头的回调函数。&lt;/p&gt;
+
+&lt;p&gt;Its fundamental principle is to output the contents of the WAL file in a certain format within the database, and the sequence of event output is equivalent to the writing sequence of WAL (if an event can be output, otherwise the event will be ignored). For Postgres, implementing logical decoding is to call the callback functions of the specified plugin of the replication slot after the WAL flush to the disk. The official document explains the role of each callback function: &lt;em&gt;&lt;a href=&quot;https://www.postgresql.org/docs/current/logicaldecoding-output-plugin.html&quot;&gt;https://www.postgresql.org/docs/current/logicaldecoding-output-plugin.html&lt;/a&gt;&lt;/em&gt;. At the time of this writing, the latest version of Postgres is 13, and version 14 is under development. You can see from the latest code in version 14, Postgres will begin to support complex logic uncommitted transactions, so the plugin callback structure &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;struct OutputPluginCallbacks&lt;/code&gt; adds a lot of callback functions with the prefix &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;stream_&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Logical decoding 中有一个 &lt;strong&gt;logical replication slot&lt;/strong&gt; ( 简称 replication slot) 的概念。一个 replication slot 代表了一个事件输出流，用于将 WAL 记录的事件发送给订阅者。replication slot 主要功能有两个：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;使用预先配置好的 output plugin 将 WAL 内容转换成输出格式。&lt;/li&gt;
+  &lt;li&gt;维护需要使用的 WAL 位置，包括订阅者开始消费的位置，以及订阅者已经 flush 的位置（可以把订阅者当成一个备库，当备库向主库报告自己已经将某个位置之前的 WAL 都持久化之后，主库就可以将该位置之前的 WAL 文件回收了）。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;There is a concept of &lt;strong&gt;logical replication slot&lt;/strong&gt; (referred to as replication slot) in logical decoding. A replication slot represents an event output stream, used to send WAL recorded events to subscribers. There are two main functions of replication slot:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Use the pre-configured output plugin to convert WAL content into output format.&lt;/li&gt;
+  &lt;li&gt;Maintain the WAL location that needs to be used, including the location where the subscriber starts to consume, and the location where the subscriber has been flushed (you can treat the subscriber as a standby database, when the standby database reports to the main database that it has persisted the WAL before a certain location, the main dastabase can reclaim the WAL file before the location).&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;data=# select * from pg_replication_slots ;
+  slot_name   |  plugin  | slot_type | datoid | database | temporary | active | active_pid | xmin | catalog_xmin | restart_lsn | confirmed_flush_lsn | wal_status | safe_wal_size
+--------------+----------+-----------+--------+----------+-----------+--------+------------+------+--------------+-------------+---------------------+------------+---------------
+   myslot     | pgoutput | logical   |  16384 | data     | f         | f      |            |      |          622 | 0/1765268   | 0/1765282           | reserved   |
+(1 row)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;这里比较难理解的是 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;restart_lsn&lt;/code&gt; 和 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;confirmed_flush_lsn&lt;/code&gt; 这两个列的值。&lt;/p&gt;
+
+&lt;p&gt;Here it is difficult to understand &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;restart_lsn&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;confirmed_flush_lsn&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;confirmed_flush_lsn&lt;/code&gt; 表示 consumer 已经收到并且回复确认的 WAL 的 LSN。早于该值的 WAL 无法再被 consumer 获取。这个值在 consumer 每次通过 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;StandyStatusUpdate&lt;/code&gt; 消息更新时都会被修改。&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;confirmed_flush_lsn&lt;/code&gt; means the address (LSN) up to which the logical slot’s consumer has confirmed receiving data. Data older than this is not available anymore. This value updated by each consumer’s StandyStatusUpdate message.&lt;/p&gt;
+
+&lt;p&gt;官方文档对于 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;restart_lsn&lt;/code&gt; 的描述就没有这么清晰了：&lt;/p&gt;
+
+&lt;p&gt;Official document for &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;restart_lsn&lt;/code&gt; is not so clear:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;The address (LSN) of oldest WAL which still might be required by the consumer of this slot and thus won’t be automatically removed during checkpoints unless this LSN gets behind more than max_slot_wal_keep_size from the current LSN. NULL if the LSN of this slot has never been reserved.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;我在邮件列表里找到了几个相关的讨论，可能最有用的两个如下：&lt;/p&gt;
+
+&lt;p&gt;I found some discussion about &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;restart_lsn&lt;/code&gt;, the following two might be useful:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;In general, the restart_lsn and confirmed_flush_lsn are advanced in different ways so you might see some difference but it should not be this much. The confirmed_flush_lsn is updated when we get confirmation from the downstream node about the flush_lsn but restart_lsn is only incremented based on the LSN required by the oldest in-progress transaction.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;By Amit Kapila&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.postgresql.org/message-id/flat/CAFt1pcp5GGeJ1oVm6JZSzgptrRJ22FnfYqjoQPWgiss8HXzk4A%40mail.gmail.com#9f27f18a6302dc697a709f0a656f3548&quot;&gt;https://www.postgresql.org/message-id/flat/CAFt1pcp5GGeJ1oVm6JZSzgptrRJ22FnfYqjoQPWgiss8HXzk4A%40mail.gmail.com#9f27f18a6302dc697a709f0a656f3548&lt;/a&gt;&lt;/em&gt;.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;To make sure, replication delay or lag here is current_wal_lsn() - confirmed_flush_lsn. restart_lsn has nothing to do with replication lag. It is the minimum LSN the server thinks it needs for restarting replication on the slot.&lt;/p&gt;
+
+  &lt;p&gt;How long have you observed the increase of the gap? If no long-transactions are running, restart_lsn is the current LSN about from 15 to 30 seconds ago. That is, the gap between restart_lsn and confirmed_flush_lsn would be at most the amount of WAL emitted in the last 30 seconds. In this case, that is estimated to be 235MB*30 = about 7GB or 440 in 16MB-segments even if the system is perfectly working. Anyway the publisher server would need to preserve WAL files up to about 68GB (in the case where checkpoint_timeout is 5 minutes) so requirement of 7GB by restart_lsn doesn’t matter.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;By Kyotaro Horiguchi&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.postgresql-archive.org/Replication-lag-due-to-lagging-restart-lsn-td6150451.html#a6150570&quot;&gt;https://www.postgresql-archive.org/Replication-lag-due-to-lagging-restart-lsn-td6150451.html#a6150570&lt;/a&gt;&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;从这两个逻辑复制的开发者的回复可以看出，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;restart_lsn&lt;/code&gt; 的作用不是用来表示下游节点的复制延迟大小的，只是用来指导 master 何时可以删除 WAL 文件。主要的原因是 logical decoding 和 checkpoint 进程都涉及到何时删除 WAL 文件，因此系统需要考虑多个值来确认哪些 WAL 文件是可以回收的。 (&lt;em&gt;我在写这篇文章的时候，并没有阅读过 Postgres 的代码，所以我以上的结论是不准确的，也有可能是错误的。&lt;/em&gt;)&lt;/p&gt;
+
+&lt;p&gt;From the threads of the these two developers of logical replications, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;restart_lsn&lt;/code&gt; is not used to indicate replication delay, but to guide the main database when WAL files can be deleted. The main reason is that both logical decoding and checkpoint process involveed with WAL files deletion, so the system needs to consider multiple values to confirm which WAL files can be recycled. (When I was writing this article, I had not read the Postgres code, so my above conclusions are inaccurate and may be wrong. )&lt;/p&gt;
+
+&lt;h3 id=&quot;output-plugin&quot;&gt;Output Plugin&lt;/h3&gt;
+
+&lt;p&gt;Output plugin 是 logical decoding 里面决定输出格式的程序。这个 wiki 页面介绍了大部分的插: &lt;em&gt;&lt;a href=&quot;https://wiki.postgresql.org/wiki/Logical_Decoding_Plugins&quot;&gt;https://wiki.postgresql.org/wiki/Logical_Decoding_Plugins&lt;/a&gt;&lt;/em&gt;. 本章介绍几个主要的插件。&lt;/p&gt;
+
+&lt;p&gt;Output plugin is the program that determines the output format in logical decoding. This wiki page introduces most of the plugins: &lt;em&gt;&lt;a href=&quot;https://wiki.postgresql.org/wiki/Logical_Decoding_Plugins&quot;&gt;https://wiki.postgresql.org/wiki/Logical_Decoding_Plugins&lt;/a&gt;&lt;/em&gt;. This chapter introduces several major plugins.&lt;/p&gt;
+
+&lt;h4 id=&quot;test_decoding&quot;&gt;test_decoding&lt;/h4&gt;
+
+&lt;p&gt;在 9.4 版本里，只有一个内置的 test_decoding 的插件 (*&lt;a href=&quot;https://www.postgresql.org/docs/9.4/test-decoding.html*&quot;&gt;https://www.postgresql.org/docs/9.4/test-decoding.html*&lt;/a&gt;)，它用于支持&lt;/p&gt;
+
+&lt;p&gt;In version 9.4, there is only one built-in plugin named test_decoding (* https://www.postgresql.org/docs/9.4/test-decoding.html* ), which is used to support&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;SELECT * FROM pg_logical_slot_get_changes('test_slot', NULL, NULL, 'include-xids', '0');
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;这个插件的主要作用是提供一个简单的调试手段，同时作为其他插件开发的模板，并不适用于实现逻辑复制这样复杂的场景。这个插件的代码在: &lt;em&gt;&lt;a href=&quot;https://github.com/postgres/postgres/blob/master/contrib/test_decoding/test_decoding.c&quot;&gt;https://github.com/postgres/postgres/blob/master/contrib/test_decoding/test_decoding.c&lt;/a&gt;&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;The main function of this plug-in is to provide a simple debugging method, and at the same time as a template for other plug-in development, it is not suitable for complex scenarios such as logical replication. The code for this plugin is at: &lt;em&gt;&lt;a href=&quot;https://github.com/postgres/postgres/blob/master/contrib/test_decoding/test_decoding.c&quot;&gt;https://github.com/postgres/postgres/blob/master/contrib/test_decoding/test_decoding.c&lt;/a&gt;&lt;/em&gt;.&lt;/p&gt;
+
+&lt;h4 id=&quot;pglogical&quot;&gt;pglogical&lt;/h4&gt;
+
+&lt;p&gt;由于 test_decoding 只是提供了一个实现参考，所以在还没有 pgoutput 插件的时候，pglogical 程序自己实现了一个 plugin (&lt;em&gt;&lt;a href=&quot;https://github.com/2ndQuadrant/pglogical/blob/REL2_x_STABLE/pglogical_output.c&quot;&gt;https://github.com/2ndQuadrant/pglogical/blob/REL2_x_STABLE/pglogical_output.c&lt;/a&gt;&lt;/em&gt;) 。&lt;/p&gt;
+
+&lt;p&gt;Since test_decoding only provides an implementation reference, the pglogical program implements a plugin (&lt;em&gt;&lt;a href=&quot;https://github.com/2ndQuadrant/pglogical/blob/REL2_x_STABLE/pglogical_output.c&quot;&gt;https://github.com/2ndQuadrant/pglogical/blob/REL2_x_STABLE/pglogical_output.c&lt;/a&gt;&lt;/em&gt;) when there is no pgoutput plugin .&lt;/p&gt;
+
+&lt;h4 id=&quot;wal2json&quot;&gt;wal2json&lt;/h4&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://github.com/eulerto/wal2json&quot;&gt;https://github.com/eulerto/wal2json&lt;/a&gt;&lt;/em&gt; 这个插件是一个比较流行的插件，因为它的输出是 JSON 格式的，相当容易理解以及用程序解析。不过这个插件不是 Postgres 内置的，需要自己安装。但是由于其非常简单易用，有些云服务会在自己的 Postgres 服务中内置这个这个插件，例如 Azure (&lt;em&gt;&lt;a href=&quot;https://docs.microsoft.com/en-us/azure/postgresql/concepts-logical&quot;&gt;https://docs.microsoft.com/en-us/azure/postgresql/concepts-logical&lt;/a&gt;&lt;/em&gt;).&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://github.com/eulerto/wal2json&quot;&gt;https://github.com/eulerto/wal2json&lt;/a&gt;&lt;/em&gt; This plug-in is a popular plugin because its output is in JSON format, which is quite easy to understand and parse with programs. But this plugin is not built-in Postgres, you need to install it yourself. But because it is very simple and easy to use, some cloud services will install this plugin in their Postgres service, such as Azure ( https://docs.microsoft.com/en-us/azure/postgresql/concepts-logical ).&lt;/p&gt;
+
+&lt;h4 id=&quot;pgoutput&quot;&gt;pgoutput&lt;/h4&gt;
+
+&lt;p&gt;在 Postgres 10 里，内置了一个 pgoutput 插件，为逻辑复制功能提供基础。pgoutput 实现了一个二进制协议，而且会在多个 Postgres 版本之间保持稳定（这样才能实现跨版本的逻辑复制）。这个协议属于 Postgres 后端协议的一部分，具体的协议定义见: &lt;em&gt;&lt;a href=&quot;https://www.postgresql.org/docs/current/protocol-logicalrep-message-formats.html&quot;&gt;https://www.postgresql.org/docs/current/protocol-logicalrep-message-formats.html&lt;/a&gt;&lt;/em&gt;。相比与 wal2json 这种文本格式的插件，pgoutput 插件的二进制协议的优点是性能好，缺点是较难解析。该插件的代码在: &lt;em&gt;&lt;a href=&quot;https://github.com/postgres/postgres/blob/master/src/backend/replication/pgoutput/pgoutput.c&quot;&gt;https://github.com/postgres/postgres/blob/master/src/backend/replication/pgoutput/pgoutput.c&lt;/a&gt;&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;In Postgres 10, a pgoutput plug-in is built in to provide a basis for logical replication. pgoutput implements a binary protocol and will remain stable across multiple Postgres versions (so that it can achieve cross-version logical replication). This protocol is part of the Postgres backend protocol. For specific protocol definitions, please see: &lt;em&gt;&lt;a href=&quot;https://www.postgresql.org/docs/current/protocol-logicalrep-message-formats.html&quot;&gt;https://www.postgresql.org/docs/current/protocol-logicalrep-message-formats.html&lt;/a&gt;&lt;/em&gt;. Compared with the text format plug-in of wal2json, the binary protocol of the pgoutput plug-in has the advantage of good performance, but the disadvantage is that it is difficult to parse. The code of the plugin is at: &lt;em&gt;&lt;a href=&quot;https://github.com/postgres/postgres/blob/master/src/backend/replication/pgoutput/pgoutput.c&quot;&gt;https://github.com/postgres/postgres/blob/master/src/backend/replication/pgoutput/pgoutput.c&lt;/a&gt;&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;如果使用 Golang 进行开发，我已经在 &lt;strong&gt;github.com/jackc/pglogrepl&lt;/strong&gt; 这个库中增加了对 pgoutput 的支持 (&lt;em&gt;&lt;a href=&quot;https://github.com/jackc/pglogrepl/pull/14&quot;&gt;https://github.com/jackc/pglogrepl/pull/14&lt;/a&gt;&lt;/em&gt;)。你可以直接利用这个库中的 example 代码作为自己开发 subscriber 的基础： &lt;em&gt;&lt;a href=&quot;https://github.com/jackc/pglogrepl/tree/master/example/pglogrepl_demo&quot;&gt;https://github.com/jackc/pglogrepl/tree/master/example/pglogrepl_demo&lt;/a&gt;&lt;/em&gt;。&lt;/p&gt;
+
+&lt;p&gt;If you use Golang development, I have adds support for the protocol in Github repo:  &lt;strong&gt;github.com/jackc/pglogrepl&lt;/strong&gt; (support for pgoutput of https://github.com/jackc/pglogrepl/pull/14 ). You can directly use the example code in this repo as the basis for your own development of subscribers:  &lt;em&gt;&lt;a href=&quot;https://github.com/jackc/pglogrepl/tree/master/example/pglogrepl_demo&quot;&gt;https://github.com/jackc/pglogrepl/tree/master/example/pglogrepl_demo&lt;/a&gt;&lt;/em&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;update&quot;&gt;Update&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Translate From Chinese to English with Google translate, then checking and editing.&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+        <pubDate>Sun, 27 Jun 2021 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2021/06/27/postgres-logical-replication-and-cdc-part-1/</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2021/06/27/postgres-logical-replication-and-cdc-part-1/</guid>
+        
+        <category>database</category>
+        
+        
+      </item>
     
       <item>
         <title>关于 linktree 的一个观点</title>
@@ -1230,643 +1420,6 @@
         <guid isPermaLink="true">http://diabloneo.github.io//2019/11/22/Two-really-good-Ansible-articles-about-multiline-strings/</guid>
         
         <category>ansible</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>如何使用 top 命令</title>
-        <description>&lt;p&gt;&lt;strong&gt;top&lt;/strong&gt; 命令是 Linux 下最常用的系统监控命令。默认执行 top 命令之后，我们就能看到系统的许多监控指标，也可以看到进程按照 CPU 利用率从高到低排列。但是，这个只是 top 命令的最简单用法，其实 top 可以进行很多的定制。&lt;/p&gt;
-
-&lt;p&gt;The &lt;strong&gt;top&lt;/strong&gt; command is the most commonly used system monitoring command under Linux. After executing the top command by default, we can see many monitoring indicators of the system, and we can also see that the processes are arranged in order of CPU utilization from high to low. However, this is just the simplest usage of the top command. In fact, top can be customized a lot.&lt;/p&gt;
-
-&lt;h2 id=&quot;top-界面模式-top-display-modes&quot;&gt;top 界面模式 top Display Modes&lt;/h2&gt;
-
-&lt;p&gt;top 的界面其实有两个模式：&lt;strong&gt;full-screen mode&lt;/strong&gt; 和 &lt;strong&gt;alternate-display mode&lt;/strong&gt;，根据实际的效果来看，这两个模式就是&lt;strong&gt;全屏模式&lt;/strong&gt;和&lt;strong&gt;多窗口模式&lt;/strong&gt;。不做任何定制的时候，我们看到的就是全屏模式。如下图所示：&lt;/p&gt;
-
-&lt;p&gt;The top interface actually has two modes: full-screen mode and alternate-display mode. According to the actual effect, these two modes are full-screen mode and multi-window mode. Without any customization, we see full-screen mode by default. As shown below:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://diabloneo.github.io//assets/imgs/00021_top_cmd_1.png&quot; alt=&quot;top_cmd_1&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;full-screen-mode&quot;&gt;full-screen mode&lt;/h3&gt;
-
-&lt;p&gt;全屏模式时，整个界面分为两个部分：&lt;strong&gt;summary area&lt;/strong&gt; 和 &lt;strong&gt;tasks area&lt;/strong&gt;，如上图所示。&lt;/p&gt;
-
-&lt;p&gt;In full screen mode, the entire interface is divided into two parts: &lt;strong&gt;summary area&lt;/strong&gt; and &lt;strong&gt;tasks area&lt;/strong&gt;, as shown in the figure above.&lt;/p&gt;
-
-&lt;h3 id=&quot;alternate-display-mode&quot;&gt;alternate-display mode&lt;/h3&gt;
-
-&lt;p&gt;多窗口模式的界面如下：&lt;/p&gt;
-
-&lt;p&gt;The interface of multi-window mode is as follows:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://diabloneo.github.io//assets/imgs/00022_top_cmd_2.png&quot; alt=&quot;top_cmd_2&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;要进入多窗口模式，在全屏模式下，按 &lt;strong&gt;A&lt;/strong&gt; 即可（这个可以在两个模式间来回切换）。多窗口模式有一个 summary area 和 4 个 window，4 个窗口从上到下编号，对应 1 到 4。summary area 默认为 window 1 的 summary area，可以切换为不同 window 的 summary area，这个可以从 summary area 左上角的提示看出来。这个提示区会展示 summary area 当前对应的 window 的编号和名字，比如 &lt;strong&gt;1:Def&lt;/strong&gt;。要切换 summary area 对应不同的 window，可以按 &lt;strong&gt;a&lt;/strong&gt; （从上到下） 或者 &lt;strong&gt;w&lt;/strong&gt; （从下到上）。&lt;/p&gt;
-
-&lt;p&gt;To enter multi-window mode, press &lt;strong&gt;A&lt;/strong&gt; in full screen mode (this can switche between the two modes). The multi-window mode has a summary area and 4 windows. The 4 windows are numbered from top to bottom, corresponding to 1 to 4. The summary area defaults to the summary area of window 1, and can be switched to the summary area of other windows. This can be seen from the prompt in the upper left corner of the summary area. This prompt area will display the number and name of the window currently corresponding to the summary area, such as &lt;strong&gt;1:Def&lt;/strong&gt;. To switch the summary area corresponding to different windows, you can press &lt;strong&gt;a&lt;/strong&gt; (from top to bottom) or &lt;strong&gt;w&lt;/strong&gt; (from bottom to top).&lt;/p&gt;
-
-&lt;p&gt;top 默认定义了 4 个 window，这里先给出名字和编号，其他的下文再详述：&lt;/p&gt;
-
-&lt;p&gt;top defines 4 windows by default, the names and numbers are given here first, and the rest will be detailed below:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Def&lt;/li&gt;
-  &lt;li&gt;Job&lt;/li&gt;
-  &lt;li&gt;Mem&lt;/li&gt;
-  &lt;li&gt;Usr&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h4 id=&quot;field-group&quot;&gt;Field Group&lt;/h4&gt;
-
-&lt;p&gt;top 其实有两个概念是混合使用的，就是 window 和 Field Group，你可以认为他们就是等价的，本文除了这一小节，后面都使用 window 这个术语。。上面提到了，top 默认定义了 4 个 window，每个 window 配置要显示的列，就称为这个 window 的 &lt;strong&gt;Field Group&lt;/strong&gt;。在全屏模式下，可以通过快捷键 &lt;strong&gt;g&lt;/strong&gt; 切换当前要显示的 Field Group 是哪个，使用序号 1 到 4 到进行选择。修改当前展示的 Field Group 不仅是改变要显示的内容，&lt;strong&gt;也会使用对应的 window 的样式，包括过滤器和颜色配置等&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;p&gt;In fact, there are two concepts in top used alternatively, namely window and Field Group. You can simply take them as equivalent. Except for this section, the term window is used in the rest of this article.. As mentioned above, top defines 4 windows by default, and the column to be displayed in each window configuration is called the Field Group of this window. In the full screen mode, you can switch which Field Group is currently displayed by the shortcut key &lt;strong&gt;g&lt;/strong&gt; , and use the serial number 1 to 4 to select. Modifying the currently displayed Field Group not only modifies the content to be displayed, &lt;strong&gt;but also the style configuration of the window, including filters and color configurations&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;p&gt;在多窗口模式下，快捷键 &lt;strong&gt;g&lt;/strong&gt; 就对应到切换 window，效果和 &lt;strong&gt;a&lt;/strong&gt; &lt;strong&gt;w&lt;/strong&gt; 是一样的。在多窗口模式下，快捷键 &lt;strong&gt;G&lt;/strong&gt; 用来修改 window 的名字。&lt;/p&gt;
-
-&lt;p&gt;In multi-window mode, the shortcut key &lt;strong&gt;g&lt;/strong&gt; corresponds to switching windows, and the effect is the same as &lt;strong&gt;a&lt;/strong&gt; and &lt;strong&gt;w&lt;/strong&gt;. In multi-window mode, the shortcut key &lt;strong&gt;G&lt;/strong&gt; is used to modify the name of the window.&lt;/p&gt;
-
-&lt;h3 id=&quot;界面的滚动和定位-scrolling-and-positioning-on-the-interface&quot;&gt;界面的滚动和定位 Scrolling and Positioning on the Interface&lt;/h3&gt;
-
-&lt;p&gt;在任何一个 window 下，或者全屏模式下，top 都支持如下快捷键来进行界面的滚动：&lt;/p&gt;
-
-&lt;p&gt;In any window or full screen mode, top supports the following shortcut keys to scroll the interface:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;Up&lt;/strong&gt; or &lt;strong&gt;alt+k&lt;/strong&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Down&lt;/strong&gt; or &lt;strong&gt;alt+j&lt;/strong&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Left&lt;/strong&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Right&lt;/strong&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;PgUp&lt;/strong&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;PgDown&lt;/strong&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Home&lt;/strong&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;End&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;上面这些和大多数应用是一样的，就不展开说了。这里要说的是，top 支持显示一个定位信息，你可以看到自己现在处于第几行，第几个字段，通过快捷键 &lt;strong&gt;C&lt;/strong&gt; 切换：&lt;/p&gt;
-
-&lt;p&gt;The above are the same as most applications, so I won’t expand on that. What I want to say here is that top supports displaying a positioning information, you can see which row and field you are in now, you can switch by shortcut key &lt;strong&gt;C&lt;/strong&gt;:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://diabloneo.github.io//assets/imgs/00026_top_cmd_6.png&quot; alt=&quot;top_cmd_6&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;这个定位信息，也很容易看，&lt;em&gt;y&lt;/em&gt; 表示当前的第一行是第几个 task 以及一共有几个 task；&lt;em&gt;x&lt;/em&gt; 表示当前的第一列是第几列，以及一共有多少列。&lt;/p&gt;
-
-&lt;p&gt;This positioning information is also easy to understand. &lt;em&gt;y&lt;/em&gt; indicates the task number of current first row and how many tasks there are in total; &lt;em&gt;x&lt;/em&gt; indicates the column number of current first column and how many columns are there in total.&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;scroll coordinates: y = 1/145 (tasks), x = 1/12 (fields)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;summary-area&quot;&gt;Summary Area&lt;/h2&gt;
-
-&lt;p&gt;Summary area 展示了系统的全局监控信息，如下所示。整个区域从上到下分为 3 个部分： &lt;strong&gt;load average&lt;/strong&gt;, &lt;strong&gt;tasks and cpu&lt;/strong&gt;, &lt;strong&gt;memory&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;p&gt;The Summary area displays the global monitoring information of the system, as shown below. The whole area is divided into 3 parts from top to bottom: &lt;strong&gt;load average&lt;/strong&gt;, &lt;strong&gt;tasks and cpu&lt;/strong&gt;, &lt;strong&gt;memory&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-top - 14:24:54 up 26 days, 22:13,  1 user,  load average: 0.08, 0.05, 0.05        # load average
-Tasks: 145 total,   1 running, 144 sleeping,   0 stopped,   0 zombie              # tasks and cpu
-%Cpu(s):  0.2 us,  0.2 sy,  0.0 ni, 99.5 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st   # tasks and cpu
-KiB Mem : 12138004 total,  2857072 free,   548312 used,  8732620 buff/cache       # memory
-KiB Swap:        0 total,        0 free,        0 used.  7757480 avail Mem        # memory
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;load-average&quot;&gt;Load average&lt;/h3&gt;
-
-&lt;p&gt;&lt;em&gt;Load average&lt;/em&gt; 部分主要展示系统的负载。&lt;/p&gt;
-
-&lt;p&gt;The &lt;strong&gt;load average&lt;/strong&gt; part mainly displays the load of the system.&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-#     Now      Uptime              User     Load average
-#                                  count                  1m    5m    15m
-top - 14:24:54 up 26 days, 22:13,  1 user,  load average: 0.08, 0.05, 0.05
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;如下快捷键可以用来控制这个区域：&lt;/p&gt;
-
-&lt;p&gt;The following shortcut keys can be used to control this area:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;l&lt;/strong&gt;(lower case L): 切换是否显示。Switch whether to display.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;tasks-and-cpu&quot;&gt;Tasks and CPU&lt;/h3&gt;
-
-&lt;p&gt;&lt;em&gt;Tasks&lt;/em&gt; 部分主要展示系统的进程数或者线程数（根据 threads-mode 来决定）。&lt;/p&gt;
-
-&lt;p&gt;The &lt;em&gt;Tasks&lt;/em&gt; section mainly displays the number of processes or threads of the system (determined according to threads-mode).&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-#      Total        State      State           State        State
-#      tasks or     running    sleeping        stopped      zombie
-#      threads
-Tasks: 145 total,   1 running, 144 sleeping,   0 stopped,   0 zombie
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;em&gt;CPU&lt;/em&gt; 的部分主要是展示不同状态的任务的 CPU 消耗占比：&lt;/p&gt;
-
-&lt;p&gt;The CPU part mainly shows the CPU consumption ratio of tasks in different states:&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;%Cpu(s):  0.2 us,  0.2 sy,  0.0 ni, 99.5 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;具体的缩写含义如下：&lt;/p&gt;
-
-&lt;p&gt;The abbreviations explanations:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;us&lt;/strong&gt;: user, time running un-niced user processes, 普通进程的 CPU 消耗占比。The percentage of CPU consumption of ordinary processes.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;sy&lt;/strong&gt;: system, time running kernel processes, 内核任务的 CPU 消耗占比。The proportion of CPU consumption of kernel tasks&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;ni&lt;/strong&gt;: nice, time running niced user processes, 高优先级进程的 CPU 消耗占比。The percentage of CPU consumption of high-priority processes.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;id&lt;/strong&gt;: idle, time spent in the kernel idle handler, 空闲时间占比。The percentage of idle time.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;wa&lt;/strong&gt;: IO-wait, time waiting for I/O completion, 等待 IO 完成的 CPU 消耗占比（进程处于 D 状态）。The percentage of CPU consumption waiting for IO completion (process is in D state).&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;hi&lt;/strong&gt;: time spent servicing hardware interrupts, 用于处理硬中断的 CPU 消耗占比。The percentage of CPU consumption used to handle hard interrupts.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;si&lt;/strong&gt;: time spent servicing software interrupts, 用于处理软中断的 CPU 消耗占比。The percentage of CPU consumption used to handle soft interrupts.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;st&lt;/strong&gt;: time stolen from this vm by the hypervisor, 虚拟机管理进程从这个虚拟机偷走的 CPU 资源。The CPU resources stolen from this virtual machine by the virtual machine management process.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;如下快捷键可以用来控制这个区域：&lt;/p&gt;
-
-&lt;p&gt;The following shortcut keys can be used to control this area:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;t&lt;/strong&gt;: 切换 CPU 部分的展示方式，例如数值还是进度条，也可以切换到关闭这个区域。Switch the display mode of the CPU part, such as the value or the progress bar, and you can also switch to close this area.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;1&lt;/strong&gt;(digit one): 切换单个 CPU 和总体 CPU 的显示。Switch the display of single CPU and overall CPU.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;2&lt;/strong&gt;: 按照 NUMA Node 展示。Display according to NUMA Node.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;3&lt;/strong&gt;: 展示指定 NUMA Node 下的所有 CPU。Show all CPUs under the specified NUMA Node.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;H&lt;/strong&gt;: 显示线程显示，默认是进程。Using thread display, the default is process.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;memory&quot;&gt;Memory&lt;/h3&gt;
-
-&lt;p&gt;&lt;strong&gt;Memory&lt;/strong&gt; 的部分展示了系统的内存信息和交换分区的信息。&lt;/p&gt;
-
-&lt;p&gt;The &lt;strong&gt;Memory&lt;/strong&gt; part shows the system’s memory information and swap partition information.&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-KiB Mem : 12138004 total,  2857072 free,   548312 used,  8732620 buff/cache
-KiB Swap:        0 total,        0 free,        0 used.  7757480 avail Mem
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;total&lt;/strong&gt;: 总内存大小。Total memory size.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;free&lt;/strong&gt;: 空闲内存大小。The size of free memory.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;used&lt;/strong&gt;: 已使用内存大小。Used memory size.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;buff/cache&lt;/strong&gt;: block buffer + page cache 所占用的内存大小。The memory size occupied by block buffer + page cache.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;avail Mem&lt;/strong&gt;: 这个值是系统的估算值，表示可用于启动新程序的物理内存大小（不包括 swap 空间）。This value is the estimated value of the system, indicating the physical memory size (excluding swap space) that can be used to start new programs.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;如下快捷键可以用来控制这个区域：&lt;/p&gt;
-
-&lt;p&gt;The following shortcut keys can be used to control this area:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;m&lt;/strong&gt;: 切换 memory 部分的展示方式，例如数值还是进度条，也可以切换到关闭这个区域。Switch the display mode of the memory part, such as the value or the progress bar, and you can also switch to close this area.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;E&lt;/strong&gt;: 切换内存单位。Switch the memory unit.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;tasks-area&quot;&gt;Tasks Area&lt;/h2&gt;
-
-&lt;p&gt;Tasks area 包含两个部分：字段名称和任务列表（根据指定的字段排序）。这里我们先介绍全屏模式下 tasks area，多窗口模式的 tasks area 后面介绍。。对于 tasks area，最主要考虑的是如下几个问题：&lt;/p&gt;
-
-&lt;p&gt;The Tasks area contains two parts: the field name and the task list (sorted according to the specified field). Here we first introduce the tasks area in full-screen mode, and the tasks area in multi-window mode will be introduced later. For the tasks area, the main considerations are the following issues:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;要显示哪些字段？要根据哪个字段排序？升序还是降序？Which fields do you want to display? Which field do you want to sort by? Ascending or descending?&lt;/li&gt;
-  &lt;li&gt;是否只展示符合某些条件的任务？Do you only show tasks that meet certain conditions?&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;要展示哪些字段要根据哪个字段排序which-fields-do-you-want-to-display-which-field-do-you-want-to-sort-by&quot;&gt;要展示哪些字段？要根据哪个字段排序？Which fields do you want to display? Which field do you want to sort by?&lt;/h3&gt;
-
-&lt;p&gt;top 其实可以展示很多内容，我们可以定义要展示哪些字段。在全屏模式下，按 &lt;strong&gt;F&lt;/strong&gt; 进入字段管理界面，如下：&lt;/p&gt;
-
-&lt;p&gt;top can actually display a lot of content, we can define which fields to display. In full screen mode, press &lt;strong&gt;F&lt;/strong&gt; to enter the field management interface, as follows:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://diabloneo.github.io//assets/imgs/00023_top_cmd_3.png&quot; alt=&quot;top_cmd_3&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;首先要注意的是第一行，这个界面可以为 4 个 window 分别设置要展示的字段，最上面一行提示当前正在为哪个 window 设置字段，以及当前使用的排序字段是哪个。同样的，可以通过可以按 &lt;strong&gt;a&lt;/strong&gt; 或者 &lt;strong&gt;w&lt;/strong&gt; 来切换 window。然后可以上下移动到想要处理的字段，按空格或者 &lt;strong&gt;d&lt;/strong&gt; 切换是否展示，按 &lt;strong&gt;s&lt;/strong&gt; 设置用该字段进行排序，按 &lt;strong&gt;q&lt;/strong&gt; 或者 ESC 退出这个界面。前面的星号表示选中。要调整字段的排列顺序，先选中一个字段，按右键表示开始移动，然后上下移动，然后按左键表示移动结束。&lt;/p&gt;
-
-&lt;p&gt;The first thing to note is the first line. This interface can set the fields to be displayed for the 4 windows. The top line prompts which window is currently being set and which sort field is currently used. Similarly, you can switch windows by pressing &lt;strong&gt;a&lt;/strong&gt; or &lt;strong&gt;w&lt;/strong&gt; . Then you can move up and down to the field you want to process, press &lt;strong&gt;space&lt;/strong&gt; or &lt;strong&gt;d&lt;/strong&gt; to switch whether to display, press &lt;strong&gt;s&lt;/strong&gt; to set the field to sort, and press &lt;strong&gt;q&lt;/strong&gt; or &lt;strong&gt;ESC&lt;/strong&gt; to exit this interface. The leading star symbol indicates that it is selected. To adjust the order of the fields, first select a field, press the right arrow key to start moving, then move up and down, and then press the left arrow key to end the move.&lt;/p&gt;
-
-&lt;p&gt;下面来看下可用的字段。&lt;/p&gt;
-
-&lt;p&gt;Let’s take a look at the available fields.&lt;/p&gt;
-
-&lt;h4 id=&quot;进程身份相关process-identity-related&quot;&gt;进程身份相关Process Identity Related&lt;/h4&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;COMMAND&lt;/strong&gt;:  Command Name/Line&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;PID&lt;/strong&gt;:  Process Id&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;ENVIRON&lt;/strong&gt;:  Environment vars&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;USER&lt;/strong&gt;:  Effective User Name&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;PPID&lt;/strong&gt;:  Parent Process pid&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;UID&lt;/strong&gt;:  Effective User Id&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;RUID&lt;/strong&gt;:  Real User Id&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;RUSER&lt;/strong&gt;:  Real User Name&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;SUID&lt;/strong&gt;:  Saved User Id&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;SUSER&lt;/strong&gt;:  Saved User Name&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;GID&lt;/strong&gt;:  Group Id&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;GROUP&lt;/strong&gt;:  Group Name&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;PGRP&lt;/strong&gt;:  Process Group Id&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;TTY&lt;/strong&gt;:  Controlling Tty&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;TPGID&lt;/strong&gt;:  Tty Process Grp Id&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;SID&lt;/strong&gt;:  Session Id&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;SUPGIDS&lt;/strong&gt;:  Supp Groups IDs&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;SUPGRPS&lt;/strong&gt;:  Supp Groups Names&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;TGID&lt;/strong&gt;:  Thread Group Id&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;如下快捷键可以用来控制这些字段：&lt;/p&gt;
-
-&lt;p&gt;The following shortcut keys can be used to control these fields:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;c&lt;/strong&gt;: 用于切换 COMMAND 列的内容是 command line 还是 program name。Used to switch the content of the COMMAND column is the command line or the program name.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&quot;进程状态相关process-state-related&quot;&gt;进程状态相关Process State Related&lt;/h4&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;S&lt;/strong&gt;:  Process Status&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;%CPU&lt;/strong&gt;:  CPU Usage&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;nTH&lt;/strong&gt;:  Number of Threads&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;P&lt;/strong&gt;:  Last Used Cpu (SMP)&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;TIME&lt;/strong&gt;:  CPU Time。任务从启动到现在使用的 CPU 时间。The CPU time used by the task since it was started.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;TIME+&lt;/strong&gt;:  CPU Time, hundredths。任务从启动到现在使用的 CPU 时间，精确到百分之一秒。The CPU time used by the task from the start to the present, accurate to one hundredth of a second.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;WCHAN&lt;/strong&gt;:  Sleeping in Function。对于 sleeping 的进程，当前所处的内核函数。Sleeping in Function. For the sleeping process, the current kernel function.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Flags&lt;/strong&gt;:  Task Flags &lt;sched.h&gt;&lt;/sched.h&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;进程状态有如下几种：&lt;/p&gt;
-
-&lt;p&gt;The process status is as follows:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;D&lt;/strong&gt; Uninterruptible sleep。不可中断休眠，就是等待 I/O 完成时的状态，会导致 CPU 统计的 wa 上升。Uninterruptible sleep is the state when waiting for the completion of I/O, which will cause the wa of CPU statistics to rise.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;R&lt;/strong&gt; Running&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;S&lt;/strong&gt; Sleeping&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;T&lt;/strong&gt; Stopped by job control signal&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;t&lt;/strong&gt; Stopped by debugger during trace&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Z&lt;/strong&gt; zombie&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;如下快捷键可以用来控制这些字段：&lt;/p&gt;
-
-&lt;p&gt;The following shortcut keys can be used to control these fields:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;I&lt;/strong&gt; (upper case i): 切换 %CPU 的模式，Irix/Solaris 两个模式。Irix mode 的计算方式是跑满一个 CPU 为 100%，%CPU 可能会超过 100%。Solaris mode 则是会把总体利用率除以 CPU 核数，保证不会超过 100%。Switch %CPU mode, there are two modes Irix/Solaris. The calculation method of Irix mode is to run a full CPU as 100%, and %CPU may exceed 100%. Solaris mode will divide the overall utilization by the number of CPU cores to ensure that it will not exceed 100%.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;S&lt;/strong&gt;: Cumulative time，off 展示两次刷新时间的即时值，而不是从进程启动到现在的累加值。When set to off, displays the instantaneous value of the two refresh times, rather than the cumulative value from the start of the process to the present.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&quot;进程优先级相关-process-priority-related&quot;&gt;进程优先级相关 Process Priority Related&lt;/h4&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;NI&lt;/strong&gt;:  Nice Value. 进程的优先级。这个是表示进程的用户态优先级，范围是 -20 到 +19，默认值是 0，值越低优先级越高。The priority of the process. This is the user mode priority of the process, the range is -20 to +19, the default value is 0, the lower the value, the higher the priority.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;PR&lt;/strong&gt;:  Priority. 进程的调度优先级，这个是内核实际使用的任务的优先级，范围是 0 到 39，映射到内核的值是 100 到 139；也可以是 rt ，表示实时任务。内核表示一个 task 的优先级的范围是 0 到 139。其中，0 到 99 是实时进程的优先级，100 到 139 是非实时进程的优先级。PR 的默认值是 20，对应到内核是 120，和 NI 的关系是: PR = 20 + NI。The scheduling priority of the process. This is the priority of the task actually used by the kernel. The range is 0 to 39. The value mapped to the kernel is 100 to 139; it can also be rt, which represents a real-time task. The kernel indicates that the priority of a task ranges from 0 to 139. Among them, 0 to 99 are the priorities of real-time processes, and 100 to 139 are the priorities of non-real-time processes. The default value of PR is 20, corresponding to the core is 120, and the relationship with NI is: PR = 20 + NI.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&quot;内存相关-memory-related&quot;&gt;内存相关 Memory Related&lt;/h4&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;%MEM&lt;/strong&gt;:  Memory Usage (RES)&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;VIRT&lt;/strong&gt;:  Virtual Image (KiB)。表示一个任务使用的虚拟内存总和，包括所有的代码段、数据段、链接的共享库、已经被 swap 的页和已经被映射但是没有使用的页。 Represents the total virtual memory used by a task, including all code segments, data segments, linked shared libraries, pages that have been swapped, and pages that have been mapped but not used.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;RES&lt;/strong&gt;:  Resident Size (KiB)。表示一个任务使用的没有被 swap 的物理内存。 Indicates the physical memory used by a task that has not been swapped.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;SHR&lt;/strong&gt;:  Shared Memory (KiB)。表示一个任务可能和其他任务共享的内存。 Represents the memory that a task may share with other tasks.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;SWAP&lt;/strong&gt;:  Swapped Size (KiB)。表示一个任务的非驻留内存，也就是使用的交换空间。 Represents the non-resident memory of a task, that is, the swap space used.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;CODE&lt;/strong&gt;:  Code Size (KiB)。表示任务的代码段的大小。 Indicates the size of the code segment of the task.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;DATA&lt;/strong&gt;:  Data+Stack (KiB)。Data Resident Set size，包括了程序数据段和栈。 Data Resident Set size, including program data segment and stack.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;USED&lt;/strong&gt;:  Res+Swap Size (KiB)。就是 RES + SWAP。 It is RES + SWAP.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;nDRT&lt;/strong&gt;:  Dirty Pages Count。该 task 内存空间中的脏页的数量。The number of dirty pages in the task memory space.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;nMaj&lt;/strong&gt;:  Major Page Faults。该 task 遇到的 Major Page Faults 的数量。Major Page Fault 是指需要访问通过访问 swap 分区或者硬盘（mmap 一个文件，但是还没把内容读取到内存时）来处理的缺页异常。The number of Major Page Faults encountered by this task. Major Page Fault refers to the page fault exception that needs to be accessed by accessing the swap partition or the hard disk (when mmap is a file, but the content has not been read into the memory).&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;nMin&lt;/strong&gt;:  Minor Page Faults。该 task 遇到的 Minor Page Faults 的数量。Minor Page Fault 是指不需要通过访问 swap 分区或者硬盘来处理的缺页异常，简单的说，没用到磁盘 I/O。 The number of Minor Page Faults encountered by this task. Minor Page Fault refers to a page fault exception that does not need to be processed by accessing the swap partition or hard disk. Simply put, disk I/O is not used.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;vMj&lt;/strong&gt;:  Major Faults delta。上次 top 刷新数据以来的 Major Page Faults 增加数量。The number of Major Page Faults increased since the last top refresh.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;vMn&lt;/strong&gt;:  Minor Faults delta。上次 top 刷新数据以来的 Minor Page Faults 增加数量。The number of Minor Page Faults increased since the last top refresh.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;如下快捷键可以用来控制这些字段：&lt;/p&gt;
-
-&lt;p&gt;The following shortcut keys can be used to control these fields:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;e&lt;/strong&gt;: 切换内存单位。Switch the memory unit.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&quot;cgroup-相关-cgroup-related&quot;&gt;CGroup 相关 CGroup Related&lt;/h4&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;CGROUPS&lt;/strong&gt;:  Control Groups&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;nsIPC&lt;/strong&gt;:  IPC namespace Inode&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;nsMNT&lt;/strong&gt;:  MNT namespace Inode&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;nsNET&lt;/strong&gt;:  NET namespace Inode&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;nsPID&lt;/strong&gt;:  PID namespace Inode&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;nsUSER&lt;/strong&gt;:  USER namespace Inode&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;nsUTS&lt;/strong&gt;:  UTS namespace Inode&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;是否只展示符合某些条件的任务-do-you-only-show-tasks-that-meet-certain-conditions&quot;&gt;是否只展示符合某些条件的任务？ Do you only show tasks that meet certain conditions?&lt;/h3&gt;
-
-&lt;p&gt;这个问题，也就是如何过滤，只展示某些任务。也许你用过 &lt;strong&gt;htop&lt;/strong&gt;，知道 htop 可以和方便的根据名称来过滤。top 其实也可以，而且可以根据很多字段来过滤。&lt;/p&gt;
-
-&lt;p&gt;This question, that is, how to filter, only show certain tasks. Maybe you have used htop and know that htop can and conveniently filter by name. In fact, top is also possible, and it can be filtered according to many fields.&lt;/p&gt;
-
-&lt;h4 id=&quot;只展示非空闲的任务-show-only-non-idle-tasks&quot;&gt;只展示非空闲的任务 Show only non-idle tasks&lt;/h4&gt;
-
-&lt;p&gt;快捷键 &lt;strong&gt;i&lt;/strong&gt; 用来切换是否只展示非空闲任务。&lt;/p&gt;
-
-&lt;p&gt;The shortcut key &lt;strong&gt;i&lt;/strong&gt; is used to switch whether to display only non-idle tasks.&lt;/p&gt;
-
-&lt;h4 id=&quot;限制展示任务的数量-limit-the-number-of-display-tasks&quot;&gt;限制展示任务的数量 Limit the number of display tasks&lt;/h4&gt;
-
-&lt;p&gt;快捷键 &lt;strong&gt;n&lt;/strong&gt; 用于限制要展示的任务的数量，0 表示无限制。默认是全部展示（超过一页需要翻页）。&lt;/p&gt;
-
-&lt;p&gt;The shortcut key &lt;strong&gt;n&lt;/strong&gt; is used to limit the number of tasks to be displayed, and 0 means unlimited. The default is to display all (more than one page needs to be turned).&lt;/p&gt;
-
-&lt;h4 id=&quot;只展示指定用户的任务-only-show-the-tasks-of-the-specified-user&quot;&gt;只展示指定用户的任务 Only show the tasks of the specified user&lt;/h4&gt;
-
-&lt;p&gt;快捷键 &lt;strong&gt;u&lt;/strong&gt; 表示要过滤的用户，可以加 &lt;strong&gt;!&lt;/strong&gt; 前缀表示反向条件。可以输入 UID 或者 username，直接回车表示取消这个过滤条件。&lt;/p&gt;
-
-&lt;p&gt;The shortcut key &lt;strong&gt;u&lt;/strong&gt; indicates the user to be filtered, and you can add a &lt;strong&gt;!&lt;/strong&gt; Prefix to indicate the reverse condition. You can enter UID or username and press Enter to cancel this filter condition.&lt;/p&gt;
-
-&lt;h4 id=&quot;根据其他条件过滤-filter-by-other-criteria&quot;&gt;根据其他条件过滤 Filter by other criteria&lt;/h4&gt;
-
-&lt;p&gt;top 提供了 &lt;strong&gt;Other Filter&lt;/strong&gt; 的功能，通过快捷键 &lt;strong&gt;o&lt;/strong&gt; (大小写不敏感) 或者 &lt;strong&gt;O&lt;/strong&gt; (大小写敏感) 来启用。过滤条件的格式如下：&lt;/p&gt;
-
-&lt;p&gt;top provides the function of &lt;strong&gt;Other Filter&lt;/strong&gt;, which is enabled by the shortcut key &lt;strong&gt;o&lt;/strong&gt; (case insensitive) or &lt;strong&gt;O&lt;/strong&gt; (case sensitive). The format of the filter condition is as follows:&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;{!}Field-Name?include-if-value
-              exclude-if-value
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;!&lt;/strong&gt; 表示非，不是必选字段，其他都是必填字段。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Field-Name&lt;/strong&gt; 表示字段名字，前文已经列出。注意，这里是大小写敏感的，要完全一致。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;?&lt;/strong&gt; 代表一个要求的分隔符和操作符(=, &amp;lt;, &amp;gt;):
-    &lt;ul&gt;
-      &lt;li&gt;&lt;strong&gt;&amp;lt;&lt;/strong&gt; 或者 &lt;strong&gt;&amp;gt;&lt;/strong&gt; 表示字符串比较，或者数值比较。注意比较时的数字的单位问题，100.0m 会比 1.0g 大，所以需要先进行单位切换（例如内存的单位切换，e）&lt;/li&gt;
-      &lt;li&gt;&lt;strong&gt;=&lt;/strong&gt; 表示部分匹配&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;!&lt;/strong&gt; Means not, it is not a required field, the others are all required fields.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Field-Name&lt;/strong&gt; represents the name of the field, which has been listed above. Note that this is case sensitive and must be exactly the same.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;?&lt;/strong&gt; Represents a required separator and operator (=, &amp;lt;, &amp;gt;):
-    &lt;ul&gt;
-      &lt;li&gt;&lt;strong&gt;&amp;lt;&lt;/strong&gt; or &lt;strong&gt;&amp;gt;&lt;/strong&gt; means string comparison or numerical comparison. Pay attention to the problem of the unit of the number when comparing, 100.0m will be larger than 1.0g, so you need to switch the unit first (for example, the unit of the memory, e)&lt;/li&gt;
-      &lt;li&gt;&lt;strong&gt;=&lt;/strong&gt; Indicates partial match&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;可以使用多个条件进行过滤，每个按一次 o 或者 O 输入一个条件，所有条件会进行与操作。可以按 &lt;strong&gt;Ctrl-o&lt;/strong&gt; 显示所有条件。&lt;/p&gt;
-
-&lt;p&gt;You can use multiple conditions to filter, each press o or O once to enter a condition, and all conditions will be ANDed. You can press &lt;strong&gt;Ctrl-o&lt;/strong&gt; to display all conditions.&lt;/p&gt;
-
-&lt;p&gt;还有两个清理操作：&lt;/p&gt;
-
-&lt;p&gt;There are also two cleanup operations:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;=&lt;/strong&gt;  reset filtering in current window&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;+&lt;/strong&gt;  reset filtering in all windows&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;举些例子：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;过滤 nice 值小于 0 的任务，即以减号开头的 nice 值：&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NI=-&lt;/code&gt;。&lt;/li&gt;
-  &lt;li&gt;过滤所有 postgres 进程：&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;COMMAND=postgres&lt;/code&gt;。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Give some examples:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Filter nice value less than 0, i.e., beginning with a leading minus: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NI=-&lt;/code&gt;.&lt;/li&gt;
-  &lt;li&gt;Filter all postgres processes: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;COMMAND=postgres&lt;/code&gt;.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h4 id=&quot;搜索-searching&quot;&gt;搜索 Searching&lt;/h4&gt;
-
-&lt;p&gt;搜索和过滤不一样，搜索不考虑字段，会在 tasks area 显示的所有内容中找到指定的行。快捷键 &lt;strong&gt;L&lt;/strong&gt; 用于输入要搜索的关键字，&lt;strong&gt;&amp;amp;&lt;/strong&gt; 表示跳转到下一个匹配项。搜索关键字会被高亮，除了使用 &lt;strong&gt;&amp;amp;&lt;/strong&gt; 以外，你也需要使用 PgUp 和 PgDown 等来调整展示的内容。&lt;/p&gt;
-
-&lt;p&gt;Searching is different from filtering. The search does not consider the fields, and will try to match the content of a row in the task area. The shortcut key &lt;strong&gt;L&lt;/strong&gt; is used to enter the keyword to be searched, &lt;strong&gt;&amp;amp;&lt;/strong&gt; means to jump to the next matching item. Search keywords will be highlighted. In addition to using &lt;strong&gt;&amp;amp;&lt;/strong&gt;, you also need to use &lt;strong&gt;PgUp&lt;/strong&gt; and &lt;strong&gt;PgDown&lt;/strong&gt; to adjust the displayed content.&lt;/p&gt;
-
-&lt;h3 id=&quot;其他定制-other-customization&quot;&gt;其他定制 Other Customization&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;R&lt;/strong&gt; 切换排序的方向，默认是从高到底，可以切换为从低到高。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;x&lt;/strong&gt; 切换是否高亮显示排序列。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;y&lt;/strong&gt; 切换是否高亮显示 running 的 task。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;b&lt;/strong&gt; bold/reverse，这个快捷键用于切换关键位置是粗体展示还是反色展示，会影响到 x, y 的展示效果，也会影响到 summary area 的 CPU 进度条 和 memory 进度条的展示效果。&lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;d&lt;/strong&gt; 定时刷新间隔，默认是 3s。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;R&lt;/strong&gt; switches the sorting direction. The default is from high to bottom, and it can be switched from low to high.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;x&lt;/strong&gt; Toggle whether to highlight the sorting column.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;y&lt;/strong&gt; Toggle whether to highlight the running task.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;b&lt;/strong&gt; bold/reverse, this shortcut key is used to switch the key position to be displayed in bold or in reverse color, which will affect the display effect of x, y, and also affect the display effect of the CPU progress bar and memory progress bar of the summary area.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;d&lt;/strong&gt; Regular refresh interval, the default is 3s.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;strong&gt;V&lt;/strong&gt; 切换成森林视图，也就是展示进程父子关系。这个模式下无法按照字段排序。效果如下图：
-&lt;strong&gt;V&lt;/strong&gt; switches to the forest view, which is to show the parent-child relationship of the process. It is not possible to sort by field in this mode. The effect is as follows:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://diabloneo.github.io//assets/imgs/00024_top_cmd_4.png&quot; alt=&quot;top_cmd_4&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;有时候不想看层级太深的任务，可以使用 other filter。除了第二级是一个空格，往下的每一级都是每级三个空格，最后再加上一个反引号开头。所以要过滤掉第三级以下的，可以使用如下条件（COMMAND=后面跟7个空格）：&lt;/p&gt;
-
-&lt;p&gt;Sometimes you don’t want to look at tasks that are too deep, you can use other filters. Except for the second level, which is a space, each level down is three spaces per level, and a backquote is added at the end. So to filter out those below the third level, you can use the following conditions (COMMAND= followed by 7 spaces):&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;!COMMAND=       `
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;界面颜色-color&quot;&gt;界面颜色 Color&lt;/h2&gt;
-
-&lt;p&gt;为了更清晰的进行监控，定制颜色也是很有用的。可以按快捷键 &lt;strong&gt;Z&lt;/strong&gt; 进入颜色定制界面，如下图所示：&lt;/p&gt;
-
-&lt;p&gt;In order to monitor more clearly, custom colors are also useful. You can press the shortcut key &lt;strong&gt;Z&lt;/strong&gt; to enter the color customization interface, as shown in the following figure:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://diabloneo.github.io//assets/imgs/00025_top_cmd_5.png&quot; alt=&quot;top_cmd_5&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;首先可以看到上半部表示了当前正在设置哪个窗口，然后下半部有 1 2 3 三个步骤：&lt;/p&gt;
-
-&lt;p&gt;First of all, you can see that the upper part represents which window is currently being set, and then there are three steps in the lower part:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;选择要定制的区域 Select the area to be customized：
-    &lt;ol&gt;
-      &lt;li&gt;&lt;strong&gt;S&lt;/strong&gt;: Summary Data&lt;/li&gt;
-      &lt;li&gt;&lt;strong&gt;M&lt;/strong&gt;: Messages/Prompts&lt;/li&gt;
-      &lt;li&gt;&lt;strong&gt;H&lt;/strong&gt;: Column Heads&lt;/li&gt;
-      &lt;li&gt;&lt;strong&gt;T&lt;/strong&gt;: Task Information&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-  &lt;li&gt;给选定的区域选择一个颜色，用数字 0 到 7 对应 8 个颜色。Choose a color for the selected area, and use the numbers 0 to 7 to correspond to 8 colors.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;q&lt;/strong&gt; 取消颜色设置， &lt;strong&gt;a&lt;/strong&gt; 或者 &lt;strong&gt;g&lt;/strong&gt; 提交颜色设置并且切换到下个窗口进行设置，回车提交颜色设置并且退出这个界面。 &lt;strong&gt;q&lt;/strong&gt; Cancel the color setting, &lt;strong&gt;a&lt;/strong&gt; or &lt;strong&gt;g&lt;/strong&gt; to submit the color setting and switch to the next window for setting, press Enter to submit the color setting and exit this interface.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;在 top 界面上，可以通过快捷键 &lt;strong&gt;z&lt;/strong&gt; 来切换是否使用颜色。&lt;/p&gt;
-
-&lt;p&gt;On the top interface, you can use the shortcut key z to switch whether to use color.&lt;/p&gt;
-
-&lt;h2 id=&quot;配置文件-configuration-file&quot;&gt;配置文件 Configuration File&lt;/h2&gt;
-
-&lt;p&gt;上面讲的这些定制，都可以保存到一个配置文件，然后 top 每次启动都会载入它所找到的配置文件。配置文件中会保存一些全局模式，比如 Irix mode 的配置，刷新时间等，也会保存每个窗口的字段配置和颜色配置等，还会保存 inspect entries （见下文）。&lt;/p&gt;
-
-&lt;p&gt;These customizations mentioned above can be saved to a configuration file, and then top will load the configuration file it could find when it starts. The configuration file will save some global modes, such as Irix mode configuration, refresh time, etc., field configuration and color configuration of each window, etc., and inspect entries (see below).&lt;/p&gt;
-
-&lt;p&gt;生成配置文件的方式很简单，在你完成想要的定制后，按快捷键 &lt;strong&gt;W&lt;/strong&gt; 即可。CentOS 7 上，配置文件的保存路径是 &lt;em&gt;/root/.toprc&lt;/em&gt;；Ubuntu 上则是 &lt;em&gt;~/.config/procps/toprc&lt;/em&gt;，每次你保存的时候，top 会显示这个路径。&lt;/p&gt;
-
-&lt;p&gt;Generate configuration files is very easy, when you’re done customizing, shortcut keys &lt;strong&gt;W&lt;/strong&gt; can be. On CentOS 7, the storage path of the configuration file is &lt;em&gt;/root/.toprc&lt;/em&gt;; on Ubuntu, it is &lt;em&gt;~/.config/procps/toprc&lt;/em&gt;. Each time you save, top will display this path.&lt;/p&gt;
-
-&lt;h2 id=&quot;inspect-mode&quot;&gt;Inspect Mode&lt;/h2&gt;
-
-&lt;p&gt;top 有一个模式，可以允许你执行指定的命令来查看一个任务的更多信息，这个模式可以称为 &lt;strong&gt;Inspect Mode&lt;/strong&gt;，通过快捷键 &lt;strong&gt;Y&lt;/strong&gt; 可以进入这个模式，top 会提示你输入一个要 inspect 的 PID。不过，要使用这个模式，你需要先定义可以使用的 inspect entries，否则 top 不会进入这个模式。下面是一个最简单的配置，可以先体会下这个配置是如何写的：&lt;/p&gt;
-
-&lt;p&gt;top has a mode which allows you to execute specified commands to view more information about a task. This mode can be called &lt;strong&gt;Inspect Mode&lt;/strong&gt;. You can enter this mode with the shortcut key &lt;strong&gt;Y&lt;/strong&gt;. Top will prompt you to enter a PID to inspect. However, to use this mode, you need to define the inspect entries that can be used first, otherwise top will not enter this mode. The following is the simplest configuration, you can first experience how this configuration is written:&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-[root@user ~]# cat .toprc
-top's Config File (Linux processes with windows)
-Id:i, Mode_altscr=0, Mode_irixps=1, Delay_time=3.0, Curwin=0
-Def     fieldscur=ķ&amp;amp;')*+,-./012568&amp;lt;&amp;gt;?ABCFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghij
-        winflags=195892, sortindx=18, maxtasks=0, graph_cpus=0, graph_mems=0
-        summclr=5, msgsclr=1, headclr=3, taskclr=4
-Job     fieldscur=(Ļ@&amp;lt;)*+,-./012568&amp;gt;?ABCFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghij
-        winflags=193844, sortindx=0, maxtasks=0, graph_cpus=0, graph_mems=0
-        summclr=6, msgsclr=6, headclr=7, taskclr=6
-Mem     fieldscur=&amp;lt;MBND34&amp;amp;'()*+,-./0125689FGHIJKLOPQRSTUVWXYZ[\]^_`abcdefghij
-        winflags=193844, sortindx=21, maxtasks=0, graph_cpus=0, graph_mems=0
-        summclr=5, msgsclr=5, headclr=4, taskclr=5
-Usr     fieldscur=)+,-./1234568;&amp;lt;=&amp;gt;?@ABCFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghij
-        winflags=193844, sortindx=3, maxtasks=0, graph_cpus=0, graph_mems=0
-        summclr=3, msgsclr=3, headclr=2, taskclr=3
-Fixed_widest=0, Summ_mscale=0, Task_mscale=0, Zero_suppress=0
-
-pipe    Open Files      lsof -P -p %d 2&amp;gt;&amp;amp;1
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;上面的最后一行就是就是一个 inspect entry，表示获取进程打开的文件列表。使用这个配置文件后，打开 top，按 &lt;strong&gt;Y&lt;/strong&gt; 进入 inspect 模式，效果如下：&lt;/p&gt;
-
-&lt;p&gt;The last line above is an inspect entry, which means to get the list of files opened by the process. After using this configuration file, open top and press &lt;strong&gt;Y&lt;/strong&gt; to enter inspect mode. The effect is as follows:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://diabloneo.github.io//assets/imgs/00027_top_cmd_7.png&quot; alt=&quot;top_cmd_7&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;在这个界面，可以左右选择你自定义的 entry，然后回车就可以执行。比如上面这个 &lt;em&gt;Open Files&lt;/em&gt; 执行后的效果如下，和直接使用 &lt;em&gt;lsof&lt;/em&gt; 命令的效果一样：&lt;/p&gt;
-
-&lt;p&gt;In this interface, you can select your customized entry using left and right, and then press Enter to execute it. For example, the effect of the execution of the above &lt;em&gt;Open Files&lt;/em&gt; is as follows, which is the same as the effect of directly using the &lt;em&gt;lsof&lt;/em&gt; command:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://diabloneo.github.io//assets/imgs/00028_top_cmd_8.png&quot; alt=&quot;top_cmd_8&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;在上面这个界面，可以使用 PgUp, PgDown, Home, End 等进行滚动，也可以使用 &lt;em&gt;less&lt;/em&gt; 命令的语法（ &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/&lt;/code&gt; 表示搜索）。&lt;/p&gt;
-
-&lt;p&gt;In the above interface, you can use PgUp, PgDown, Home, End to scroll, or you can use the syntax of the less command ( &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/&lt;/code&gt; meaning search).&lt;/p&gt;
-
-&lt;p&gt;下面来看 entry 的定制语法。&lt;/p&gt;
-
-&lt;p&gt;Let’s look at the custom syntax of entry.&lt;/p&gt;
-
-&lt;p&gt;首先，&lt;strong&gt;#&lt;/strong&gt; 开头的行是被注释掉的。&lt;/p&gt;
-
-&lt;p&gt;First of all, the line beginning with &lt;strong&gt;#&lt;/strong&gt; is commented out.&lt;/p&gt;
-
-&lt;p&gt;一行 inspect entry 包含三个部分： &lt;strong&gt;type&lt;/strong&gt;, &lt;strong&gt;name&lt;/strong&gt;, &lt;strong&gt;fmts&lt;/strong&gt;，每个部分之间使用制表符 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;\t&lt;/code&gt; 分隔。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;type&lt;/strong&gt;: 可以是 &lt;em&gt;file&lt;/em&gt; 或者 &lt;em&gt;pipe&lt;/em&gt;。&lt;em&gt;file&lt;/em&gt; 就是打开一个文件，读它的内容。&lt;em&gt;pipe&lt;/em&gt; 就是用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;popen&lt;/code&gt; 接口执行命令，然后获取输出。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;name&lt;/strong&gt;: 名字，比如你上面看到的 &lt;em&gt;Open Files&lt;/em&gt;。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;fmts&lt;/strong&gt;：一个文件路径，或者一行命令。这个部分可以使用变量 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;%d&lt;/code&gt; 表示 PID，比如 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/proc/%d/numa_maps&lt;/code&gt; 或者 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;lsof -P -p %d 2&amp;gt;&amp;amp;1&lt;/code&gt;。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;One inspect entry consists of three parts: &lt;strong&gt;type&lt;/strong&gt;, &lt;strong&gt;name&lt;/strong&gt;, &lt;strong&gt;fmts&lt;/strong&gt;, using the tab portions between each &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;\t&lt;/code&gt; parts.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;type&lt;/strong&gt; : Can be &lt;em&gt;file&lt;/em&gt; or &lt;em&gt;pipe&lt;/em&gt;. &lt;em&gt;file&lt;/em&gt; is to open a file and read its contents. &lt;em&gt;pipe&lt;/em&gt; is to use the popen interface to execute commands, and then get the output.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;name&lt;/strong&gt; : The name, such as the &lt;em&gt;Open Files&lt;/em&gt; you saw above .&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;fmts&lt;/strong&gt; : A file path, or a line of commands. This section can use variables &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;%d&lt;/code&gt; represent PID, such as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/proc/%d/numa_maps&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;lsof -P -p %d 2&amp;gt;&amp;amp;1&lt;/code&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;我的定制-my-customization&quot;&gt;我的定制 My Customization&lt;/h2&gt;
-
-&lt;p&gt;效果如下：&lt;/p&gt;
-
-&lt;p&gt;The effect is as follows:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://diabloneo.github.io//assets/imgs/00029_top_cmd_9.png&quot; alt=&quot;top_cmd_9&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;我在 CentOS 7 下的定制文件如下：&lt;/p&gt;
-
-&lt;p&gt;My customized files under CentOS 7 are as follows:&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;top's Config File (Linux processes with windows)
-Id:i, Mode_altscr=0, Mode_irixps=1, Delay_time=3.0, Curwin=0
-Cpu     fieldscur=ķ9')*+,-./0126&amp;lt;&amp;gt;?ABCFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghij
-        winflags=195380, sortindx=18, maxtasks=0, graph_cpus=0, graph_mems=0
-        summclr=4, msgsclr=1, headclr=3, taskclr=4
-Mem     fieldscur=&amp;amp;97(34D')*+,-./012568&amp;gt;?FGHIJKLOPQRSTUVWXYZ[\]^_`abcdefghij
-        winflags=195380, sortindx=21, maxtasks=0, graph_cpus=0, graph_mems=0
-        summclr=6, msgsclr=6, headclr=3, taskclr=6
-Sch     fieldscur=:;&amp;lt;=&amp;gt;?@AMBNC&amp;amp;'()*+,-./0128HIJKLOPQRSTUVWXYZ[\]^_`abcdefghij
-        winflags=194868, sortindx=0, maxtasks=0, graph_cpus=0, graph_mems=0
-        summclr=5, msgsclr=5, headclr=3, taskclr=5
-Cgp     fieldscur=*097:D)+,-./1234568;&amp;lt;=&amp;gt;?@ABCFGIJKLMNOVWXYZ[\]^_`abcdefghij
-        winflags=194868, sortindx=0, maxtasks=0, graph_cpus=0, graph_mems=0
-        summclr=2, msgsclr=3, headclr=3, taskclr=2
-Fixed_widest=0, Summ_mscale=0, Task_mscale=0, Zero_suppress=0
-
-pipe    NetFiles        lsof -a -l -n -P -i4 -p %d 2&amp;gt;&amp;amp;1
-pipe    OpenFiles       lsof -a -l -n -P -p %d 2&amp;gt;&amp;amp;1
-file    NUMAInfo        /proc/%d/numa_maps
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;主要是定制了 4 个 window 的字段和颜色，还有 3 个 inspect entries：&lt;/p&gt;
-
-&lt;p&gt;Mainly customize the fields and colors of 4 windows, and 3 inspect entries:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;CPU (sort by %CPU): PID, PPID, USER, PR, NI, VIRT, RES, SHR, S, %CPU, %MEM, TIME+, COMMAND&lt;/li&gt;
-  &lt;li&gt;Mem (sort by %MEM): PID, VIRT, RES, SHR, SWAP, nDRT, nMaj, nMin, vMj, vMn, %MEM, COMMAND&lt;/li&gt;
-  &lt;li&gt;Sche (sort by PID): PID, nTH, PR, NI, Flags,  S, P, %CPU, TIME+, COMMAND, WCHAN&lt;/li&gt;
-  &lt;li&gt;CGROUP (sort by PID): PID, PPID,UID, USER, CGROUPS, nsIPC, nsMNT, nsNET, nsPID, nsUSER, nsUTS, COMMAND&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;如果要直接使用的话，用 base64 解码下面的内容，直接从网页上拷贝会有字符问题：&lt;/p&gt;
-
-&lt;p&gt;If you want to use it directly, use base64 to decode the following content, and directly copy from the web page has character problems:&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dG9wJ3MgQ29uZmlnIEZpbGUgKExpbnV4IHByb2Nlc3NlcyB3aXRoIHdpbmRvd3MpCklkOmksIE1v
-ZGVfYWx0c2NyPTAsIE1vZGVfaXJpeHBzPTEsIERlbGF5X3RpbWU9My4wLCBDdXJ3aW49MApDcHUJ
-ZmllbGRzY3VyPaWmqLWztLu9wMS3urg5xScpKissLS4vMDEyNjw+P0FCQ0ZHSElKS0xNTk9QUVJT
-VFVWV1hZWltcXV5fYGFiY2RlZmdoaWoKCXdpbmZsYWdzPTE5NTM4MCwgc29ydGluZHg9MTgsIG1h
-eHRhc2tzPTAsIGdyYXBoX2NwdXM9MCwgZ3JhcGhfbWVtcz0wCglzdW1tY2xyPTQsIG1zZ3NjbHI9
-MSwgaGVhZGNscj0zLCB0YXNrY2xyPTQKTWVtCWZpZWxkc2N1cj2lu73AvMPBws3OJjk3uigzNEQn
-xSkqKywtLi8wMTI1Njg+P0ZHSElKS0xPUFFSU1RVVldYWVpbXF1eX2BhYmNkZWZnaGlqCgl3aW5m
-bGFncz0xOTUzODAsIHNvcnRpbmR4PTIxLCBtYXh0YXNrcz0wLCBncmFwaF9jcHVzPTAsIGdyYXBo
-X21lbXM9MAoJc3VtbWNscj02LCBtc2dzY2xyPTYsIGhlYWRjbHI9MywgdGFza2Nscj02ClNjaAlm
-aWVsZHNjdXI9pTo7PD0+P0BBTUJOQ7WztMfEtre5xcYmJygpKissLS4vMDEyOEhJSktMT1BRUlNU
-VVZXWFlaW1xdXl9gYWJjZGVmZ2hpagoJd2luZmxhZ3M9MTk0ODY4LCBzb3J0aW5keD0wLCBtYXh0
-YXNrcz0wLCBncmFwaF9jcHVzPTAsIGdyYXBoX21lbXM9MAoJc3VtbWNscj01LCBtc2dzY2xyPTUs
-IGhlYWRjbHI9MywgdGFza2Nscj01CkNncAlmaWVsZHNjdXI9paanqCowOTc6RCkrLC0uLzEyMzQ1
-Njg7PD0+P0BBQkNGR8hJSktMTU5P0NHS09TVxVZXWFlaW1xdXl9gYWJjZGVmZ2hpagoJd2luZmxh
-Z3M9MTk0ODY4LCBzb3J0aW5keD0wLCBtYXh0YXNrcz0wLCBncmFwaF9jcHVzPTAsIGdyYXBoX21l
-bXM9MAoJc3VtbWNscj0yLCBtc2dzY2xyPTMsIGhlYWRjbHI9MywgdGFza2Nscj0yCkZpeGVkX3dp
-ZGVzdD0wLCBTdW1tX21zY2FsZT0wLCBUYXNrX21zY2FsZT0wLCBaZXJvX3N1cHByZXNzPTAKCnBp
-cGUJTmV0RmlsZXMJbHNvZiAtYSAtbCAtbiAtUCAtaTQgLXAgJWQgMj4mMQpwaXBlCU9wZW5GaWxl
-cwlsc29mIC1hIC1sIC1uIC1QIC1wICVkIDI+JjEKZmlsZQlOVU1BSW5mbwkvcHJvYy8lZC9udW1h
-X21hcHMK
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;updates&quot;&gt;Updates&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;2021/6/11: Translate From Chinese to English with Google translate, then checking and editing. Cost me 1.5 hour.&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Thu, 29 Aug 2019 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2019/08/29/How-to-use-top-command/</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2019/08/29/How-to-use-top-command/</guid>
-        
-        <category>linux</category>
         
         
       </item>

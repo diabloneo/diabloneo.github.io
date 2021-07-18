@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78067453-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78067453-1');
+</script>
+
+	
+
+	<title>Postgres Logical Replication and CDC - 1</title>
+	<meta name="description" content="Postgres 作为目前最流行的数据库之一，自身也在不断的发展。从 Postgres 10 开始，它内置了逻辑复制功能。逻辑复制不仅可以实现更灵活的数据备份，也可以作为 CDC (Change Data Capture) 架构的基础。">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/css/main.css">
+	<link rel="stylesheet" href="/css/pygments-rainbow_dash.css">
+	<link rel="canonical" href="http://diabloneo.github.io//2021/06/27/postgres-logical-replication-and-cdc-part-1/">
+	<link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
+</head>
+
+
+  <body>
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">Coffee, Coke and Code</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <a class="page-link" href="/tags">Tags</a>
+        <a class="page-link" href="/feed.xml">RSS</a>
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Postgres Logical Replication and CDC - 1</h1>
+    <p class="post-meta"><time datetime="2021-06-27T00:00:00+08:00" itemprop="datePublished">Jun 27, 2021</time></p>
+  </header>
+
+  <div class="post-tags">
+    <ul>
+      
+      <li>
+        <a href="/tags/database/">database</a>
+      </li>
+      
+    </ul>
+  </div>
+
+  <div class="post-content" itemprop="articleBody">
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+    <br />
+      <p>Postgres 作为目前最流行的数据库之一，自身也在不断的发展。从 Postgres 10 开始，它内置了逻辑复制功能。逻辑复制不仅可以实现更灵活的数据备份，也可以作为 <strong>CDC (Change Data Capture)</strong> 架构的基础。</p>
+
+<p>As one of the most popular databases, Postgres itself is constantly evolving. Starting from Postgres 10, it has built-in logical replication. Logical replication can not only achieve more flexible data backup, but also serve as the basis of the CDC (Change Data Capture) architecture.</p>
+
+<h2 id="历史">历史</h2>
+
+<p>Postgres 对逻辑复制的支持经历了好几年的开发，主要由一家叫 <strong>2ndQuadrant</strong> 的公司开发并且提交到 Postgres 的。</p>
+
+<p>Postgres’ support for logical replication has gone through several years of development, I think it mainly developed by a company called 2ndQuadrant and submitted to Postgres.</p>
+
+<blockquote>
+  <p>关于 2ndQuadrant  的历史，请参考： <em><a href="https://en.everybodywiki.com/2ndQuadrant">https://en.everybodywiki.com/2ndQuadrant</a></em>。2ndQuadrant 在 2020 年 9 月被 EDB 公司收购： <em><a href="https://www.2ndquadrant.com/en/blog/how-edb-became-the-leader-in-the-postgres-market/">https://www.2ndquadrant.com/en/blog/how-edb-became-the-leader-in-the-postgres-market/</a></em>。
+For the history of 2ndQuadrant, please refer to: <em><a href="https://en.everybodywiki.com/2ndQuadrant">https://en.everybodywiki.com/2ndQuadrant</a></em>. 2ndQuadrant was acquired by EDB in September 2020: <em><a href="https://www.2ndquadrant.com/en/blog/how-edb-became-the-leader-in-the-postgres-market/">https://www.2ndquadrant.com/en/blog/how-edb-became-the-leader-in-the-postgres-market/</a></em>.</p>
+</blockquote>
+
+<p>逻辑复制相关的功能主要是 2ndQuadrant 公司在开发自己的 <strong>Postgres-BDR</strong> 产品时设计并开发的。BDR 是一个 Postgres 集群解决方案，在这个产品开发过程中，2ndQuadrant 产生了对逻辑复制的需求，那是在 Postgres 9.2 版本之前。这篇文章记录了 BDR 的开发历史， <em><a href="https://www.2ndquadrant.com/en/blog/bdr-history-and-future/">https://www.2ndquadrant.com/en/blog/bdr-history-and-future/</a></em>。逻辑复制的相关支持是慢慢提交到 Postgres 内核中的，从 9.2 版本增加对 trigger 的支持开始，9.4 版本支持 logical decoding，9.6 版本完成了所有的 logical decoding 必要 feature 的支持，10 版本开始支持 logical replication。整个过程是很漫长的。下图是 2ndQuadrant 提供的，描述了逻辑复制相关功能在 Postgres 上的演进。</p>
+
+<p>The functions related to logical replication are mainly designed and developed by 2ndQuadrant when developing its own Postgres-BDR product. BDR is a Postgres cluster solution. During this product development process, 2ndQuadrant generated a need for logical replication, which was before Postgres 9.2. This article records the development history of BDR, <em><a href="https://www.2ndquadrant.com/en/blog/bdr-history-and-future/">https://www.2ndquadrant.com/en/blog/bdr-history-and-future/</a></em>. The support for logical replication is slowly submitted to the Postgres kernel. Starting with the addition of trigger support in version 9.2, version 9.4 supports logical decoding, version 9.6 completes the support for all necessary features of logical decoding, and version 10 starts to support logical replication . The whole process is very long. The following figure is provided by 2ndQuadrant and describes the evolution of logical replication related functions on Postgres.</p>
+
+<p><img src="http://diabloneo.github.io//assets/imgs/00031_infograph_bdr_1.png" alt="infograph_bdr_1" /></p>
+
+<blockquote>
+  <p>Picture from: <em><a href="https://www.2ndquadrant.com/wp-content/uploads/2016/10/infograph-bdr-1.png">https://www.2ndquadrant.com/wp-content/uploads/2016/10/infograph-bdr-1.png</a></em></p>
+</blockquote>
+
+<p>9.6 版本算是一个经典版本。在 9.6 版本发布了之后，BDR 可以在 Postgres 不打补丁的情况下就提供支持 （之前 9.4 版本需要打一个大 patch，<em><a href="https://www.2ndquadrant.com/en/blog/bdr-is-coming-to-postgresql-9-6/">https://www.2ndquadrant.com/en/blog/bdr-is-coming-to-postgresql-9-6/</a></em>）。</p>
+
+<p>The 9.6 version is considered a classic version. After the release of version 9.6, BDR can support Postgres without patching (previous version 9.4 requires a large patch, <em><a href="https://www.2ndquadrant.com/en/blog/bdr-is-coming- to-postgresql-9-6/">https://www.2ndquadrant.com/en/blog/bdr-is-coming- to-postgresql-9-6/</a></em>).</p>
+
+<p>此外，还有个扩展，叫做 pglogical。它是从 BDR 项目中剥离出来的，从 9.4 版本开始支持逻辑复制功能。虽然从 Postgres 10 版本开始，已经内置了逻辑复制，但是 pglogical 依旧继续在开发之中，主要的原因是 pglogical 作为一个扩展，可以更快的进行 feature 开发和升级。在这篇文章中，解释了为什么要把逻辑复制功能引入到 Postgres 中，以及为什么引入之后还继续开发 pglogical: <em><a href="https://www.2ndquadrant.com/en/blog/pglogical-logical-replication-postgresql-10/">https://www.2ndquadrant.com/en/blog/pglogical-logical-replication-postgresql-10/</a></em>。</p>
+
+<p>In addition, there is an extension called pglogical. It is stripped from the BDR project and supports the logical replication function since version 9.4. Although the logical replication has been built-in since Postgres 10, pglogical is still under development. The main reason is that pglogical, as an extension, can develop and upgrade features faster. This article explained why the logical replication function was introduced into Postgres, and why the development of pglogical was continued after the introduction: <em><a href="https://www.2ndquadrant.com/en/blog/pglogical-logical-replication-postgresql- 10/">https://www.2ndquadrant.com/en/blog/pglogical-logical-replication-postgresql- 10/</a></em>.</p>
+
+<p>可以这么认为：</p>
+
+<ul>
+  <li>Postgres 9.4 ~ 9.6 版本，主要是引入了 logical decoding 功能，作为逻辑复制基础。</li>
+  <li>Postgres 10 版本引入的逻辑复制功能，也就是把 pglogical 的核心功能集成到 Postgres 里。</li>
+</ul>
+
+<p>Think of it this way:</p>
+
+<ul>
+  <li>Postgres 9.4 ~ 9.6 version, mainly introduces the logical decoding function, as the basis of logical replication.</li>
+  <li>The logical replication function introduced in Postgres 10 version is to integrate the core function of pglogical into Postgres.</li>
+</ul>
+
+<h2 id="logical-decoding">Logical Decoding</h2>
+
+<p>Logical decoding 是 Postgres 9.4 引入的，通过看 9.4 版本的文档 <em><a href="https://www.postgresql.org/docs/9.4/logicaldecoding.html">https://www.postgresql.org/docs/9.4/logicaldecoding.html</a></em>，可以知道，从 9.4 版本开始 logical decoding 的功能就已经比较完善了。</p>
+
+<p>Logical decoding Postgres 9.4 is introduced, by the 9.4 version of the document <em><a href="https://www.postgresql.org/docs/9.4/logicaldecoding.html">https://www.postgresql.org/docs/9.4/logicaldecoding.html</a></em>, you can see that at version 9.4, logical decoding was almost fully functional.</p>
+
+<p>Logical decoding 的功能主要在 Postgres 内部提供了一种将数据库中的数据上所发生的改变的事件导出的手段。官方文档的原文是：</p>
+
+<p>The function of logical decoding mainly provides a means to export the events of changes in the data inside Postgres. The original text of the official document is:</p>
+
+<blockquote>
+  <p>PostgreSQL provides infrastructure to stream the modifications performed via SQL to external consumers.</p>
+</blockquote>
+
+<h3 id="实现原理">实现原理</h3>
+
+<p>它的根本原理是在数据库内部将 WAL 文件的内容按照一定的格式输出，事件输出的顺序等同于 WAL 的写入顺序（如果一个事件可以输出的话，否则该事件就会直接被忽略）。对于 Postgres 来说，实现 logical decoding 就是在 WAL flush 到磁盘之后，调用 replication slot 的指定的 plugin 的回调函数。官方文档解释了每个回调函数的作用: <em><a href="https://www.postgresql.org/docs/current/logicaldecoding-output-plugin.html">https://www.postgresql.org/docs/current/logicaldecoding-output-plugin.html</a></em>。在本文撰写的时候，Postgres 的最新版本是 13，14 版本正在开发中。从最新的代码中可以看到，在 14 版本中，Postgres 会开始支持未提交事务的逻辑复，所以 plugin 回调结构体 <code class="language-plaintext highlighter-rouge">struct OutputPluginCallbacks</code> 中增加了很多以 <code class="language-plaintext highlighter-rouge">stream_</code> 开头的回调函数。</p>
+
+<p>Its fundamental principle is to output the contents of the WAL file in a certain format within the database, and the sequence of event output is equivalent to the writing sequence of WAL (if an event can be output, otherwise the event will be ignored). For Postgres, implementing logical decoding is to call the callback functions of the specified plugin of the replication slot after the WAL flush to the disk. The official document explains the role of each callback function: <em><a href="https://www.postgresql.org/docs/current/logicaldecoding-output-plugin.html">https://www.postgresql.org/docs/current/logicaldecoding-output-plugin.html</a></em>. At the time of this writing, the latest version of Postgres is 13, and version 14 is under development. You can see from the latest code in version 14, Postgres will begin to support complex logic uncommitted transactions, so the plugin callback structure <code class="language-plaintext highlighter-rouge">struct OutputPluginCallbacks</code> adds a lot of callback functions with the prefix <code class="language-plaintext highlighter-rouge">stream_</code>.</p>
+
+<p>Logical decoding 中有一个 <strong>logical replication slot</strong> ( 简称 replication slot) 的概念。一个 replication slot 代表了一个事件输出流，用于将 WAL 记录的事件发送给订阅者。replication slot 主要功能有两个：</p>
+
+<ol>
+  <li>使用预先配置好的 output plugin 将 WAL 内容转换成输出格式。</li>
+  <li>维护需要使用的 WAL 位置，包括订阅者开始消费的位置，以及订阅者已经 flush 的位置（可以把订阅者当成一个备库，当备库向主库报告自己已经将某个位置之前的 WAL 都持久化之后，主库就可以将该位置之前的 WAL 文件回收了）。</li>
+</ol>
+
+<p>There is a concept of <strong>logical replication slot</strong> (referred to as replication slot) in logical decoding. A replication slot represents an event output stream, used to send WAL recorded events to subscribers. There are two main functions of replication slot:</p>
+
+<ol>
+  <li>Use the pre-configured output plugin to convert WAL content into output format.</li>
+  <li>Maintain the WAL location that needs to be used, including the location where the subscriber starts to consume, and the location where the subscriber has been flushed (you can treat the subscriber as a standby database, when the standby database reports to the main database that it has persisted the WAL before a certain location, the main dastabase can reclaim the WAL file before the location).</li>
+</ol>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>data=# select * from pg_replication_slots ;
+  slot_name   |  plugin  | slot_type | datoid | database | temporary | active | active_pid | xmin | catalog_xmin | restart_lsn | confirmed_flush_lsn | wal_status | safe_wal_size
+--------------+----------+-----------+--------+----------+-----------+--------+------------+------+--------------+-------------+---------------------+------------+---------------
+   myslot     | pgoutput | logical   |  16384 | data     | f         | f      |            |      |          622 | 0/1765268   | 0/1765282           | reserved   |
+(1 row)
+</code></pre></div></div>
+
+<p>这里比较难理解的是 <code class="language-plaintext highlighter-rouge">restart_lsn</code> 和 <code class="language-plaintext highlighter-rouge">confirmed_flush_lsn</code> 这两个列的值。</p>
+
+<p>Here it is difficult to understand <code class="language-plaintext highlighter-rouge">restart_lsn</code> and <code class="language-plaintext highlighter-rouge">confirmed_flush_lsn</code>.</p>
+
+<p><code class="language-plaintext highlighter-rouge">confirmed_flush_lsn</code> 表示 consumer 已经收到并且回复确认的 WAL 的 LSN。早于该值的 WAL 无法再被 consumer 获取。这个值在 consumer 每次通过 <code class="language-plaintext highlighter-rouge">StandyStatusUpdate</code> 消息更新时都会被修改。</p>
+
+<p><code class="language-plaintext highlighter-rouge">confirmed_flush_lsn</code> means the address (LSN) up to which the logical slot’s consumer has confirmed receiving data. Data older than this is not available anymore. This value updated by each consumer’s StandyStatusUpdate message.</p>
+
+<p>官方文档对于 <code class="language-plaintext highlighter-rouge">restart_lsn</code> 的描述就没有这么清晰了：</p>
+
+<p>Official document for <code class="language-plaintext highlighter-rouge">restart_lsn</code> is not so clear:</p>
+
+<blockquote>
+  <p>The address (LSN) of oldest WAL which still might be required by the consumer of this slot and thus won’t be automatically removed during checkpoints unless this LSN gets behind more than max_slot_wal_keep_size from the current LSN. NULL if the LSN of this slot has never been reserved.</p>
+</blockquote>
+
+<p>我在邮件列表里找到了几个相关的讨论，可能最有用的两个如下：</p>
+
+<p>I found some discussion about <code class="language-plaintext highlighter-rouge">restart_lsn</code>, the following two might be useful:</p>
+
+<blockquote>
+  <p>In general, the restart_lsn and confirmed_flush_lsn are advanced in different ways so you might see some difference but it should not be this much. The confirmed_flush_lsn is updated when we get confirmation from the downstream node about the flush_lsn but restart_lsn is only incremented based on the LSN required by the oldest in-progress transaction.</p>
+</blockquote>
+
+<p>By Amit Kapila</p>
+
+<p><em><a href="https://www.postgresql.org/message-id/flat/CAFt1pcp5GGeJ1oVm6JZSzgptrRJ22FnfYqjoQPWgiss8HXzk4A%40mail.gmail.com#9f27f18a6302dc697a709f0a656f3548">https://www.postgresql.org/message-id/flat/CAFt1pcp5GGeJ1oVm6JZSzgptrRJ22FnfYqjoQPWgiss8HXzk4A%40mail.gmail.com#9f27f18a6302dc697a709f0a656f3548</a></em>.</p>
+
+<blockquote>
+  <p>To make sure, replication delay or lag here is current_wal_lsn() - confirmed_flush_lsn. restart_lsn has nothing to do with replication lag. It is the minimum LSN the server thinks it needs for restarting replication on the slot.</p>
+
+  <p>How long have you observed the increase of the gap? If no long-transactions are running, restart_lsn is the current LSN about from 15 to 30 seconds ago. That is, the gap between restart_lsn and confirmed_flush_lsn would be at most the amount of WAL emitted in the last 30 seconds. In this case, that is estimated to be 235MB*30 = about 7GB or 440 in 16MB-segments even if the system is perfectly working. Anyway the publisher server would need to preserve WAL files up to about 68GB (in the case where checkpoint_timeout is 5 minutes) so requirement of 7GB by restart_lsn doesn’t matter.</p>
+</blockquote>
+
+<p>By Kyotaro Horiguchi</p>
+
+<p><em><a href="https://www.postgresql-archive.org/Replication-lag-due-to-lagging-restart-lsn-td6150451.html#a6150570">https://www.postgresql-archive.org/Replication-lag-due-to-lagging-restart-lsn-td6150451.html#a6150570</a></em>.</p>
+
+<p>从这两个逻辑复制的开发者的回复可以看出，<code class="language-plaintext highlighter-rouge">restart_lsn</code> 的作用不是用来表示下游节点的复制延迟大小的，只是用来指导 master 何时可以删除 WAL 文件。主要的原因是 logical decoding 和 checkpoint 进程都涉及到何时删除 WAL 文件，因此系统需要考虑多个值来确认哪些 WAL 文件是可以回收的。 (<em>我在写这篇文章的时候，并没有阅读过 Postgres 的代码，所以我以上的结论是不准确的，也有可能是错误的。</em>)</p>
+
+<p>From the threads of the these two developers of logical replications, <code class="language-plaintext highlighter-rouge">restart_lsn</code> is not used to indicate replication delay, but to guide the main database when WAL files can be deleted. The main reason is that both logical decoding and checkpoint process involveed with WAL files deletion, so the system needs to consider multiple values to confirm which WAL files can be recycled. (When I was writing this article, I had not read the Postgres code, so my above conclusions are inaccurate and may be wrong. )</p>
+
+<h3 id="output-plugin">Output Plugin</h3>
+
+<p>Output plugin 是 logical decoding 里面决定输出格式的程序。这个 wiki 页面介绍了大部分的插: <em><a href="https://wiki.postgresql.org/wiki/Logical_Decoding_Plugins">https://wiki.postgresql.org/wiki/Logical_Decoding_Plugins</a></em>. 本章介绍几个主要的插件。</p>
+
+<p>Output plugin is the program that determines the output format in logical decoding. This wiki page introduces most of the plugins: <em><a href="https://wiki.postgresql.org/wiki/Logical_Decoding_Plugins">https://wiki.postgresql.org/wiki/Logical_Decoding_Plugins</a></em>. This chapter introduces several major plugins.</p>
+
+<h4 id="test_decoding">test_decoding</h4>
+
+<p>在 9.4 版本里，只有一个内置的 test_decoding 的插件 (*<a href="https://www.postgresql.org/docs/9.4/test-decoding.html*">https://www.postgresql.org/docs/9.4/test-decoding.html*</a>)，它用于支持</p>
+
+<p>In version 9.4, there is only one built-in plugin named test_decoding (* https://www.postgresql.org/docs/9.4/test-decoding.html* ), which is used to support</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT * FROM pg_logical_slot_get_changes('test_slot', NULL, NULL, 'include-xids', '0');
+
+</code></pre></div></div>
+
+<p>这个插件的主要作用是提供一个简单的调试手段，同时作为其他插件开发的模板，并不适用于实现逻辑复制这样复杂的场景。这个插件的代码在: <em><a href="https://github.com/postgres/postgres/blob/master/contrib/test_decoding/test_decoding.c">https://github.com/postgres/postgres/blob/master/contrib/test_decoding/test_decoding.c</a></em>.</p>
+
+<p>The main function of this plug-in is to provide a simple debugging method, and at the same time as a template for other plug-in development, it is not suitable for complex scenarios such as logical replication. The code for this plugin is at: <em><a href="https://github.com/postgres/postgres/blob/master/contrib/test_decoding/test_decoding.c">https://github.com/postgres/postgres/blob/master/contrib/test_decoding/test_decoding.c</a></em>.</p>
+
+<h4 id="pglogical">pglogical</h4>
+
+<p>由于 test_decoding 只是提供了一个实现参考，所以在还没有 pgoutput 插件的时候，pglogical 程序自己实现了一个 plugin (<em><a href="https://github.com/2ndQuadrant/pglogical/blob/REL2_x_STABLE/pglogical_output.c">https://github.com/2ndQuadrant/pglogical/blob/REL2_x_STABLE/pglogical_output.c</a></em>) 。</p>
+
+<p>Since test_decoding only provides an implementation reference, the pglogical program implements a plugin (<em><a href="https://github.com/2ndQuadrant/pglogical/blob/REL2_x_STABLE/pglogical_output.c">https://github.com/2ndQuadrant/pglogical/blob/REL2_x_STABLE/pglogical_output.c</a></em>) when there is no pgoutput plugin .</p>
+
+<h4 id="wal2json">wal2json</h4>
+
+<p><em><a href="https://github.com/eulerto/wal2json">https://github.com/eulerto/wal2json</a></em> 这个插件是一个比较流行的插件，因为它的输出是 JSON 格式的，相当容易理解以及用程序解析。不过这个插件不是 Postgres 内置的，需要自己安装。但是由于其非常简单易用，有些云服务会在自己的 Postgres 服务中内置这个这个插件，例如 Azure (<em><a href="https://docs.microsoft.com/en-us/azure/postgresql/concepts-logical">https://docs.microsoft.com/en-us/azure/postgresql/concepts-logical</a></em>).</p>
+
+<p><em><a href="https://github.com/eulerto/wal2json">https://github.com/eulerto/wal2json</a></em> This plug-in is a popular plugin because its output is in JSON format, which is quite easy to understand and parse with programs. But this plugin is not built-in Postgres, you need to install it yourself. But because it is very simple and easy to use, some cloud services will install this plugin in their Postgres service, such as Azure ( https://docs.microsoft.com/en-us/azure/postgresql/concepts-logical ).</p>
+
+<h4 id="pgoutput">pgoutput</h4>
+
+<p>在 Postgres 10 里，内置了一个 pgoutput 插件，为逻辑复制功能提供基础。pgoutput 实现了一个二进制协议，而且会在多个 Postgres 版本之间保持稳定（这样才能实现跨版本的逻辑复制）。这个协议属于 Postgres 后端协议的一部分，具体的协议定义见: <em><a href="https://www.postgresql.org/docs/current/protocol-logicalrep-message-formats.html">https://www.postgresql.org/docs/current/protocol-logicalrep-message-formats.html</a></em>。相比与 wal2json 这种文本格式的插件，pgoutput 插件的二进制协议的优点是性能好，缺点是较难解析。该插件的代码在: <em><a href="https://github.com/postgres/postgres/blob/master/src/backend/replication/pgoutput/pgoutput.c">https://github.com/postgres/postgres/blob/master/src/backend/replication/pgoutput/pgoutput.c</a></em>.</p>
+
+<p>In Postgres 10, a pgoutput plug-in is built in to provide a basis for logical replication. pgoutput implements a binary protocol and will remain stable across multiple Postgres versions (so that it can achieve cross-version logical replication). This protocol is part of the Postgres backend protocol. For specific protocol definitions, please see: <em><a href="https://www.postgresql.org/docs/current/protocol-logicalrep-message-formats.html">https://www.postgresql.org/docs/current/protocol-logicalrep-message-formats.html</a></em>. Compared with the text format plug-in of wal2json, the binary protocol of the pgoutput plug-in has the advantage of good performance, but the disadvantage is that it is difficult to parse. The code of the plugin is at: <em><a href="https://github.com/postgres/postgres/blob/master/src/backend/replication/pgoutput/pgoutput.c">https://github.com/postgres/postgres/blob/master/src/backend/replication/pgoutput/pgoutput.c</a></em>.</p>
+
+<p>如果使用 Golang 进行开发，我已经在 <strong>github.com/jackc/pglogrepl</strong> 这个库中增加了对 pgoutput 的支持 (<em><a href="https://github.com/jackc/pglogrepl/pull/14">https://github.com/jackc/pglogrepl/pull/14</a></em>)。你可以直接利用这个库中的 example 代码作为自己开发 subscriber 的基础： <em><a href="https://github.com/jackc/pglogrepl/tree/master/example/pglogrepl_demo">https://github.com/jackc/pglogrepl/tree/master/example/pglogrepl_demo</a></em>。</p>
+
+<p>If you use Golang development, I have adds support for the protocol in Github repo:  <strong>github.com/jackc/pglogrepl</strong> (support for pgoutput of https://github.com/jackc/pglogrepl/pull/14 ). You can directly use the example code in this repo as the basis for your own development of subscribers:  <em><a href="https://github.com/jackc/pglogrepl/tree/master/example/pglogrepl_demo">https://github.com/jackc/pglogrepl/tree/master/example/pglogrepl_demo</a></em>.</p>
+
+<h2 id="update">Update</h2>
+
+<ul>
+  <li>Translate From Chinese to English with Google translate, then checking and editing.</li>
+</ul>
+
+
+    <br />
+
+    <div>
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议</a>进行许可。
+    </div>
+
+    <br />
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+  </div>
+
+  
+    <div class="post-comment">
+      
+<div id="disqus_thread"></div>
+<script>
+var disqus_config = function () {
+  this.page.url = "http://diabloneo.github.io/2021/06/27/postgres-logical-replication-and-cdc-part-1/"; // <--- use canonical URL
+  this.page.identifier = "/2021/06/27/postgres-logical-replication-and-cdc-part-1";
+};
+(function() { // DON'T EDIT BELOW THIS LINE
+  var d = document, s = d.createElement('script');
+
+  s.src = 'https://coffee-coke-and-code.disqus.com/embed.js';
+
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+    </div>
+  
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Coffee, Coke and Code</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>Coffee, Coke and Code</li>
+          <li><a href="mailto:diabloneo@gmail.com">diabloneo@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <i class="fa fa-github"></i>
+            <a href="https://github.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <i class="fa fa-twitter"></i>
+            <a href="https://twitter.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <i class="fa fa-weibo"></i>
+            <a href="https://weibo.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Archive diabloneo's articles.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
+  </body>
+
+</html>
