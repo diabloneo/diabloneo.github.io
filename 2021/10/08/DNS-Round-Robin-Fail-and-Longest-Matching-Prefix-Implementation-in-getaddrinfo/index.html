@@ -367,6 +367,30 @@ Breakpoint 2 at 0x7ffff6d3df70: file ../sysdeps/posix/getaddrinfo.c, line 1440.
 
 <p>使用这些地址，你会算出来三个服务器地址的 <code class="language-plaintext highlighter-rouge">fls(...)</code> 都为 26，所以 DNS 轮询又“神奇”的生效了。</p>
 
+<h1 id="ref">Ref</h1>
+
+<ol>
+  <li>https://en.wikipedia.org/wiki/Getaddrinfo</li>
+  <li><a href="https://access.redhat.com/solutions/22132">https://access.redhat.com/solutions/22132</a>
+    <ul>
+      <li>RedHat 官方对于这个问题的解决方案，其实结论是除非关掉 IPv6，否则无解。所以，无解。</li>
+    </ul>
+  </li>
+  <li><a href="https://daniel.haxx.se/blog/2012/01/03/getaddrinfo-with-round-robin-dns-and-happy-eyeballs/">https://daniel.haxx.se/blog/2012/01/03/getaddrinfo-with-round-robin-dns-and-happy-eyeballs/</a></li>
+  <li><a href="https://jameshfisher.com/2018/02/03/what-does-getaddrinfo-do/">https://jameshfisher.com/2018/02/03/what-does-getaddrinfo-do/</a>
+    <ul>
+      <li>通过 strace 来介绍了 <code class="language-plaintext highlighter-rouge">getaddrinfo</code> 做了什么。</li>
+    </ul>
+  </li>
+  <li><a href="https://www.ietf.org/rfc/rfc3484.txt">https://www.ietf.org/rfc/rfc3484.txt</a></li>
+  <li><a href="https://lists.debian.org/debian-glibc/2007/09/msg00347.html">https://lists.debian.org/debian-glibc/2007/09/msg00347.html</a>
+    <ul>
+      <li>狂喷 RFC 3484 Rule 9</li>
+    </ul>
+  </li>
+</ol>
+
+
     <br />
 
     <div>

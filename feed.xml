@@ -6,8 +6,8 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 08 Oct 2021 23:59:01 +0800</pubDate>
-    <lastBuildDate>Fri, 08 Oct 2021 23:59:01 +0800</lastBuildDate>
+    <pubDate>Sat, 09 Oct 2021 00:06:17 +0800</pubDate>
+    <lastBuildDate>Sat, 09 Oct 2021 00:06:17 +0800</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -244,6 +244,30 @@ Breakpoint 2 at 0x7ffff6d3df70: file ../sysdeps/posix/getaddrinfo.c, line 1440.
 &lt;/ul&gt;
 
 &lt;p&gt;使用这些地址，你会算出来三个服务器地址的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fls(...)&lt;/code&gt; 都为 26，所以 DNS 轮询又“神奇”的生效了。&lt;/p&gt;
+
+&lt;h1 id=&quot;ref&quot;&gt;Ref&lt;/h1&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;https://en.wikipedia.org/wiki/Getaddrinfo&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://access.redhat.com/solutions/22132&quot;&gt;https://access.redhat.com/solutions/22132&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;RedHat 官方对于这个问题的解决方案，其实结论是除非关掉 IPv6，否则无解。所以，无解。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://daniel.haxx.se/blog/2012/01/03/getaddrinfo-with-round-robin-dns-and-happy-eyeballs/&quot;&gt;https://daniel.haxx.se/blog/2012/01/03/getaddrinfo-with-round-robin-dns-and-happy-eyeballs/&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://jameshfisher.com/2018/02/03/what-does-getaddrinfo-do/&quot;&gt;https://jameshfisher.com/2018/02/03/what-does-getaddrinfo-do/&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;通过 strace 来介绍了 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;getaddrinfo&lt;/code&gt; 做了什么。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.ietf.org/rfc/rfc3484.txt&quot;&gt;https://www.ietf.org/rfc/rfc3484.txt&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://lists.debian.org/debian-glibc/2007/09/msg00347.html&quot;&gt;https://lists.debian.org/debian-glibc/2007/09/msg00347.html&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;狂喷 RFC 3484 Rule 9&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
 </description>
         <pubDate>Fri, 08 Oct 2021 00:00:00 +0800</pubDate>
         <link>http://diabloneo.github.io//2021/10/08/DNS-Round-Robin-Fail-and-Longest-Matching-Prefix-Implementation-in-getaddrinfo/</link>
