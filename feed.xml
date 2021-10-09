@@ -6,8 +6,8 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 09 Oct 2021 00:06:17 +0800</pubDate>
-    <lastBuildDate>Sat, 09 Oct 2021 00:06:17 +0800</lastBuildDate>
+    <pubDate>Sat, 09 Oct 2021 10:52:12 +0800</pubDate>
+    <lastBuildDate>Sat, 09 Oct 2021 10:52:12 +0800</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -40,11 +40,11 @@ test.dom.               3600    IN      A       192.168.192.129
 
 &lt;p&gt;客户端也有一个同网段的地址：&lt;strong&gt;192.168.192.121&lt;/strong&gt;。所有这些地址，都属于 &lt;em&gt;192.168.192.0/24&lt;/em&gt; 这个子网。如本章的标题所示，这些地址的选择是非常重要的，&lt;strong&gt;就是地址的值导致了 DNS 负载均衡的失效&lt;/strong&gt;。&lt;/p&gt;
 
-&lt;p&gt;在这个场景中，我们发现我们的客户端程序每次都是去连接 &lt;strong&gt;192.168.192.197&lt;/strong&gt; 这个地址，从来不使用其他两个地址，不管这个 &lt;em&gt;192.168.192.197&lt;/em&gt; 的地址是出现在响应中的哪个位置。&lt;/p&gt;
+&lt;p&gt;在这个场景中，我们发现我们的客户端程序每次都是去连接 &lt;strong&gt;192.168.192.127&lt;/strong&gt; 这个地址，从来不使用其他两个地址，不管这个 &lt;em&gt;192.168.192.127&lt;/em&gt; 的地址是出现在响应中的哪个位置。&lt;/p&gt;
 
 &lt;h1 id=&quot;问题定位与分析&quot;&gt;问题定位与分析&lt;/h1&gt;
 
-&lt;p&gt;我们首先排除了 DNS 服务器的问题，以及客户端实现的问题。所以，问题出现在 DNS 请求成功后，到将地址列表返回给客户端程序之前。为了简化问题定位，我们发现 ping 程序也遇到了同样的问题，即 ping 这个域名，都只会使用 &lt;em&gt;192.168.192.197&lt;/em&gt; 这个地址。&lt;/p&gt;
+&lt;p&gt;我们首先排除了 DNS 服务器的问题，以及客户端实现的问题。所以，问题出现在 DNS 请求成功后，到将地址列表返回给客户端程序之前。为了简化问题定位，我们发现 ping 程序也遇到了同样的问题，即 ping 这个域名，都只会使用 &lt;em&gt;192.168.192.127&lt;/em&gt; 这个地址。&lt;/p&gt;
 
 &lt;h2 id=&quot;使用-strace-命令来分析问题&quot;&gt;使用 strace 命令来分析问题&lt;/h2&gt;
 
@@ -268,6 +268,11 @@ Breakpoint 2 at 0x7ffff6d3df70: file ../sysdeps/posix/getaddrinfo.c, line 1440.
   &lt;/li&gt;
 &lt;/ol&gt;
 
+&lt;h1 id=&quot;update&quot;&gt;Update&lt;/h1&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;2021-10-09: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;s/192.168.192.197/192.168.192.127/g&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
 </description>
         <pubDate>Fri, 08 Oct 2021 00:00:00 +0800</pubDate>
         <link>http://diabloneo.github.io//2021/10/08/DNS-Round-Robin-Fail-and-Longest-Matching-Prefix-Implementation-in-getaddrinfo/</link>
