@@ -6,9 +6,49 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 09 Oct 2021 10:52:12 +0800</pubDate>
-    <lastBuildDate>Sat, 09 Oct 2021 10:52:12 +0800</lastBuildDate>
+    <pubDate>Mon, 11 Oct 2021 23:29:26 +0800</pubDate>
+    <lastBuildDate>Mon, 11 Oct 2021 23:29:26 +0800</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
+    
+      <item>
+        <title>对程序员来说，速度是重要的</title>
+        <description>&lt;p&gt;对于一个程序员来说，开发的速度是重要的。为什么呢？&lt;/p&gt;
+
+&lt;p&gt;在说明原因之前，要先澄清下我说的开发速度包括哪些方面。&lt;strong&gt;开发速度，并不是仅仅指敲用键盘输入代码，而包括更大范围的一些操作&lt;/strong&gt;：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;操作 IDE 的速度，就是使用 IDE 的熟练程度。&lt;/li&gt;
+  &lt;li&gt;操作终端的速度。例如快速的跳转位置，快速的查找命令历史等。&lt;/li&gt;
+  &lt;li&gt;操作 git 的速度。快速的切换分支，快速的 merge 或者 rebase 等。&lt;/li&gt;
+  &lt;li&gt;使用操作系统的速度。例如快速找到一堆浏览器标签页中你需要的那个。&lt;/li&gt;
+  &lt;li&gt;搭建最基础开发环境的速度。例如你用 Python，要能快速的搭建一个 Virtualenv ；或者你用 Go，要能快速的写好一个 go.mod，然后 download 所有依赖。最基础的开发环境往往用来写一些非常简短的测试代码，显然，搭建基础开发环境的时候不应该比写这个简短测试代码的时间长。&lt;/li&gt;
+  &lt;li&gt;找到所需文档的速度，不只是 Google，还包括在你的团队所使用的 wiki 系统。&lt;/li&gt;
+  &lt;li&gt;使用最基本的 shell 工具的速度，包括但不限于 find， grep，awk，wc 等。这些工具一般用来快速的找到文件或者快速的找到想要的内容。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;上面提到的这些操作，只要经过专门训练，都能大幅提升操作速度（也可以说是熟练度）。&lt;/p&gt;
+
+&lt;p&gt;为什么程序员需要在上面列出的这些事情上追求速度呢？功利的说，上面这些事情，并不直接帮你赚钱，所以花的时间越多，你用来赚钱的时间就越少。但是，从成就感的角度来找这个问题的答案，会让我们更加愉悦：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;你可以有更多的时间来思考那些直接产生价值的代码，这有助于写出更好的代码，以及做出更好的产品。&lt;/li&gt;
+  &lt;li&gt;你的工作过程看起来会更炫酷。谁不爱呢。&lt;/li&gt;
+  &lt;li&gt;你会更擅长排查环境导致问题，也更不容易造成这样的问题。&lt;/li&gt;
+  &lt;li&gt;有更多的时间享受创造的快乐，而不是陷在问题的泥潭之中。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;总而言之，会编程成为一件快乐的事情。&lt;/p&gt;
+
+&lt;p&gt;不过，当你变得很快时，可能会产生一个副作用：你会对同事变得缺乏耐心，并且不乐于帮助他们。如果你能解决这个副作用，那么你可以收获更多的东西。&lt;/p&gt;
+</description>
+        <pubDate>Mon, 11 Oct 2021 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2021/10/11/Be-fast-do-matter-for-programmer/</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2021/10/11/Be-fast-do-matter-for-programmer/</guid>
+        
+        <category>programming</category>
+        
+        
+      </item>
     
       <item>
         <title>getaddrinfo 中最长前缀匹配实现导致的DNS 负载均衡失效</title>
@@ -1605,22 +1645,6 @@ For the history of 2ndQuadrant, please refer to: &lt;em&gt;&lt;a href=&quot;http
         <pubDate>Tue, 26 Jan 2021 00:00:00 +0800</pubDate>
         <link>http://diabloneo.github.io//2021/01/26/make-a-process-with-status-D-in-Linux/</link>
         <guid isPermaLink="true">http://diabloneo.github.io//2021/01/26/make-a-process-with-status-D-in-Linux/</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>如何学习 cmake</title>
-        <description>&lt;ol&gt;
-  &lt;li&gt;首先，&lt;a href=&quot;https://cmake.org/cmake/help/latest/guide/tutorial/index.html&quot;&gt;官方的入门文档&lt;/a&gt; 不建议去看，因为不够简单明了。推荐看这篇 &lt;em&gt;&lt;a href=&quot;https://mirkokiefer.com/cmake-by-example-f95eb47d45b1&quot;&gt;CMake by Example&lt;/a&gt;&lt;/em&gt;，简单明了，你可以直接了解到 cmake 的整体情况。&lt;/li&gt;
-  &lt;li&gt;然后，学习一个大项目的 cmake 文件，在学习的过程中，查询 reference 文档来了解细节。我推荐大家学习 FoundationDB 的 cmake 文件 &lt;a href=&quot;https://github.com/apple/foundationdb&quot;&gt;https://github.com/apple/foundationdb&lt;/a&gt;。&lt;/li&gt;
-&lt;/ol&gt;
-</description>
-        <pubDate>Fri, 15 Jan 2021 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2021/01/15/how-to-learn-cmake/</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2021/01/15/how-to-learn-cmake/</guid>
-        
-        <category>linux</category>
         
         
       </item>
