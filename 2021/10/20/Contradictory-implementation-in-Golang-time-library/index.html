@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78067453-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78067453-1');
+</script>
+
+	
+
+	<title>Golang time 库里的一个矛盾实现</title>
+	<meta name="description" content="Golang time.Now() 和 time.Parse() 两个函数对于 location 处理上是不一致的。">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/css/main.css">
+	<link rel="stylesheet" href="/css/pygments-rainbow_dash.css">
+	<link rel="canonical" href="http://diabloneo.github.io//2021/10/20/Contradictory-implementation-in-Golang-time-library/">
+	<link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
+</head>
+
+
+  <body>
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">Coffee, Coke and Code</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <a class="page-link" href="/tags">Tags</a>
+        <a class="page-link" href="/feed.xml">RSS</a>
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Golang time 库里的一个矛盾实现</h1>
+    <p class="post-meta"><time datetime="2021-10-20T00:00:00+08:00" itemprop="datePublished">Oct 20, 2021</time></p>
+  </header>
+
+  <div class="post-tags">
+    <ul>
+      
+      <li>
+        <a href="/tags/golang/">golang</a>
+      </li>
+      
+    </ul>
+  </div>
+
+  <div class="post-content" itemprop="articleBody">
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+    <br />
+      <p>Golang <code class="language-plaintext highlighter-rouge">time.Now()</code> 和 <code class="language-plaintext highlighter-rouge">time.Parse()</code> 两个函数对于 location 处理上是不一致的。</p>
+
+<p><code class="language-plaintext highlighter-rouge">time.Parse()</code> 方法在生成 <code class="language-plaintext highlighter-rouge">Time</code> 对象时，可能会调用 <code class="language-plaintext highlighter-rouge">setLoc</code> 方法，用于设置时区信息。<code class="language-plaintext highlighter-rouge">setLoc</code> 方法，以及相关的其他方法都有一个特殊处理，就是将 <code class="language-plaintext highlighter-rouge">Time.loc == nil</code> 这个条件等同于 UTC 时区，例如下列代码：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// setLoc sets the location associated with the time.
+func (t *Time) setLoc(loc *Location) {
+	if loc == &amp;utcLoc {
+		loc = nil
+	}
+	t.stripMono()
+	t.loc = loc
+}
+</code></pre></div></div>
+
+<p>但是，<code class="language-plaintext highlighter-rouge">time.Now()</code> 方法并不是这么处理的，无论时区如何，它都会为 <code class="language-plaintext highlighter-rouge">Time.loc</code> 赋值，如下所示：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// Now returns the current local time.
+func Now() Time {
+	sec, nsec, mono := now()
+	mono -= startNano
+	sec += unixToInternal - minWall
+	if uint64(sec)&gt;&gt;33 != 0 {
+		return Time{uint64(nsec), sec + minWall, Local}
+	}
+	return Time{hasMonotonic | uint64(sec)&lt;&lt;nsecShift | uint64(nsec), mono, Local}
+}
+</code></pre></div></div>
+
+<p>于是，<strong>当你的程序运行在一个 UTC 时区的 Linux 系统上时，就会出现如下矛盾的现象：<code class="language-plaintext highlighter-rouge">time.Now()</code> 返回的值里, <code class="language-plaintext highlighter-rouge">loc</code> 成员是有值的，但是用 <code class="language-plaintext highlighter-rouge">time.Parse()</code> 去解析一个时间字符串时，得到的值里，<code class="language-plaintext highlighter-rouge">loc</code> 成员可能是 <code class="language-plaintext highlighter-rouge">nil</code></strong>。这个矛盾会导致一些比较代码失败（直接用 <code class="language-plaintext highlighter-rouge">==</code> 比较），因为其中的 <code class="language-plaintext highlighter-rouge">loc</code> 字段的值不一致。当然，官方文档也提到了这一点，<strong>所以比较时间还是应该用 <code class="language-plaintext highlighter-rouge">Time.Equal()</code> 方法</strong>。</p>
+
+<blockquote>
+  <p>Note that the Go == operator compares not just the time instant but also the Location and the monotonic clock reading.</p>
+</blockquote>
+
+<p>如果需要在这种情况下，为 <code class="language-plaintext highlighter-rouge">Parse()</code> 得到的时间附上一个时区信息，得到和 <code class="language-plaintext highlighter-rouge">Now()</code> 一样的效果，可以使用如下的函数实现：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// parseTime calls time.Parse and set location if time.Local is UTC.
+//
+// time.Parse function will call Time.setLoc method which set Time.loc = nil
+// if location is UTC. But on a machine with UTC timezone, time.Now() returns
+// a Time value with Time.loc set to utcLoc, so it's not nil. The two methods
+// result in discrepancy in time.Time values.
+func parseTime(layout, value string) (time.Time, error) {
+	t, err := time.Parse(layout, value)
+	if err != nil {
+		return time.Time{}, err
+	}
+	if _, offset := t.Zone(); offset == 0 {
+		return t.Local(), nil
+	}
+	return t, nil
+}
+</code></pre></div></div>
+
+
+    <br />
+
+    <div>
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议</a>进行许可。
+    </div>
+
+    <br />
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+  </div>
+
+  
+    <div class="post-comment">
+      
+<div id="disqus_thread"></div>
+<script>
+var disqus_config = function () {
+  this.page.url = "http://diabloneo.github.io/2021/10/20/Contradictory-implementation-in-Golang-time-library/"; // <--- use canonical URL
+  this.page.identifier = "/2021/10/20/Contradictory-implementation-in-Golang-time-library";
+};
+(function() { // DON'T EDIT BELOW THIS LINE
+  var d = document, s = d.createElement('script');
+
+  s.src = 'https://coffee-coke-and-code.disqus.com/embed.js';
+
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+    </div>
+  
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Coffee, Coke and Code</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>Coffee, Coke and Code</li>
+          <li><a href="mailto:diabloneo@gmail.com">diabloneo@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <i class="fa fa-github"></i>
+            <a href="https://github.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <i class="fa fa-twitter"></i>
+            <a href="https://twitter.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <i class="fa fa-weibo"></i>
+            <a href="https://weibo.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Archive diabloneo's articles.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
+  </body>
+
+</html>

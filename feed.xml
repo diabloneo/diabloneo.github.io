@@ -6,9 +6,75 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 11 Oct 2021 23:29:26 +0800</pubDate>
-    <lastBuildDate>Mon, 11 Oct 2021 23:29:26 +0800</lastBuildDate>
+    <pubDate>Thu, 21 Oct 2021 10:00:48 +0800</pubDate>
+    <lastBuildDate>Thu, 21 Oct 2021 10:00:48 +0800</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
+    
+      <item>
+        <title>Golang time 库里的一个矛盾实现</title>
+        <description>&lt;p&gt;Golang &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;time.Now()&lt;/code&gt; 和 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;time.Parse()&lt;/code&gt; 两个函数对于 location 处理上是不一致的。&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;time.Parse()&lt;/code&gt; 方法在生成 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Time&lt;/code&gt; 对象时，可能会调用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;setLoc&lt;/code&gt; 方法，用于设置时区信息。&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;setLoc&lt;/code&gt; 方法，以及相关的其他方法都有一个特殊处理，就是将 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Time.loc == nil&lt;/code&gt; 这个条件等同于 UTC 时区，例如下列代码：&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// setLoc sets the location associated with the time.
+func (t *Time) setLoc(loc *Location) {
+	if loc == &amp;amp;utcLoc {
+		loc = nil
+	}
+	t.stripMono()
+	t.loc = loc
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;但是，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;time.Now()&lt;/code&gt; 方法并不是这么处理的，无论时区如何，它都会为 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Time.loc&lt;/code&gt; 赋值，如下所示：&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// Now returns the current local time.
+func Now() Time {
+	sec, nsec, mono := now()
+	mono -= startNano
+	sec += unixToInternal - minWall
+	if uint64(sec)&amp;gt;&amp;gt;33 != 0 {
+		return Time{uint64(nsec), sec + minWall, Local}
+	}
+	return Time{hasMonotonic | uint64(sec)&amp;lt;&amp;lt;nsecShift | uint64(nsec), mono, Local}
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;于是，&lt;strong&gt;当你的程序运行在一个 UTC 时区的 Linux 系统上时，就会出现如下矛盾的现象：&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;time.Now()&lt;/code&gt; 返回的值里, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;loc&lt;/code&gt; 成员是有值的，但是用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;time.Parse()&lt;/code&gt; 去解析一个时间字符串时，得到的值里，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;loc&lt;/code&gt; 成员可能是 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nil&lt;/code&gt;&lt;/strong&gt;。这个矛盾会导致一些比较代码失败（直接用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;==&lt;/code&gt; 比较），因为其中的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;loc&lt;/code&gt; 字段的值不一致。当然，官方文档也提到了这一点，&lt;strong&gt;所以比较时间还是应该用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Time.Equal()&lt;/code&gt; 方法&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Note that the Go == operator compares not just the time instant but also the Location and the monotonic clock reading.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;如果需要在这种情况下，为 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Parse()&lt;/code&gt; 得到的时间附上一个时区信息，得到和 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Now()&lt;/code&gt; 一样的效果，可以使用如下的函数实现：&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// parseTime calls time.Parse and set location if time.Local is UTC.
+//
+// time.Parse function will call Time.setLoc method which set Time.loc = nil
+// if location is UTC. But on a machine with UTC timezone, time.Now() returns
+// a Time value with Time.loc set to utcLoc, so it's not nil. The two methods
+// result in discrepancy in time.Time values.
+func parseTime(layout, value string) (time.Time, error) {
+	t, err := time.Parse(layout, value)
+	if err != nil {
+		return time.Time{}, err
+	}
+	if _, offset := t.Zone(); offset == 0 {
+		return t.Local(), nil
+	}
+	return t, nil
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+</description>
+        <pubDate>Wed, 20 Oct 2021 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2021/10/20/Contradictory-implementation-in-Golang-time-library/</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2021/10/20/Contradictory-implementation-in-Golang-time-library/</guid>
+        
+        <category>golang</category>
+        
+        
+      </item>
     
       <item>
         <title>对程序员来说，速度是重要的</title>
@@ -1564,87 +1630,6 @@ For the history of 2ndQuadrant, please refer to: &lt;em&gt;&lt;a href=&quot;http
         <guid isPermaLink="true">http://diabloneo.github.io//2021/02/18/FoundationDB-flow-part-1/</guid>
         
         <category>programming</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>模拟一个处于 D 状态的进程</title>
-        <description>&lt;p&gt;原理：使用 LVM 卷的 suspend 特性，暂停 IO，使得上层应用程序处于 &lt;strong&gt;D&lt;/strong&gt; 状态。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Setps&lt;/strong&gt; :&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;使用 losetup 创建一个卷作为 pv 的磁盘。&lt;/p&gt;
-
-    &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; [tmp]# pwd
- /root/tmp
- [tmp]# dd if=/dev/zero of=disk count=2048 bs=1M
- ...
- [tmp]# losetup --show -f disk
- ...
- [tmp]# lsblk
- ...
- loop0             7:0    0    2G  0 loop
- ...
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/dev/loop0&lt;/code&gt; 创建 pv, vg 和 lv。&lt;/p&gt;
-
-    &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; [tmp]# pvcreate /dev/loop0
-   Physical volume &quot;/dev/loop0&quot; successfully created.
- [tmp]# vgcreate vgtest /dev/loop0
-   Volume group &quot;vgtest&quot; successfully created
- [tmp]# lvcreate -n lvtest -L 1G vgtest
-   Logical volume &quot;lvtest&quot; created.
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;在 lv 上创建一个文件系统&lt;/p&gt;
-
-    &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; [tmp]# mkfs.ext4 -m0 /dev/vgtest/lvtest
- [tmp]# mount /dev/vgtest/lvtest /mnt
- [tmp]# lsblk
- ...
- loop0             7:0    0    2G  0 loop
- └─vgtest-lvtest 253:0    0    1G  0 lvm  /root/tmp/mnt
- ...
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;写 IO 的同时暂停 lv。&lt;/p&gt;
-
-    &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; [tmp]# dmsetup suspend /dev/vgtest/lvtest &amp;amp;&amp;amp; dd if=/dev/urandom of=/root/tmp/file.img bs=1M count=1024
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-
-    &lt;p&gt;此时，该进程就会处于 D 状态，不会返回。可以通过另一个 shell 来检查这个进程。&lt;/p&gt;
-
-    &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; [~]# ps aux | grep D | grep '/root/tmp/mnt/'
- root     19492  0.0  0.0 107996   620 pts/0    D+   11:16   0:00 dd if=/dev/urandom of=/root/tmp/mnt/file.img bs=1M count=1024
-
- [~]# pstree -g -a --show-parents 19492
- systemd,1 --switched-root --system --deserialize 22
-   └─sshd,5398 -D
-         └─sshd,2515
-                   └─bash,2643
-                         └─dd,19492 if=/dev/urandom of=/root/tmp/mnt/file.img bs=1M count=1024
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;恢复 lv 的 IO。&lt;/p&gt;
-
-    &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; [~]# dmsetup resume /dev/vgtest/lvtest
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-
-    &lt;p&gt;之前卡住的 dd 命令会继续。&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-</description>
-        <pubDate>Tue, 26 Jan 2021 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2021/01/26/make-a-process-with-status-D-in-Linux/</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2021/01/26/make-a-process-with-status-D-in-Linux/</guid>
         
         
       </item>
