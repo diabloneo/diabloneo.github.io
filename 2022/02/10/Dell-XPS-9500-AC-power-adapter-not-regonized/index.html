@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78067453-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78067453-1');
+</script>
+
+	
+
+	<title>Dell XPS 9500 电源适配器无法识别的问题</title>
+	<meta name="description" content="问题描述">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/css/main.css">
+	<link rel="stylesheet" href="/css/pygments-rainbow_dash.css">
+	<link rel="canonical" href="http://diabloneo.github.io//2022/02/10/Dell-XPS-9500-AC-power-adapter-not-regonized/">
+	<link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
+</head>
+
+
+  <body>
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">Coffee, Coke and Code</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <a class="page-link" href="/tags">Tags</a>
+        <a class="page-link" href="/feed.xml">RSS</a>
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Dell XPS 9500 电源适配器无法识别的问题</h1>
+    <p class="post-meta"><time datetime="2022-02-10T00:00:00+08:00" itemprop="datePublished">Feb 10, 2022</time></p>
+  </header>
+
+  <div class="post-tags">
+    <ul>
+      
+      <li>
+        <a href="/tags/linux/">linux</a>
+      </li>
+      
+    </ul>
+  </div>
+
+  <div class="post-content" itemprop="articleBody">
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+    <br />
+      <h2 id="问题描述">问题描述</h2>
+
+<p>我的 XPS 9500 是 2020 年买的，目前安装的是 Ubuntu 21.10 系统，最近出现了一次电源适配器无法识别的问题。现象是这样的：<strong>前一天正常待机，第二天恢复后，无法识别电源适配器，只能一直消耗电池的电量，直到耗尽关机</strong>。之前，我的电脑也出现过在休眠时，直接掉电关机的情况，就像电源和电池同时拔掉的情况。看起来，应该是电脑本身的电源模块的问题。通过致电 Dell 技术支持，他们告知我这个是个系统电源管理模块的 bug，Dell 提供的故障描述如下：</p>
+
+<blockquote>
+  <p>问题描述：xps 9500 type c充电器无法识别充电，dpm电池设置其他方式和关闭高级充电依旧，交换电脑三个type c口都无法识别充电，进入bios下也是一样无法识别电源适配器，没有其他的ac交换，一开始以为是ac 问题 ，后续客户自己重新到dpm检查开启的设置，发现dpm的峰值偏移功能开启影响了ac和电池的充电计划。</p>
+
+  <p>解决方法：后续遇到无法识别ac充电的情况，建议可以先到打开dell power manager，点击峰值偏移，关闭这个功能</p>
+</blockquote>
+
+<p>问题是由<strong>峰值偏移</strong>这个功能引起的，解决办法有两个：</p>
+
+<ol>
+  <li>Windows 系统可以使用 Power Manager 这个程序，关闭峰值偏移功能。</li>
+  <li>更新 BIOS。</li>
+</ol>
+
+<p>我的故障和 Dell 提供的描述有一个地方不太一样，就是我的电池充电模式被我修改成了 <strong>Primarily AC Use</strong>。在出现了无法识别电源适配器的问题后，我又改回了 <strong>Adaptive</strong>，然后发现在 BIOS 中，电池可以开始充电了。此外，我记得我没有开启过峰值偏移功能。</p>
+
+<p><img src="http://diabloneo.github.io//assets/imgs/00036_dell_xps9500_bios_power.jpg" alt="dell_xps_9500_bios_power" /></p>
+
+<h2 id="dell-command-configure">Dell Command Configure</h2>
+
+<p>因为我不是 Windows 系统，所以无法使用 Power Manager 这个程序。而且，我也不想升级 BIOS。国内的技术支持并不知道在 Ubuntu 系统下如何解决这个问题。经过搜索，我发现，Dell 自己是有个命令行程序支持在 Linux 下修改这些 BIOS 设置的，这个程序就是 <strong>Dell Command Configure</strong>，下载路径如下： <em><a href="https://www.dell.com/support/kbdoc/zh-cn/000178000/dell-command-configure">https://www.dell.com/support/kbdoc/zh-cn/000178000/dell-command-configure</a></em>。Ubuntu 版本包含两个 dep 包，先安装 <em>srvadmin-hapi</em>，再安装 <em>command-configure</em>：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-rw-r--r-- 1 diabloneo diabloneo 1696256 Sep 15 20:41 command-configure_4.6.0-277.ubuntu20_amd64.deb
+-rw-r--r-- 1 diabloneo diabloneo  297940 Sep 15 20:41 srvadmin-hapi_9.5.0_amd64.deb
+</code></pre></div></div>
+
+<p>这个命令的使用手册可以从这里下载： <em><a href="https://dl.dell.com/topicspdf/command-configure_users-guide4_en-us.pdf">https://dl.dell.com/topicspdf/command-configure_users-guide4_en-us.pdf</a></em>。</p>
+
+<p>使用这个命令关闭峰值偏移功能：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cd /opt/dell/dcc
+$ sudo ./cctk --PeakShiftCfg=Disabled
+</code></pre></div></div>
+
+<p>不过，虽然我关闭了这个功能，但是并不知道这个问题是否还会再出现。</p>
+
+    <br />
+
+    <div>
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议</a>进行许可。
+    </div>
+
+    <br />
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+  </div>
+
+  
+    <div class="post-comment">
+      
+<div id="disqus_thread"></div>
+<script>
+var disqus_config = function () {
+  this.page.url = "http://diabloneo.github.io/2022/02/10/Dell-XPS-9500-AC-power-adapter-not-regonized/"; // <--- use canonical URL
+  this.page.identifier = "/2022/02/10/Dell-XPS-9500-AC-power-adapter-not-regonized";
+};
+(function() { // DON'T EDIT BELOW THIS LINE
+  var d = document, s = d.createElement('script');
+
+  s.src = 'https://coffee-coke-and-code.disqus.com/embed.js';
+
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+    </div>
+  
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Coffee, Coke and Code</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>Coffee, Coke and Code</li>
+          <li><a href="mailto:diabloneo@gmail.com">diabloneo@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <i class="fa fa-github"></i>
+            <a href="https://github.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <i class="fa fa-twitter"></i>
+            <a href="https://twitter.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <i class="fa fa-weibo"></i>
+            <a href="https://weibo.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Archive diabloneo's articles.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
+  </body>
+
+</html>
