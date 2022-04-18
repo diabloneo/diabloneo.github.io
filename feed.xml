@@ -6,9 +6,46 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 10 Feb 2022 23:19:36 +0800</pubDate>
-    <lastBuildDate>Thu, 10 Feb 2022 23:19:36 +0800</lastBuildDate>
-    <generator>Jekyll v4.2.0</generator>
+    <pubDate>Mon, 18 Apr 2022 22:56:35 +0800</pubDate>
+    <lastBuildDate>Mon, 18 Apr 2022 22:56:35 +0800</lastBuildDate>
+    <generator>Jekyll v3.9.0</generator>
+    
+      <item>
+        <title>Linux Bridge VLAN Filter Command Explain</title>
+        <description>&lt;p&gt;Linux bridge VLAN filter 功能使得 bridge 像一个真正的交换机一样来提供 VLAN 服务。本文解释 Linux &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bridge vlan&lt;/code&gt; 相关的一些命令。&lt;/p&gt;
+
+&lt;h2 id=&quot;bridge-vlan-add&quot;&gt;bridge vlan add&lt;/h2&gt;
+
+&lt;h3 id=&quot;access-port&quot;&gt;Access Port&lt;/h3&gt;
+
+&lt;p&gt;如下图所示，我们要将 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;tap0&lt;/code&gt; 加入 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;br0&lt;/code&gt;，然后要让 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;tap0&lt;/code&gt; 像一个 access port 一样工作。&lt;/p&gt;
+
+&lt;p&gt;首先执行 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ip link set dev tap0 master br0&lt;/code&gt;。然后执行下图所示的命令，下图还说明了命令的每个部分分别表示什么含义：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://diabloneo.github.io//assets/imgs/00037_linux_vlan_filter_1.png&quot; alt=&quot;linux_vlan_filter_add_command_1&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;上图所描述的行为，就是交换机上一个 access port 的行为。&lt;/p&gt;
+
+&lt;h3 id=&quot;trunk-port&quot;&gt;Trunk Port&lt;/h3&gt;
+
+&lt;p&gt;如下图所示，我们要将 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bond0&lt;/code&gt; 加入 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;br0&lt;/code&gt;，然后要让 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bond0&lt;/code&gt; 像一个 trunk port 一样工作。&lt;/p&gt;
+
+&lt;p&gt;首先执行 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ip link set dev bond0 master br0&lt;/code&gt;。然后执行下图所示的命令，下图还说明了命令的每个部分分别表示什么含义：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://diabloneo.github.io//assets/imgs/00038_linux_vlan_filter_2.png&quot; alt=&quot;linux_vlan_filter_add_command_2&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;上图所描述的行为，就是交换机上一个 trunk port 的行为。&lt;/p&gt;
+</description>
+        <pubDate>Mon, 18 Apr 2022 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2022/04/18/linux-vlan-filter-explain/</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2022/04/18/linux-vlan-filter-explain/</guid>
+        
+        <category>linux</category>
+        
+        <category>network</category>
+        
+        
+      </item>
     
       <item>
         <title>Dell XPS 9500 电源适配器无法识别的问题</title>
@@ -1353,79 +1390,6 @@ For the history of 2ndQuadrant, please refer to: &lt;em&gt;&lt;a href=&quot;http
         <guid isPermaLink="true">http://diabloneo.github.io//2021/04/19/thought-about-linktree/</guid>
         
         <category>product</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>GORM 的使用 - 2</title>
-        <description>&lt;h1 id=&quot;在-raw-sql-中指定-table-name-和-index-name&quot;&gt;在 raw SQL 中指定 table name 和 index name&lt;/h1&gt;
-
-&lt;p&gt;GORM 支持使用 raw SQL，不过有个问题，就是使用字符串传递 index name 或者 table name 时，会被自动加上单引号 (Postgres driver)。例如下面的代码：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-go&quot; data-lang=&quot;go&quot;&gt;&lt;span class=&quot;c&quot;&gt;// DB wraps gorm.DB object to provides more methods.&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DB&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-	&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;gorm&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DB&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;db&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CreateBucketObjectTable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bucket&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Bucket&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;err&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-	&lt;span class=&quot;n&quot;&gt;tableName&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bucket&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ObjectTableName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-
-	&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;err&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;db&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tableName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Migrator&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;CreateTable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Object&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;err&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;nil&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-		&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;err&lt;/span&gt;
-	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-	&lt;span class=&quot;n&quot;&gt;err&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;db&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Exec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;`CREATE UNIQUE INDEX ? ON ? (&quot;key&quot;)`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; 
-		&lt;span class=&quot;n&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Sprintf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;idx_%s_key&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tableName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tableName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Error&lt;/span&gt;
-	&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;err&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;nil&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-		&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;nil&lt;/span&gt;
-	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-	&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;nil&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;最终会执行的 SQL 语句是&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;CREATE UNIQUE INDEX 'idx_bucket_1_key' ON 'bucket_1' (&quot;key&quot;);
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;因为 index name 和 table name 都被自动加上了单引号，所以数据库那边会返回错误，类似： &lt;em&gt;ERROR: syntax error at or near “$1” (SQLSTATE 42601)&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;这个问题是因为 GORM 为了安全起见，在生成语句时，如果 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;?&lt;/code&gt; 占位符对应的是字符串，都自动加上了单引号。解决这个问题的办法是使用 &lt;em&gt;gorm/clause&lt;/em&gt; 中的数据类型，如下所示：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-go&quot; data-lang=&quot;go&quot;&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-	&lt;span class=&quot;s&quot;&gt;&quot;fmt&quot;&lt;/span&gt;
-
-	&lt;span class=&quot;s&quot;&gt;&quot;gorm.io/gorm/clause&quot;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;db&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CreateBucketObjectTable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bucket&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Bucket&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;err&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-	&lt;span class=&quot;n&quot;&gt;tableName&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bucket&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ObjectTableName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-
-	&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;err&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;db&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tableName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Migrator&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;CreateTable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Object&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;err&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;nil&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-		&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;err&lt;/span&gt;
-	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-	&lt;span class=&quot;n&quot;&gt;index&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;clause&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Sprintf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;idx_%s_key&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tableName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)}&lt;/span&gt;
-	&lt;span class=&quot;n&quot;&gt;table&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;clause&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tableName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-	&lt;span class=&quot;n&quot;&gt;err&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;db&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Exec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;`CREATE UNIQUE INDEX ? ON ? (&quot;key&quot;)`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Error&lt;/span&gt;
-	&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;err&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;nil&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-		&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;err&lt;/span&gt;
-	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-	&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;nil&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;这里我们明确了 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;?&lt;/code&gt; 占位符对应的是表名，所以生成的语句会变成：&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;CREATE UNIQUE INDEX &quot;idx_bucket_1_key&quot; ON &quot;bucket_1&quot; (&quot;key&quot;);
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-</description>
-        <pubDate>Thu, 01 Apr 2021 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2021/04/01/gorm-note-2/</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2021/04/01/gorm-note-2/</guid>
-        
-        <category>golang</category>
-        
-        <category>database</category>
         
         
       </item>
