@@ -6,9 +6,237 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 18 Apr 2022 22:56:35 +0800</pubDate>
-    <lastBuildDate>Mon, 18 Apr 2022 22:56:35 +0800</lastBuildDate>
+    <pubDate>Thu, 19 May 2022 14:26:25 +0800</pubDate>
+    <lastBuildDate>Thu, 19 May 2022 14:26:25 +0800</lastBuildDate>
     <generator>Jekyll v3.9.0</generator>
+    
+      <item>
+        <title>ISO9660 标准和 genisoimage 命令</title>
+        <description>&lt;p&gt;当我们要定制一个 RHEL 及其衍生版的操作系统镜像时，我们会使用 &lt;strong&gt;genisoimage&lt;/strong&gt; 命令来生成最终的 ISO 文件。&lt;/p&gt;
+
+&lt;p&gt;例如，我们基于 Rocky Linux 8.5 版本，定制了一个镜像后，最终我们会执行如下这条命令：&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ cd rocky-linux-8-5-x86_64-dvd/
+$ genisoimage -v -U -r -T -J -joliet-long \
+  -V Rocky-8-5-x86_64-dvd -volset Rocky-8-5-x86_64-dvd -A Rocky-8-5-x86_64-dvd \
+  -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table \
+  -eltorito-alt-boot -e images/efiboot.img -no-emul-boot \
+  -o ../NEWISO.iso
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;这条命令参数很多，我们需要先了解和光盘有关的相关标准才能看懂这个命令。&lt;/p&gt;
+
+&lt;h2 id=&quot;iso9660-及相关标准&quot;&gt;ISO9660 及相关标准&lt;/h2&gt;
+
+&lt;p&gt;ISO9660 就是光盘文件系统的标准，意思就是如何在光盘上存储文件。更多信息可以查看 wiki 链接：&lt;em&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/ISO_9660&quot;&gt;https://en.wikipedia.org/wiki/ISO_9660&lt;/a&gt;&lt;/em&gt;。&lt;/p&gt;
+
+&lt;p&gt;随着计算机行业的发展，原来的标准不太适用于新的需求，比如文件名字更长，目录层级更多等。所以业界也一直在扩充 ISO9660 的相关标准。这里我们说三个目前最常用的。&lt;/p&gt;
+
+&lt;h3 id=&quot;rock-ridge&quot;&gt;Rock Ridge&lt;/h3&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/ISO_9660#Rock_Ridge&quot;&gt;https://en.wikipedia.org/wiki/ISO_9660#Rock_Ridge&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Rock Ridge Interaction Protocol (RRIP)&lt;/strong&gt; 为光盘文件系统增加了 POSIX 文件系统语意。支持这个标准后，操作系统可以更好的跟光盘文件系统进行交互，比如支持更长的文件名，文件 mode, uid 等。&lt;/p&gt;
+
+&lt;p&gt;这个标准的名字是一部电影里的虚构城镇的名字。电影的中文名字是：神枪小子。&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;fictional town Rock Ridge in Mel Brooks' film Blazing Saddles.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;el-torito&quot;&gt;El Torito&lt;/h3&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/ISO_9660#El_Torito&quot;&gt;https://en.wikipedia.org/wiki/ISO_9660#El_Torito&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;El Torito 是一个让 PC 可以从 CD-ROM 启动的标准。最初由 IBM 和 Phoenix Technologies （卖 BIOS 的厂商）制定，随后被所有 BIOS 支持。支持这个标准后，BIOS 除了可以加载硬盘上的启动代码，也可以加载光盘上的启动代码。&lt;/p&gt;
+
+&lt;p&gt;据说这个名字是加州一家墨西哥餐馆的名字，这个标准是在这个餐馆里想出来的。&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;El Torito restaurant in Irvine, California (33.684722°N 117.852547°W)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;joliet&quot;&gt;Joliet&lt;/h3&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/ISO_9660#Joliet&quot;&gt;https://en.wikipedia.org/wiki/ISO_9660#Joliet&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;这里由微软提出的标准。原来的标准对于光盘上的文件名字限制太死，比如长度、格式、不支持 Unicode 等，所以用这个标准扩展了一下，方便存放名字更复杂的文件。&lt;/p&gt;
+
+&lt;h3 id=&quot;三个扩展标准的小结&quot;&gt;三个扩展标准的小结&lt;/h3&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;Standard&lt;/th&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;Description&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;Rock Ridge&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;让光盘文件系统更接近 POSIX 文件系统，操作系统可以更方便的访问。&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;El Torito&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;让计算机可以从光盘启动。&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;Joliet&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;让光盘的文件名可以更复杂，符合现在的计算机系统中的文件名。&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&quot;genisoimage-命令的参数&quot;&gt;genisoimage 命令的参数&lt;/h2&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ genisoimage -v -U -r -T -J -joliet-long \
+  -V Rocky-8-5-x86_64-dvd -volset Rocky-8-5-x86_64-dvd -A Rocky-8-5-x86_64-dvd \
+  -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table \
+  -eltorito-alt-boot -e images/efiboot.img -no-emul-boot \
+  -o ../NEWISO.iso
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;上面这个命令的参数看起来很多，但是可以分组来看。&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-v&lt;/code&gt; 和 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-o&lt;/code&gt; 参数比较简单，就不展开说了。&lt;/p&gt;
+
+&lt;h3 id=&quot;和光盘的名字相关的&quot;&gt;和光盘的名字相关的&lt;/h3&gt;
+
+&lt;p&gt;这些参数就是让光盘在系统上有一个友好的展示名字。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-A&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-appid&lt;/code&gt;
+    &lt;ul&gt;
+      &lt;li&gt;会被写入 volume header 的一个字符串，表示这个光盘中装载的应用程序，最多 128 字符。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-V&lt;/code&gt;
+    &lt;ul&gt;
+      &lt;li&gt;将 volume id 写入 master block，长度限制是 32 个字符。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-volset&lt;/code&gt;
+    &lt;ul&gt;
+      &lt;li&gt;设置 volume set id，长度限制是 128 字符。Volume set 相当于是一套光盘的意思，所以后续还可以设置当前光盘是一套光盘里的第几张光盘。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;joliet-标准相关&quot;&gt;Joliet 标准相关&lt;/h3&gt;
+
+&lt;p&gt;这些参数用来控制光盘上的文件的文件名的限制，配置这些选项的目的就是尽量不限制文件名。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-J&lt;/code&gt;
+    &lt;ul&gt;
+      &lt;li&gt;生成 Joliet 目录记录。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-joliet-long&lt;/code&gt;
+    &lt;ul&gt;
+      &lt;li&gt;允许 Joliet 文件名的最大长度达到 103 个字符。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-r&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-rational-rock&lt;/code&gt;
+    &lt;ul&gt;
+      &lt;li&gt;类似 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-R&lt;/code&gt;，生成 SUSP 和 RR 记录，但是 file ownership 会被设置为更有用的值，减少使用 ISO 的人需要处理的文件权限的问题。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-T&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-translation-table&lt;/code&gt;
+    &lt;ul&gt;
+      &lt;li&gt;在光盘的每个目录下都生成一个 &lt;em&gt;TRANS.TBL&lt;/em&gt; 的文件，用于帮助在不兼容 RR 标准的系统上使用正确的文件名来访问文件。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-U&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-untranslated-filenames&lt;/code&gt;
+    &lt;ul&gt;
+      &lt;li&gt;允许非转换的文件名，这会导致完全不兼容 ISO9660 标准。相当于开启了以下选项：&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-d -l -N -allow-leading-dots -relaxed-filenames -allow-lowercase -allow-multidot -no-iso-translate&lt;/code&gt;，就是减少对文件名的限制。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;el-torito-标准相关&quot;&gt;El Torito 标准相关&lt;/h3&gt;
+
+&lt;p&gt;这些参数是用来控制光盘作为启动盘是如何工作的。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-b&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-eltorito-boot&lt;/code&gt;
+    &lt;ul&gt;
+      &lt;li&gt;指定 El Torito 启动盘使用的启动文件。对于 legacy BIOS，这个就是 &lt;em&gt;isolinux.bin&lt;/em&gt; 文件。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;eltorito-alt-boot&lt;/code&gt;
+    &lt;ul&gt;
+      &lt;li&gt;开始一组新的 El Torito 启动参数的配置。一般一组用于 isolinux，一组用于 UEFI。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;以下几个参数是和 legacy BIOS 启动方式相关的&lt;/strong&gt;：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-c&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-eltorito-catalog&lt;/code&gt;
+    &lt;ul&gt;
+      &lt;li&gt;指定 El Torito 的 boot catalog 文件的位置。启动需要这个文件。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-no-emul-boot&lt;/code&gt;
+    &lt;ul&gt;
+      &lt;li&gt;用于 El Torito 的启动文件是一个非模拟镜像。系统会加载并且直接执行，而不会像使用一个硬盘一样，先通过分区表来查找启动分区。现在计算机都支持这种方式，通过这种方式，就不需要在一个启动文件里模拟硬盘的数据保存格式。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-boot-load-size&lt;/code&gt;
+    &lt;ul&gt;
+      &lt;li&gt;指定在非模拟的情况下，load 的 virtual sector (512B) 数量。这里一般要求是 4 的倍数，否则在有些系统上无法工作。这个意思是启动的时候，在启动阶段，通过读取启动文件的这么多数据，就可以把控制权转给启动文件。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-boot-info-table&lt;/code&gt;
+    &lt;ul&gt;
+      &lt;li&gt;指定需要在 boot file offset 8 的位置插入一个 56 字节长的内容，这个插入的内容和光盘的 layout 信息有关，如下面所示。主要目的是为了在启动的过程中，找到 boot 文件的位置。&lt;/li&gt;
+      &lt;li&gt;LBA：linear block address (given in CD sectors, normally 2048 bytes)。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;         Offset    Name           Size      Meaning
+          8        bi_pvd         4 bytes   LBA of primary volume descriptor
+         12        bi_file        4 bytes   LBA of boot file
+         16        bi_length      4 bytes   Boot file length in bytes
+         20        bi_csum        4 bytes   32-bit checksum
+         24        bi_reserved    40 bytes  Reserved
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;以下几个参数是和 UEFI 启动方式相关的&lt;/strong&gt;：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-e&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-efi-boot&lt;/code&gt;
+    &lt;ul&gt;
+      &lt;li&gt;EFI 启动文件的位置。UEFI 启动文件也需要指定 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-no-emul-boot&lt;/code&gt; 参数。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;implantisomd5-命令&quot;&gt;implantisomd5 命令&lt;/h2&gt;
+
+&lt;p&gt;将 ISO 的 md5sum 写入一个没有的 sector，以便随后使用 checkisomd5 命令进行校验。&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ implantisomd5 Rocky-Linux-8.5-x86_64-dvd.iso
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;使用 &lt;em&gt;checkisomd5&lt;/em&gt; 命令进行校验：&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ checkisomd5 --verbose Rocky-Linux-8.5-x86_64-dvd.iso
+Rocky-Linux-8.5-x86_64-dvd.iso:   e9ebe80ba90b67c1a4e3ccfd971bd86a
+Fragment sums: 6ec3c854976341d15f5425ae13b7e16f5a7df75942a553adb6f29ba6798c
+Fragment count: 20
+Supported ISO: no
+Press [Esc] to abort check.
+Checking: 093.3%
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>
+        <pubDate>Thu, 19 May 2022 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2022/05/19/iso9660-and-genisoimage-command/</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2022/05/19/iso9660-and-genisoimage-command/</guid>
+        
+        <category>linux</category>
+        
+        
+      </item>
     
       <item>
         <title>Linux Bridge VLAN Filter Command Explain</title>
@@ -1373,23 +1601,6 @@ For the history of 2ndQuadrant, please refer to: &lt;em&gt;&lt;a href=&quot;http
         <guid isPermaLink="true">http://diabloneo.github.io//2021/06/27/postgres-logical-replication-and-cdc-part-1/</guid>
         
         <category>database</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>关于 linktree 的一个观点</title>
-        <description>&lt;p&gt;今天看到了一个产品的介绍 linktree，主页是： &lt;em&gt;&lt;a href=&quot;https://linktr.ee&quot;&gt;https://linktr.ee&lt;/a&gt;&lt;/em&gt; 。这个产品在 2016 年开发出了一个简单 demo，最新的消息是它融资了 4500 万美元。&lt;/p&gt;
-
-&lt;p&gt;linktree 的基本功能很简单，你可以用它设计一个自己的主页，上面可以放上各种链接和按钮，形成一个关于自己所有信息的主页，而且可以链接到任何已经存在的平台。&lt;/p&gt;
-
-&lt;p&gt;它的盈利主要靠售卖高级功能，比如提供修改背景，各种样式，访问分析功能等，和当年 QQ 空间一样。20 年过去了，这个模式还是可以盈利，说明人们愿意为自己的“外表”买单，不仅是衣着、化妆品、装饰品等，网络“外表” 如今也称为了个人的外表的一部分。在获得了一定的流行度以后，这个平台还开始做企业品牌塑造相关的业务，这个是当年 QQ 空间没有做的事情，却是当下很流行的做法。&lt;/p&gt;
-</description>
-        <pubDate>Mon, 19 Apr 2021 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2021/04/19/thought-about-linktree/</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2021/04/19/thought-about-linktree/</guid>
-        
-        <category>product</category>
         
         
       </item>

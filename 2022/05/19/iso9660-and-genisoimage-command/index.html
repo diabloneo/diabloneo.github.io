@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78067453-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78067453-1');
+</script>
+
+	
+
+	<title>ISO9660 标准和 genisoimage 命令</title>
+	<meta name="description" content="当我们要定制一个 RHEL 及其衍生版的操作系统镜像时，我们会使用 genisoimage 命令来生成最终的 ISO 文件。">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/css/main.css">
+	<link rel="stylesheet" href="/css/pygments-rainbow_dash.css">
+	<link rel="canonical" href="http://diabloneo.github.io//2022/05/19/iso9660-and-genisoimage-command/">
+	<link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
+</head>
+
+
+  <body>
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">Coffee, Coke and Code</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <a class="page-link" href="/tags">Tags</a>
+        <a class="page-link" href="/feed.xml">RSS</a>
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">ISO9660 标准和 genisoimage 命令</h1>
+    <p class="post-meta"><time datetime="2022-05-19T00:00:00+08:00" itemprop="datePublished">May 19, 2022</time></p>
+  </header>
+
+  <div class="post-tags">
+    <ul>
+      
+      <li>
+        <a href="/tags/linux/">linux</a>
+      </li>
+      
+    </ul>
+  </div>
+
+  <div class="post-content" itemprop="articleBody">
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+    <br />
+      <p>当我们要定制一个 RHEL 及其衍生版的操作系统镜像时，我们会使用 <strong>genisoimage</strong> 命令来生成最终的 ISO 文件。</p>
+
+<p>例如，我们基于 Rocky Linux 8.5 版本，定制了一个镜像后，最终我们会执行如下这条命令：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cd rocky-linux-8-5-x86_64-dvd/
+$ genisoimage -v -U -r -T -J -joliet-long \
+  -V Rocky-8-5-x86_64-dvd -volset Rocky-8-5-x86_64-dvd -A Rocky-8-5-x86_64-dvd \
+  -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table \
+  -eltorito-alt-boot -e images/efiboot.img -no-emul-boot \
+  -o ../NEWISO.iso
+</code></pre></div></div>
+
+<p>这条命令参数很多，我们需要先了解和光盘有关的相关标准才能看懂这个命令。</p>
+
+<h2 id="iso9660-及相关标准">ISO9660 及相关标准</h2>
+
+<p>ISO9660 就是光盘文件系统的标准，意思就是如何在光盘上存储文件。更多信息可以查看 wiki 链接：<em><a href="https://en.wikipedia.org/wiki/ISO_9660">https://en.wikipedia.org/wiki/ISO_9660</a></em>。</p>
+
+<p>随着计算机行业的发展，原来的标准不太适用于新的需求，比如文件名字更长，目录层级更多等。所以业界也一直在扩充 ISO9660 的相关标准。这里我们说三个目前最常用的。</p>
+
+<h3 id="rock-ridge">Rock Ridge</h3>
+
+<p><em><a href="https://en.wikipedia.org/wiki/ISO_9660#Rock_Ridge">https://en.wikipedia.org/wiki/ISO_9660#Rock_Ridge</a></em></p>
+
+<p><strong>Rock Ridge Interaction Protocol (RRIP)</strong> 为光盘文件系统增加了 POSIX 文件系统语意。支持这个标准后，操作系统可以更好的跟光盘文件系统进行交互，比如支持更长的文件名，文件 mode, uid 等。</p>
+
+<p>这个标准的名字是一部电影里的虚构城镇的名字。电影的中文名字是：神枪小子。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fictional town Rock Ridge in Mel Brooks' film Blazing Saddles.
+</code></pre></div></div>
+
+<h3 id="el-torito">El Torito</h3>
+
+<p><em><a href="https://en.wikipedia.org/wiki/ISO_9660#El_Torito">https://en.wikipedia.org/wiki/ISO_9660#El_Torito</a></em></p>
+
+<p>El Torito 是一个让 PC 可以从 CD-ROM 启动的标准。最初由 IBM 和 Phoenix Technologies （卖 BIOS 的厂商）制定，随后被所有 BIOS 支持。支持这个标准后，BIOS 除了可以加载硬盘上的启动代码，也可以加载光盘上的启动代码。</p>
+
+<p>据说这个名字是加州一家墨西哥餐馆的名字，这个标准是在这个餐馆里想出来的。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>El Torito restaurant in Irvine, California (33.684722°N 117.852547°W)
+</code></pre></div></div>
+
+<h3 id="joliet">Joliet</h3>
+
+<p><em><a href="https://en.wikipedia.org/wiki/ISO_9660#Joliet">https://en.wikipedia.org/wiki/ISO_9660#Joliet</a></em></p>
+
+<p>这里由微软提出的标准。原来的标准对于光盘上的文件名字限制太死，比如长度、格式、不支持 Unicode 等，所以用这个标准扩展了一下，方便存放名字更复杂的文件。</p>
+
+<h3 id="三个扩展标准的小结">三个扩展标准的小结</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Standard</th>
+      <th style="text-align: left">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">Rock Ridge</td>
+      <td style="text-align: left">让光盘文件系统更接近 POSIX 文件系统，操作系统可以更方便的访问。</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">El Torito</td>
+      <td style="text-align: left">让计算机可以从光盘启动。</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Joliet</td>
+      <td style="text-align: left">让光盘的文件名可以更复杂，符合现在的计算机系统中的文件名。</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="genisoimage-命令的参数">genisoimage 命令的参数</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ genisoimage -v -U -r -T -J -joliet-long \
+  -V Rocky-8-5-x86_64-dvd -volset Rocky-8-5-x86_64-dvd -A Rocky-8-5-x86_64-dvd \
+  -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table \
+  -eltorito-alt-boot -e images/efiboot.img -no-emul-boot \
+  -o ../NEWISO.iso
+</code></pre></div></div>
+
+<p>上面这个命令的参数看起来很多，但是可以分组来看。<code class="language-plaintext highlighter-rouge">-v</code> 和 <code class="language-plaintext highlighter-rouge">-o</code> 参数比较简单，就不展开说了。</p>
+
+<h3 id="和光盘的名字相关的">和光盘的名字相关的</h3>
+
+<p>这些参数就是让光盘在系统上有一个友好的展示名字。</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">-A</code> or <code class="language-plaintext highlighter-rouge">-appid</code>
+    <ul>
+      <li>会被写入 volume header 的一个字符串，表示这个光盘中装载的应用程序，最多 128 字符。</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">-V</code>
+    <ul>
+      <li>将 volume id 写入 master block，长度限制是 32 个字符。</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">-volset</code>
+    <ul>
+      <li>设置 volume set id，长度限制是 128 字符。Volume set 相当于是一套光盘的意思，所以后续还可以设置当前光盘是一套光盘里的第几张光盘。</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="joliet-标准相关">Joliet 标准相关</h3>
+
+<p>这些参数用来控制光盘上的文件的文件名的限制，配置这些选项的目的就是尽量不限制文件名。</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">-J</code>
+    <ul>
+      <li>生成 Joliet 目录记录。</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">-joliet-long</code>
+    <ul>
+      <li>允许 Joliet 文件名的最大长度达到 103 个字符。</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">-r</code> or <code class="language-plaintext highlighter-rouge">-rational-rock</code>
+    <ul>
+      <li>类似 <code class="language-plaintext highlighter-rouge">-R</code>，生成 SUSP 和 RR 记录，但是 file ownership 会被设置为更有用的值，减少使用 ISO 的人需要处理的文件权限的问题。</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">-T</code> or <code class="language-plaintext highlighter-rouge">-translation-table</code>
+    <ul>
+      <li>在光盘的每个目录下都生成一个 <em>TRANS.TBL</em> 的文件，用于帮助在不兼容 RR 标准的系统上使用正确的文件名来访问文件。</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">-U</code> or <code class="language-plaintext highlighter-rouge">-untranslated-filenames</code>
+    <ul>
+      <li>允许非转换的文件名，这会导致完全不兼容 ISO9660 标准。相当于开启了以下选项：<code class="language-plaintext highlighter-rouge">-d -l -N -allow-leading-dots -relaxed-filenames -allow-lowercase -allow-multidot -no-iso-translate</code>，就是减少对文件名的限制。</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="el-torito-标准相关">El Torito 标准相关</h3>
+
+<p>这些参数是用来控制光盘作为启动盘是如何工作的。</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">-b</code> or <code class="language-plaintext highlighter-rouge">-eltorito-boot</code>
+    <ul>
+      <li>指定 El Torito 启动盘使用的启动文件。对于 legacy BIOS，这个就是 <em>isolinux.bin</em> 文件。</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">eltorito-alt-boot</code>
+    <ul>
+      <li>开始一组新的 El Torito 启动参数的配置。一般一组用于 isolinux，一组用于 UEFI。</li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>以下几个参数是和 legacy BIOS 启动方式相关的</strong>：</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">-c</code> or <code class="language-plaintext highlighter-rouge">-eltorito-catalog</code>
+    <ul>
+      <li>指定 El Torito 的 boot catalog 文件的位置。启动需要这个文件。</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">-no-emul-boot</code>
+    <ul>
+      <li>用于 El Torito 的启动文件是一个非模拟镜像。系统会加载并且直接执行，而不会像使用一个硬盘一样，先通过分区表来查找启动分区。现在计算机都支持这种方式，通过这种方式，就不需要在一个启动文件里模拟硬盘的数据保存格式。</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">-boot-load-size</code>
+    <ul>
+      <li>指定在非模拟的情况下，load 的 virtual sector (512B) 数量。这里一般要求是 4 的倍数，否则在有些系统上无法工作。这个意思是启动的时候，在启动阶段，通过读取启动文件的这么多数据，就可以把控制权转给启动文件。</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">-boot-info-table</code>
+    <ul>
+      <li>指定需要在 boot file offset 8 的位置插入一个 56 字节长的内容，这个插入的内容和光盘的 layout 信息有关，如下面所示。主要目的是为了在启动的过程中，找到 boot 文件的位置。</li>
+      <li>LBA：linear block address (given in CD sectors, normally 2048 bytes)。</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>         Offset    Name           Size      Meaning
+          8        bi_pvd         4 bytes   LBA of primary volume descriptor
+         12        bi_file        4 bytes   LBA of boot file
+         16        bi_length      4 bytes   Boot file length in bytes
+         20        bi_csum        4 bytes   32-bit checksum
+         24        bi_reserved    40 bytes  Reserved
+</code></pre></div></div>
+
+<p><strong>以下几个参数是和 UEFI 启动方式相关的</strong>：</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">-e</code> or <code class="language-plaintext highlighter-rouge">-efi-boot</code>
+    <ul>
+      <li>EFI 启动文件的位置。UEFI 启动文件也需要指定 <code class="language-plaintext highlighter-rouge">-no-emul-boot</code> 参数。</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="implantisomd5-命令">implantisomd5 命令</h2>
+
+<p>将 ISO 的 md5sum 写入一个没有的 sector，以便随后使用 checkisomd5 命令进行校验。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ implantisomd5 Rocky-Linux-8.5-x86_64-dvd.iso
+</code></pre></div></div>
+
+<p>使用 <em>checkisomd5</em> 命令进行校验：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ checkisomd5 --verbose Rocky-Linux-8.5-x86_64-dvd.iso
+Rocky-Linux-8.5-x86_64-dvd.iso:   e9ebe80ba90b67c1a4e3ccfd971bd86a
+Fragment sums: 6ec3c854976341d15f5425ae13b7e16f5a7df75942a553adb6f29ba6798c
+Fragment count: 20
+Supported ISO: no
+Press [Esc] to abort check.
+Checking: 093.3%
+</code></pre></div></div>
+
+    <br />
+
+    <div>
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议</a>进行许可。
+    </div>
+
+    <br />
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+  </div>
+
+  
+    <div class="post-comment">
+      
+<div id="disqus_thread"></div>
+<script>
+var disqus_config = function () {
+  this.page.url = "http://diabloneo.github.io/2022/05/19/iso9660-and-genisoimage-command/"; // <--- use canonical URL
+  this.page.identifier = "/2022/05/19/iso9660-and-genisoimage-command";
+};
+(function() { // DON'T EDIT BELOW THIS LINE
+  var d = document, s = d.createElement('script');
+
+  s.src = 'https://coffee-coke-and-code.disqus.com/embed.js';
+
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+    </div>
+  
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Coffee, Coke and Code</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>Coffee, Coke and Code</li>
+          <li><a href="mailto:diabloneo@gmail.com">diabloneo@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <i class="fa fa-github"></i>
+            <a href="https://github.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <i class="fa fa-twitter"></i>
+            <a href="https://twitter.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <i class="fa fa-weibo"></i>
+            <a href="https://weibo.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Archive diabloneo's articles.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
+  </body>
+
+</html>
