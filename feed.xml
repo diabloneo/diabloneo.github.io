@@ -6,8 +6,8 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 23 May 2022 18:42:10 +0800</pubDate>
-    <lastBuildDate>Mon, 23 May 2022 18:42:10 +0800</lastBuildDate>
+    <pubDate>Mon, 23 May 2022 19:49:01 +0800</pubDate>
+    <lastBuildDate>Mon, 23 May 2022 19:49:01 +0800</lastBuildDate>
     <generator>Jekyll v3.9.0</generator>
     
       <item>
@@ -178,6 +178,22 @@ ROCKY_SUPPORT_PRODUCT=&quot;Rocky Linux&quot;
 ROCKY_SUPPORT_PRODUCT_VERSION=&quot;8&quot;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
+&lt;p&gt;以 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;grub_&lt;/code&gt; 开头的 key，是 GRUB 平台实现的：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;On grub platforms, the following grub-specific keywords have been implemented:
+    &lt;ul&gt;
+      &lt;li&gt;the BLS filename is also used for menuentry’s –id parameter, so you can use it in saved_entry&lt;/li&gt;
+      &lt;li&gt;grub_hotkey - same as grub’s “–hotkey” menuentry parameter&lt;/li&gt;
+      &lt;li&gt;grub_users - same as grub’s “–users” menuentry parameter; used for password protection&lt;/li&gt;
+      &lt;li&gt;grub_class - same as grub’s “–class” menuentry paramter&lt;/li&gt;
+      &lt;li&gt;grub_arg - passes extra arguments to menuentry&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;这些是兼容原来 GRUB 的参数：&lt;em&gt;&lt;a href=&quot;https://www.gnu.org/software/grub/manual/grub/grub.html#menuentry&quot;&gt;https://www.gnu.org/software/grub/manual/grub/grub.html#menuentry&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
 &lt;h3 id=&quot;默认启动项&quot;&gt;默认启动项&lt;/h3&gt;
 
 &lt;p&gt;你可以使用 &lt;strong&gt;grub2-set-default&lt;/strong&gt; 命令修改默认的启动项。&lt;/p&gt;
@@ -197,10 +213,18 @@ DEFAULTKERNEL=kernel-core
 
 &lt;p&gt;顺便说一下，如果你安装的 kernel 采用了另外一个名字来打包，比如 elrepo  的 kernel-lt，那么修改 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;DEFAULTKERNEL&lt;/code&gt; 这行即可。&lt;/p&gt;
 
+&lt;h2 id=&quot;reference&quot;&gt;Reference&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;em&gt;&lt;a href=&quot;https://fedoraproject.org/wiki/Changes/BootLoaderSpecByDefault&quot;&gt;https://fedoraproject.org/wiki/Changes/BootLoaderSpecByDefault&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;&lt;a href=&quot;https://systemd.io/BOOT_LOADER_SPECIFICATION/&quot;&gt;https://systemd.io/BOOT_LOADER_SPECIFICATION/&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
 </description>
         <pubDate>Mon, 23 May 2022 00:00:00 +0800</pubDate>
         <link>http://diabloneo.github.io//2022/05/23/GRUB2-menu-and-kernel-install/</link>
         <guid isPermaLink="true">http://diabloneo.github.io//2022/05/23/GRUB2-menu-and-kernel-install/</guid>
+        
+        <category>linux</category>
         
         
       </item>

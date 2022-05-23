@@ -117,6 +117,10 @@
   <div class="post-tags">
     <ul>
       
+      <li>
+        <a href="/tags/linux/">linux</a>
+      </li>
+      
     </ul>
   </div>
 
@@ -292,6 +296,22 @@ ROCKY_SUPPORT_PRODUCT="Rocky Linux"
 ROCKY_SUPPORT_PRODUCT_VERSION="8"
 </code></pre></div></div>
 
+<p>以 <code class="language-plaintext highlighter-rouge">grub_</code> 开头的 key，是 GRUB 平台实现的：</p>
+
+<ul>
+  <li>On grub platforms, the following grub-specific keywords have been implemented:
+    <ul>
+      <li>the BLS filename is also used for menuentry’s –id parameter, so you can use it in saved_entry</li>
+      <li>grub_hotkey - same as grub’s “–hotkey” menuentry parameter</li>
+      <li>grub_users - same as grub’s “–users” menuentry parameter; used for password protection</li>
+      <li>grub_class - same as grub’s “–class” menuentry paramter</li>
+      <li>grub_arg - passes extra arguments to menuentry</li>
+    </ul>
+  </li>
+</ul>
+
+<p>这些是兼容原来 GRUB 的参数：<em><a href="https://www.gnu.org/software/grub/manual/grub/grub.html#menuentry">https://www.gnu.org/software/grub/manual/grub/grub.html#menuentry</a></em></p>
+
 <h3 id="默认启动项">默认启动项</h3>
 
 <p>你可以使用 <strong>grub2-set-default</strong> 命令修改默认的启动项。</p>
@@ -311,6 +331,12 @@ DEFAULTKERNEL=kernel-core
 
 <p>顺便说一下，如果你安装的 kernel 采用了另外一个名字来打包，比如 elrepo  的 kernel-lt，那么修改 <code class="language-plaintext highlighter-rouge">DEFAULTKERNEL</code> 这行即可。</p>
 
+<h2 id="reference">Reference</h2>
+
+<ul>
+  <li><em><a href="https://fedoraproject.org/wiki/Changes/BootLoaderSpecByDefault">https://fedoraproject.org/wiki/Changes/BootLoaderSpecByDefault</a></em></li>
+  <li><em><a href="https://systemd.io/BOOT_LOADER_SPECIFICATION/">https://systemd.io/BOOT_LOADER_SPECIFICATION/</a></em></li>
+</ul>
 
     <br />
 
