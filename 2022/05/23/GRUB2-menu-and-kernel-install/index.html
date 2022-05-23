@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78067453-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78067453-1');
+</script>
+
+	
+
+	<title>GRUB2 menu and kernel-install</title>
+	<meta name="description" content="BLS: Boot Loader Specification">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/css/main.css">
+	<link rel="stylesheet" href="/css/pygments-rainbow_dash.css">
+	<link rel="canonical" href="http://diabloneo.github.io//2022/05/23/GRUB2-menu-and-kernel-install/">
+	<link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
+</head>
+
+
+  <body>
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">Coffee, Coke and Code</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <a class="page-link" href="/tags">Tags</a>
+        <a class="page-link" href="/feed.xml">RSS</a>
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">GRUB2 menu and kernel-install</h1>
+    <p class="post-meta"><time datetime="2022-05-23T00:00:00+08:00" itemprop="datePublished">May 23, 2022</time></p>
+  </header>
+
+  <div class="post-tags">
+    <ul>
+      
+    </ul>
+  </div>
+
+  <div class="post-content" itemprop="articleBody">
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+    <br />
+      <h2 id="bls-boot-loader-specification">BLS: Boot Loader Specification</h2>
+
+<p>在新的发行版上，普遍采用了 <strong>GRUB2</strong> （以下简称 GRUB） 作为 boot loader。GRUB2 现在采用了 <strong>Boot Loader Specification</strong> （简称 BLS） 来管理启动菜单： <em><a href="https://systemd.io/BOOT_LOADER_SPECIFICATION/">https://systemd.io/BOOT_LOADER_SPECIFICATION/</a></em>。</p>
+
+<p>在非 UEFI Secure 启动的情况下，启动菜单直接使用文本文件保存，方便维护。你可以在一个使用该标准的系统上查看这些文件，例如 Rocky Linux 8.5：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># ll /boot/loader/entries/
+total 12
+-rw-r--r--. 1 root root 405 May 10 13:54 a0284538aa5b498cb38b8e530b2a6be4-0-rescue.conf
+-rw-r--r--. 1 root root 353 May 10 13:54 a0284538aa5b498cb38b8e530b2a6be4-4.18.0-348.el8.0.2.x86_64.conf
+
+# cat a0284538aa5b498cb38b8e530b2a6be4-4.18.0-348.el8.0.2.x86_64.conf
+title Rocky Linux (4.18.0-348.el8.0.2.x86_64) 8.5 (Green Obsidian)
+version 4.18.0-348.el8.0.2.x86_64
+linux /vmlinuz-4.18.0-348.el8.0.2.x86_64
+initrd /initramfs-4.18.0-348.el8.0.2.x86_64.img $tuned_initrd
+options $kernelopts $tuned_params
+id rocky-20211114010422-4.18.0-348.el8.0.2.x86_64
+grub_users $grub_users
+grub_arg --unrestricted
+grub_class kernel
+</code></pre></div></div>
+
+<h2 id="machine-id">Machine ID</h2>
+
+<p>Machine ID 是一个在系统安装的时候生成的 UUID，用于表示系统的唯一性。它存放在 <em>/etc/machine-id</em> 文件中</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># cat /etc/machine-id
+a0284538aa5b498cb38b8e530b2a6be4
+</code></pre></div></div>
+
+<p>可以查看 man 手册获取更多信息： <code class="language-plaintext highlighter-rouge">man machine-id</code></p>
+
+<h2 id="grub-菜单的生成">GRUB 菜单的生成</h2>
+
+<p>GRUB 菜单是在 kernel 安装的时候生成的，在 kernel 卸载的时候删除的，这整个过程是由 <strong>kernel-install</strong> 命令来完成的。在 RHEL 8 及衍生系统上，这个程序由 <strong>systemd-udev</strong> 包来提供。</p>
+
+<h3 id="kernel-install">kernel-install</h3>
+
+<p>这个程序只有两个功能，添加内核，和删除内核：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># kernel-install --help
+Usage:
+        /usr/bin/kernel-install add KERNEL-VERSION KERNEL-IMAGE
+        /usr/bin/kernel-install remove KERNEL-VERSION
+</code></pre></div></div>
+
+<p>它本身是通过一系列的脚本来实现的，这些脚本存放在：</p>
+
+<ul>
+  <li><em>/usr/lib/kernel/install.d/</em></li>
+  <li><em>/etc/kernel/install.d/</em></li>
+</ul>
+
+<p>默认脚本存放在 <em>/usr/lib/kernel/install.d</em> 目录下：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root@overlord-sz3 install.d]# cd /usr/lib/kernel/install.d/
+[root@overlord-sz3 install.d]# ll
+total 40
+-rwxr-xr-x. 1 root root 7120 Nov 14  2021 20-grub.install
+-rwxr-xr-x. 1 root root 2252 Nov  9  2021 20-grubby.install
+-rwxr-xr-x. 1 root root  368 Jun 22  2018 50-depmod.install
+-rwxr-xr-x. 1 root root 1657 Nov  9  2021 50-dracut.install
+-rwxr-xr-x. 1 root root 3338 Nov  9  2021 51-dracut-rescue.install
+-rwxr-xr-x. 1 root root  791 Oct 13  2021 60-kdump.install
+-rwxr-xr-x. 1 root root 1975 Nov  9  2021 90-loaderentry.install
+-rwxr-xr-x. 1 root root  989 Jul 22  2021 92-tuned.install
+-rwxr-xr-x. 1 root root  454 Nov 14  2021 99-grub-mkconfig.install
+</code></pre></div></div>
+
+<p>这些都是 shell 脚本，主要是完成一些配置。例如 <em>20-grub.install</em> 和 <em>90-loaderentry.install</em> 这两个脚本就是完成 grub 相关的一些配置。</p>
+
+<p>另外，kernel-install 对于这些脚本返回值做了一个特殊的规定：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>An executable should return 0 on success. It may also return 77 to cause the whole operation to terminate (executables later in lexical order will be skipped).
+</code></pre></div></div>
+
+<p>所以，如果一个脚本返回了 77，那么后续的都会被跳过。</p>
+
+<h3 id="生成菜单的脚本">生成菜单的脚本</h3>
+
+<p>在 RHEL 8 及其衍生系统中，默认安装的 kernel-install 脚本里有两个脚本会负责 GRUB 菜单的生成：</p>
+
+<ul>
+  <li><em>/usr/lib/kernel/install.d/20-grub.install</em>
+    <ul>
+      <li>这个文件来自包 grub2-common-2.02-106.el8.0.2.noarch。<em><a href="https://git.rockylinux.org/staging/rpms/grub2/-/blob/r8/SOURCES/20-grub.install">https://git.rockylinux.org/staging/rpms/grub2/-/blob/r8/SOURCES/20-grub.install</a></em></li>
+    </ul>
+  </li>
+  <li><em>/usr/lib/kernel/install.d/90-loaderentry.install</em>
+    <ul>
+      <li>这个文件来自包 systemd-udev-239-51.el8.x86_64。<em><a href="https://github.com/systemd/systemd/blob/v239-50/src/kernel-install/90-loaderentry.install">https://github.com/systemd/systemd/blob/v239-50/src/kernel-install/90-loaderentry.install</a></em></li>
+    </ul>
+  </li>
+</ul>
+
+<p>如果你观察上面所展示的菜单文件的内容，并且对比这两个脚本，那么你就会发现他们是由 <em>20-grub.install</em> 这个文件生成的。为什么嗯？</p>
+
+<p>这个是两个脚本的实现问题，首先 <em>20-grub.install</em> 脚本会被先执行，并且生成了 entries 目录中的文件。等到 <em>90-loaderentry.install</em> 被执行时，它有一个判断如下：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>if ! [[ -d "$BOOT_DIR_ABS" ]]; then
+    exit 0
+fi
+</code></pre></div></div>
+
+<p>这个 <code class="language-plaintext highlighter-rouge">BOOT_DIR_ABS</code> 如果不是一个目录，就不会执行。这个变量如何定义呢？它在这里定义：<em><a href="https://github.com/systemd/systemd/blob/v239-50/src/kernel-install/kernel-install#L92">https://github.com/systemd/systemd/blob/v239-50/src/kernel-install/kernel-install#L92</a></em></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>if ! [[ $MACHINE_ID ]]; then
+    BOOT_DIR_ABS=$(mktemp -d /tmp/kernel-install.XXXXX) || exit 1
+    trap "rm -rf '$BOOT_DIR_ABS'" EXIT INT QUIT PIPE
+elif [[ -d /efi/loader/entries ]] || [[ -d /efi/$MACHINE_ID ]]; then
+    BOOT_DIR_ABS="/efi/$MACHINE_ID/$KERNEL_VERSION"
+elif [[ -d /boot/loader/entries ]] || [[ -d /boot/$MACHINE_ID ]]; then
+    BOOT_DIR_ABS="/boot/$MACHINE_ID/$KERNEL_VERSION"                           # ------------- This line
+elif [[ -d /boot/efi/loader/entries ]] || [[ -d /boot/efi/$MACHINE_ID ]]; then
+    BOOT_DIR_ABS="/boot/efi/$MACHINE_ID/$KERNEL_VERSION"
+elif mountpoint -q /efi; then
+    BOOT_DIR_ABS="/efi/$MACHINE_ID/$KERNEL_VERSION"
+elif mountpoint -q /boot/efi; then
+    BOOT_DIR_ABS="/boot/efi/$MACHINE_ID/$KERNEL_VERSION"
+else
+    BOOT_DIR_ABS="/boot/$MACHINE_ID/$KERNEL_VERSION"
+fi
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">/boot/$MACHINE_ID/$KERNEL_VERSION</code> 这个形式，是 BLS 规范定义的新的形式，即每个系统的启动项都放在自己的独立目录中。因为现在 RHEL 8 及其衍生版本还未用到这个规范，所以他们的 GRUB 菜单项就不是用 <em>90-loaderentry.install</em> 这个脚本生成的。</p>
+
+<h3 id="菜单文件">菜单文件</h3>
+
+<p>一个菜单文件的规范涉及两个部分：文件名和内容。</p>
+
+<p>一般来说，文件名类似：<em>a0284538aa5b498cb38b8e530b2a6be4-4.18.0-348.el8.0.2.x86_64.conf</em>。这个文件名主要的限制是必须跨系统唯一，所以一般使用如下格式: <strong>{machine_id}-{kernel_version}.conf</strong></p>
+
+<p>文件的内容可能如下：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>title Rocky Linux (4.18.0-348.el8.0.2.x86_64) 8.5 (Green Obsidian)
+version 4.18.0-348.el8.0.2.x86_64
+linux /vmlinuz-4.18.0-348.el8.0.2.x86_64
+initrd /initramfs-4.18.0-348.el8.0.2.x86_64.img $tuned_initrd
+options $kernelopts $tuned_params
+id rocky-20211114010422-4.18.0-348.el8.0.2.x86_64
+grub_users $grub_users
+grub_arg --unrestricted
+grub_class kernel
+</code></pre></div></div>
+
+<p>每行第一个空格之前的就是 key，后面则是 value。其中，title 就是展示在菜单上的内容。这个 title 就是纯文本，所以你可以随意修改。</p>
+
+<p>从 <em>20-grub.install</em> 文件可以看出，这里的 title 的内容会使用到来自 <em>/etc/os-release</em> 中的 <code class="language-plaintext highlighter-rouge">NAME</code> 变量和 <code class="language-plaintext highlighter-rouge">VERSION</code> 变量。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># cat /etc/os-release
+NAME="Rocky Linux"
+VERSION="8.5 (Green Obsidian)"
+ID="rocky"
+ID_LIKE="rhel centos fedora"
+VERSION_ID="8.5"
+PLATFORM_ID="platform:el8"
+PRETTY_NAME="Rocky Linux 8.5 (Green Obsidian)"
+ANSI_COLOR="0;32"
+CPE_NAME="cpe:/o:rocky:rocky:8.5:GA"
+HOME_URL="https://rockylinux.org/"
+BUG_REPORT_URL="https://bugs.rockylinux.org/"
+ROCKY_SUPPORT_PRODUCT="Rocky Linux"
+ROCKY_SUPPORT_PRODUCT_VERSION="8"
+</code></pre></div></div>
+
+<h3 id="默认启动项">默认启动项</h3>
+
+<p>你可以使用 <strong>grub2-set-default</strong> 命令修改默认的启动项。</p>
+
+<p>此外，我们还可以在安装了一个新的 kernel 之后，让 kernel-install 自动将这个新的 kernel 设置为默认 kernel。这个行为的配置，是在文件 <em>/etc/sysconfig/kernel</em> 文件中控制的：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># cat /etc/sysconfig/kernel
+# UPDATEDEFAULT specifies if kernel-install should make
+# new kernels the default
+UPDATEDEFAULT=yes
+
+# DEFAULTKERNEL specifies the default kernel package type
+DEFAULTKERNEL=kernel-core
+</code></pre></div></div>
+
+<p>这个注释已经解释得很清楚了。这部分逻辑的实现，也是在 <em>20-grub.install</em> 中实现的，调用的是 <strong>grub2-editenv</strong> 命令：<em><a href="https://git.rockylinux.org/staging/rpms/grub2/-/blob/r8/SOURCES/20-grub.install#L134">https://git.rockylinux.org/staging/rpms/grub2/-/blob/r8/SOURCES/20-grub.install#L134</a></em></p>
+
+<p>顺便说一下，如果你安装的 kernel 采用了另外一个名字来打包，比如 elrepo  的 kernel-lt，那么修改 <code class="language-plaintext highlighter-rouge">DEFAULTKERNEL</code> 这行即可。</p>
+
+
+    <br />
+
+    <div>
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议</a>进行许可。
+    </div>
+
+    <br />
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+  </div>
+
+  
+    <div class="post-comment">
+      
+<div id="disqus_thread"></div>
+<script>
+var disqus_config = function () {
+  this.page.url = "http://diabloneo.github.io/2022/05/23/GRUB2-menu-and-kernel-install/"; // <--- use canonical URL
+  this.page.identifier = "/2022/05/23/GRUB2-menu-and-kernel-install";
+};
+(function() { // DON'T EDIT BELOW THIS LINE
+  var d = document, s = d.createElement('script');
+
+  s.src = 'https://coffee-coke-and-code.disqus.com/embed.js';
+
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+    </div>
+  
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Coffee, Coke and Code</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>Coffee, Coke and Code</li>
+          <li><a href="mailto:diabloneo@gmail.com">diabloneo@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <i class="fa fa-github"></i>
+            <a href="https://github.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <i class="fa fa-twitter"></i>
+            <a href="https://twitter.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <i class="fa fa-weibo"></i>
+            <a href="https://weibo.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Archive diabloneo's articles.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
+  </body>
+
+</html>

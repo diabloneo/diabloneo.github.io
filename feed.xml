@@ -6,9 +6,204 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 19 May 2022 14:26:25 +0800</pubDate>
-    <lastBuildDate>Thu, 19 May 2022 14:26:25 +0800</lastBuildDate>
+    <pubDate>Mon, 23 May 2022 18:42:10 +0800</pubDate>
+    <lastBuildDate>Mon, 23 May 2022 18:42:10 +0800</lastBuildDate>
     <generator>Jekyll v3.9.0</generator>
+    
+      <item>
+        <title>GRUB2 menu and kernel-install</title>
+        <description>&lt;h2 id=&quot;bls-boot-loader-specification&quot;&gt;BLS: Boot Loader Specification&lt;/h2&gt;
+
+&lt;p&gt;在新的发行版上，普遍采用了 &lt;strong&gt;GRUB2&lt;/strong&gt; （以下简称 GRUB） 作为 boot loader。GRUB2 现在采用了 &lt;strong&gt;Boot Loader Specification&lt;/strong&gt; （简称 BLS） 来管理启动菜单： &lt;em&gt;&lt;a href=&quot;https://systemd.io/BOOT_LOADER_SPECIFICATION/&quot;&gt;https://systemd.io/BOOT_LOADER_SPECIFICATION/&lt;/a&gt;&lt;/em&gt;。&lt;/p&gt;
+
+&lt;p&gt;在非 UEFI Secure 启动的情况下，启动菜单直接使用文本文件保存，方便维护。你可以在一个使用该标准的系统上查看这些文件，例如 Rocky Linux 8.5：&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# ll /boot/loader/entries/
+total 12
+-rw-r--r--. 1 root root 405 May 10 13:54 a0284538aa5b498cb38b8e530b2a6be4-0-rescue.conf
+-rw-r--r--. 1 root root 353 May 10 13:54 a0284538aa5b498cb38b8e530b2a6be4-4.18.0-348.el8.0.2.x86_64.conf
+
+# cat a0284538aa5b498cb38b8e530b2a6be4-4.18.0-348.el8.0.2.x86_64.conf
+title Rocky Linux (4.18.0-348.el8.0.2.x86_64) 8.5 (Green Obsidian)
+version 4.18.0-348.el8.0.2.x86_64
+linux /vmlinuz-4.18.0-348.el8.0.2.x86_64
+initrd /initramfs-4.18.0-348.el8.0.2.x86_64.img $tuned_initrd
+options $kernelopts $tuned_params
+id rocky-20211114010422-4.18.0-348.el8.0.2.x86_64
+grub_users $grub_users
+grub_arg --unrestricted
+grub_class kernel
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;machine-id&quot;&gt;Machine ID&lt;/h2&gt;
+
+&lt;p&gt;Machine ID 是一个在系统安装的时候生成的 UUID，用于表示系统的唯一性。它存放在 &lt;em&gt;/etc/machine-id&lt;/em&gt; 文件中&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# cat /etc/machine-id
+a0284538aa5b498cb38b8e530b2a6be4
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;可以查看 man 手册获取更多信息： &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;man machine-id&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;grub-菜单的生成&quot;&gt;GRUB 菜单的生成&lt;/h2&gt;
+
+&lt;p&gt;GRUB 菜单是在 kernel 安装的时候生成的，在 kernel 卸载的时候删除的，这整个过程是由 &lt;strong&gt;kernel-install&lt;/strong&gt; 命令来完成的。在 RHEL 8 及衍生系统上，这个程序由 &lt;strong&gt;systemd-udev&lt;/strong&gt; 包来提供。&lt;/p&gt;
+
+&lt;h3 id=&quot;kernel-install&quot;&gt;kernel-install&lt;/h3&gt;
+
+&lt;p&gt;这个程序只有两个功能，添加内核，和删除内核：&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# kernel-install --help
+Usage:
+        /usr/bin/kernel-install add KERNEL-VERSION KERNEL-IMAGE
+        /usr/bin/kernel-install remove KERNEL-VERSION
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;它本身是通过一系列的脚本来实现的，这些脚本存放在：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;em&gt;/usr/lib/kernel/install.d/&lt;/em&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;/etc/kernel/install.d/&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;默认脚本存放在 &lt;em&gt;/usr/lib/kernel/install.d&lt;/em&gt; 目录下：&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@overlord-sz3 install.d]# cd /usr/lib/kernel/install.d/
+[root@overlord-sz3 install.d]# ll
+total 40
+-rwxr-xr-x. 1 root root 7120 Nov 14  2021 20-grub.install
+-rwxr-xr-x. 1 root root 2252 Nov  9  2021 20-grubby.install
+-rwxr-xr-x. 1 root root  368 Jun 22  2018 50-depmod.install
+-rwxr-xr-x. 1 root root 1657 Nov  9  2021 50-dracut.install
+-rwxr-xr-x. 1 root root 3338 Nov  9  2021 51-dracut-rescue.install
+-rwxr-xr-x. 1 root root  791 Oct 13  2021 60-kdump.install
+-rwxr-xr-x. 1 root root 1975 Nov  9  2021 90-loaderentry.install
+-rwxr-xr-x. 1 root root  989 Jul 22  2021 92-tuned.install
+-rwxr-xr-x. 1 root root  454 Nov 14  2021 99-grub-mkconfig.install
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;这些都是 shell 脚本，主要是完成一些配置。例如 &lt;em&gt;20-grub.install&lt;/em&gt; 和 &lt;em&gt;90-loaderentry.install&lt;/em&gt; 这两个脚本就是完成 grub 相关的一些配置。&lt;/p&gt;
+
+&lt;p&gt;另外，kernel-install 对于这些脚本返回值做了一个特殊的规定：&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;An executable should return 0 on success. It may also return 77 to cause the whole operation to terminate (executables later in lexical order will be skipped).
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;所以，如果一个脚本返回了 77，那么后续的都会被跳过。&lt;/p&gt;
+
+&lt;h3 id=&quot;生成菜单的脚本&quot;&gt;生成菜单的脚本&lt;/h3&gt;
+
+&lt;p&gt;在 RHEL 8 及其衍生系统中，默认安装的 kernel-install 脚本里有两个脚本会负责 GRUB 菜单的生成：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;em&gt;/usr/lib/kernel/install.d/20-grub.install&lt;/em&gt;
+    &lt;ul&gt;
+      &lt;li&gt;这个文件来自包 grub2-common-2.02-106.el8.0.2.noarch。&lt;em&gt;&lt;a href=&quot;https://git.rockylinux.org/staging/rpms/grub2/-/blob/r8/SOURCES/20-grub.install&quot;&gt;https://git.rockylinux.org/staging/rpms/grub2/-/blob/r8/SOURCES/20-grub.install&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;/usr/lib/kernel/install.d/90-loaderentry.install&lt;/em&gt;
+    &lt;ul&gt;
+      &lt;li&gt;这个文件来自包 systemd-udev-239-51.el8.x86_64。&lt;em&gt;&lt;a href=&quot;https://github.com/systemd/systemd/blob/v239-50/src/kernel-install/90-loaderentry.install&quot;&gt;https://github.com/systemd/systemd/blob/v239-50/src/kernel-install/90-loaderentry.install&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;如果你观察上面所展示的菜单文件的内容，并且对比这两个脚本，那么你就会发现他们是由 &lt;em&gt;20-grub.install&lt;/em&gt; 这个文件生成的。为什么嗯？&lt;/p&gt;
+
+&lt;p&gt;这个是两个脚本的实现问题，首先 &lt;em&gt;20-grub.install&lt;/em&gt; 脚本会被先执行，并且生成了 entries 目录中的文件。等到 &lt;em&gt;90-loaderentry.install&lt;/em&gt; 被执行时，它有一个判断如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;if ! [[ -d &quot;$BOOT_DIR_ABS&quot; ]]; then
+    exit 0
+fi
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;这个 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;BOOT_DIR_ABS&lt;/code&gt; 如果不是一个目录，就不会执行。这个变量如何定义呢？它在这里定义：&lt;em&gt;&lt;a href=&quot;https://github.com/systemd/systemd/blob/v239-50/src/kernel-install/kernel-install#L92&quot;&gt;https://github.com/systemd/systemd/blob/v239-50/src/kernel-install/kernel-install#L92&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;if ! [[ $MACHINE_ID ]]; then
+    BOOT_DIR_ABS=$(mktemp -d /tmp/kernel-install.XXXXX) || exit 1
+    trap &quot;rm -rf '$BOOT_DIR_ABS'&quot; EXIT INT QUIT PIPE
+elif [[ -d /efi/loader/entries ]] || [[ -d /efi/$MACHINE_ID ]]; then
+    BOOT_DIR_ABS=&quot;/efi/$MACHINE_ID/$KERNEL_VERSION&quot;
+elif [[ -d /boot/loader/entries ]] || [[ -d /boot/$MACHINE_ID ]]; then
+    BOOT_DIR_ABS=&quot;/boot/$MACHINE_ID/$KERNEL_VERSION&quot;                           # ------------- This line
+elif [[ -d /boot/efi/loader/entries ]] || [[ -d /boot/efi/$MACHINE_ID ]]; then
+    BOOT_DIR_ABS=&quot;/boot/efi/$MACHINE_ID/$KERNEL_VERSION&quot;
+elif mountpoint -q /efi; then
+    BOOT_DIR_ABS=&quot;/efi/$MACHINE_ID/$KERNEL_VERSION&quot;
+elif mountpoint -q /boot/efi; then
+    BOOT_DIR_ABS=&quot;/boot/efi/$MACHINE_ID/$KERNEL_VERSION&quot;
+else
+    BOOT_DIR_ABS=&quot;/boot/$MACHINE_ID/$KERNEL_VERSION&quot;
+fi
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/boot/$MACHINE_ID/$KERNEL_VERSION&lt;/code&gt; 这个形式，是 BLS 规范定义的新的形式，即每个系统的启动项都放在自己的独立目录中。因为现在 RHEL 8 及其衍生版本还未用到这个规范，所以他们的 GRUB 菜单项就不是用 &lt;em&gt;90-loaderentry.install&lt;/em&gt; 这个脚本生成的。&lt;/p&gt;
+
+&lt;h3 id=&quot;菜单文件&quot;&gt;菜单文件&lt;/h3&gt;
+
+&lt;p&gt;一个菜单文件的规范涉及两个部分：文件名和内容。&lt;/p&gt;
+
+&lt;p&gt;一般来说，文件名类似：&lt;em&gt;a0284538aa5b498cb38b8e530b2a6be4-4.18.0-348.el8.0.2.x86_64.conf&lt;/em&gt;。这个文件名主要的限制是必须跨系统唯一，所以一般使用如下格式: &lt;strong&gt;{machine_id}-{kernel_version}.conf&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;文件的内容可能如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;title Rocky Linux (4.18.0-348.el8.0.2.x86_64) 8.5 (Green Obsidian)
+version 4.18.0-348.el8.0.2.x86_64
+linux /vmlinuz-4.18.0-348.el8.0.2.x86_64
+initrd /initramfs-4.18.0-348.el8.0.2.x86_64.img $tuned_initrd
+options $kernelopts $tuned_params
+id rocky-20211114010422-4.18.0-348.el8.0.2.x86_64
+grub_users $grub_users
+grub_arg --unrestricted
+grub_class kernel
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;每行第一个空格之前的就是 key，后面则是 value。其中，title 就是展示在菜单上的内容。这个 title 就是纯文本，所以你可以随意修改。&lt;/p&gt;
+
+&lt;p&gt;从 &lt;em&gt;20-grub.install&lt;/em&gt; 文件可以看出，这里的 title 的内容会使用到来自 &lt;em&gt;/etc/os-release&lt;/em&gt; 中的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NAME&lt;/code&gt; 变量和 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;VERSION&lt;/code&gt; 变量。&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# cat /etc/os-release
+NAME=&quot;Rocky Linux&quot;
+VERSION=&quot;8.5 (Green Obsidian)&quot;
+ID=&quot;rocky&quot;
+ID_LIKE=&quot;rhel centos fedora&quot;
+VERSION_ID=&quot;8.5&quot;
+PLATFORM_ID=&quot;platform:el8&quot;
+PRETTY_NAME=&quot;Rocky Linux 8.5 (Green Obsidian)&quot;
+ANSI_COLOR=&quot;0;32&quot;
+CPE_NAME=&quot;cpe:/o:rocky:rocky:8.5:GA&quot;
+HOME_URL=&quot;https://rockylinux.org/&quot;
+BUG_REPORT_URL=&quot;https://bugs.rockylinux.org/&quot;
+ROCKY_SUPPORT_PRODUCT=&quot;Rocky Linux&quot;
+ROCKY_SUPPORT_PRODUCT_VERSION=&quot;8&quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;默认启动项&quot;&gt;默认启动项&lt;/h3&gt;
+
+&lt;p&gt;你可以使用 &lt;strong&gt;grub2-set-default&lt;/strong&gt; 命令修改默认的启动项。&lt;/p&gt;
+
+&lt;p&gt;此外，我们还可以在安装了一个新的 kernel 之后，让 kernel-install 自动将这个新的 kernel 设置为默认 kernel。这个行为的配置，是在文件 &lt;em&gt;/etc/sysconfig/kernel&lt;/em&gt; 文件中控制的：&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# cat /etc/sysconfig/kernel
+# UPDATEDEFAULT specifies if kernel-install should make
+# new kernels the default
+UPDATEDEFAULT=yes
+
+# DEFAULTKERNEL specifies the default kernel package type
+DEFAULTKERNEL=kernel-core
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;这个注释已经解释得很清楚了。这部分逻辑的实现，也是在 &lt;em&gt;20-grub.install&lt;/em&gt; 中实现的，调用的是 &lt;strong&gt;grub2-editenv&lt;/strong&gt; 命令：&lt;em&gt;&lt;a href=&quot;https://git.rockylinux.org/staging/rpms/grub2/-/blob/r8/SOURCES/20-grub.install#L134&quot;&gt;https://git.rockylinux.org/staging/rpms/grub2/-/blob/r8/SOURCES/20-grub.install#L134&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;顺便说一下，如果你安装的 kernel 采用了另外一个名字来打包，比如 elrepo  的 kernel-lt，那么修改 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;DEFAULTKERNEL&lt;/code&gt; 这行即可。&lt;/p&gt;
+
+</description>
+        <pubDate>Mon, 23 May 2022 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2022/05/23/GRUB2-menu-and-kernel-install/</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2022/05/23/GRUB2-menu-and-kernel-install/</guid>
+        
+        
+      </item>
     
       <item>
         <title>ISO9660 标准和 genisoimage 命令</title>
@@ -1411,196 +1606,6 @@ func (s *xxxSuite) TestCase2() {
         <guid isPermaLink="true">http://diabloneo.github.io//2021/08/03/golang-testing-parallel/</guid>
         
         <category>golang</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Postgres Logical Replication and CDC - 1</title>
-        <description>&lt;p&gt;Postgres 作为目前最流行的数据库之一，自身也在不断的发展。从 Postgres 10 开始，它内置了逻辑复制功能。逻辑复制不仅可以实现更灵活的数据备份，也可以作为 &lt;strong&gt;CDC (Change Data Capture)&lt;/strong&gt; 架构的基础。&lt;/p&gt;
-
-&lt;p&gt;As one of the most popular databases, Postgres itself is constantly evolving. Starting from Postgres 10, it has built-in logical replication. Logical replication can not only achieve more flexible data backup, but also serve as the basis of the CDC (Change Data Capture) architecture.&lt;/p&gt;
-
-&lt;h2 id=&quot;历史&quot;&gt;历史&lt;/h2&gt;
-
-&lt;p&gt;Postgres 对逻辑复制的支持经历了好几年的开发，主要由一家叫 &lt;strong&gt;2ndQuadrant&lt;/strong&gt; 的公司开发并且提交到 Postgres 的。&lt;/p&gt;
-
-&lt;p&gt;Postgres’ support for logical replication has gone through several years of development, I think it mainly developed by a company called 2ndQuadrant and submitted to Postgres.&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;关于 2ndQuadrant  的历史，请参考： &lt;em&gt;&lt;a href=&quot;https://en.everybodywiki.com/2ndQuadrant&quot;&gt;https://en.everybodywiki.com/2ndQuadrant&lt;/a&gt;&lt;/em&gt;。2ndQuadrant 在 2020 年 9 月被 EDB 公司收购： &lt;em&gt;&lt;a href=&quot;https://www.2ndquadrant.com/en/blog/how-edb-became-the-leader-in-the-postgres-market/&quot;&gt;https://www.2ndquadrant.com/en/blog/how-edb-became-the-leader-in-the-postgres-market/&lt;/a&gt;&lt;/em&gt;。
-For the history of 2ndQuadrant, please refer to: &lt;em&gt;&lt;a href=&quot;https://en.everybodywiki.com/2ndQuadrant&quot;&gt;https://en.everybodywiki.com/2ndQuadrant&lt;/a&gt;&lt;/em&gt;. 2ndQuadrant was acquired by EDB in September 2020: &lt;em&gt;&lt;a href=&quot;https://www.2ndquadrant.com/en/blog/how-edb-became-the-leader-in-the-postgres-market/&quot;&gt;https://www.2ndquadrant.com/en/blog/how-edb-became-the-leader-in-the-postgres-market/&lt;/a&gt;&lt;/em&gt;.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;逻辑复制相关的功能主要是 2ndQuadrant 公司在开发自己的 &lt;strong&gt;Postgres-BDR&lt;/strong&gt; 产品时设计并开发的。BDR 是一个 Postgres 集群解决方案，在这个产品开发过程中，2ndQuadrant 产生了对逻辑复制的需求，那是在 Postgres 9.2 版本之前。这篇文章记录了 BDR 的开发历史， &lt;em&gt;&lt;a href=&quot;https://www.2ndquadrant.com/en/blog/bdr-history-and-future/&quot;&gt;https://www.2ndquadrant.com/en/blog/bdr-history-and-future/&lt;/a&gt;&lt;/em&gt;。逻辑复制的相关支持是慢慢提交到 Postgres 内核中的，从 9.2 版本增加对 trigger 的支持开始，9.4 版本支持 logical decoding，9.6 版本完成了所有的 logical decoding 必要 feature 的支持，10 版本开始支持 logical replication。整个过程是很漫长的。下图是 2ndQuadrant 提供的，描述了逻辑复制相关功能在 Postgres 上的演进。&lt;/p&gt;
-
-&lt;p&gt;The functions related to logical replication are mainly designed and developed by 2ndQuadrant when developing its own Postgres-BDR product. BDR is a Postgres cluster solution. During this product development process, 2ndQuadrant generated a need for logical replication, which was before Postgres 9.2. This article records the development history of BDR, &lt;em&gt;&lt;a href=&quot;https://www.2ndquadrant.com/en/blog/bdr-history-and-future/&quot;&gt;https://www.2ndquadrant.com/en/blog/bdr-history-and-future/&lt;/a&gt;&lt;/em&gt;. The support for logical replication is slowly submitted to the Postgres kernel. Starting with the addition of trigger support in version 9.2, version 9.4 supports logical decoding, version 9.6 completes the support for all necessary features of logical decoding, and version 10 starts to support logical replication . The whole process is very long. The following figure is provided by 2ndQuadrant and describes the evolution of logical replication related functions on Postgres.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://diabloneo.github.io//assets/imgs/00031_infograph_bdr_1.png&quot; alt=&quot;infograph_bdr_1&quot; /&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Picture from: &lt;em&gt;&lt;a href=&quot;https://www.2ndquadrant.com/wp-content/uploads/2016/10/infograph-bdr-1.png&quot;&gt;https://www.2ndquadrant.com/wp-content/uploads/2016/10/infograph-bdr-1.png&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;9.6 版本算是一个经典版本。在 9.6 版本发布了之后，BDR 可以在 Postgres 不打补丁的情况下就提供支持 （之前 9.4 版本需要打一个大 patch，&lt;em&gt;&lt;a href=&quot;https://www.2ndquadrant.com/en/blog/bdr-is-coming-to-postgresql-9-6/&quot;&gt;https://www.2ndquadrant.com/en/blog/bdr-is-coming-to-postgresql-9-6/&lt;/a&gt;&lt;/em&gt;）。&lt;/p&gt;
-
-&lt;p&gt;The 9.6 version is considered a classic version. After the release of version 9.6, BDR can support Postgres without patching (previous version 9.4 requires a large patch, &lt;em&gt;&lt;a href=&quot;https://www.2ndquadrant.com/en/blog/bdr-is-coming- to-postgresql-9-6/&quot;&gt;https://www.2ndquadrant.com/en/blog/bdr-is-coming- to-postgresql-9-6/&lt;/a&gt;&lt;/em&gt;).&lt;/p&gt;
-
-&lt;p&gt;此外，还有个扩展，叫做 pglogical。它是从 BDR 项目中剥离出来的，从 9.4 版本开始支持逻辑复制功能。虽然从 Postgres 10 版本开始，已经内置了逻辑复制，但是 pglogical 依旧继续在开发之中，主要的原因是 pglogical 作为一个扩展，可以更快的进行 feature 开发和升级。在这篇文章中，解释了为什么要把逻辑复制功能引入到 Postgres 中，以及为什么引入之后还继续开发 pglogical: &lt;em&gt;&lt;a href=&quot;https://www.2ndquadrant.com/en/blog/pglogical-logical-replication-postgresql-10/&quot;&gt;https://www.2ndquadrant.com/en/blog/pglogical-logical-replication-postgresql-10/&lt;/a&gt;&lt;/em&gt;。&lt;/p&gt;
-
-&lt;p&gt;In addition, there is an extension called pglogical. It is stripped from the BDR project and supports the logical replication function since version 9.4. Although the logical replication has been built-in since Postgres 10, pglogical is still under development. The main reason is that pglogical, as an extension, can develop and upgrade features faster. This article explained why the logical replication function was introduced into Postgres, and why the development of pglogical was continued after the introduction: &lt;em&gt;&lt;a href=&quot;https://www.2ndquadrant.com/en/blog/pglogical-logical-replication-postgresql- 10/&quot;&gt;https://www.2ndquadrant.com/en/blog/pglogical-logical-replication-postgresql- 10/&lt;/a&gt;&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;可以这么认为：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Postgres 9.4 ~ 9.6 版本，主要是引入了 logical decoding 功能，作为逻辑复制基础。&lt;/li&gt;
-  &lt;li&gt;Postgres 10 版本引入的逻辑复制功能，也就是把 pglogical 的核心功能集成到 Postgres 里。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Think of it this way:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Postgres 9.4 ~ 9.6 version, mainly introduces the logical decoding function, as the basis of logical replication.&lt;/li&gt;
-  &lt;li&gt;The logical replication function introduced in Postgres 10 version is to integrate the core function of pglogical into Postgres.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;logical-decoding&quot;&gt;Logical Decoding&lt;/h2&gt;
-
-&lt;p&gt;Logical decoding 是 Postgres 9.4 引入的，通过看 9.4 版本的文档 &lt;em&gt;&lt;a href=&quot;https://www.postgresql.org/docs/9.4/logicaldecoding.html&quot;&gt;https://www.postgresql.org/docs/9.4/logicaldecoding.html&lt;/a&gt;&lt;/em&gt;，可以知道，从 9.4 版本开始 logical decoding 的功能就已经比较完善了。&lt;/p&gt;
-
-&lt;p&gt;Logical decoding Postgres 9.4 is introduced, by the 9.4 version of the document &lt;em&gt;&lt;a href=&quot;https://www.postgresql.org/docs/9.4/logicaldecoding.html&quot;&gt;https://www.postgresql.org/docs/9.4/logicaldecoding.html&lt;/a&gt;&lt;/em&gt;, you can see that at version 9.4, logical decoding was almost fully functional.&lt;/p&gt;
-
-&lt;p&gt;Logical decoding 的功能主要在 Postgres 内部提供了一种将数据库中的数据上所发生的改变的事件导出的手段。官方文档的原文是：&lt;/p&gt;
-
-&lt;p&gt;The function of logical decoding mainly provides a means to export the events of changes in the data inside Postgres. The original text of the official document is:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;PostgreSQL provides infrastructure to stream the modifications performed via SQL to external consumers.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&quot;实现原理&quot;&gt;实现原理&lt;/h3&gt;
-
-&lt;p&gt;它的根本原理是在数据库内部将 WAL 文件的内容按照一定的格式输出，事件输出的顺序等同于 WAL 的写入顺序（如果一个事件可以输出的话，否则该事件就会直接被忽略）。对于 Postgres 来说，实现 logical decoding 就是在 WAL flush 到磁盘之后，调用 replication slot 的指定的 plugin 的回调函数。官方文档解释了每个回调函数的作用: &lt;em&gt;&lt;a href=&quot;https://www.postgresql.org/docs/current/logicaldecoding-output-plugin.html&quot;&gt;https://www.postgresql.org/docs/current/logicaldecoding-output-plugin.html&lt;/a&gt;&lt;/em&gt;。在本文撰写的时候，Postgres 的最新版本是 13，14 版本正在开发中。从最新的代码中可以看到，在 14 版本中，Postgres 会开始支持未提交事务的逻辑复，所以 plugin 回调结构体 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;struct OutputPluginCallbacks&lt;/code&gt; 中增加了很多以 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;stream_&lt;/code&gt; 开头的回调函数。&lt;/p&gt;
-
-&lt;p&gt;Its fundamental principle is to output the contents of the WAL file in a certain format within the database, and the sequence of event output is equivalent to the writing sequence of WAL (if an event can be output, otherwise the event will be ignored). For Postgres, implementing logical decoding is to call the callback functions of the specified plugin of the replication slot after the WAL flush to the disk. The official document explains the role of each callback function: &lt;em&gt;&lt;a href=&quot;https://www.postgresql.org/docs/current/logicaldecoding-output-plugin.html&quot;&gt;https://www.postgresql.org/docs/current/logicaldecoding-output-plugin.html&lt;/a&gt;&lt;/em&gt;. At the time of this writing, the latest version of Postgres is 13, and version 14 is under development. You can see from the latest code in version 14, Postgres will begin to support complex logic uncommitted transactions, so the plugin callback structure &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;struct OutputPluginCallbacks&lt;/code&gt; adds a lot of callback functions with the prefix &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;stream_&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;Logical decoding 中有一个 &lt;strong&gt;logical replication slot&lt;/strong&gt; ( 简称 replication slot) 的概念。一个 replication slot 代表了一个事件输出流，用于将 WAL 记录的事件发送给订阅者。replication slot 主要功能有两个：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;使用预先配置好的 output plugin 将 WAL 内容转换成输出格式。&lt;/li&gt;
-  &lt;li&gt;维护需要使用的 WAL 位置，包括订阅者开始消费的位置，以及订阅者已经 flush 的位置（可以把订阅者当成一个备库，当备库向主库报告自己已经将某个位置之前的 WAL 都持久化之后，主库就可以将该位置之前的 WAL 文件回收了）。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;There is a concept of &lt;strong&gt;logical replication slot&lt;/strong&gt; (referred to as replication slot) in logical decoding. A replication slot represents an event output stream, used to send WAL recorded events to subscribers. There are two main functions of replication slot:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Use the pre-configured output plugin to convert WAL content into output format.&lt;/li&gt;
-  &lt;li&gt;Maintain the WAL location that needs to be used, including the location where the subscriber starts to consume, and the location where the subscriber has been flushed (you can treat the subscriber as a standby database, when the standby database reports to the main database that it has persisted the WAL before a certain location, the main dastabase can reclaim the WAL file before the location).&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;data=# select * from pg_replication_slots ;
-  slot_name   |  plugin  | slot_type | datoid | database | temporary | active | active_pid | xmin | catalog_xmin | restart_lsn | confirmed_flush_lsn | wal_status | safe_wal_size
---------------+----------+-----------+--------+----------+-----------+--------+------------+------+--------------+-------------+---------------------+------------+---------------
-   myslot     | pgoutput | logical   |  16384 | data     | f         | f      |            |      |          622 | 0/1765268   | 0/1765282           | reserved   |
-(1 row)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;这里比较难理解的是 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;restart_lsn&lt;/code&gt; 和 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;confirmed_flush_lsn&lt;/code&gt; 这两个列的值。&lt;/p&gt;
-
-&lt;p&gt;Here it is difficult to understand &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;restart_lsn&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;confirmed_flush_lsn&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;confirmed_flush_lsn&lt;/code&gt; 表示 consumer 已经收到并且回复确认的 WAL 的 LSN。早于该值的 WAL 无法再被 consumer 获取。这个值在 consumer 每次通过 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;StandyStatusUpdate&lt;/code&gt; 消息更新时都会被修改。&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;confirmed_flush_lsn&lt;/code&gt; means the address (LSN) up to which the logical slot’s consumer has confirmed receiving data. Data older than this is not available anymore. This value updated by each consumer’s StandyStatusUpdate message.&lt;/p&gt;
-
-&lt;p&gt;官方文档对于 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;restart_lsn&lt;/code&gt; 的描述就没有这么清晰了：&lt;/p&gt;
-
-&lt;p&gt;Official document for &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;restart_lsn&lt;/code&gt; is not so clear:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;The address (LSN) of oldest WAL which still might be required by the consumer of this slot and thus won’t be automatically removed during checkpoints unless this LSN gets behind more than max_slot_wal_keep_size from the current LSN. NULL if the LSN of this slot has never been reserved.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;我在邮件列表里找到了几个相关的讨论，可能最有用的两个如下：&lt;/p&gt;
-
-&lt;p&gt;I found some discussion about &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;restart_lsn&lt;/code&gt;, the following two might be useful:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;In general, the restart_lsn and confirmed_flush_lsn are advanced in different ways so you might see some difference but it should not be this much. The confirmed_flush_lsn is updated when we get confirmation from the downstream node about the flush_lsn but restart_lsn is only incremented based on the LSN required by the oldest in-progress transaction.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;By Amit Kapila&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.postgresql.org/message-id/flat/CAFt1pcp5GGeJ1oVm6JZSzgptrRJ22FnfYqjoQPWgiss8HXzk4A%40mail.gmail.com#9f27f18a6302dc697a709f0a656f3548&quot;&gt;https://www.postgresql.org/message-id/flat/CAFt1pcp5GGeJ1oVm6JZSzgptrRJ22FnfYqjoQPWgiss8HXzk4A%40mail.gmail.com#9f27f18a6302dc697a709f0a656f3548&lt;/a&gt;&lt;/em&gt;.&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;To make sure, replication delay or lag here is current_wal_lsn() - confirmed_flush_lsn. restart_lsn has nothing to do with replication lag. It is the minimum LSN the server thinks it needs for restarting replication on the slot.&lt;/p&gt;
-
-  &lt;p&gt;How long have you observed the increase of the gap? If no long-transactions are running, restart_lsn is the current LSN about from 15 to 30 seconds ago. That is, the gap between restart_lsn and confirmed_flush_lsn would be at most the amount of WAL emitted in the last 30 seconds. In this case, that is estimated to be 235MB*30 = about 7GB or 440 in 16MB-segments even if the system is perfectly working. Anyway the publisher server would need to preserve WAL files up to about 68GB (in the case where checkpoint_timeout is 5 minutes) so requirement of 7GB by restart_lsn doesn’t matter.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;By Kyotaro Horiguchi&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://www.postgresql-archive.org/Replication-lag-due-to-lagging-restart-lsn-td6150451.html#a6150570&quot;&gt;https://www.postgresql-archive.org/Replication-lag-due-to-lagging-restart-lsn-td6150451.html#a6150570&lt;/a&gt;&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;从这两个逻辑复制的开发者的回复可以看出，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;restart_lsn&lt;/code&gt; 的作用不是用来表示下游节点的复制延迟大小的，只是用来指导 master 何时可以删除 WAL 文件。主要的原因是 logical decoding 和 checkpoint 进程都涉及到何时删除 WAL 文件，因此系统需要考虑多个值来确认哪些 WAL 文件是可以回收的。 (&lt;em&gt;我在写这篇文章的时候，并没有阅读过 Postgres 的代码，所以我以上的结论是不准确的，也有可能是错误的。&lt;/em&gt;)&lt;/p&gt;
-
-&lt;p&gt;From the threads of the these two developers of logical replications, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;restart_lsn&lt;/code&gt; is not used to indicate replication delay, but to guide the main database when WAL files can be deleted. The main reason is that both logical decoding and checkpoint process involveed with WAL files deletion, so the system needs to consider multiple values to confirm which WAL files can be recycled. (When I was writing this article, I had not read the Postgres code, so my above conclusions are inaccurate and may be wrong. )&lt;/p&gt;
-
-&lt;h3 id=&quot;output-plugin&quot;&gt;Output Plugin&lt;/h3&gt;
-
-&lt;p&gt;Output plugin 是 logical decoding 里面决定输出格式的程序。这个 wiki 页面介绍了大部分的插: &lt;em&gt;&lt;a href=&quot;https://wiki.postgresql.org/wiki/Logical_Decoding_Plugins&quot;&gt;https://wiki.postgresql.org/wiki/Logical_Decoding_Plugins&lt;/a&gt;&lt;/em&gt;. 本章介绍几个主要的插件。&lt;/p&gt;
-
-&lt;p&gt;Output plugin is the program that determines the output format in logical decoding. This wiki page introduces most of the plugins: &lt;em&gt;&lt;a href=&quot;https://wiki.postgresql.org/wiki/Logical_Decoding_Plugins&quot;&gt;https://wiki.postgresql.org/wiki/Logical_Decoding_Plugins&lt;/a&gt;&lt;/em&gt;. This chapter introduces several major plugins.&lt;/p&gt;
-
-&lt;h4 id=&quot;test_decoding&quot;&gt;test_decoding&lt;/h4&gt;
-
-&lt;p&gt;在 9.4 版本里，只有一个内置的 test_decoding 的插件 (*&lt;a href=&quot;https://www.postgresql.org/docs/9.4/test-decoding.html*&quot;&gt;https://www.postgresql.org/docs/9.4/test-decoding.html*&lt;/a&gt;)，它用于支持&lt;/p&gt;
-
-&lt;p&gt;In version 9.4, there is only one built-in plugin named test_decoding (* https://www.postgresql.org/docs/9.4/test-decoding.html* ), which is used to support&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;SELECT * FROM pg_logical_slot_get_changes('test_slot', NULL, NULL, 'include-xids', '0');
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;这个插件的主要作用是提供一个简单的调试手段，同时作为其他插件开发的模板，并不适用于实现逻辑复制这样复杂的场景。这个插件的代码在: &lt;em&gt;&lt;a href=&quot;https://github.com/postgres/postgres/blob/master/contrib/test_decoding/test_decoding.c&quot;&gt;https://github.com/postgres/postgres/blob/master/contrib/test_decoding/test_decoding.c&lt;/a&gt;&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;The main function of this plug-in is to provide a simple debugging method, and at the same time as a template for other plug-in development, it is not suitable for complex scenarios such as logical replication. The code for this plugin is at: &lt;em&gt;&lt;a href=&quot;https://github.com/postgres/postgres/blob/master/contrib/test_decoding/test_decoding.c&quot;&gt;https://github.com/postgres/postgres/blob/master/contrib/test_decoding/test_decoding.c&lt;/a&gt;&lt;/em&gt;.&lt;/p&gt;
-
-&lt;h4 id=&quot;pglogical&quot;&gt;pglogical&lt;/h4&gt;
-
-&lt;p&gt;由于 test_decoding 只是提供了一个实现参考，所以在还没有 pgoutput 插件的时候，pglogical 程序自己实现了一个 plugin (&lt;em&gt;&lt;a href=&quot;https://github.com/2ndQuadrant/pglogical/blob/REL2_x_STABLE/pglogical_output.c&quot;&gt;https://github.com/2ndQuadrant/pglogical/blob/REL2_x_STABLE/pglogical_output.c&lt;/a&gt;&lt;/em&gt;) 。&lt;/p&gt;
-
-&lt;p&gt;Since test_decoding only provides an implementation reference, the pglogical program implements a plugin (&lt;em&gt;&lt;a href=&quot;https://github.com/2ndQuadrant/pglogical/blob/REL2_x_STABLE/pglogical_output.c&quot;&gt;https://github.com/2ndQuadrant/pglogical/blob/REL2_x_STABLE/pglogical_output.c&lt;/a&gt;&lt;/em&gt;) when there is no pgoutput plugin .&lt;/p&gt;
-
-&lt;h4 id=&quot;wal2json&quot;&gt;wal2json&lt;/h4&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://github.com/eulerto/wal2json&quot;&gt;https://github.com/eulerto/wal2json&lt;/a&gt;&lt;/em&gt; 这个插件是一个比较流行的插件，因为它的输出是 JSON 格式的，相当容易理解以及用程序解析。不过这个插件不是 Postgres 内置的，需要自己安装。但是由于其非常简单易用，有些云服务会在自己的 Postgres 服务中内置这个这个插件，例如 Azure (&lt;em&gt;&lt;a href=&quot;https://docs.microsoft.com/en-us/azure/postgresql/concepts-logical&quot;&gt;https://docs.microsoft.com/en-us/azure/postgresql/concepts-logical&lt;/a&gt;&lt;/em&gt;).&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://github.com/eulerto/wal2json&quot;&gt;https://github.com/eulerto/wal2json&lt;/a&gt;&lt;/em&gt; This plug-in is a popular plugin because its output is in JSON format, which is quite easy to understand and parse with programs. But this plugin is not built-in Postgres, you need to install it yourself. But because it is very simple and easy to use, some cloud services will install this plugin in their Postgres service, such as Azure ( https://docs.microsoft.com/en-us/azure/postgresql/concepts-logical ).&lt;/p&gt;
-
-&lt;h4 id=&quot;pgoutput&quot;&gt;pgoutput&lt;/h4&gt;
-
-&lt;p&gt;在 Postgres 10 里，内置了一个 pgoutput 插件，为逻辑复制功能提供基础。pgoutput 实现了一个二进制协议，而且会在多个 Postgres 版本之间保持稳定（这样才能实现跨版本的逻辑复制）。这个协议属于 Postgres 后端协议的一部分，具体的协议定义见: &lt;em&gt;&lt;a href=&quot;https://www.postgresql.org/docs/current/protocol-logicalrep-message-formats.html&quot;&gt;https://www.postgresql.org/docs/current/protocol-logicalrep-message-formats.html&lt;/a&gt;&lt;/em&gt;。相比与 wal2json 这种文本格式的插件，pgoutput 插件的二进制协议的优点是性能好，缺点是较难解析。该插件的代码在: &lt;em&gt;&lt;a href=&quot;https://github.com/postgres/postgres/blob/master/src/backend/replication/pgoutput/pgoutput.c&quot;&gt;https://github.com/postgres/postgres/blob/master/src/backend/replication/pgoutput/pgoutput.c&lt;/a&gt;&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;In Postgres 10, a pgoutput plug-in is built in to provide a basis for logical replication. pgoutput implements a binary protocol and will remain stable across multiple Postgres versions (so that it can achieve cross-version logical replication). This protocol is part of the Postgres backend protocol. For specific protocol definitions, please see: &lt;em&gt;&lt;a href=&quot;https://www.postgresql.org/docs/current/protocol-logicalrep-message-formats.html&quot;&gt;https://www.postgresql.org/docs/current/protocol-logicalrep-message-formats.html&lt;/a&gt;&lt;/em&gt;. Compared with the text format plug-in of wal2json, the binary protocol of the pgoutput plug-in has the advantage of good performance, but the disadvantage is that it is difficult to parse. The code of the plugin is at: &lt;em&gt;&lt;a href=&quot;https://github.com/postgres/postgres/blob/master/src/backend/replication/pgoutput/pgoutput.c&quot;&gt;https://github.com/postgres/postgres/blob/master/src/backend/replication/pgoutput/pgoutput.c&lt;/a&gt;&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;如果使用 Golang 进行开发，我已经在 &lt;strong&gt;github.com/jackc/pglogrepl&lt;/strong&gt; 这个库中增加了对 pgoutput 的支持 (&lt;em&gt;&lt;a href=&quot;https://github.com/jackc/pglogrepl/pull/14&quot;&gt;https://github.com/jackc/pglogrepl/pull/14&lt;/a&gt;&lt;/em&gt;)。你可以直接利用这个库中的 example 代码作为自己开发 subscriber 的基础： &lt;em&gt;&lt;a href=&quot;https://github.com/jackc/pglogrepl/tree/master/example/pglogrepl_demo&quot;&gt;https://github.com/jackc/pglogrepl/tree/master/example/pglogrepl_demo&lt;/a&gt;&lt;/em&gt;。&lt;/p&gt;
-
-&lt;p&gt;If you use Golang development, I have adds support for the protocol in Github repo:  &lt;strong&gt;github.com/jackc/pglogrepl&lt;/strong&gt; (support for pgoutput of https://github.com/jackc/pglogrepl/pull/14 ). You can directly use the example code in this repo as the basis for your own development of subscribers:  &lt;em&gt;&lt;a href=&quot;https://github.com/jackc/pglogrepl/tree/master/example/pglogrepl_demo&quot;&gt;https://github.com/jackc/pglogrepl/tree/master/example/pglogrepl_demo&lt;/a&gt;&lt;/em&gt;.&lt;/p&gt;
-
-&lt;h2 id=&quot;update&quot;&gt;Update&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Translate From Chinese to English with Google translate, then checking and editing.&lt;/li&gt;
-&lt;/ul&gt;
-
-</description>
-        <pubDate>Sun, 27 Jun 2021 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2021/06/27/postgres-logical-replication-and-cdc-part-1/</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2021/06/27/postgres-logical-replication-and-cdc-part-1/</guid>
-        
-        <category>database</category>
         
         
       </item>
