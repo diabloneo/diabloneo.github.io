@@ -138,7 +138,7 @@
 	<span class="k">CASE</span> <span class="k">WHEN</span> <span class="n">O</span><span class="p">.</span><span class="n">id</span> <span class="k">IS</span> <span class="k">NULL</span> <span class="k">THEN</span> <span class="k">false</span> <span class="k">ELSE</span> <span class="k">true</span> <span class="k">END</span> <span class="k">as</span> <span class="n">used</span><span class="p">,</span>
 	<span class="n">D</span><span class="p">.</span><span class="n">status</span><span class="p">,</span>
 	<span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span> <span class="k">AS</span> <span class="n">sc</span> 
-<span class="k">FROM</span> <span class="n">partition</span> <span class="n">P</span>
+<span class="k">FROM</span> <span class="k">partition</span> <span class="n">P</span>
 	<span class="k">join</span> <span class="n">disk</span> <span class="n">D</span> <span class="k">on</span> <span class="n">P</span><span class="p">.</span><span class="n">disk_id</span><span class="o">=</span><span class="n">D</span><span class="p">.</span><span class="n">id</span>
 	<span class="k">left</span> <span class="k">join</span> <span class="n">osd</span> <span class="n">O</span> <span class="k">on</span> <span class="n">o</span><span class="p">.</span><span class="n">partition_id</span><span class="o">=</span><span class="n">P</span><span class="p">.</span><span class="n">id</span>
 <span class="k">GROUP</span> <span class="k">BY</span> <span class="n">used</span><span class="p">,</span> <span class="n">D</span><span class="p">.</span><span class="n">status</span><span class="p">;</span></code></pre></figure>

@@ -2,13 +2,76 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Coffee, Coke and Code</title>
-    <description>Archive diabloneo's articles.
+    <description>Archive diabloneo&apos;s articles.
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 23 May 2022 19:49:01 +0800</pubDate>
-    <lastBuildDate>Mon, 23 May 2022 19:49:01 +0800</lastBuildDate>
-    <generator>Jekyll v3.9.0</generator>
+    <pubDate>Tue, 08 Nov 2022 21:37:39 +0800</pubDate>
+    <lastBuildDate>Tue, 08 Nov 2022 21:37:39 +0800</lastBuildDate>
+    <generator>Jekyll v4.3.1</generator>
+    
+      <item>
+        <title>go-yaml 的默认 map 类型是 map[any]any</title>
+        <description>&lt;p&gt;Go 语言的 yaml 库 &lt;em&gt;&amp;lt;github.com/go-yaml/yaml&amp;gt;&lt;/em&gt; 的默认 map 类型是 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;map[any]any&lt;/code&gt;，而不是 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;map[string]any&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;V2 代码：&lt;em&gt;&lt;a href=&quot;https://github.com/go-yaml/yaml/blob/v2/decode.go#L241&quot;&gt;https://github.com/go-yaml/yaml/blob/v2/decode.go#L241&lt;/a&gt;&lt;/em&gt;
+V3 代码：&lt;em&gt;&lt;a href=&quot;https://github.com/go-yaml/yaml/blob/v3/decode.go#L334&quot;&gt;https://github.com/go-yaml/yaml/blob/v3/decode.go#L334&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;因此，当使用这个库对 yaml 内容进行 unmarshal 的时候，由 go-yaml 自动创建的 map 的类型是 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;map[any]any&lt;/code&gt;：&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;package main
+
+import (
+	&quot;fmt&quot;
+	&quot;log&quot;
+
+	&quot;gopkg.in/yaml.v2&quot;
+)
+
+var content = `
+storage:
+  settings:
+    fs:
+      ad:
+        username: admin
+      ldap:
+        password: password
+
+`
+
+type Storage struct {
+	Settings map[string]any `yaml:&quot;settings&quot;`
+}
+
+type Config struct {
+	Storage *Storage `yaml:&quot;storage&quot;`
+}
+
+func main() {
+	c := new(Config)
+	err := yaml.Unmarshal([]byte(content), c)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Printf(&quot;%T\n&quot;, c.Storage.Settings[&quot;fs&quot;])
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;上面代码的输出是：&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ go run testcmd.go
+map[interface {}]interface {}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>
+        <pubDate>Wed, 02 Nov 2022 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2022/11/02/go-yaml-default-map-type-is-map-any-any/</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2022/11/02/go-yaml-default-map-type-is-map-any-any/</guid>
+        
+        <category>golang</category>
+        
+        
+      </item>
     
       <item>
         <title>GRUB2 menu and kernel-install</title>
@@ -121,7 +184,7 @@ fi
 
 &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;if ! [[ $MACHINE_ID ]]; then
     BOOT_DIR_ABS=$(mktemp -d /tmp/kernel-install.XXXXX) || exit 1
-    trap &quot;rm -rf '$BOOT_DIR_ABS'&quot; EXIT INT QUIT PIPE
+    trap &quot;rm -rf &apos;$BOOT_DIR_ABS&apos;&quot; EXIT INT QUIT PIPE
 elif [[ -d /efi/loader/entries ]] || [[ -d /efi/$MACHINE_ID ]]; then
     BOOT_DIR_ABS=&quot;/efi/$MACHINE_ID/$KERNEL_VERSION&quot;
 elif [[ -d /boot/loader/entries ]] || [[ -d /boot/$MACHINE_ID ]]; then
@@ -259,7 +322,7 @@ $ genisoimage -v -U -r -T -J -joliet-long \
 
 &lt;p&gt;这个标准的名字是一部电影里的虚构城镇的名字。电影的中文名字是：神枪小子。&lt;/p&gt;
 
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;fictional town Rock Ridge in Mel Brooks' film Blazing Saddles.
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;fictional town Rock Ridge in Mel Brooks&apos; film Blazing Saddles.
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h3 id=&quot;el-torito&quot;&gt;El Torito&lt;/h3&gt;
@@ -723,7 +786,7 @@ arena_maybe_purge(arena_t *arena)
 {
         size_t npurgeable, threshold;
 
-        /* Don't purge if the option is disabled. */
+        /* Don&apos;t purge if the option is disabled. */
         if (opt_lg_dirty_mult &amp;lt; 0)
                 return;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
@@ -846,7 +909,7 @@ Calc tcp_recvmsg time of pid 20607
 
 &lt;p&gt;在里面搜索 &lt;strong&gt;meson&lt;/strong&gt;，可以找到 meson 的参数，就知道 CentOS 8 官方如何编译 libvirt 库了：&lt;/p&gt;
 
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;+ /usr/bin/meson --buildtype=plain --prefix=/usr --libdir=/usr/lib64 --libexecdir=/usr/libexec --bindir=/usr/bin --sbindir=/usr/sbin --includedir=/usr/include --datadir=/usr/share --mandir=/usr/share/man --infodir=/usr/share/info --localedir=/usr/share/locale --sysconfdir=/etc --localstatedir=/var --sharedstatedir=/var/lib --wrap-mode=nodownload --auto-features=enabled . x86_64-redhat-linux-gnu -Drunstatedir=/run -Ddriver_qemu=enabled -Ddriver_openvz=disabled -Ddriver_lxc=disabled -Ddriver_vbox=disabled -Ddriver_libxl=disabled -Dsasl=enabled -Dpolkit=enabled -Ddriver_libvirtd=enabled -Ddriver_remote=enabled -Ddriver_test=enabled -Ddriver_esx=enabled -Dcurl=enabled -Ddriver_hyperv=disabled -Dopenwsman=disabled -Ddriver_vmware=disabled -Ddriver_vz=disabled -Ddriver_bhyve=disabled -Ddriver_ch=disabled -Dremote_default_mode=legacy -Ddriver_interface=enabled -Ddriver_network=enabled -Dstorage_fs=enabled -Dstorage_lvm=enabled -Dstorage_iscsi=enabled -Dstorage_iscsi_direct=enabled -Dlibiscsi=enabled -Dstorage_scsi=enabled -Dstorage_disk=enabled -Dstorage_mpath=enabled -Dstorage_rbd=enabled -Dstorage_sheepdog=disabled -Dstorage_gluster=enabled -Dglusterfs=enabled -Dstorage_zfs=disabled -Dstorage_vstorage=disabled -Dnumactl=enabled -Dnumad=enabled -Dcapng=enabled -Dfuse=disabled -Dnetcf=enabled -Dselinux=enabled -Dselinux_mount=/sys/fs/selinux -Dapparmor=disabled -Dapparmor_profiles=disabled -Dsecdriver_apparmor=disabled -Dudev=enabled -Dyajl=enabled -Dsanlock=enabled -Dlibpcap=enabled -Dlibnl=enabled -Daudit=enabled -Ddtrace=enabled -Dfirewalld=enabled -Dfirewalld_zone=enabled -Dwireshark_dissector=enabled -Dlibssh=enabled -Dlibssh2=disabled -Dpm_utils=disabled -Dnss=enabled '-Dpackager=CentOS Buildsys &amp;lt;bugs@centos.org&amp;gt;, 2021-11-09-20:38:08, ' -Dpackager_version=1.module_el8.6.0+983+a7505f3f -Dqemu_user=qemu -Dqemu_group=qemu -Dtls_priority=@LIBVIRT,SYSTEM -Dwerror=true -Dexpensive_tests=enabled -Dinit_script=systemd -Ddocs=enabled -Dtests=enabled -Drpath=disabled -Dlogin_shell=disabled
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;+ /usr/bin/meson --buildtype=plain --prefix=/usr --libdir=/usr/lib64 --libexecdir=/usr/libexec --bindir=/usr/bin --sbindir=/usr/sbin --includedir=/usr/include --datadir=/usr/share --mandir=/usr/share/man --infodir=/usr/share/info --localedir=/usr/share/locale --sysconfdir=/etc --localstatedir=/var --sharedstatedir=/var/lib --wrap-mode=nodownload --auto-features=enabled . x86_64-redhat-linux-gnu -Drunstatedir=/run -Ddriver_qemu=enabled -Ddriver_openvz=disabled -Ddriver_lxc=disabled -Ddriver_vbox=disabled -Ddriver_libxl=disabled -Dsasl=enabled -Dpolkit=enabled -Ddriver_libvirtd=enabled -Ddriver_remote=enabled -Ddriver_test=enabled -Ddriver_esx=enabled -Dcurl=enabled -Ddriver_hyperv=disabled -Dopenwsman=disabled -Ddriver_vmware=disabled -Ddriver_vz=disabled -Ddriver_bhyve=disabled -Ddriver_ch=disabled -Dremote_default_mode=legacy -Ddriver_interface=enabled -Ddriver_network=enabled -Dstorage_fs=enabled -Dstorage_lvm=enabled -Dstorage_iscsi=enabled -Dstorage_iscsi_direct=enabled -Dlibiscsi=enabled -Dstorage_scsi=enabled -Dstorage_disk=enabled -Dstorage_mpath=enabled -Dstorage_rbd=enabled -Dstorage_sheepdog=disabled -Dstorage_gluster=enabled -Dglusterfs=enabled -Dstorage_zfs=disabled -Dstorage_vstorage=disabled -Dnumactl=enabled -Dnumad=enabled -Dcapng=enabled -Dfuse=disabled -Dnetcf=enabled -Dselinux=enabled -Dselinux_mount=/sys/fs/selinux -Dapparmor=disabled -Dapparmor_profiles=disabled -Dsecdriver_apparmor=disabled -Dudev=enabled -Dyajl=enabled -Dsanlock=enabled -Dlibpcap=enabled -Dlibnl=enabled -Daudit=enabled -Ddtrace=enabled -Dfirewalld=enabled -Dfirewalld_zone=enabled -Dwireshark_dissector=enabled -Dlibssh=enabled -Dlibssh2=disabled -Dpm_utils=disabled -Dnss=enabled &apos;-Dpackager=CentOS Buildsys &amp;lt;bugs@centos.org&amp;gt;, 2021-11-09-20:38:08, &apos; -Dpackager_version=1.module_el8.6.0+983+a7505f3f -Dqemu_user=qemu -Dqemu_group=qemu -Dtls_priority=@LIBVIRT,SYSTEM -Dwerror=true -Dexpensive_tests=enabled -Dinit_script=systemd -Ddocs=enabled -Dtests=enabled -Drpath=disabled -Dlogin_shell=disabled
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;在里面搜索 &lt;strong&gt;rpmbuild&lt;/strong&gt; 就可以知道它用什么命令打包的了。&lt;/p&gt;
@@ -904,7 +967,7 @@ func Now() Time {
 //
 // time.Parse function will call Time.setLoc method which set Time.loc = nil
 // if location is UTC. But on a machine with UTC timezone, time.Now() returns
-// a Time value with Time.loc set to utcLoc, so it's not nil. The two methods
+// a Time value with Time.loc set to utcLoc, so it&apos;s not nil. The two methods
 // result in discrepancy in time.Time values.
 func parseTime(layout, value string) (time.Time, error) {
 	t, err := time.Parse(layout, value)
@@ -1239,397 +1302,6 @@ Breakpoint 2 at 0x7ffff6d3df70: file ../sysdeps/posix/getaddrinfo.c, line 1440.
         <category>linux</category>
         
         <category>network</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Golang Testing Parallel</title>
-        <description>&lt;p&gt;本文将介绍 Golang 单元测试的串行运行和并行运行的实现细节，以及在使用 &lt;strong&gt;github.com/stretchr/testify/suite&lt;/strong&gt; 库时，如何控制串行和并行。&lt;/p&gt;
-
-&lt;h2 id=&quot;基本流程-basic-procedure&quot;&gt;基本流程 Basic Procedure&lt;/h2&gt;
-
-&lt;h3 id=&quot;test-code-scanning-loading-and-test-cases-execution&quot;&gt;Test Code Scanning, Loading and Test Cases Execution&lt;/h3&gt;
-
-&lt;p&gt;通常我们会用如下的命令运行单元测试： &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;go test -v goexample/pkg/apiserver&lt;/code&gt;，也就是我们运行 package &lt;strong&gt;goexample/pkg/apiserver&lt;/strong&gt; 下的所有单元测试。下面，我们先来分析这个命令的内部流程。&lt;/p&gt;
-
-&lt;p&gt;首先 &lt;em&gt;go test&lt;/em&gt; 这个命令会扫描 package 下的测试代码信息（名字以 _test.go 结尾的文件），然后会用这些代码信息重新生成一个 &lt;strong&gt;main&lt;/strong&gt; 程序，或者称为 &lt;strong&gt;testmain&lt;/strong&gt; 程序，执行这个程序就是在执行所有的测试用例代码。我们需要先来看一下这里生成 &lt;strong&gt;testmain&lt;/strong&gt; 程序的细节，这个对于理解测试用例的串行和并行是至关重要的。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;和扫描测试代码信息，以及生成 &lt;strong&gt;testmain&lt;/strong&gt; 有关的代码在 Golang 仓库的 &lt;em&gt;src/cmd/go/internal/load/test.go&lt;/em&gt; 文件里。这个文件最下面有一个 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;testmainTmpl&lt;/code&gt; 的变量，保存了用于生成 &lt;strong&gt;testmain&lt;/strong&gt; 程序的模板。其中的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;main&lt;/code&gt; 函数部分如下：&lt;/p&gt;
-
-    &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; func main() {
-	
-     testing.RegisterCover(testing.Cover{
-         Mode: ,
-         Counters: coverCounters,
-         Blocks: coverBlocks,
-         CoveredPackages: ,
-     })
-	
-     m := testing.MainStart(testdeps.TestDeps{}, tests, benchmarks, examples)
-	
-     .(m)
-     os.Exit(int(reflect.ValueOf(m).Elem().FieldByName(&quot;exitCode&quot;).Int()))
-	
-     os.Exit(m.Run())
-	
- }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-
-    &lt;p&gt;从这个代码可以看出，首先会会先执行 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;m := testing.MainStart()&lt;/code&gt; 以获得一个 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;testing.M&lt;/code&gt; 对象。随后，如果你定义了 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;TestMain&lt;/code&gt; 函数，就会执行该函数，否则执行 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;m.Run()&lt;/code&gt;。这里的 &lt;strong&gt;testing&lt;/strong&gt; 就是标准库里的 &lt;strong&gt;testing&lt;/strong&gt; 库。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;上面代码中，传递给 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;testing.MainStart&lt;/code&gt; 函数的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;tests&lt;/code&gt; 变量是在该模板中定义的的一个 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;[]testing.InternalTest&lt;/code&gt; 列表，其每个元素就对应测试 package 中的一个 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;TestXxx(t *testing.T)&lt;/code&gt; 函数 (是文件级的函数，不是 &lt;em&gt;testify/suite&lt;/em&gt; 的一个 suite 的方法，相关的代码也是在上面提到的 &lt;em&gt;load/test.go&lt;/em&gt; 文件中，就不展开说了)。在通过 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;testing.MainStart()&lt;/code&gt; 创建 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;testing.M&lt;/code&gt; 对象时，这些测试用例文件都存放在了 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;testing.M.tests&lt;/code&gt; 成员中。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;接下来就是执行 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;testing.M.Run()&lt;/code&gt; 方法，在这个方法内，主要是调用 &lt;strong&gt;testing&lt;/strong&gt; 库的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;runTests&lt;/code&gt; 函数（下文如无特别说明，所提到的函数都是指 &lt;strong&gt;testing&lt;/strong&gt; 库中的函数）。&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;runTests&lt;/code&gt; 函数可以认为是一个 package 下的所有用例的执行入口，来看下该函数：&lt;/p&gt;
-
-    &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; func runTests(matchString, tests []InternalTest, deadline time.Time) (ran, ok bool) {
-     // 忽略掉控制运行次数的之类的代码
-     // ignore the code controlling running times
-     { // In loops.
-
-             // ctx 用于进行并发控制
-             // ctx is used to control parallel execution
-             ctx := newTestContext(*parallel, newMatcher(matchString, *match, &quot;-test.run&quot;))
-             ctx.deadline = deadline
-
-             t := &amp;amp;T{
-                 common: common{
-                     signal:  make(chan bool),
-                     barrier: make(chan bool),
-                     w:       os.Stdout,
-                 },
-                 context: ctx,
-             }
-             if Verbose() {
-                 t.chatty = newChattyPrinter(t.w)
-             }
-
-             tRunner(t, func(t *T) {
-                 for _, test := range tests {
-                     t.Run(test.Name, test.F)
-                 }
-                 // Run catching the signal rather than the tRunner as a separate
-                 // goroutine to avoid adding a goroutine during the sequential
-                 // phase as this pollutes the stacktrace output when aborting.
-                 go func() { &amp;lt;-t.signal }()
-             })
-             ok = ok &amp;amp;&amp;amp; !t.Failed()
-             ran = ran || t.ran
-     }
- }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-
-    &lt;p&gt;上述代码的重点有 3 个：&lt;/p&gt;
-    &lt;ol&gt;
-      &lt;li&gt;这里的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;t&lt;/code&gt;，是整个 package 的最高级的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;T&lt;/code&gt; 对象，其他的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;t&lt;/code&gt; 都是它的儿子。我们将这个 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;t&lt;/code&gt; 称为 &lt;strong&gt;t0&lt;/strong&gt;。&lt;/li&gt;
-      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;tRunner&lt;/code&gt; 函数是用于执行一个用例的，它的函数定义如下： &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;func tRunner(t *T, fn func(t *T))&lt;/code&gt;，它的主要逻辑是用第一个参数 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;t&lt;/code&gt; 来执行第二个参数 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fn&lt;/code&gt;，然后在 defer 中处理 panic，以及并发控制等逻辑。&lt;/li&gt;
-      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;func (t *T) Run(name string, f func(t *T)) bool&lt;/code&gt; 函数表示将第二个参数 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;f&lt;/code&gt; 作为当前 receiver &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;t&lt;/code&gt; 的儿子用例来执行。&lt;/li&gt;
-    &lt;/ol&gt;
-
-    &lt;p&gt;因此，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;runTests&lt;/code&gt; 的逻辑可以简述为：&lt;/p&gt;
-    &lt;ol&gt;
-      &lt;li&gt;先定义 &lt;strong&gt;t0&lt;/strong&gt;。&lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;生成 &lt;strong&gt;t0&lt;/strong&gt; 对应的测试用例，就是：&lt;/p&gt;
-
-        &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; func(t *T) {
-     for _, test := range tests {
-         t.Run(test.Name, test.F)
-     }
-     ...
- }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
-
-        &lt;p&gt;这里的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;tests&lt;/code&gt; 就是上面提到的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;TestXxx&lt;/code&gt; 测试函数，即通常所说的测试用例。因为 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;tRunner&lt;/code&gt; 主要逻辑就是调用这个匿名函数，因此在这个地方，就会一个接一个的执行测试文件中定义个的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;TestXxx&lt;/code&gt; 函数。&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;tRunner&lt;/code&gt; 执行 &lt;strong&gt;t0&lt;/strong&gt; 的测试用例。这里我可以先说一个&lt;strong&gt;结论&lt;/strong&gt;：如果没有调用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;t.Parallel()&lt;/code&gt;，那么 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;t.Run()&lt;/code&gt; 的执行是阻塞的，会一直等到一个测试用例，即 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;TestXxx&lt;/code&gt; 函数执行完成后才返回。&lt;strong&gt;所以，默认情况下，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;go test&lt;/code&gt; 是串行的执行测试用例的&lt;/strong&gt;。为什么会这样等我们下面讲到 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;t.Run()&lt;/code&gt; 的实现时会再说。&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;到这里，我们就了解了 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;go test&lt;/code&gt; 命令如何扫描测试代码，并且最终是如何调用我们的测试用例的。下面我们要分别看一下 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;tRunner&lt;/code&gt; 和 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;t.Run&lt;/code&gt; 这两个函数的实现细节。&lt;/p&gt;
-
-&lt;h3 id=&quot;trunner&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;tRunner&lt;/code&gt;&lt;/h3&gt;
-
-&lt;p&gt;函数 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;func tRunner(t *T, fn func(t *T))&lt;/code&gt; 的基本结构如下：&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;func tRunner(t *T, fn func(t *T)) {
-	defer func() {
-		// handle panic
-
-		defer func() {
-			if didPanic {
-				return
-			}
-			if err != nil {
-				panic(err)
-			}
-			t.signal &amp;lt;- signal // 这个 signal 会让父用例的等待返回，见下文 t.Run 的说明。
-		}()
-
-		// handle subtests
-		if len(t.sub) &amp;gt; 0 {
-			// release 相当于释放一个锁，使得子用例可以执行。
-			t.context.release()
-			// 关闭这个 channel，表示当前用例的所有逻辑都处理完了，子用例可以开始执行。
-			close(t.barrier)
-			// 等待每个子用例执行完成。
-			for _, sub := range t.sub {
-				&amp;lt;-sub.signal
-			}
-		}
-		...
-	}()
-
-	fn(t)
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;整个 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;tRunner&lt;/code&gt; 函数的主要部分就两个，首先在函数内调用测试用例 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fn&lt;/code&gt;，然后在 defer 里处理 panic 以及等待子用例的完成。从上面的代码可以得到如下结论：&lt;strong&gt;父用例一定要先执行完，子用例才有机会执行&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;h3 id=&quot;trun&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;t.Run&lt;/code&gt;&lt;/h3&gt;
-
-&lt;p&gt;方法 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;func (t *T) Run(name string, f func(t *T))&lt;/code&gt; 的基本结构如下：&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;func (t *T) Run(name string f func(t *T)) bool {
-	...
-
-	// 生成一个新的 t，会集成父亲的`t.common` 部分。这里代码命名有些换乱，其实新的 t 称为 subt 更好。
-	// 为了描述更清晰，我们统一使用 subt 这个名字来表示子用例。
-	t = &amp;amp;T{
-		common: common{
-			barrier: make(chan bool),
-			signal:  make(chan bool),
-			name:    testName,
-			parent:  &amp;amp;t.common,
-			level:   t.level + 1,
-			creator: pc[:n],
-			chatty:  t.chatty,
-		},
-		context: t.context,
-	}
-	...
-	go tRunner(t, f) // 使用 subt 来运行测试用例 f
-	if !&amp;lt;-t.signal { // 等待 subt 执行完成
-		runtime.Goexit()
-	}
-	return !t.failed
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;t.Run&lt;/code&gt; 的主要逻辑就是生成一个 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;subt&lt;/code&gt;，然后等待 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;subt&lt;/code&gt; 执行完成。这里的等待分为两个情况：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;默认情况下，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;subt&lt;/code&gt; 会在执行完成后才执行 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;t.signal &amp;lt;- signal&lt;/code&gt; 操作（见上一小节），所以此时这里是阻塞等待。上面我们也提到了，在最开始的时候，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;runTests&lt;/code&gt; 函数里 &lt;strong&gt;t0&lt;/strong&gt; 对应的测试用例就是对每个用例调用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;t.Run&lt;/code&gt;，因此默认情况下，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;runTests&lt;/code&gt; 是逐个执行用例的。&lt;/li&gt;
-  &lt;li&gt;如果有用例调用了 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;t.Parallel()&lt;/code&gt;，那么这里就会返回（详情见下一章）。所以如果一个 package 里每个用例都调用了 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;t.Parallel()&lt;/code&gt;，那么 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;runTests&lt;/code&gt; 里的 &lt;strong&gt;t0&lt;/strong&gt; 用例就会立刻返回。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;接下来，我们看一下 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;T&lt;/code&gt; 这个结构体：&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;type T struct {
-	common
-	isParallel bool
-	context    *testContext // For running tests and subtests.
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;你会发现，在 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;t.Run&lt;/code&gt; 函数里，还有一个需要注意的地方，就是新建的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;subt&lt;/code&gt; 没有继承父亲 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;t&lt;/code&gt; 的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;isParallel&lt;/code&gt; 的值，因此一个用例的所有子用例，默认是串行的。&lt;/p&gt;
-
-&lt;h2 id=&quot;并行流程&quot;&gt;并行流程&lt;/h2&gt;
-
-&lt;p&gt;Golang 在 1.7 版本增加了子用例的支持，同时也支持了用例的并行执行： &lt;em&gt;&lt;a href=&quot;https://blog.golang.org/subtests&quot;&gt;https://blog.golang.org/subtests&lt;/a&gt;&lt;/em&gt;. 官方的这篇 blog 有简述了并行的实现，现在我们从代码上来分析它是如何实现的。&lt;/p&gt;
-
-&lt;p&gt;实现并行的关键就是 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;t.Parallel&lt;/code&gt; 函数。上文我们提到，当父用例调用子用例时，即通过 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;t.Run&lt;/code&gt; 方法来执行子用例时，默认情况下会阻塞在 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&amp;lt;-subt.signal&lt;/code&gt; 这里。但是当子用例调用了 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;t.Parallel&lt;/code&gt; 方法时，这里就会返回。我们可以在 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;t.Parallel&lt;/code&gt; 的代码中看到相关逻辑：&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;func (t *T) Parallel() {
-    t.isParallel = true
-	...
-	// 将自己加入父亲的 sub 列表中。
-    t.parent.sub = append(t.parent.sub, t)
-	...
-
-	// 这里直接写入成功，会使得 t.Run() 里的等待返回。
-    t.signal &amp;lt;- true
-	// 这里等待父用例调用 close(t.barrier)，上面提到了，这个会在 tRunner 的 defer 中调用。
-    &amp;lt;-t.parent.barrier
-	// 并发控制，通过这个来控制用例并发数。当并发数不够时，会一直阻塞在这里。
-    t.context.waitParallel()
-
-	...
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;结合上文的相关信息，我们现在知道用例的并行执行是这样进行的：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;父用例 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;t&lt;/code&gt; 的代码中会调用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;t.Run&lt;/code&gt; 来执行子用例。&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;t.Run&lt;/code&gt; 内会生成子用例 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;subt&lt;/code&gt;，然后调用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;tRunner&lt;/code&gt; 来执行 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;subt&lt;/code&gt;，并且等待 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;subt&lt;/code&gt; 执行完成(&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&amp;lt;-subt.signal&lt;/code&gt;)。&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;subt&lt;/code&gt; 在执行的时候调用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;subt.Parallel()&lt;/code&gt;:
-    &lt;ol&gt;
-      &lt;li&gt;其中 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;subt.signal &amp;lt;- true&lt;/code&gt; 会导致上面 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;t&lt;/code&gt; 的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&amp;lt;-subt.signal&lt;/code&gt; 返回。&lt;/li&gt;
-      &lt;li&gt;然后 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;subt&lt;/code&gt; 会阻塞在 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&amp;lt;-subt.parent.barrier&lt;/code&gt; 这里，等待父用例的函数返回（即 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;tRunner&lt;/code&gt; 里调用的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fn(t)&lt;/code&gt; 返回）。&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-  &lt;li&gt;父用例 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;t&lt;/code&gt; 的函数执行完返回后，会在 defer 里 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;close(t.barrier)&lt;/code&gt;，以便子用例执行。&lt;/li&gt;
-  &lt;li&gt;父用例等待子用例执行完。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;重点强调一下，父用例调用子用例后，一定要返回，否则子用例无法执行。上述流程如下图所示：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://diabloneo.github.io//assets/imgs/00032_golang_testing_parallel_1.png&quot; alt=&quot;golang_testing_parallel_1&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;testifysuite-与并行&quot;&gt;testify/suite 与并行&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;github.com/stretchr/testify&lt;/strong&gt; 这个库提供了 suite 功能，可以让我们编写测试用例更加方便。当我们使用这个库时，我们一般是这么写的：&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;package somename
-
-import (
-	&quot;testing&quot;
-
-	&quot;github.com/stretchr/testify/suite&quot;
-)
-
-func TestXxxSuite(t1 *testing.T) {
-    suite.Run(t, new(xxxSuite))
-}
-
-type xxxSuite struct {
-}
-
-func (s *xxxSuite) SetupSuite() {
-}
-
-func (s *xxxSuite) TearDownSuite() {
-}
-
-func (s *xxxSuite) SetupTest() {
-}
-
-func (s *xxxSuite) TearDownTest() {
-}
-
-func (s *xxxSuite) TestCase1() {
-	// t1sub1
-}
-
-func (s *xxxSuite) TestCase2() {
-	// t1sub2
-}
-
-func TestYyySuite(t2 *testing.T) {
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;我们先来看一下 &lt;strong&gt;suite&lt;/strong&gt; 库执行用例的流程。在上文中，我们已经知道，整个 package 的用例执行入口是 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;runTests&lt;/code&gt; 函数，里面会生成顶级的 &lt;strong&gt;t0&lt;/strong&gt;。&lt;strong&gt;t0&lt;/strong&gt; 在执行时，就会对每个顶级的函数调用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;t0.Run()&lt;/code&gt; 方法，这个方法里会生成一个新的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;subt&lt;/code&gt;，用于执行我们的顶级测试函数，在这里就是 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;TestXxxSuite&lt;/code&gt; 和 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;TestYyySuite&lt;/code&gt;，我们将这个 &lt;strong&gt;t0&lt;/strong&gt; 的儿子称为 &lt;strong&gt;t1&lt;/strong&gt; 和 &lt;strong&gt;t2&lt;/strong&gt;，分别对应 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;TestXxxSuite&lt;/code&gt; 和 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;TestYyySuite&lt;/code&gt;。&lt;/p&gt;
-
-&lt;p&gt;接下来，我们来分析一下 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;suite.Run&lt;/code&gt; 的实现，通过了解它的实现，我们可以知道 &lt;strong&gt;suite&lt;/strong&gt; 库是如何组织用例的。&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;suite.Run&lt;/code&gt; 的基本结构如下：&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// Run 函数属于 pacagek github.com/stretchr/suite
-func Run(t *testing.T, suite TestingSuite) {
-
-	// 扫描 suite 结构体，得到所有的以 Test 开头的方法，这些方法组成该 suite 下的所有用例。
-	// 遍历每个方法，即每个测试用例
-	for eachMethod {
-		// 判断是否需要执行 SetupSuite 方法，这个方法对于整个 suite 只会执行一次。
-		// 为当前正在处理的方法生成一个 testing.InternalTest 结构体，其中的成员 F 会调用测试用例对应的方法，F 的结构如下：
-		// F {
-		//	call SetupTest
-		//	call BeforeTest
-		//  call the method
-		//  call AfterTest
-		//  call TearDownTest
-		// }
-	}
-
-	// 使用 t.Run 方法来执行刚才生成的所有测试用例，这里的 t 是对应 TestXxxSuite 函数
-	// 等所有用例都返回（这里只是返回，并不是用例执行完，下面会详细说）
-	// 执行 TearDownSuite
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;在上面的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Run&lt;/code&gt; 函数中，使用了前文提到的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;t.Run&lt;/code&gt; 方法来执行子用例，也就是说会生成下一层的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;subt&lt;/code&gt;，例如 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;t1sub1&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;t2sub2&lt;/code&gt; 等，如下图所示：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://diabloneo.github.io//assets/imgs/00033_golang_testing_parallel_2.png&quot; alt=&quot;golang_testing_parallel_2&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;现在我们可以来分析一下使用 &lt;strong&gt;suite&lt;/strong&gt; 库时，如何进行并行测试。首先，串行的流程如下：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;runTests&lt;/code&gt; 创建 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;t0&lt;/code&gt;。&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;runTests&lt;/code&gt; 将每个顶级函数作为子用例来执行，生成 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;t1&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;t2&lt;/code&gt; 等。&lt;/li&gt;
-  &lt;li&gt;顶级函数 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;TestXxxSuite&lt;/code&gt; 调用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;suite.Run&lt;/code&gt; 函数，为一个 suite 中的每个方法生成一个子用例，然后执行所有的子用例。等待所有的子用例都执行之后，该顶级函数才返回。&lt;/li&gt;
-  &lt;li&gt;继续执行下一个顶级函数 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;TestYyySuite&lt;/code&gt;。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;总的来说，所有用例都是串行执行的，每次按照顺序执行一个 suite 内的所有用例。&lt;/p&gt;
-
-&lt;p&gt;当我们考虑在这个流程中启用并行时，需要考虑如下几个方面的问题：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;一个 suite 内的每个测试用例是共享同一个 suite 的内存的，所以如果在这些方法上开启并行，那么就得考虑对共享的内存进行保护。&lt;/li&gt;
-  &lt;li&gt;如果在一个 suite 内的测试用例上启用并行，那么需要注意，属于其父用例的函数必须执行结束后，这些子用例才会开始执行。所以，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;TearDownSuite&lt;/code&gt; 这个方法就会变成在所有的子用例执行之前就要执行完，这个有点违背接口的含义。&lt;/li&gt;
-  &lt;li&gt;不同 suite 之间虽然没有共享 suite 结构体的内存，但是也可能共享其他的全局变量，这就需要业务代码进行一定的调整。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;综上所述，在使用 &lt;strong&gt;suite&lt;/strong&gt; 库时，如果要启用并行测试，一个比较可行的策略是： &lt;strong&gt;每个 suite 间启用并行，suite 内则使用串行&lt;/strong&gt;。具体做法可以参考下面这几个步骤：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;在 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;suite.SetupSuite&lt;/code&gt; 内调用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;t.Parallel()&lt;/code&gt;，使得该 suite 进入并行状态。不过因为 parallel 设置是不传递给子用例的，所以该 suite 的所有子用例还是会串行执行。&lt;/li&gt;
-  &lt;li&gt;如果被测试的代码共享了全局变量，那么需要修改被测试代码。&lt;/li&gt;
-  &lt;li&gt;一个 suite 内的每个测试用例的配套方法（&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SetupTest&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;BeforeTest&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;AfterTest&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;TearDownTest&lt;/code&gt;）可以直接访问 suite 内存而不用加锁，因为 suite 内的每个用例都是串行执行的。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;示例代码如下：&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;package somename
-
-import (
-	&quot;testing&quot;
-
-	&quot;github.com/stretchr/testify/suite&quot;
-)
-
-func TestXxxSuite(t1 *testing.T) {
-    suite.Run(t, new(xxxSuite))
-}
-
-type xxxSuite struct {
-}
-
-func (s *xxxSuite) SetupSuite() {
-	// Let the suite running in parallel with other suites.
-	s.T().Parallel()
-}
-
-func (s *xxxSuite) TearDownSuite() {
-}
-
-func (s *xxxSuite) SetupTest() {
-	// visit fields of s
-}
-
-func (s *xxxSuite) TearDownTest() {
-	// visit fields of s
-}
-
-func (s *xxxSuite) TestCase1() {
-	// t1sub1
-}
-
-func (s *xxxSuite) TestCase2() {
-	// t1sub2
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-</description>
-        <pubDate>Tue, 03 Aug 2021 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2021/08/03/golang-testing-parallel/</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2021/08/03/golang-testing-parallel/</guid>
-        
-        <category>golang</category>
         
         
       </item>
