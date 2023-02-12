@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78067453-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78067453-1');
+</script>
+
+	
+
+	<title>Kubernetes 代码笔记 -- 1</title>
+	<meta name="description" content="apiserver 中的路由注册">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/css/main.css">
+	<link rel="stylesheet" href="/css/pygments-rainbow_dash.css">
+	<link rel="canonical" href="http://diabloneo.github.io//2023/02/11/kubernetes-code-note-1/">
+	<link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
+</head>
+
+
+  <body>
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">Coffee, Coke and Code</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <a class="page-link" href="/tags">Tags</a>
+        <a class="page-link" href="/feed.xml">RSS</a>
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Kubernetes 代码笔记 -- 1</h1>
+    <p class="post-meta"><time datetime="2023-02-11T00:00:00+08:00" itemprop="datePublished">Feb 11, 2023</time></p>
+  </header>
+
+  <div class="post-tags">
+    <ul>
+      
+      <li>
+        <a href="/tags/kubernetes/">kubernetes</a>
+      </li>
+      
+    </ul>
+  </div>
+
+  <div class="post-content" itemprop="articleBody">
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+    <br />
+      <h2 id="apiserver-中的路由注册">apiserver 中的路由注册</h2>
+
+<h3 id="在哪里进行的路由注册">在哪里进行的路由注册？</h3>
+
+<p>我们以 core API 为例 (也称为 legacy API)，kube-apiserver 从启动开始，到开始注册 go-restful 之前的代码路径是：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-&gt; cmd/kube-apiserver/app/server.go: func CreateServerChain()
+	-&gt; cmd/kube-apiserver/app/server.go: func CreateKubeAPIServer()
+		-&gt; pkg/controlplane/instance.go: func (c *completedConfig) New()
+			-&gt; k8s.io/apiserver/pkg/server/config.go func (c completedConfig) New()
+				-&gt; k8s.io/apiserver/pkg/server/handler.go NewAPIServerHandler()
+					# 这里会初始化 restful.Container
+				-&gt; k8s.io/apiserver/pkg/server/config.go installAPI()
+					# 这里会添加 profile, metric 等固定的 API
+			-&gt; pkg/controlplane/instance.go: func (m *Instance) InstallLegacyAPI()
+				-&gt; k8s.io/apiserver/pkg/server/genericapiserver.go: func (s *GenericAPIServer) InstallLegacyAPIGroup()
+					-&gt; k8s.io/apiserver/pkg/server/genericapiserver.go: func (s *GenericAPIServer) installAPIResources()
+						-&gt; k8s.io/apiserver/pkg/endpoints/groupversion.go: func (g *APIGroupVersion) InstallREST()
+							-&gt; k8s.io/apiserver/pkg/endpoints/installer.go: func (a *APIInstaller) Install()
+								# 这里会创建 restful.WebService 对象
+								-&gt; k8s.io/apiserver/pkg/endpoints/installer.go: func (a *APIInstaller) registerResourceHandlers()
+									# 这个函数很长，大概有 800 行，就是根据 API 对象的信息，向 restful.WebService 中添加路由。
+							# 将得到的 restful.WebService 添加到 restful.Container 中。
+</code></pre></div></div>
+
+<p>上面是大概的流程结束之后，就会开始运行 apiserver，大概流程是如下：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-&gt; cmd/kube-apiserver/app/server.go: Run()
+	-&gt; k8s.io/kube-aggregator/pkg/apiserver/apiserver.go: func (s *APIAggregator) PrepareRun()
+		-&gt; k8s.io/apiserver/pkg/server/genericapiserver.go: func (s *GenericAPIServer) PrepareRun()
+	-&gt; k8s.io/kube-aggregator/pkg/apiserver/apiserver.go: func (s preparedAPIAggregator) Run()
+		-&gt; k8s.io/apiserver/pkg/server/genericapiserver.go: func (s preparedGenericAPIServer) Run()
+			# 这里最终根据 GenericAPIServer.APIServerHandler 来创建 http server
+			# GenericAPIServer.APIServerHandler 则会将请求路由到它内部的 restful.Container 中，
+			# 这个 container 包含了我们注册的 API
+</code></pre></div></div>
+
+<h3 id="注册了哪些路由">注册了哪些路由？</h3>
+
+<p>上一小节提到了，每个资源的 <code class="language-plaintext highlighter-rouge">restful.WebService</code> 中注册的路由都在如下方法中实现：</p>
+
+<p><code class="language-plaintext highlighter-rouge">k8s.io/apiserver/pkg/endpoints/installer.go: func (a *APIInstaller) registerResourceHandlers()</code></p>
+
+<p>这个函数的主要工具就是根据 <code class="language-plaintext highlighter-rouge">APIGroupVersion</code> 的信息生成需要添加到 <code class="language-plaintext highlighter-rouge">restful.WebService</code> 中的 route 内容，最主要部分就是指定 <code class="language-plaintext highlighter-rouge">path</code> 和 <code class="language-plaintext highlighter-rouge">handler</code>，如下代码所示：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>			route := ws.GET(action.Path).To(handler).	
+</code></pre></div></div>
+
+<p>因为 kubernetes 的所有资源的 API 都是统一的，所以你可以在这个函数里看到所有 API 的路由实现。</p>
+
+<h3 id="路由的-handler-在哪里">路由的 handler 在哪里？</h3>
+
+<p>找到一个路由后，我们就知道了 path，解析来还需要知道它是如何被 handle 的，也就是要找到 handler 的实现。</p>
+
+<p>只要你继续跟进 <code class="language-plaintext highlighter-rouge">func (a *APIInstaller) registerResourceHandlers()</code> 的代码，就会发现，所有的 handler 都是在</p>
+
+<p><code class="language-plaintext highlighter-rouge">k8s.io/apiserver/pkg/endpoints/handlers</code> 这个模块中实现的。比如资源的 List 接口，就是在如下位置实现：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>k8s.io/apiserver/pkg/endpoints/handlers/get.go: func ListResource()
+</code></pre></div></div>
+
+<p>在这个函数里，你可以看到 List 的实现，以及 Watch 的实现。</p>
+
+<h3 id="handler-和资源的实现是如何关联起来的">Handler 和资源的实现是如何关联起来的？</h3>
+
+<p>上面提到的功能，都是 apiserver 统一实现的，也就是说，每个资源都不需要自己实现这些部分。每个资源需要实现的部分，主要是数据操作部分。</p>
+
+<h4 id="registry">Registry</h4>
+
+<p>这就要提到 <strong>registry</strong>  这个概念了，这个 registry 是 kubernetes 项目内部的代码上的概念，不是容器镜像那个概念。</p>
+
+<p>在代码中可以找到这个概念的官方说明：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// Package registry contains the generic implementation of the storage and system logic.
+package registry // import "k8s.io/apiserver/pkg/registry"
+</code></pre></div></div>
+
+<p>再简化一点的说，就是 kubernetes 项目中的 model 层。因为 k8s 使用 etcd 作为存储，所以就是一个使用 etcd 作为存储的 model 层。</p>
+
+<h4 id="storage-interface">Storage Interface</h4>
+
+<p><em>k8s.io/apiserver/pkg/registry/rest/rest.go</em> 这个文件定义了存储的接口，代码中的一段注释说明了这个接口的定义：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// Storage interfaces need to be separated into two groups; those that operate
+// on collections and those that operate on individually named items.
+// Collection interfaces:
+// (Method: Current -&gt; Proposed)
+//    GET: Lister -&gt; CollectionGetter
+//    WATCH: Watcher -&gt; CollectionWatcher
+//    CREATE: Creater -&gt; CollectionCreater
+//    DELETE: (n/a) -&gt; CollectionDeleter
+//    UPDATE: (n/a) -&gt; CollectionUpdater
+//
+// Single item interfaces:
+// (Method: Current -&gt; Proposed)
+//    GET: Getter -&gt; NamedGetter
+//    WATCH: (n/a) -&gt; NamedWatcher
+//    CREATE: (n/a) -&gt; NamedCreater
+//    DELETE: Deleter -&gt; NamedDeleter
+//    UPDATE: Update -&gt; NamedUpdater
+</code></pre></div></div>
+
+<p>还有一个 <code class="language-plaintext highlighter-rouge">Storage</code> 的 interface:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// Storage is a generic interface for RESTful storage services.
+// Resources which are exported to the RESTful API of apiserver need to implement this interface. It is expected
+// that objects may implement any of the below interfaces.
+type Storage interface {
+	// New returns an empty object that can be used with Create and Update after request data has been put into it.
+	// This object must be a pointer type for use with Codec.DecodeInto([]byte, runtime.Object)
+	New() runtime.Object
+
+	// Destroy cleans up its resources on shutdown.
+	// Destroy has to be implemented in thread-safe way and be prepared
+	// for being called more than once.
+	Destroy()
+}
+</code></pre></div></div>
+
+<p>这个类型，就是传递给上面那个添加路由函数的第二个参数：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>func (a *APIInstaller) registerResourceHandlers(path string, storage rest.Storage, ws *restful.WebService) (*metav1.APIResource, *storageversion.ResourceInfo, error) {
+}
+</code></pre></div></div>
+
+<p>因此，每个通过这个方法添加到 apiserver 的资源，都实现了 <code class="language-plaintext highlighter-rouge">rest.Storage</code> 这个接口。并且，还有可能实现其他的接口，如果有实现，就会添加对应的 API。<strong>因此，我们要看一个资源如何实现自己的 API 时，应该是去找它的 storage 实现。</strong></p>
+
+<h4 id="legacy-api-storage">Legacy API Storage</h4>
+
+<p>上面提到的这个方法 <code class="language-plaintext highlighter-rouge">pkg/controlplane/instance.go: func (m *Instance) InstallLegacyAPI()</code> 会在创建 apiserver 的时候被调用到，其中会添加我们最熟悉的那些资源的 storage，比如 pod。我们来具体看一下 pod 的 storage 添加的过程：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-&gt; pkg/controlplane/instance.go: func (m *Instance) InstallLegacyAPI()
+	-&gt; pkg/registry/core/rest/storage_ore.go: func (c LegacyRESTStorageProvider) NewLegacyRESTStorage()
+		-&gt; pkg/registry/core/pod/storage/storage.go: func NewStorage()
+</code></pre></div></div>
+
+<p>Pod 的 <code class="language-plaintext highlighter-rouge">NewStorage()</code> 函数会返回一个 <code class="language-plaintext highlighter-rouge">PodStorage</code> 对象：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// PodStorage includes storage for pods and all sub resources
+type PodStorage struct {
+	Pod                 *REST
+	Binding             *BindingREST
+	LegacyBinding       *LegacyBindingREST
+	Eviction            *EvictionREST
+	Status              *StatusREST
+	EphemeralContainers *EphemeralContainersREST
+	Log                 *podrest.LogREST
+	Proxy               *podrest.ProxyREST
+	Exec                *podrest.ExecREST
+	Attach              *podrest.AttachREST
+	PortForward         *podrest.PortForwardREST
+}
+</code></pre></div></div>
+
+<p>这个对象里的 <code class="language-plaintext highlighter-rouge">Pod</code> 成员，就是实现了 pod 常规 API 所需的 storage 接口：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// REST implements a RESTStorage for pods
+type REST struct {
+	*genericregistry.Store
+	proxyTransport http.RoundTripper
+}
+</code></pre></div></div>
+
+<p>它的大部分方法都是内嵌的 <code class="language-plaintext highlighter-rouge">genericregistry.Store</code> 实现的，所以你可以在 <code class="language-plaintext highlighter-rouge">Store</code> 对象中找到 <code class="language-plaintext highlighter-rouge">List</code> 方法的实现：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// List returns a list of items matching labels and field according to the
+// store's PredicateFunc.
+func (e *Store) List(ctx context.Context, options *metainternalversion.ListOptions) (runtime.Object, error) {
+</code></pre></div></div>
+
+<p>这个方法就是实现了 <code class="language-plaintext highlighter-rouge">k8s.io/apiserver/pkg/registry/rest/rest.go: ListerInterface</code>中的 <code class="language-plaintext highlighter-rouge">List</code> 方法：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// Lister is an object that can retrieve resources that match the provided field and label criteria.
+type Lister interface {
+	// NewList returns an empty object that can be used with the List call.
+	// This object must be a pointer type for use with Codec.DecodeInto([]byte, runtime.Object)
+	NewList() runtime.Object
+	// List selects resources in the storage which match to the selector. 'options' can be nil.
+	List(ctx context.Context, options *metainternalversion.ListOptions) (runtime.Object, error)
+	// TableConvertor ensures all list implementers also implement table conversion
+	TableConvertor
+}
+</code></pre></div></div>
+
+<p>Pod 是一个很复杂的资源，还有很多其他的 storage 实现，以支持更多的 API：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># pkg/registry/core/rest/storage_ore.go: func (c LegacyRESTStorageProvider) NewLegacyRESTStorage()
+
+	storage := map[string]rest.Storage{}
+	if resource := "pods"; apiResourceConfigSource.ResourceEnabled(corev1.SchemeGroupVersion.WithResource(resource)) {
+		storage[resource] = podStorage.Pod
+		storage[resource+"/attach"] = podStorage.Attach
+		storage[resource+"/status"] = podStorage.Status
+		storage[resource+"/log"] = podStorage.Log
+		storage[resource+"/exec"] = podStorage.Exec
+		storage[resource+"/portforward"] = podStorage.PortForward
+		storage[resource+"/proxy"] = podStorage.Proxy
+		storage[resource+"/binding"] = podStorage.Binding
+		if podStorage.Eviction != nil {
+			storage[resource+"/eviction"] = podStorage.Eviction
+		}
+		storage[resource+"/ephemeralcontainers"] = podStorage.EphemeralContainers
+
+	}
+</code></pre></div></div>
+
+<h2 id="总结">总结</h2>
+
+<p>Kubernetes 的 API 实现代码很复杂，看代码是很容易被绕晕的。</p>
+
+<p>Storage 本身还有 cache 的实现，以及 etcd 访问的实现，本文并没有涉及。</p>
+
+    <br />
+
+    <div>
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议</a>进行许可。
+    </div>
+
+    <br />
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+  </div>
+
+  
+    <div class="post-comment">
+      
+<div id="disqus_thread"></div>
+<script>
+var disqus_config = function () {
+  this.page.url = "http://diabloneo.github.io/2023/02/11/kubernetes-code-note-1/"; // <--- use canonical URL
+  this.page.identifier = "/2023/02/11/kubernetes-code-note-1";
+};
+(function() { // DON'T EDIT BELOW THIS LINE
+  var d = document, s = d.createElement('script');
+
+  s.src = 'https://coffee-coke-and-code.disqus.com/embed.js';
+
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+    </div>
+  
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Coffee, Coke and Code</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>Coffee, Coke and Code</li>
+          <li><a href="mailto:diabloneo@gmail.com">diabloneo@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <i class="fa fa-github"></i>
+            <a href="https://github.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <i class="fa fa-twitter"></i>
+            <a href="https://twitter.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <i class="fa fa-weibo"></i>
+            <a href="https://weibo.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Archive diabloneo's articles.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
+  </body>
+
+</html>
