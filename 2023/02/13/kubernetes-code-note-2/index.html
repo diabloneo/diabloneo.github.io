@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78067453-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78067453-1');
+</script>
+
+	
+
+	<title>Kubernetes 代码笔记 -- 2</title>
+	<meta name="description" content="apimachinery 中的概念">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/css/main.css">
+	<link rel="stylesheet" href="/css/pygments-rainbow_dash.css">
+	<link rel="canonical" href="http://diabloneo.github.io//2023/02/13/kubernetes-code-note-2/">
+	<link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
+</head>
+
+
+  <body>
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">Coffee, Coke and Code</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <a class="page-link" href="/tags">Tags</a>
+        <a class="page-link" href="/feed.xml">RSS</a>
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Kubernetes 代码笔记 -- 2</h1>
+    <p class="post-meta"><time datetime="2023-02-13T00:00:00+08:00" itemprop="datePublished">Feb 13, 2023</time></p>
+  </header>
+
+  <div class="post-tags">
+    <ul>
+      
+      <li>
+        <a href="/tags/kubernetes/">kubernetes</a>
+      </li>
+      
+    </ul>
+  </div>
+
+  <div class="post-content" itemprop="articleBody">
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+    <br />
+      <h2 id="apimachinery-中的概念">apimachinery 中的概念</h2>
+
+<p>Kubernetes 的 api 相关代码中有很多概念都是 k8s 独有的，需要专门理解一下，才方便研究 k8s 代码。</p>
+
+<p>Kubebuilder 项目有一篇文章比较好的介绍了这些关键概念的理解，可以先阅读一下：<em><a href="https://book.kubebuilder.io/cronjob-tutorial/gvks.html">https://book.kubebuilder.io/cronjob-tutorial/gvks.html</a></em>。我这里写的是我个人的理解。</p>
+
+<h3 id="gvk-groupversionkind">GVK: <code class="language-plaintext highlighter-rouge">GroupVersionKind</code></h3>
+
+<p><em>k8s.io/apimachinery/pkg/runtime/schema/group_version.go</em></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// GroupVersionKind unambiguously identifies a kind.  It doesn't anonymously include GroupVersion
+// to avoid automatic coercion.  It doesn't use a GroupVersion to avoid custom marshalling
+type GroupVersionKind struct {
+	Group   string
+	Version string
+	Kind    string
+}
+</code></pre></div></div>
+
+<p>这个结构体包含了 API 的 group, version 和 kind 信息。这里的 kind 是对应的 Go 结构体的 type 名称。比如 <strong>StatefulSet</strong> 就是：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GroupVersionKind{Group: "apps", Version: "v1", Kind: "StatefulSet"}
+</code></pre></div></div>
+
+<h3 id="gvr-groupversionresource">GVR: <code class="language-plaintext highlighter-rouge">GroupVersionResource</code></h3>
+
+<p><em>k8s.io/apimachinery/pkg/runtime/schema/group_version.go</em></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// GroupVersionResource unambiguously identifies a resource.  It doesn't anonymously include GroupVersion
+// to avoid automatic coercion.  It doesn't use a GroupVersion to avoid custom marshalling
+type GroupVersionResource struct {
+	Group    string
+	Version  string
+	Resource string
+}
+</code></pre></div></div>
+
+<p>比如：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GroupVersionResource{Group: "rbac.authorization.k8s.io", Version: "v1", Resource: "clusterroles"}
+</code></pre></div></div>
+
+<p>这个结构体包含了 API 的 group, version 和 resource 信息。这里的 resource 对应的是 API 路径里的名字。很容易会搞混 resource 和 kind 的区别，我觉得可以这么理解：</p>
+
+<ul>
+  <li>Resource 是 API 侧的概念，是根据 API 路径推导出来的资源类型名称，例如 pods, deployments 等（下面会说单复数的问题）。</li>
+  <li>Kind 是 API 路径里得到这个资源类型名称所对应的 Go 的结构体的 type 名称。</li>
+</ul>
+
+<p>在现有的代码中，GVR 在 apiserver 端是比较少使用的，反而是在 controller 和 client 中会用得多一些。</p>
+
+<h4 id="apiserver-中的使用">apiserver 中的使用</h4>
+
+<p>下面这个函数中会添加 API 请求的 handler。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-&gt; k8s.io/apiserver/pkg/endpoints/installer.go: func (a *APIInstaller) registerResourceHandlers()
+</code></pre></div></div>
+
+<p>因为 <code class="language-plaintext highlighter-rouge">APIInstaller</code> 中已经包含了 <code class="language-plaintext highlighter-rouge">APIGroupVersion</code>，所以在添加的过程中，可以根据 <code class="language-plaintext highlighter-rouge">GroupVersion</code> 直接得到 GVK：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	fqKindToRegister, err := GetResourceKind(a.group.GroupVersion, storage, a.group.Typer)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	...
+
+	reqScope := handlers.RequestScope{
+		# 这里也生成了 GVR
+		Resource:    a.group.GroupVersion.WithResource(resource),
+	}
+</code></pre></div></div>
+
+<h4 id="restmapper"><code class="language-plaintext highlighter-rouge">RESTMapper</code></h4>
+
+<p>其他地方的使用更多的是依赖于 <code class="language-plaintext highlighter-rouge">RESTMapper</code> 来根据 GVR 获得 GVK。</p>
+
+<p>有好几种 <code class="language-plaintext highlighter-rouge">RESTMapper</code>，默认的如下：</p>
+
+<p><em>k8s.io/apimachinery/pkg/api/meta/restmapper.go</em></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// DefaultRESTMapper exposes mappings between the types defined in a
+// runtime.Scheme. It assumes that all types defined the provided scheme
+// can be mapped with the provided MetadataAccessor and Codec interfaces.
+//
+// The resource name of a Kind is defined as the lowercase,
+// English-plural version of the Kind string.
+// When converting from resource to Kind, the singular version of the
+// resource name is also accepted for convenience.
+//
+// TODO: Only accept plural for some operations for increased control?
+// (`get pod bar` vs `get pods bar`)
+type DefaultRESTMapper struct {
+	defaultGroupVersions []schema.GroupVersion
+
+	resourceToKind       map[schema.GroupVersionResource]schema.GroupVersionKind
+	kindToPluralResource map[schema.GroupVersionKind]schema.GroupVersionResource
+	kindToScope          map[schema.GroupVersionKind]RESTScope
+	singularToPlural     map[schema.GroupVersionResource]schema.GroupVersionResource
+	pluralToSingular     map[schema.GroupVersionResource]schema.GroupVersionResource
+}
+</code></pre></div></div>
+
+<p>从它的内容可以看出，它是在 resource 和 kind 之间做映射的。同时，它还指出了，resource name 是根据 kind 来的，小写且是复数。不过，为了方便，也支持单数形式的 resource name。</p>
+
+<p><code class="language-plaintext highlighter-rouge">DefaultRESTMapper</code> 实现了 <code class="language-plaintext highlighter-rouge">RESTMapper</code> interface。这个 interface 定义了一些方法用来实现转换，比如 <code class="language-plaintext highlighter-rouge">KindFor</code> 根据 GVR 得到 GVK:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	// KindFor takes a partial resource and returns the single match.  Returns an error if there are multiple matches
+	KindFor(resource schema.GroupVersionResource) (schema.GroupVersionKind, error)
+</code></pre></div></div>
+
+<p>根据使用场景补充，k8s 中还实现了好几个不同的 RESTMapper，比如 <code class="language-plaintext highlighter-rouge">MultiRESTMapper</code>, <code class="language-plaintext highlighter-rouge">DefferedDiscoveryRESTMapper</code> 等。</p>
+
+<h3 id="scheme"><code class="language-plaintext highlighter-rouge">Scheme</code></h3>
+
+<p><em>k8s.io/apimachinery/pkg/runtime/scheme.go</em></p>
+
+<p><code class="language-plaintext highlighter-rouge">Scheme</code> 的主要工作就是保存 Go 类型和对应的 API 信息之间的关系。通过它的一些成员可以看出它的设计目标就是保存这种映射关系：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>type Scheme struct {
+	// gvkToType allows one to figure out the go type of an object with
+	// the given version and name.
+	gvkToType map[schema.GroupVersionKind]reflect.Type
+
+	// typeToGVK allows one to find metadata for a given go object.
+	// The reflect.Type we index by should *not* be a pointer.
+	typeToGVK map[reflect.Type][]schema.GroupVersionKind
+
+	...
+}
+</code></pre></div></div>
+
+<p>一般来说，一大堆的 API 可以共用一个 <code class="language-plaintext highlighter-rouge">Scheme</code>，比如 legacy API 都是共用下面这个文件中的 <code class="language-plaintext highlighter-rouge">Scheme</code> 对象：<em>pkg/api/legacyscheme/scheme.go</em>。</p>
+
+<p>代码中一般是使用 <code class="language-plaintext highlighter-rouge">Scheme</code> 对象的 <code class="language-plaintext highlighter-rouge">AddKnownTypes</code> 方法把 Go 对象添加到 <code class="language-plaintext highlighter-rouge">Scheme</code> 中的。搜索这个方法可以找到 API 对象被添加的路径。以 rbac 为例：</p>
+
+<p><em>pkg/apis/rbac/register.go</em></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// GroupName is the name of this API group.
+const GroupName = "rbac.authorization.k8s.io"
+
+// SchemeGroupVersion is group version used to register these objects
+var SchemeGroupVersion = schema.GroupVersion{Group: GroupName, Version: runtime.APIVersionInternal}
+
+// SchemeBuilder is a function that calls Register for you.
+var (
+	SchemeBuilder = runtime.NewSchemeBuilder(addKnownTypes)
+	AddToScheme   = SchemeBuilder.AddToScheme
+)
+
+// Adds the list of known types to the given scheme.
+func addKnownTypes(scheme *runtime.Scheme) error {
+	scheme.AddKnownTypes(SchemeGroupVersion,
+		&amp;Role{},
+		&amp;RoleBinding{},
+		&amp;RoleBindingList{},
+		&amp;RoleList{},
+
+		&amp;ClusterRole{},
+		&amp;ClusterRoleBinding{},
+		&amp;ClusterRoleBindingList{},
+		&amp;ClusterRoleList{},
+	)
+	return nil
+}
+</code></pre></div></div>
+
+<p>另外，你可以根据上面代码中的 <code class="language-plaintext highlighter-rouge">AddToScheme</code> 方法推导出：当这个方法被调用时，就会执行这些添加操作。因此，也可以在代码中搜索 <code class="language-plaintext highlighter-rouge">rbac.*AddToScheme</code> 来找到添加的地方：</p>
+
+<p><em>pkg/apis/rbac/install/install.go</em></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>func init() {
+	Install(legacyscheme.Scheme)
+}
+
+// Install registers the API group and adds types to a scheme
+func Install(scheme *runtime.Scheme) {
+	utilruntime.Must(rbac.AddToScheme(scheme))
+	utilruntime.Must(v1.AddToScheme(scheme))
+	utilruntime.Must(v1beta1.AddToScheme(scheme))
+	utilruntime.Must(v1alpha1.AddToScheme(scheme))
+	utilruntime.Must(scheme.SetVersionPriority(v1.SchemeGroupVersion, v1beta1.SchemeGroupVersion, v1alpha1.SchemeGroupVersion))
+}
+</code></pre></div></div>
+
+<p>所以，只要这个 pkg 被 import，rbac 的这些信息就会被注册到 legacy 的 <code class="language-plaintext highlighter-rouge">Scheme</code> 中。在这个 API Group 的 storage 被初始化的时候，这个 pkg 就会被 import：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-&gt; pkg/registry/rbac/rest/storage_rest.go: func (p RESTStorageProvider) NewRESTStorage()
+</code></pre></div></div>
+
+
+    <br />
+
+    <div>
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议</a>进行许可。
+    </div>
+
+    <br />
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+  </div>
+
+  
+    <div class="post-comment">
+      
+<div id="disqus_thread"></div>
+<script>
+var disqus_config = function () {
+  this.page.url = "http://diabloneo.github.io/2023/02/13/kubernetes-code-note-2/"; // <--- use canonical URL
+  this.page.identifier = "/2023/02/13/kubernetes-code-note-2";
+};
+(function() { // DON'T EDIT BELOW THIS LINE
+  var d = document, s = d.createElement('script');
+
+  s.src = 'https://coffee-coke-and-code.disqus.com/embed.js';
+
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+    </div>
+  
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Coffee, Coke and Code</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>Coffee, Coke and Code</li>
+          <li><a href="mailto:diabloneo@gmail.com">diabloneo@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <i class="fa fa-github"></i>
+            <a href="https://github.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <i class="fa fa-twitter"></i>
+            <a href="https://twitter.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <i class="fa fa-weibo"></i>
+            <a href="https://weibo.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Archive diabloneo's articles.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
+  </body>
+
+</html>

@@ -6,9 +6,211 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 12 Feb 2023 23:42:48 +0800</pubDate>
-    <lastBuildDate>Sun, 12 Feb 2023 23:42:48 +0800</lastBuildDate>
+    <pubDate>Wed, 15 Feb 2023 00:16:06 +0800</pubDate>
+    <lastBuildDate>Wed, 15 Feb 2023 00:16:06 +0800</lastBuildDate>
     <generator>Jekyll v4.3.1</generator>
+    
+      <item>
+        <title>Kubernetes 代码笔记 -- 2</title>
+        <description>&lt;h2 id=&quot;apimachinery-中的概念&quot;&gt;apimachinery 中的概念&lt;/h2&gt;
+
+&lt;p&gt;Kubernetes 的 api 相关代码中有很多概念都是 k8s 独有的，需要专门理解一下，才方便研究 k8s 代码。&lt;/p&gt;
+
+&lt;p&gt;Kubebuilder 项目有一篇文章比较好的介绍了这些关键概念的理解，可以先阅读一下：&lt;em&gt;&lt;a href=&quot;https://book.kubebuilder.io/cronjob-tutorial/gvks.html&quot;&gt;https://book.kubebuilder.io/cronjob-tutorial/gvks.html&lt;/a&gt;&lt;/em&gt;。我这里写的是我个人的理解。&lt;/p&gt;
+
+&lt;h3 id=&quot;gvk-groupversionkind&quot;&gt;GVK: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GroupVersionKind&lt;/code&gt;&lt;/h3&gt;
+
+&lt;p&gt;&lt;em&gt;k8s.io/apimachinery/pkg/runtime/schema/group_version.go&lt;/em&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// GroupVersionKind unambiguously identifies a kind.  It doesn&apos;t anonymously include GroupVersion
+// to avoid automatic coercion.  It doesn&apos;t use a GroupVersion to avoid custom marshalling
+type GroupVersionKind struct {
+	Group   string
+	Version string
+	Kind    string
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;这个结构体包含了 API 的 group, version 和 kind 信息。这里的 kind 是对应的 Go 结构体的 type 名称。比如 &lt;strong&gt;StatefulSet&lt;/strong&gt; 就是：&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;GroupVersionKind{Group: &quot;apps&quot;, Version: &quot;v1&quot;, Kind: &quot;StatefulSet&quot;}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;gvr-groupversionresource&quot;&gt;GVR: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GroupVersionResource&lt;/code&gt;&lt;/h3&gt;
+
+&lt;p&gt;&lt;em&gt;k8s.io/apimachinery/pkg/runtime/schema/group_version.go&lt;/em&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// GroupVersionResource unambiguously identifies a resource.  It doesn&apos;t anonymously include GroupVersion
+// to avoid automatic coercion.  It doesn&apos;t use a GroupVersion to avoid custom marshalling
+type GroupVersionResource struct {
+	Group    string
+	Version  string
+	Resource string
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;比如：&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;GroupVersionResource{Group: &quot;rbac.authorization.k8s.io&quot;, Version: &quot;v1&quot;, Resource: &quot;clusterroles&quot;}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;这个结构体包含了 API 的 group, version 和 resource 信息。这里的 resource 对应的是 API 路径里的名字。很容易会搞混 resource 和 kind 的区别，我觉得可以这么理解：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Resource 是 API 侧的概念，是根据 API 路径推导出来的资源类型名称，例如 pods, deployments 等（下面会说单复数的问题）。&lt;/li&gt;
+  &lt;li&gt;Kind 是 API 路径里得到这个资源类型名称所对应的 Go 的结构体的 type 名称。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;在现有的代码中，GVR 在 apiserver 端是比较少使用的，反而是在 controller 和 client 中会用得多一些。&lt;/p&gt;
+
+&lt;h4 id=&quot;apiserver-中的使用&quot;&gt;apiserver 中的使用&lt;/h4&gt;
+
+&lt;p&gt;下面这个函数中会添加 API 请求的 handler。&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;-&amp;gt; k8s.io/apiserver/pkg/endpoints/installer.go: func (a *APIInstaller) registerResourceHandlers()
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;因为 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;APIInstaller&lt;/code&gt; 中已经包含了 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;APIGroupVersion&lt;/code&gt;，所以在添加的过程中，可以根据 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GroupVersion&lt;/code&gt; 直接得到 GVK：&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;	fqKindToRegister, err := GetResourceKind(a.group.GroupVersion, storage, a.group.Typer)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	...
+
+	reqScope := handlers.RequestScope{
+		# 这里也生成了 GVR
+		Resource:    a.group.GroupVersion.WithResource(resource),
+	}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;restmapper&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;RESTMapper&lt;/code&gt;&lt;/h4&gt;
+
+&lt;p&gt;其他地方的使用更多的是依赖于 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;RESTMapper&lt;/code&gt; 来根据 GVR 获得 GVK。&lt;/p&gt;
+
+&lt;p&gt;有好几种 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;RESTMapper&lt;/code&gt;，默认的如下：&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;k8s.io/apimachinery/pkg/api/meta/restmapper.go&lt;/em&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// DefaultRESTMapper exposes mappings between the types defined in a
+// runtime.Scheme. It assumes that all types defined the provided scheme
+// can be mapped with the provided MetadataAccessor and Codec interfaces.
+//
+// The resource name of a Kind is defined as the lowercase,
+// English-plural version of the Kind string.
+// When converting from resource to Kind, the singular version of the
+// resource name is also accepted for convenience.
+//
+// TODO: Only accept plural for some operations for increased control?
+// (`get pod bar` vs `get pods bar`)
+type DefaultRESTMapper struct {
+	defaultGroupVersions []schema.GroupVersion
+
+	resourceToKind       map[schema.GroupVersionResource]schema.GroupVersionKind
+	kindToPluralResource map[schema.GroupVersionKind]schema.GroupVersionResource
+	kindToScope          map[schema.GroupVersionKind]RESTScope
+	singularToPlural     map[schema.GroupVersionResource]schema.GroupVersionResource
+	pluralToSingular     map[schema.GroupVersionResource]schema.GroupVersionResource
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;从它的内容可以看出，它是在 resource 和 kind 之间做映射的。同时，它还指出了，resource name 是根据 kind 来的，小写且是复数。不过，为了方便，也支持单数形式的 resource name。&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;DefaultRESTMapper&lt;/code&gt; 实现了 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;RESTMapper&lt;/code&gt; interface。这个 interface 定义了一些方法用来实现转换，比如 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;KindFor&lt;/code&gt; 根据 GVR 得到 GVK:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;	// KindFor takes a partial resource and returns the single match.  Returns an error if there are multiple matches
+	KindFor(resource schema.GroupVersionResource) (schema.GroupVersionKind, error)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;根据使用场景补充，k8s 中还实现了好几个不同的 RESTMapper，比如 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;MultiRESTMapper&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;DefferedDiscoveryRESTMapper&lt;/code&gt; 等。&lt;/p&gt;
+
+&lt;h3 id=&quot;scheme&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Scheme&lt;/code&gt;&lt;/h3&gt;
+
+&lt;p&gt;&lt;em&gt;k8s.io/apimachinery/pkg/runtime/scheme.go&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Scheme&lt;/code&gt; 的主要工作就是保存 Go 类型和对应的 API 信息之间的关系。通过它的一些成员可以看出它的设计目标就是保存这种映射关系：&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;type Scheme struct {
+	// gvkToType allows one to figure out the go type of an object with
+	// the given version and name.
+	gvkToType map[schema.GroupVersionKind]reflect.Type
+
+	// typeToGVK allows one to find metadata for a given go object.
+	// The reflect.Type we index by should *not* be a pointer.
+	typeToGVK map[reflect.Type][]schema.GroupVersionKind
+
+	...
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;一般来说，一大堆的 API 可以共用一个 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Scheme&lt;/code&gt;，比如 legacy API 都是共用下面这个文件中的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Scheme&lt;/code&gt; 对象：&lt;em&gt;pkg/api/legacyscheme/scheme.go&lt;/em&gt;。&lt;/p&gt;
+
+&lt;p&gt;代码中一般是使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Scheme&lt;/code&gt; 对象的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;AddKnownTypes&lt;/code&gt; 方法把 Go 对象添加到 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Scheme&lt;/code&gt; 中的。搜索这个方法可以找到 API 对象被添加的路径。以 rbac 为例：&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;pkg/apis/rbac/register.go&lt;/em&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// GroupName is the name of this API group.
+const GroupName = &quot;rbac.authorization.k8s.io&quot;
+
+// SchemeGroupVersion is group version used to register these objects
+var SchemeGroupVersion = schema.GroupVersion{Group: GroupName, Version: runtime.APIVersionInternal}
+
+// SchemeBuilder is a function that calls Register for you.
+var (
+	SchemeBuilder = runtime.NewSchemeBuilder(addKnownTypes)
+	AddToScheme   = SchemeBuilder.AddToScheme
+)
+
+// Adds the list of known types to the given scheme.
+func addKnownTypes(scheme *runtime.Scheme) error {
+	scheme.AddKnownTypes(SchemeGroupVersion,
+		&amp;amp;Role{},
+		&amp;amp;RoleBinding{},
+		&amp;amp;RoleBindingList{},
+		&amp;amp;RoleList{},
+
+		&amp;amp;ClusterRole{},
+		&amp;amp;ClusterRoleBinding{},
+		&amp;amp;ClusterRoleBindingList{},
+		&amp;amp;ClusterRoleList{},
+	)
+	return nil
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;另外，你可以根据上面代码中的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;AddToScheme&lt;/code&gt; 方法推导出：当这个方法被调用时，就会执行这些添加操作。因此，也可以在代码中搜索 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rbac.*AddToScheme&lt;/code&gt; 来找到添加的地方：&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;pkg/apis/rbac/install/install.go&lt;/em&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;func init() {
+	Install(legacyscheme.Scheme)
+}
+
+// Install registers the API group and adds types to a scheme
+func Install(scheme *runtime.Scheme) {
+	utilruntime.Must(rbac.AddToScheme(scheme))
+	utilruntime.Must(v1.AddToScheme(scheme))
+	utilruntime.Must(v1beta1.AddToScheme(scheme))
+	utilruntime.Must(v1alpha1.AddToScheme(scheme))
+	utilruntime.Must(scheme.SetVersionPriority(v1.SchemeGroupVersion, v1beta1.SchemeGroupVersion, v1alpha1.SchemeGroupVersion))
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;所以，只要这个 pkg 被 import，rbac 的这些信息就会被注册到 legacy 的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Scheme&lt;/code&gt; 中。在这个 API Group 的 storage 被初始化的时候，这个 pkg 就会被 import：&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;-&amp;gt; pkg/registry/rbac/rest/storage_rest.go: func (p RESTStorageProvider) NewRESTStorage()
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+</description>
+        <pubDate>Mon, 13 Feb 2023 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2023/02/13/kubernetes-code-note-2/</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2023/02/13/kubernetes-code-note-2/</guid>
+        
+        <category>kubernetes</category>
+        
+        
+      </item>
     
       <item>
         <title>Kubernetes 代码笔记 -- 1</title>
@@ -1210,46 +1412,6 @@ func parseTime(layout, value string) (time.Time, error) {
         <guid isPermaLink="true">http://diabloneo.github.io//2021/10/20/Contradictory-implementation-in-Golang-time-library/</guid>
         
         <category>golang</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>对程序员来说，速度是重要的</title>
-        <description>&lt;p&gt;对于一个程序员来说，开发的速度是重要的。为什么呢？&lt;/p&gt;
-
-&lt;p&gt;在说明原因之前，要先澄清下我说的开发速度包括哪些方面。&lt;strong&gt;开发速度，并不是仅仅指敲用键盘输入代码，而包括更大范围的一些操作&lt;/strong&gt;：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;操作 IDE 的速度，就是使用 IDE 的熟练程度。&lt;/li&gt;
-  &lt;li&gt;操作终端的速度。例如快速的跳转位置，快速的查找命令历史等。&lt;/li&gt;
-  &lt;li&gt;操作 git 的速度。快速的切换分支，快速的 merge 或者 rebase 等。&lt;/li&gt;
-  &lt;li&gt;使用操作系统的速度。例如快速找到一堆浏览器标签页中你需要的那个。&lt;/li&gt;
-  &lt;li&gt;搭建最基础开发环境的速度。例如你用 Python，要能快速的搭建一个 Virtualenv ；或者你用 Go，要能快速的写好一个 go.mod，然后 download 所有依赖。最基础的开发环境往往用来写一些非常简短的测试代码，显然，搭建基础开发环境的时候不应该比写这个简短测试代码的时间长。&lt;/li&gt;
-  &lt;li&gt;找到所需文档的速度，不只是 Google，还包括在你的团队所使用的 wiki 系统。&lt;/li&gt;
-  &lt;li&gt;使用最基本的 shell 工具的速度，包括但不限于 find， grep，awk，wc 等。这些工具一般用来快速的找到文件或者快速的找到想要的内容。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;上面提到的这些操作，只要经过专门训练，都能大幅提升操作速度（也可以说是熟练度）。&lt;/p&gt;
-
-&lt;p&gt;为什么程序员需要在上面列出的这些事情上追求速度呢？功利的说，上面这些事情，并不直接帮你赚钱，所以花的时间越多，你用来赚钱的时间就越少。但是，从成就感的角度来找这个问题的答案，会让我们更加愉悦：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;你可以有更多的时间来思考那些直接产生价值的代码，这有助于写出更好的代码，以及做出更好的产品。&lt;/li&gt;
-  &lt;li&gt;你的工作过程看起来会更炫酷。谁不爱呢。&lt;/li&gt;
-  &lt;li&gt;你会更擅长排查环境导致问题，也更不容易造成这样的问题。&lt;/li&gt;
-  &lt;li&gt;有更多的时间享受创造的快乐，而不是陷在问题的泥潭之中。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;总而言之，会编程成为一件快乐的事情。&lt;/p&gt;
-
-&lt;p&gt;不过，当你变得很快时，可能会产生一个副作用：你会对同事变得缺乏耐心，并且不乐于帮助他们。如果你能解决这个副作用，那么你可以收获更多的东西。&lt;/p&gt;
-</description>
-        <pubDate>Mon, 11 Oct 2021 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2021/10/11/Be-fast-do-matter-for-programmer/</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2021/10/11/Be-fast-do-matter-for-programmer/</guid>
-        
-        <category>programming</category>
         
         
       </item>
