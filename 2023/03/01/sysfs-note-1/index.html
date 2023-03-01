@@ -19,12 +19,12 @@
 
 	
 
-	<title>想到什么写什么周报 第46期 - 2019-06-16</title>
-	<meta name="description" content="Lessons learned porting 50k loc from Java to Go">
+	<title>Sysfs Note -- 1</title>
+	<meta name="description" content="sysfs">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="/css/main.css">
 	<link rel="stylesheet" href="/css/pygments-rainbow_dash.css">
-	<link rel="canonical" href="http://diabloneo.github.io//2019/06/16/write-what-i-have-046/">
+	<link rel="canonical" href="http://diabloneo.github.io//2023/03/01/sysfs-note-1/">
 	<link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
 </head>
 
@@ -114,31 +114,15 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">想到什么写什么周报 第46期 - 2019-06-16</h1>
-    <p class="post-meta"><time datetime="2019-06-16T00:00:00+08:00" itemprop="datePublished">Jun 16, 2019</time></p>
+    <h1 class="post-title" itemprop="name headline">Sysfs Note -- 1</h1>
+    <p class="post-meta"><time datetime="2023-03-01T00:00:00+08:00" itemprop="datePublished">Mar 1, 2023</time></p>
   </header>
 
   <div class="post-tags">
     <ul>
       
       <li>
-        <a href="/tags/cloud/">cloud</a>
-      </li>
-      
-      <li>
-        <a href="/tags/golang/">golang</a>
-      </li>
-      
-      <li>
-        <a href="/tags/python/">python</a>
-      </li>
-      
-      <li>
-        <a href="/tags/database/">database</a>
-      </li>
-      
-      <li>
-        <a href="/tags/distributed-computing/">distributed-computing</a>
+        <a href="/tags/linux/">Linux</a>
       </li>
       
     </ul>
@@ -150,44 +134,105 @@
       <div class="addthis_inline_share_toolbox"></div>
     
     <br />
-      <h2 id="lessons-learned-porting-50k-loc-from-java-to-go">Lessons learned porting 50k loc from Java to Go</h2>
+      <h2 id="sysfs">sysfs</h2>
 
-<p><em><a href="https://blog.kowalczyk.info/article/19f2fe97f06a47c3b1f118fd06851fad/lessons-learned-porting-50k-loc-from-java-to-go.html">https://blog.kowalczyk.info/article/19f2fe97f06a47c3b1f118fd06851fad/lessons-learned-porting-50k-loc-from-java-to-go.html</a></em></p>
+<p><strong>sysfs</strong> 是一个内存文件系统，用于将内核的数据结构暴露出来。</p>
 
-<p>作者使用将 RavenDB 的 Java Client 移植了一个 Go 版本，文章列举了一些移植策略，以及如何使用 Go 实现一些 Java 的特性，比如异常和泛型。</p>
+<p>任何 kobject 在系统中注册，就会有一个目录在 sysfs 中被创建出来。这个目录是作为 kobject 的父对象所在的目录的子目录创建的。每个 kobject 的属性，会以目录中的普通文件的形式出现。</p>
 
-<h2 id="stack-history-a-timeline-of-ubers-tech-stack-evolution">Stack History: A Timeline of Uber’s Tech Stack Evolution</h2>
+<h2 id="kobject">kobject</h2>
 
-<p><em><a href="https://stackshare.io/stack-history-timeline-uber-tech-stack-evolution">https://stackshare.io/stack-history-timeline-uber-tech-stack-evolution</a></em></p>
+<p>Kobject 是一个类型为 <code class="language-plaintext highlighter-rouge">struct kobject</code> 的对象，它包含 name, ref count, parent pointer 等，使得 kobject 可以被组织成层次结构，并且通过 sysfs 暴露出来。Kobject 本身没有包含其他具体的功能，它主要通过被嵌入到其他的结构体中来使用。</p>
 
-<p>Uber 的架构进化史。</p>
+<h2 id="uevent">uevent</h2>
 
-<h2 id="how-to-use-sorted-and-sort-in-python">How to Use sorted() and sort() in Python</h2>
+<p>Sysfs 的 device 目录下有个 <em>*uevent</em> 文件。uevent 的是 udev event 的缩写。</p>
 
-<p><em><a href="https://realpython.com/python-sort/">https://realpython.com/python-sort/</a></em></p>
+<p>uevent 这个文件可读可写，当你读这个文件的时候，会返回这个设备最后一次被 kernel 发送的 udev 事件（这里就是这个设备被 add  event，remove 的不会存在，因为 remove 发生后，整个设备目录都没了）。</p>
 
-<p>一篇很详细的介绍 Python 的 sorted() 和 sort() 的用法的文章。</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root@centos8 block]# cat nvme0n1/uevent
+MAJOR=259
+MINOR=0
+DEVNAME=nvme0n1
+DEVTYPE=disk
+DISKSEQ=1
+[root@centos8 block]# cat sdc/uevent
+MAJOR=8
+MINOR=32
+DEVNAME=sdc
+DEVTYPE=disk
+DISKSEQ=4
+</code></pre></div></div>
 
-<h2 id="goodbye-microservices-from-100s-of-problem-children-to-1-superstar">Goodbye Microservices: From 100s of problem children to 1 superstar</h2>
+<p>uevent 本身是一个 kernel 的机制，用于通知用户态的 udev 程序，关于设备的相关事件。在新的系统中，用户态的程序是在 systemd 中实现的，即 <strong>systemd-udevd</strong> ：</p>
 
-<p><em><a href="https://segment.com/blog/goodbye-microservices/">https://segment.com/blog/goodbye-microservices/</a></em></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root@centos8 block]# systemctl cat systemd-udevd
+# /usr/lib/systemd/system/systemd-udevd.service
+#  SPDX-License-Identifier: LGPL-2.1+
+#
+#  This file is part of systemd.
+#
+#  systemd is free software; you can redistribute it and/or modify it
+#  under the terms of the GNU Lesser General Public License as published by
+#  the Free Software Foundation; either version 2.1 of the License, or
+#  (at your option) any later version.
 
-<p>先从一个单体服务变成 100 多个微服务，好处是做到了服务隔离。但是随着服务数量不断的上升，维护成本开始增加，运营效率下降。最后又改回了单体的服务，采用了一些技术来保证单体服务的可靠性，虽然损失了一些微服务的优点，但是获得了巨大的运营效益。</p>
+[Unit]
+Description=udev Kernel Device Manager
+Documentation=man:systemd-udevd.service(8) man:udev(7)
+DefaultDependencies=no
+After=systemd-sysusers.service systemd-hwdb-update.service
+Before=sysinit.target
+ConditionPathIsReadWrite=/sys
 
-<p>这个算是一个架构设计的失败案例么？</p>
+[Service]
+Type=notify
+OOMScoreAdjust=-1000
+Sockets=systemd-udevd-control.socket systemd-udevd-kernel.socket
+Restart=always
+RestartSec=0
+ExecStart=/usr/lib/systemd/systemd-udevd
+KillMode=mixed
+WatchdogSec=3min
+TasksMax=infinity
+PrivateMounts=yes
+MemoryDenyWriteExecute=yes
+RestrictAddressFamilies=AF_UNIX AF_NETLINK AF_INET AF_INET6
+RestrictRealtime=yes
+RestrictSUIDSGID=yes
+SystemCallFilter=@system-service @module @raw-io
+SystemCallErrorNumber=EPERM
+SystemCallArchitectures=native
+LockPersonality=yes
+</code></pre></div></div>
 
-<h2 id="introducing-pg_auto_failover-open-source-extension-for-automated-failover-and-high-availability-in-postgresql">Introducing pg_auto_failover: Open source extension for automated failover and high-availability in PostgreSQL</h2>
+<p>这个程序并不是通过逐个读取 sysfs 的 uevent 文件的内容来获取信息的，而是通过 <strong>uevent netlink</strong> 来获得内核发送的 uevent：</p>
 
-<p><em><a href="https://cloudblogs.microsoft.com/opensource/2019/05/06/introducing-pg_auto_failover-postgresql-open-source-extension-automated-failover-high-availability/">https://cloudblogs.microsoft.com/opensource/2019/05/06/introducing-pg_auto_failover-postgresql-open-source-extension-automated-failover-high-availability/</a></em></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root@centos8 block]# ps -ef | grep systemd-udevd
+root        1830       1  0 Feb18 ?        00:00:01 /usr/lib/systemd/systemd-udevd
+root      807799 3741741  0 23:03 pts/93   00:00:00 grep --color=auto systemd-udevd
+[root@centos8 block]# lsof -p 1830 | grep -i uevent
+systemd-u 1830 root    3u  netlink                         0t0     92397 KOBJECT_UEVENT
+</code></pre></div></div>
 
-<p>Citus （已经被微软收购）出的一个 Postgres 自动 failover 方案，通过一个 monitor 来监控主备数据库，在主挂掉的时候，将备切换为主。同时，从 Postgres 10 开始，一个客户端可以连接多个服务端，会自动选择可以写入的服务端。所以，这个是一套完整的 failover 方案。</p>
+<p><em>include/uapi/linux/netlink.h</em> 文件中定义了这个 netlink 类型</p>
 
-<h2 id="is-high-quality-software-worth-the-cost">Is HIgh Quality Software Worth the Cost?</h2>
-<p><em><a href="https://martinfowler.com/articles/is-quality-worth-cost.html">https://martinfowler.com/articles/is-quality-worth-cost.html</a></em></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+#define NETLINK_KOBJECT_UEVENT        15        /* Kernel messages to userspace */
+</code></pre></div></div>
 
-<p>作者把软件质量分为外部质量（UI 或者 缺陷，用户可以看到的）和内部质量（架构等用户看不到的）。用户很容易就能看出一个软件是否有很高的外部质量，但是无法看出其内部质量的水平。</p>
+<p><strong>既然 udev 是通过 <code class="language-plaintext highlighter-rouge">NETLINK_KOBJECT_UEVENT</code> 来接收事件的，为什么还需要 uevent 文件呢？</strong></p>
 
-<p>内部质量不好，会导致技术债务快速累积，技术债务会这导致增加新功能的速度变慢，并且容易导致缺陷。所以提升内部质量有助于增加新功能。增加新功能的速度越快，质量越好，软件就越便宜。</p>
+<p>这个是用于解决开机启动以及 udevd 重启的情况。当 udevd 启动时，它会扫描 sysfs 中所有设备的 uevent 文件，然后针对每个文件写入一个 ADD 内容，这样就可以触发 kernel 再一次通知和该设备有关的事件，然后 udevd 就可以收到该事件，并进行 udev rule 的处理。</p>
+
+<h2 id="ref">Ref</h2>
+
+<ul>
+  <li><em><a href="https://documentation.suse.com/sles/12-SP5/html/SLES-all/cha-udev.html">https://documentation.suse.com/sles/12-SP5/html/SLES-all/cha-udev.html</a></em></li>
+  <li><em><a href="https://lwn.net/Articles/646617/">https://lwn.net/Articles/646617/</a></em></li>
+  <li><em><a href="https://unix.stackexchange.com/questions/550037/how-does-udev-uevent-work">https://unix.stackexchange.com/questions/550037/how-does-udev-uevent-work</a></em></li>
+</ul>
+
 
     <br />
 
@@ -208,8 +253,8 @@
 <div id="disqus_thread"></div>
 <script>
 var disqus_config = function () {
-  this.page.url = "http://diabloneo.github.io/2019/06/16/write-what-i-have-046/"; // <--- use canonical URL
-  this.page.identifier = "/2019/06/16/write-what-i-have-046";
+  this.page.url = "http://diabloneo.github.io/2023/03/01/sysfs-note-1/"; // <--- use canonical URL
+  this.page.identifier = "/2023/03/01/sysfs-note-1";
 };
 (function() { // DON'T EDIT BELOW THIS LINE
   var d = document, s = d.createElement('script');
