@@ -6,9 +6,185 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 01 Mar 2023 19:29:05 +0800</pubDate>
-    <lastBuildDate>Wed, 01 Mar 2023 19:29:05 +0800</lastBuildDate>
+    <pubDate>Fri, 17 Mar 2023 15:41:52 +0800</pubDate>
+    <lastBuildDate>Fri, 17 Mar 2023 15:41:52 +0800</lastBuildDate>
     <generator>Jekyll v4.3.1</generator>
+    
+      <item>
+        <title>Sysfs Note -- 2</title>
+        <description>&lt;p&gt;本文的内容对于一个 block device 设备的 sysfs 文件，如何找到对应的代码。&lt;/p&gt;
+
+&lt;h2 id=&quot;kobject-的相关函数&quot;&gt;kobject 的相关函数&lt;/h2&gt;
+
+&lt;p&gt;在 kernel 的文档 &lt;em&gt;Documentation/core-api/kobject.rst&lt;/em&gt; 中，可以读到 kobject 操作的一些函数，对于阅读内核代码来说，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kobject_add&lt;/code&gt; 函数是比较重要的，它表示添加了一个目录到 sysfs 下。&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    int kobject_add(struct kobject *kobj, struct kobject *parent,
+                    const char *fmt, ...);
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;如何找到一个-block-device-sysfs-文件对应的操作代码&quot;&gt;如何找到一个 block device sysfs 文件对应的操作代码&lt;/h2&gt;
+
+&lt;h3 id=&quot;queue-目录&quot;&gt;&lt;em&gt;queue&lt;/em&gt; 目录&lt;/h3&gt;
+
+&lt;p&gt;Sysfs 中的目录对应的是 kobject，该目录下的文件对应的是这个 kobject 的属性。&lt;/p&gt;
+
+&lt;p&gt;我们以一个 nvme 硬盘的 &lt;em&gt;queue/discard_max_bytes&lt;/em&gt; 文件为例，来找到对应的代码。首先在 block 目录下搜索 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kobject_add&lt;/code&gt; 的调用，找到将 queue 添加到 sysfs 的地方，在 &lt;em&gt;block/blk-sysfs.c&lt;/em&gt; 文件中&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/**
+ * blk_register_queue - register a block layer queue with sysfs
+ * @disk: Disk of which the request queue should be registered with sysfs.
+ */
+int blk_register_queue(struct gendisk *disk)
+{
+        struct request_queue *q = disk-&amp;gt;queue;
+        int ret;
+
+        mutex_lock(&amp;amp;q-&amp;gt;sysfs_dir_lock);
+        kobject_init(&amp;amp;disk-&amp;gt;queue_kobj, &amp;amp;blk_queue_ktype);
+        ret = kobject_add(&amp;amp;disk-&amp;gt;queue_kobj, &amp;amp;disk_to_dev(disk)-&amp;gt;kobj, &quot;queue&quot;);
+        if (ret &amp;lt; 0)
+                goto out_put_queue_kobj;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;然后你可以搜索调用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;blk_register_queue&lt;/code&gt; 的地方，是 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;device_add_disk&lt;/code&gt; 函数，然后再到 nvme 驱动目录下搜索调用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;device_add_disk&lt;/code&gt; 的地方，最终你会得到一个调用链：&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nvme_scan_work
+  -&amp;gt; nvme_scan_ns_list
+    -&amp;gt; nvme_scan_ns
+      -&amp;gt; nvme_alloc_ns
+        -&amp;gt; device_add_disk
+          -&amp;gt; blk_register_queue
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;简单的说，驱动发现一个 nvme 硬盘后，就会将信息添加到内核中，然后会在 sysfs 里创建这个硬盘的下的 queue 目录。&lt;/p&gt;
+
+&lt;h3 id=&quot;queuediscard_max_bytes-文件&quot;&gt;&lt;em&gt;queue/discard_max_bytes&lt;/em&gt; 文件&lt;/h3&gt;
+
+&lt;p&gt;我们以 &lt;em&gt;queue/discard_max_bytes&lt;/em&gt; 属性为例，来看看它是如何在代码中实现的。&lt;/p&gt;
+
+&lt;h4 id=&quot;device_attribute&quot;&gt;device_attribute&lt;/h4&gt;
+
+&lt;p&gt;首先，了解一下 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;attribute&lt;/code&gt;。 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;attribute&lt;/code&gt; 是定义用来对应一个 sysfs 中的文件，即 kobject 的一个属性的。&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;attribute&lt;/code&gt; 单独使用时没有意义，一般需要加上操作函数，所以 block device 自己定义了如下的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;device_attribute&lt;/code&gt; ( &lt;em&gt;include/linux/device.h&lt;/em&gt; )：&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;struct device_attribute {
+    struct attribute        attr;
+    ssize_t (*show)(struct device *dev, struct device_attribute *attr,
+        char *buf);
+    ssize_t (*store)(struct device *dev, struct device_attribute *attr,
+        const char *buf, size_t count);
+};
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;这个是设备目录下通用的定义，除了基本的属性外，还定义了 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;show&lt;/code&gt; 和 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;store&lt;/code&gt; 两个方法属性，顾名思义，一个是用来展示，一个是用来设置的，也就对应到了一个 sysfs 文件的读写操作。&lt;/p&gt;
+
+&lt;h4 id=&quot;discard_max_bytes-属性&quot;&gt;discard_max_bytes 属性&lt;/h4&gt;
+
+&lt;p&gt;找代码的方式是在 &lt;em&gt;block/&lt;/em&gt; 目录下搜索 &lt;strong&gt;discard_max_bytes&lt;/strong&gt;，你就可以找到很多相关的代码。下面这行代码说明这个是 queue/ 目录下的一个 RW 属性：&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;QUEUE_RW_ENTRY(queue_discard_max, &quot;discard_max_bytes&quot;);
+QUEUE_RW_ENTRY 这个宏的定义如下：
+#define QUEUE_RW_ENTRY(_prefix, _name)                        \
+static struct queue_sysfs_entry _prefix##_entry = {        \
+        .attr        = { .name = _name, .mode = 0644 },        \
+        .show        = _prefix##_show,                        \
+        .store        = _prefix##_store,                        \
+};
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;可以看到注册的函数名字应该是 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;queue_discard_max_show&lt;/code&gt; 和 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;queue_discard_max_store&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;属性的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;show&lt;/code&gt; 函数是被 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;queue_attr_show&lt;/code&gt; 函数使用的，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;store&lt;/code&gt; 函数则是被 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;queue_attr_store&lt;/code&gt; 函数使用：&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;static ssize_t
+queue_attr_show(struct kobject *kobj, struct attribute *attr, char *page)
+{
+        struct queue_sysfs_entry *entry = to_queue(attr);
+        struct gendisk *disk = container_of(kobj, struct gendisk, queue_kobj);
+        struct request_queue *q = disk-&amp;gt;queue;
+        ssize_t res;
+
+        if (!entry-&amp;gt;show)
+                return -EIO;
+        mutex_lock(&amp;amp;q-&amp;gt;sysfs_lock);
+        res = entry-&amp;gt;show(q, page);  /* 这行是调用各个属性 show 函数的地方 */
+        mutex_unlock(&amp;amp;q-&amp;gt;sysfs_lock);
+        return res;
+}
+
+static ssize_t
+queue_attr_store(struct kobject *kobj, struct attribute *attr,
+                    const char *page, size_t length)
+{
+        struct queue_sysfs_entry *entry = to_queue(attr);
+        struct gendisk *disk = container_of(kobj, struct gendisk, queue_kobj);
+        struct request_queue *q = disk-&amp;gt;queue;
+        ssize_t res;
+
+        if (!entry-&amp;gt;store)
+                return -EIO;
+
+        mutex_lock(&amp;amp;q-&amp;gt;sysfs_lock);
+        res = entry-&amp;gt;store(q, page, length);  /* 这行是调用各个属性 store 函数的地方 */
+        mutex_unlock(&amp;amp;q-&amp;gt;sysfs_lock);
+        return res;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;回过头来看 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;queue_discard_max_show&lt;/code&gt; 和 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;queue_discard_max_store&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;show&lt;/code&gt; 函数实现比较简单，就是将内容打印到提供的字符数组里：&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;static ssize_t queue_discard_max_show(struct request_queue *q, char *page)
+{
+        return sprintf(page, &quot;%llu\n&quot;,
+                       (unsigned long long)q-&amp;gt;limits.max_discard_sectors &amp;lt;&amp;lt; 9);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;store&lt;/code&gt; 函数比较长一点，但是逻辑也简单：&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;static ssize_t queue_discard_max_store(struct request_queue *q,
+                                       const char *page, size_t count)
+{
+        unsigned long max_discard;
+        ssize_t ret = queue_var_store(&amp;amp;max_discard, page, count);
+
+        if (ret &amp;lt; 0)
+                return ret;
+
+        if (max_discard &amp;amp; (q-&amp;gt;limits.discard_granularity - 1))
+                return -EINVAL;
+
+        max_discard &amp;gt;&amp;gt;= 9;  /* 512 bytes 一个 sector */
+        if (max_discard &amp;gt; UINT_MAX)
+                return -EINVAL;
+
+        if (max_discard &amp;gt; q-&amp;gt;limits.max_hw_discard_sectors)
+                max_discard = q-&amp;gt;limits.max_hw_discard_sectors;
+
+        /*    
+         * 上面都是关于数据合法性的判断，这里做了设置    
+         * 从这里就可以知道，后面要知道设置的 discard_max_bytes 如何使用，
+         * 要在代码里搜索 max_discard_sectors
+         */
+        q-&amp;gt;limits.max_discard_sectors = max_discard;
+        return ret;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;summary&quot;&gt;Summary&lt;/h2&gt;
+
+&lt;p&gt;在 kernel 中查找 sysfs 的对应代码还是比较容易的，代码的接口都很规范，而且容易查找。
+但是可以发现，sysfs 中的属性的名字和代码中的成员名字不一定一致，所以掌握这个代码查找技能是很必要的。&lt;/p&gt;
+</description>
+        <pubDate>Fri, 17 Mar 2023 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2023/03/17/sysfs-note-2/</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2023/03/17/sysfs-note-2/</guid>
+        
+        <category>Linux</category>
+        
+        
+      </item>
     
       <item>
         <title>Sysfs Note -- 1</title>
@@ -1416,47 +1592,6 @@ Calc tcp_recvmsg time of pid 20607
         <category>kernel</category>
         
         <category>network</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>CentOS 官方是如何编译一个包的</title>
-        <description>&lt;p&gt;CentOS 是企业级开发里常用的 base 操作系统，很多时候，我们会先使用官方源里的包，随着业务的发展，我们会开始自己修改代码。这种时候，我们就希望可以编译出和 CentOS 官方一样的包。那么如何找到 CentOS  官方是如何编译包的呢？&lt;/p&gt;
-
-&lt;h2 id=&quot;koji&quot;&gt;Koji&lt;/h2&gt;
-
-&lt;p&gt;Koji 是 Fedora 平台用来编译 RPM 包和镜像的系统，CentOS/Rocky Linux 也都使用这个平台。这个 wiki 介绍了 Koji 的基本信息：&lt;em&gt;&lt;a href=&quot;https://fedoraproject.org/wiki/Koji&quot;&gt;https://fedoraproject.org/wiki/Koji&lt;/a&gt;&lt;/em&gt;。&lt;/p&gt;
-
-&lt;p&gt;我们可以找到 CentOS Koji 的链接，然后通过 Koji 来找到我们需要的包的信息。&lt;/p&gt;
-
-&lt;h2 id=&quot;如何找到-centos-8-官方编译-libvirt-的方案&quot;&gt;如何找到 CentOS 8 官方编译 libvirt 的方案&lt;/h2&gt;
-
-&lt;p&gt;步骤如下：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;进入 Koji 的 build 页面：&lt;em&gt;&lt;a href=&quot;https://koji.mbox.centos.org/koji/builds&quot;&gt;https://koji.mbox.centos.org/koji/builds&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
-  &lt;li&gt;在里面搜索 libvirt，找到 libvirt 有关的任务&lt;/li&gt;
-  &lt;li&gt;找一个最新的：&lt;em&gt;&lt;a href=&quot;https://koji.mbox.centos.org/koji/buildinfo?buildID=19878&quot;&gt;https://koji.mbox.centos.org/koji/buildinfo?buildID=19878&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
-  &lt;li&gt;进去之后，找到 task，然后进入 task：&lt;em&gt;&lt;a href=&quot;https://koji.mbox.centos.org/koji/taskinfo?taskID=310486&quot;&gt;https://koji.mbox.centos.org/koji/taskinfo?taskID=310486&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
-  &lt;li&gt;因为会编译多个 arch 的包，所以还有子 task，我们可以进入 x86_64 的查看： &lt;em&gt;&lt;a href=&quot;https://koji.mbox.centos.org/koji/taskinfo?taskID=310489&quot;&gt;https://koji.mbox.centos.org/koji/taskinfo?taskID=310489&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
-  &lt;li&gt;在这里就可以看到 build.log 的链接，点进去查看： &lt;em&gt;&lt;a href=&quot;https://koji.mbox.centos.org/pkgs/work/tasks/489/310489/build.log&quot;&gt;https://koji.mbox.centos.org/pkgs/work/tasks/489/310489/build.log&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;在里面搜索 &lt;strong&gt;meson&lt;/strong&gt;，可以找到 meson 的参数，就知道 CentOS 8 官方如何编译 libvirt 库了：&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;+ /usr/bin/meson --buildtype=plain --prefix=/usr --libdir=/usr/lib64 --libexecdir=/usr/libexec --bindir=/usr/bin --sbindir=/usr/sbin --includedir=/usr/include --datadir=/usr/share --mandir=/usr/share/man --infodir=/usr/share/info --localedir=/usr/share/locale --sysconfdir=/etc --localstatedir=/var --sharedstatedir=/var/lib --wrap-mode=nodownload --auto-features=enabled . x86_64-redhat-linux-gnu -Drunstatedir=/run -Ddriver_qemu=enabled -Ddriver_openvz=disabled -Ddriver_lxc=disabled -Ddriver_vbox=disabled -Ddriver_libxl=disabled -Dsasl=enabled -Dpolkit=enabled -Ddriver_libvirtd=enabled -Ddriver_remote=enabled -Ddriver_test=enabled -Ddriver_esx=enabled -Dcurl=enabled -Ddriver_hyperv=disabled -Dopenwsman=disabled -Ddriver_vmware=disabled -Ddriver_vz=disabled -Ddriver_bhyve=disabled -Ddriver_ch=disabled -Dremote_default_mode=legacy -Ddriver_interface=enabled -Ddriver_network=enabled -Dstorage_fs=enabled -Dstorage_lvm=enabled -Dstorage_iscsi=enabled -Dstorage_iscsi_direct=enabled -Dlibiscsi=enabled -Dstorage_scsi=enabled -Dstorage_disk=enabled -Dstorage_mpath=enabled -Dstorage_rbd=enabled -Dstorage_sheepdog=disabled -Dstorage_gluster=enabled -Dglusterfs=enabled -Dstorage_zfs=disabled -Dstorage_vstorage=disabled -Dnumactl=enabled -Dnumad=enabled -Dcapng=enabled -Dfuse=disabled -Dnetcf=enabled -Dselinux=enabled -Dselinux_mount=/sys/fs/selinux -Dapparmor=disabled -Dapparmor_profiles=disabled -Dsecdriver_apparmor=disabled -Dudev=enabled -Dyajl=enabled -Dsanlock=enabled -Dlibpcap=enabled -Dlibnl=enabled -Daudit=enabled -Ddtrace=enabled -Dfirewalld=enabled -Dfirewalld_zone=enabled -Dwireshark_dissector=enabled -Dlibssh=enabled -Dlibssh2=disabled -Dpm_utils=disabled -Dnss=enabled &apos;-Dpackager=CentOS Buildsys &amp;lt;bugs@centos.org&amp;gt;, 2021-11-09-20:38:08, &apos; -Dpackager_version=1.module_el8.6.0+983+a7505f3f -Dqemu_user=qemu -Dqemu_group=qemu -Dtls_priority=@LIBVIRT,SYSTEM -Dwerror=true -Dexpensive_tests=enabled -Dinit_script=systemd -Ddocs=enabled -Dtests=enabled -Drpath=disabled -Dlogin_shell=disabled
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;在里面搜索 &lt;strong&gt;rpmbuild&lt;/strong&gt; 就可以知道它用什么命令打包的了。&lt;/p&gt;
-
-&lt;p&gt;同样的，Fedora 和 Rocky Linux 也可以用这个方法找到他们的打包细节。&lt;/p&gt;
-</description>
-        <pubDate>Tue, 07 Dec 2021 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2021/12/07/How-CentOS-build-rpm-packages/</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2021/12/07/How-CentOS-build-rpm-packages/</guid>
-        
-        <category>linux</category>
         
         
       </item>

@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78067453-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78067453-1');
+</script>
+
+	
+
+	<title>Sysfs Note -- 2</title>
+	<meta name="description" content="本文的内容对于一个 block device 设备的 sysfs 文件，如何找到对应的代码。">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/css/main.css">
+	<link rel="stylesheet" href="/css/pygments-rainbow_dash.css">
+	<link rel="canonical" href="http://diabloneo.github.io//2023/03/17/sysfs-note-2/">
+	<link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
+</head>
+
+
+  <body>
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">Coffee, Coke and Code</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <a class="page-link" href="/tags">Tags</a>
+        <a class="page-link" href="/feed.xml">RSS</a>
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Sysfs Note -- 2</h1>
+    <p class="post-meta"><time datetime="2023-03-17T00:00:00+08:00" itemprop="datePublished">Mar 17, 2023</time></p>
+  </header>
+
+  <div class="post-tags">
+    <ul>
+      
+      <li>
+        <a href="/tags/linux/">Linux</a>
+      </li>
+      
+    </ul>
+  </div>
+
+  <div class="post-content" itemprop="articleBody">
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+    <br />
+      <p>本文的内容对于一个 block device 设备的 sysfs 文件，如何找到对应的代码。</p>
+
+<h2 id="kobject-的相关函数">kobject 的相关函数</h2>
+
+<p>在 kernel 的文档 <em>Documentation/core-api/kobject.rst</em> 中，可以读到 kobject 操作的一些函数，对于阅读内核代码来说，<code class="language-plaintext highlighter-rouge">kobject_add</code> 函数是比较重要的，它表示添加了一个目录到 sysfs 下。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    int kobject_add(struct kobject *kobj, struct kobject *parent,
+                    const char *fmt, ...);
+</code></pre></div></div>
+
+<h2 id="如何找到一个-block-device-sysfs-文件对应的操作代码">如何找到一个 block device sysfs 文件对应的操作代码</h2>
+
+<h3 id="queue-目录"><em>queue</em> 目录</h3>
+
+<p>Sysfs 中的目录对应的是 kobject，该目录下的文件对应的是这个 kobject 的属性。</p>
+
+<p>我们以一个 nvme 硬盘的 <em>queue/discard_max_bytes</em> 文件为例，来找到对应的代码。首先在 block 目录下搜索 <code class="language-plaintext highlighter-rouge">kobject_add</code> 的调用，找到将 queue 添加到 sysfs 的地方，在 <em>block/blk-sysfs.c</em> 文件中</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/**
+ * blk_register_queue - register a block layer queue with sysfs
+ * @disk: Disk of which the request queue should be registered with sysfs.
+ */
+int blk_register_queue(struct gendisk *disk)
+{
+        struct request_queue *q = disk-&gt;queue;
+        int ret;
+
+        mutex_lock(&amp;q-&gt;sysfs_dir_lock);
+        kobject_init(&amp;disk-&gt;queue_kobj, &amp;blk_queue_ktype);
+        ret = kobject_add(&amp;disk-&gt;queue_kobj, &amp;disk_to_dev(disk)-&gt;kobj, "queue");
+        if (ret &lt; 0)
+                goto out_put_queue_kobj;
+</code></pre></div></div>
+
+<p>然后你可以搜索调用 <code class="language-plaintext highlighter-rouge">blk_register_queue</code> 的地方，是 <code class="language-plaintext highlighter-rouge">device_add_disk</code> 函数，然后再到 nvme 驱动目录下搜索调用 <code class="language-plaintext highlighter-rouge">device_add_disk</code> 的地方，最终你会得到一个调用链：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nvme_scan_work
+  -&gt; nvme_scan_ns_list
+    -&gt; nvme_scan_ns
+      -&gt; nvme_alloc_ns
+        -&gt; device_add_disk
+          -&gt; blk_register_queue
+</code></pre></div></div>
+
+<p>简单的说，驱动发现一个 nvme 硬盘后，就会将信息添加到内核中，然后会在 sysfs 里创建这个硬盘的下的 queue 目录。</p>
+
+<h3 id="queuediscard_max_bytes-文件"><em>queue/discard_max_bytes</em> 文件</h3>
+
+<p>我们以 <em>queue/discard_max_bytes</em> 属性为例，来看看它是如何在代码中实现的。</p>
+
+<h4 id="device_attribute">device_attribute</h4>
+
+<p>首先，了解一下 <code class="language-plaintext highlighter-rouge">attribute</code>。 <code class="language-plaintext highlighter-rouge">attribute</code> 是定义用来对应一个 sysfs 中的文件，即 kobject 的一个属性的。<code class="language-plaintext highlighter-rouge">attribute</code> 单独使用时没有意义，一般需要加上操作函数，所以 block device 自己定义了如下的 <code class="language-plaintext highlighter-rouge">device_attribute</code> ( <em>include/linux/device.h</em> )：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>struct device_attribute {
+    struct attribute        attr;
+    ssize_t (*show)(struct device *dev, struct device_attribute *attr,
+        char *buf);
+    ssize_t (*store)(struct device *dev, struct device_attribute *attr,
+        const char *buf, size_t count);
+};
+</code></pre></div></div>
+
+<p>这个是设备目录下通用的定义，除了基本的属性外，还定义了 <code class="language-plaintext highlighter-rouge">show</code> 和 <code class="language-plaintext highlighter-rouge">store</code> 两个方法属性，顾名思义，一个是用来展示，一个是用来设置的，也就对应到了一个 sysfs 文件的读写操作。</p>
+
+<h4 id="discard_max_bytes-属性">discard_max_bytes 属性</h4>
+
+<p>找代码的方式是在 <em>block/</em> 目录下搜索 <strong>discard_max_bytes</strong>，你就可以找到很多相关的代码。下面这行代码说明这个是 queue/ 目录下的一个 RW 属性：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>QUEUE_RW_ENTRY(queue_discard_max, "discard_max_bytes");
+QUEUE_RW_ENTRY 这个宏的定义如下：
+#define QUEUE_RW_ENTRY(_prefix, _name)                        \
+static struct queue_sysfs_entry _prefix##_entry = {        \
+        .attr        = { .name = _name, .mode = 0644 },        \
+        .show        = _prefix##_show,                        \
+        .store        = _prefix##_store,                        \
+};
+</code></pre></div></div>
+
+<p>可以看到注册的函数名字应该是 <code class="language-plaintext highlighter-rouge">queue_discard_max_show</code> 和 <code class="language-plaintext highlighter-rouge">queue_discard_max_store</code>。</p>
+
+<p>属性的 <code class="language-plaintext highlighter-rouge">show</code> 函数是被 <code class="language-plaintext highlighter-rouge">queue_attr_show</code> 函数使用的，<code class="language-plaintext highlighter-rouge">store</code> 函数则是被 <code class="language-plaintext highlighter-rouge">queue_attr_store</code> 函数使用：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>static ssize_t
+queue_attr_show(struct kobject *kobj, struct attribute *attr, char *page)
+{
+        struct queue_sysfs_entry *entry = to_queue(attr);
+        struct gendisk *disk = container_of(kobj, struct gendisk, queue_kobj);
+        struct request_queue *q = disk-&gt;queue;
+        ssize_t res;
+
+        if (!entry-&gt;show)
+                return -EIO;
+        mutex_lock(&amp;q-&gt;sysfs_lock);
+        res = entry-&gt;show(q, page);  /* 这行是调用各个属性 show 函数的地方 */
+        mutex_unlock(&amp;q-&gt;sysfs_lock);
+        return res;
+}
+
+static ssize_t
+queue_attr_store(struct kobject *kobj, struct attribute *attr,
+                    const char *page, size_t length)
+{
+        struct queue_sysfs_entry *entry = to_queue(attr);
+        struct gendisk *disk = container_of(kobj, struct gendisk, queue_kobj);
+        struct request_queue *q = disk-&gt;queue;
+        ssize_t res;
+
+        if (!entry-&gt;store)
+                return -EIO;
+
+        mutex_lock(&amp;q-&gt;sysfs_lock);
+        res = entry-&gt;store(q, page, length);  /* 这行是调用各个属性 store 函数的地方 */
+        mutex_unlock(&amp;q-&gt;sysfs_lock);
+        return res;
+}
+</code></pre></div></div>
+
+<p>回过头来看 <code class="language-plaintext highlighter-rouge">queue_discard_max_show</code> 和 <code class="language-plaintext highlighter-rouge">queue_discard_max_store</code>。</p>
+
+<p><code class="language-plaintext highlighter-rouge">show</code> 函数实现比较简单，就是将内容打印到提供的字符数组里：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>static ssize_t queue_discard_max_show(struct request_queue *q, char *page)
+{
+        return sprintf(page, "%llu\n",
+                       (unsigned long long)q-&gt;limits.max_discard_sectors &lt;&lt; 9);
+}
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">store</code> 函数比较长一点，但是逻辑也简单：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>static ssize_t queue_discard_max_store(struct request_queue *q,
+                                       const char *page, size_t count)
+{
+        unsigned long max_discard;
+        ssize_t ret = queue_var_store(&amp;max_discard, page, count);
+
+        if (ret &lt; 0)
+                return ret;
+
+        if (max_discard &amp; (q-&gt;limits.discard_granularity - 1))
+                return -EINVAL;
+
+        max_discard &gt;&gt;= 9;  /* 512 bytes 一个 sector */
+        if (max_discard &gt; UINT_MAX)
+                return -EINVAL;
+
+        if (max_discard &gt; q-&gt;limits.max_hw_discard_sectors)
+                max_discard = q-&gt;limits.max_hw_discard_sectors;
+
+        /*    
+         * 上面都是关于数据合法性的判断，这里做了设置    
+         * 从这里就可以知道，后面要知道设置的 discard_max_bytes 如何使用，
+         * 要在代码里搜索 max_discard_sectors
+         */
+        q-&gt;limits.max_discard_sectors = max_discard;
+        return ret;
+}
+</code></pre></div></div>
+
+<h2 id="summary">Summary</h2>
+
+<p>在 kernel 中查找 sysfs 的对应代码还是比较容易的，代码的接口都很规范，而且容易查找。
+但是可以发现，sysfs 中的属性的名字和代码中的成员名字不一定一致，所以掌握这个代码查找技能是很必要的。</p>
+
+    <br />
+
+    <div>
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议</a>进行许可。
+    </div>
+
+    <br />
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+  </div>
+
+  
+    <div class="post-comment">
+      
+<div id="disqus_thread"></div>
+<script>
+var disqus_config = function () {
+  this.page.url = "http://diabloneo.github.io/2023/03/17/sysfs-note-2/"; // <--- use canonical URL
+  this.page.identifier = "/2023/03/17/sysfs-note-2";
+};
+(function() { // DON'T EDIT BELOW THIS LINE
+  var d = document, s = d.createElement('script');
+
+  s.src = 'https://coffee-coke-and-code.disqus.com/embed.js';
+
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+    </div>
+  
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Coffee, Coke and Code</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>Coffee, Coke and Code</li>
+          <li><a href="mailto:diabloneo@gmail.com">diabloneo@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <i class="fa fa-github"></i>
+            <a href="https://github.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <i class="fa fa-twitter"></i>
+            <a href="https://twitter.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <i class="fa fa-weibo"></i>
+            <a href="https://weibo.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Archive diabloneo's articles.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
+  </body>
+
+</html>
