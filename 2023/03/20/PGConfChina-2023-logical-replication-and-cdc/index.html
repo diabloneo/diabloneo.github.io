@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78067453-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78067453-1');
+</script>
+
+	
+
+	<title>基于 PostgreSQL 逻辑复制和 CDC 实现企业级分布式系统</title>
+	<meta name="description" content="本文是 2023 年 3 月 4 日在第 12 届 PostgreSQL 中国技术大会发表主题演讲《基于 PostgreSQL 逻辑复制和 CDC 实现企业级分布式系统》的文本内容 (数据库管理运维与最佳实践专场)">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/css/main.css">
+	<link rel="stylesheet" href="/css/pygments-rainbow_dash.css">
+	<link rel="canonical" href="http://diabloneo.github.io//2023/03/20/PGConfChina-2023-logical-replication-and-cdc/">
+	<link rel="alternate" type="application/rss+xml" title="Coffee, Coke and Code" href="http://diabloneo.github.io//feed.xml">
+</head>
+
+
+  <body>
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">Coffee, Coke and Code</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <a class="page-link" href="/tags">Tags</a>
+        <a class="page-link" href="/feed.xml">RSS</a>
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">基于 PostgreSQL 逻辑复制和 CDC 实现企业级分布式系统</h1>
+    <p class="post-meta"><time datetime="2023-03-20T00:00:00+08:00" itemprop="datePublished">Mar 20, 2023</time></p>
+  </header>
+
+  <div class="post-tags">
+    <ul>
+      
+      <li>
+        <a href="/tags/database/">database</a>
+      </li>
+      
+      <li>
+        <a href="/tags/distributed-computing/">distributed-computing</a>
+      </li>
+      
+    </ul>
+  </div>
+
+  <div class="post-content" itemprop="articleBody">
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+    <br />
+      <p>本文是 2023 年 3 月 4 日在第 12 届 PostgreSQL 中国技术大会发表主题演讲《基于 PostgreSQL 逻辑复制和 CDC 实现企业级分布式系统》的文本内容 (数据库管理运维与最佳实践专场)</p>
+
+<p>大会视频回放和 PPT 下载链接：<em><a href="https://mp.weixin.qq.com/s/4azY8cm9iA_mcKWPw1jhBw">https://mp.weixin.qq.com/s/4azY8cm9iA_mcKWPw1jhBw</a></em></p>
+
+<h2 id="背景与调研">背景与调研</h2>
+
+<h3 id="产品背景">产品背景</h3>
+
+<p>XSKY 有 SDS 和 SDDC 两款产品，SDS 诞生于 2015 年，SDDC 诞生于 2021 年。这次分享的是 SDDC 产品的管理面的架构设计。</p>
+
+<p>SDS 产品基于 Postgres 9.6，为了控制产品的复杂性，我们没有引入数据库消息队列组件。但是在产品中又得依赖于消息队列这样的机制，因此我们使用了两个方案：</p>
+
+<ul>
+  <li>任务表 + 定时轮询
+    <ul>
+      <li>消息传递及时性较低</li>
+    </ul>
+  </li>
+  <li>Trigger
+    <ul>
+      <li>效率低，性能消耗大
+-因为没有直接回调，还是需要依赖于定时轮询</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="逻辑复制的相关概念">逻辑复制的相关概念</h3>
+
+<p><strong>逻辑复制</strong></p>
+<ul>
+  <li>逻辑复制是根据复制标识（通常是主键）复制数据对象及其变更的一种方法。</li>
+  <li>传送的是数据库的一种与存储格式无关的表达格式
+    <ul>
+      <li>允许跨 Postgres 版本传递数据</li>
+      <li>甚至允许向非 Postgres 程序传递数据</li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>CDC (Change Data Capture)</strong></p>
+<ul>
+  <li>近实时捕获数据源的变更并且发送给下游的数据消费者</li>
+  <li>不能等价于消息队列
+    <ul>
+      <li>只能表达和数据源有关的数据变化</li>
+      <li>产生的是顺序事件，不能按照随意顺序消费</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="逻辑复制调研">逻辑复制调研</h3>
+
+<p><strong>调研过程</strong></p>
+
+<ul>
+  <li>Postgres 10 开始</li>
+  <li>Postgres 13 开始预研
+    <ul>
+      <li>设计并实现了一个小项目，验证逻辑复制和 CDC 方案的可行性</li>
+      <li>向 <em>&lt;github.com/jackc/pglogrepl&gt;</em> 贡献 pgoutput 协议解析代码
+By @diabloneo</li>
+      <li>性能测试
+        <ul>
+          <li>Postgres 13</li>
+          <li>Intel(R) Xeon(R) Gold 5218R CPU @ 2.10GHz</li>
+          <li>每分钟可以发送超过 50,000 个简单的事务</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>生产版本使用的是 Postgres 14</li>
+</ul>
+
+<p><strong>问题预判</strong></p>
+
+<ul>
+  <li>逻辑事件只能包含部分的数据库操作
+    <ul>
+      <li>缺少的那些，在我们的系统里都可以通过带外的方式来解决。</li>
+    </ul>
+  </li>
+  <li>逻辑复制事件不会包含一行记录的所有内容。
+    <ul>
+      <li>我们只会依赖消息中的 id 和几个时间戳字段，整个记录的内容会使用 ORM 从数据库重新读取。</li>
+    </ul>
+  </li>
+  <li>事件丢失 
+我们一定要做好事件可能会丢失的准备，提供后备方案。</li>
+  <li>处理阻塞导致 WAL 写满的情况</li>
+</ul>
+
+<h2 id="架构设计">架构设计</h2>
+
+<h3 id="整体架构">整体架构</h3>
+
+<p><img src="http://diabloneo.github.io//assets/imgs/00039_architecture.png" alt="architecture" /></p>
+
+<ul>
+  <li>API Server
+    <ul>
+      <li>负责和用户交互，并进行数据库读写</li>
+      <li>消费  LR 消息，用于发送 websocket 消息等</li>
+    </ul>
+  </li>
+  <li>Controller
+    <ul>
+      <li>消费 LR 消息，用于实现业务逻辑</li>
+    </ul>
+  </li>
+  <li>Agent
+    <ul>
+      <li>LR 消息会触发 informer 重新载入数据</li>
+      <li>会根据 cache 中的数据对业务做收敛</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="app-设计">App 设计</h3>
+
+<p><img src="http://diabloneo.github.io//assets/imgs/00040_app_1.png" alt="app_1" /></p>
+
+<ul>
+  <li>代表一个业务逻辑的分组，例如虚拟机，块存储等</li>
+  <li>App 是在另外一个维度上把 apiserver, controller 和 agent 联系在了一起</li>
+  <li>API server 和 controller 之间使用 LR 作为联系方式</li>
+  <li>Controller 和 agent 之间使用 informer 作为联系方式</li>
+</ul>
+
+<p><img src="http://diabloneo.github.io//assets/imgs/00041_app_2.png" alt="app_2" /></p>
+
+<ul>
+  <li>每个 app 会注册一个独立的 publication + slot</li>
+  <li>App 按照顺序处理自己订阅的事件</li>
+  <li>不同的 app 会处理同一个事件
+    <ul>
+      <li>更新数据库时，需要使用 etag 这类乐观锁机制</li>
+      <li>遇到 etag 冲突时，自动重试</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="cdc-封装与应用">CDC 封装与应用</h2>
+
+<h3 id="cdc-event">CDC Event</h3>
+
+<p><img src="http://diabloneo.github.io//assets/imgs/00042_cdc_event_flow.png" alt="cdc_event_flow" /></p>
+
+<ul>
+  <li>Postgres 的 LR 消息过于原始，不利于应用开发</li>
+  <li>Event and EventGroup
+    <ul>
+      <li>Event: Insert/Update 消息，Relation 用于触发一个 cache 的更新，Commit 被映射为 FlushLSN</li>
+      <li>EventGroup: 一个事务中的所有 数据操作 Event 的集合</li>
+      <li>CDC Manager 会将 LR 消息转化为对应的 ORM Model</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="cdc-的应用">CDC 的应用</h3>
+
+<ul>
+  <li>App
+    <ul>
+      <li>消费 event，根据 event 执行数据库的 update 操作</li>
+    </ul>
+  </li>
+  <li>API Client Manager
+    <ul>
+      <li>监听 Node 和 Service 资源的 event，对所管理的 API Client 进行操作：创建、删除、failover 等</li>
+    </ul>
+  </li>
+  <li>Websocket 通知
+    <ul>
+      <li>监听所有资源的 event，一旦资源有变动就可以发送 websocket 通知。</li>
+    </ul>
+  </li>
+  <li>Informer Monitor
+    <ul>
+      <li>监听所有资源的 event，通过 etcd 通知 agent reload 相关的缓存数据</li>
+      <li>Agent 不直接消费 CDC event 的原因
+        <ul>
+          <li>为了实现 agent 的 scale-out，agent 不直接访问数据库</li>
+          <li>Agent 中的 executor 需要一次载入某个时刻 (RR Transaction) 的多个表的数据</li>
+          <li>Executor 的运行需要综合定时器触发和 CDC event 触发等多种原因</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="http://diabloneo.github.io//assets/imgs/00043_informer_architecture_1.png" alt="informer_architecture_1" /></p>
+
+<h2 id="关键问题处理">关键问题处理</h2>
+
+<h3 id="slot-的管理--未使用-patroni-时">Slot 的管理 – 未使用 Patroni 时</h3>
+
+<ul>
+  <li>在我们的 controller 程序中进行管理（在 controller leader 节点进行管理）。
+    <ul>
+      <li>基本的做法是在 controller 启动时，检查 app 对应的 slot 是否存在，如果不存在则创建。</li>
+    </ul>
+  </li>
+</ul>
+
+<p>存在三个问题：</p>
+
+<ol>
+  <li>第一次启动耗时间较长，可能会丢 CDC event</li>
+  <li>Controller failover 时会漏掉一些 CDC event</li>
+  <li>Patroni 会尝试 drop 掉它不认识的 slot</li>
+</ol>
+
+<h3 id="slot-的管理--使用-patroni">Slot 的管理 – 使用 Patroni</h3>
+
+<ul>
+  <li>我们将 slot 管理交给 Patroni 来做，同时解决了上面这些问题：
+    <ul>
+      <li>我们实现了一个 slot sync 命令，会在系统安装时通过 Patroni 创建好 slot。因为所有的程序都是在这个过程之后启动的，所以避免了 CDC 事件的丢失。</li>
+      <li>Patroni 管理 slots 后，它会在 primary/replicas 之间自动同步 slot 的 restart_lsn(10s 一次)。
+        <ul>
+          <li>Failover 后会收到重复的 CDC 事件，需要做幂等处理。</li>
+        </ul>
+      </li>
+      <li>所有 slot 受 Patroni 管控，所以 Patroni 也不会再去 drop slots。</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="临时-slot-的应用">临时 slot 的应用</h3>
+
+<ul>
+  <li>临时 slot
+    <ul>
+      <li>不会将 slot 的信息持久化</li>
+      <li>会话结束或者发生错误时，会自动销毁。</li>
+    </ul>
+  </li>
+  <li>使用场景
+    <ul>
+      <li>允许 CDC 事件丢失的场景
+        <ul>
+          <li>Websocket</li>
+          <li>API Client Manager</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>更换为临时 slot 的原因
+    <ul>
+      <li>非 Patroni 管理的持久化 slot，会被 Patroni 尝试 drop，会产生很多 log。</li>
+      <li>Patroni 在管理 slot 的时候，会过滤掉所有的临时 slot。</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="升级">升级</h3>
+
+<p><img src="http://diabloneo.github.io//assets/imgs/00044_upgrade.png" alt="upgrade" /></p>
+
+<p>Publication 必须在 slot 之前创建，否则 subscribe 时，server 会报找不到 publication (Postgres 实现导致的):</p>
+
+<p><a href="https://postgrespro.com/list/thread-id/2471266">Thread: How is this possible “publication does not exist”</a></p>
+
+<h3 id="cdc-事件丢失">CDC 事件丢失</h3>
+
+<ul>
+  <li>丢失原因
+    <ul>
+      <li>WAL 满了，drop 掉老数据</li>
+      <li>Bug</li>
+    </ul>
+  </li>
+  <li>CDC 事件重放机制
+    <ul>
+      <li>避免线上出现数据丢失的情况时，需要手动去做数据库操作</li>
+      <li>需要能够区分原始事件和重放的事件</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="cdc-事件重放机制---insert">CDC 事件重放机制 - Insert</h4>
+
+<p>数据库的 insert 事件只能通过插入新的记录来触发。如果我们要触发一个 insert 事件，那么就得把记录先删除，然后再插入一次。这个方案有几个问题：</p>
+<ul>
+  <li>因为重新插入记录，所以无法区分一条记录是否被重放了。</li>
+  <li>删除记录会导致一条需要回收的记录产生，这会增大数据库的空间。虽然这个数量不会很多，但是还是尽量避免。</li>
+</ul>
+
+<p><strong>方案：在 model 中统一加入一个字段 CdcInserted ，类型是 *time.Time 。重放的流程如下：</strong></p>
+
+<p><img src="http://diabloneo.github.io//assets/imgs/00045_cdc_replay_insert.png" alt="cdc_replay_insert" /></p>
+
+<h4 id="cdc-事件重放机制---update">CDC 事件重放机制 - Update</h4>
+
+<p>Update event 的重放其实可以直接通过更新 UpdatedAt 字段来触发，不过这样不会保存重放的记录，也无法标记是一个重放的事件。</p>
+
+<p><strong>方案：在 model 中统一加入一个字段 CdcUpdated ，类型是 *time.Time 。重放的流程如下：</strong></p>
+
+<p><img src="http://diabloneo.github.io//assets/imgs/00046_cdc_replay_update.png" alt="cdc_replay_update" /></p>
+
+<h4 id="cdc-事件重放机制--replay-命令">CDC 事件重放机制 – replay 命令</h4>
+
+<p>为了可以在线上方便的进行操作，我们按照资源的视角开发了一个命令行工具：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sddc-manage cdc replay --help 
+NAME: 
+    manage cdc replay - Replay CDC events 
+USAGE: 
+    manage cdc replay [command options] [arguments...] 
+OPTIONS: 
+    --object-type value, -t value Object type to be replayed (required) 
+    --event value, -e value Replay event type (required) (insert|update) 
+    --id value Filter: ID of object to be replayed 
+    --from-id value Filter: Object id &gt;= from-id will be replayed 
+    --to-id value Filter: Object id &lt;= to-id will be replayed 
+    --help, -h show help
+
+$ sddc-manage cdc replay --id 1 -t VmImageSpec -e insert 
+$ sddc-manage cdc replay --id 1 -t VirtualMachineSpec -e update
+</code></pre></div></div>
+
+<h2 id="总结">总结</h2>
+
+<h3 id="运行数据">运行数据</h3>
+
+<p>当前版本的 slot 数量：</p>
+
+<ul>
+  <li>Persistent: 40</li>
+  <li>Temporary: 6</li>
+</ul>
+
+<p>一个内部使用的生产环境。Controller leader 运行了 18 天，接收的 LR 消息数量：</p>
+
+<ul>
+  <li>Update: 966961</li>
+  <li>Insert: 6276</li>
+  <li>Relation: 1149</li>
+</ul>
+
+<h3 id="总结-1">总结</h3>
+
+<p>亮点：</p>
+<ul>
+  <li>Postgres 的逻辑复制很适合在分布式系统中使用
+    <ul>
+      <li>可以在很大程度上免去对消息队列的使用，简化系统架构</li>
+      <li>性能不错</li>
+      <li>稳定性不错</li>
+    </ul>
+  </li>
+  <li>Golang 的生态对于逻辑复制的支持已经比较不错</li>
+</ul>
+
+<p>需要注意的地方：</p>
+<ul>
+  <li>需要了解逻辑复制的原理，并且能够管理 publication 和 slot</li>
+  <li>消费 LR 消息的时候，尽可能的不阻塞，避免 WAL 被 drop</li>
+  <li>需要理解 CDC 的思想，不能将逻辑复制当成消息队列来使用</li>
+  <li>LR 消息的消费者，尽可能实现幂等操作</li>
+</ul>
+
+    <br />
+
+    <div>
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议</a>进行许可。
+    </div>
+
+    <br />
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_inline_share_toolbox"></div>
+    
+  </div>
+
+  
+    <div class="post-comment">
+      
+<div id="disqus_thread"></div>
+<script>
+var disqus_config = function () {
+  this.page.url = "http://diabloneo.github.io/2023/03/20/PGConfChina-2023-logical-replication-and-cdc/"; // <--- use canonical URL
+  this.page.identifier = "/2023/03/20/PGConfChina-2023-logical-replication-and-cdc";
+};
+(function() { // DON'T EDIT BELOW THIS LINE
+  var d = document, s = d.createElement('script');
+
+  s.src = 'https://coffee-coke-and-code.disqus.com/embed.js';
+
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+    </div>
+  
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Coffee, Coke and Code</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>Coffee, Coke and Code</li>
+          <li><a href="mailto:diabloneo@gmail.com">diabloneo@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <i class="fa fa-github"></i>
+            <a href="https://github.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <i class="fa fa-twitter"></i>
+            <a href="https://twitter.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <i class="fa fa-weibo"></i>
+            <a href="https://weibo.com/diabloneo">
+              <span class="username">diabloneo</span>
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Archive diabloneo's articles.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+    
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59e59696a86877c1"></script> 
+    
+  </body>
+
+</html>

@@ -6,9 +6,384 @@
 </description>
     <link>http://diabloneo.github.io//</link>
     <atom:link href="http://diabloneo.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 17 Mar 2023 15:41:52 +0800</pubDate>
-    <lastBuildDate>Fri, 17 Mar 2023 15:41:52 +0800</lastBuildDate>
+    <pubDate>Mon, 20 Mar 2023 23:50:32 +0800</pubDate>
+    <lastBuildDate>Mon, 20 Mar 2023 23:50:32 +0800</lastBuildDate>
     <generator>Jekyll v4.3.1</generator>
+    
+      <item>
+        <title>基于 PostgreSQL 逻辑复制和 CDC 实现企业级分布式系统</title>
+        <description>&lt;p&gt;本文是 2023 年 3 月 4 日在第 12 届 PostgreSQL 中国技术大会发表主题演讲《基于 PostgreSQL 逻辑复制和 CDC 实现企业级分布式系统》的文本内容 (数据库管理运维与最佳实践专场)&lt;/p&gt;
+
+&lt;p&gt;大会视频回放和 PPT 下载链接：&lt;em&gt;&lt;a href=&quot;https://mp.weixin.qq.com/s/4azY8cm9iA_mcKWPw1jhBw&quot;&gt;https://mp.weixin.qq.com/s/4azY8cm9iA_mcKWPw1jhBw&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;背景与调研&quot;&gt;背景与调研&lt;/h2&gt;
+
+&lt;h3 id=&quot;产品背景&quot;&gt;产品背景&lt;/h3&gt;
+
+&lt;p&gt;XSKY 有 SDS 和 SDDC 两款产品，SDS 诞生于 2015 年，SDDC 诞生于 2021 年。这次分享的是 SDDC 产品的管理面的架构设计。&lt;/p&gt;
+
+&lt;p&gt;SDS 产品基于 Postgres 9.6，为了控制产品的复杂性，我们没有引入数据库消息队列组件。但是在产品中又得依赖于消息队列这样的机制，因此我们使用了两个方案：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;任务表 + 定时轮询
+    &lt;ul&gt;
+      &lt;li&gt;消息传递及时性较低&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Trigger
+    &lt;ul&gt;
+      &lt;li&gt;效率低，性能消耗大
+-因为没有直接回调，还是需要依赖于定时轮询&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;逻辑复制的相关概念&quot;&gt;逻辑复制的相关概念&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;逻辑复制&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;逻辑复制是根据复制标识（通常是主键）复制数据对象及其变更的一种方法。&lt;/li&gt;
+  &lt;li&gt;传送的是数据库的一种与存储格式无关的表达格式
+    &lt;ul&gt;
+      &lt;li&gt;允许跨 Postgres 版本传递数据&lt;/li&gt;
+      &lt;li&gt;甚至允许向非 Postgres 程序传递数据&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;CDC (Change Data Capture)&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;近实时捕获数据源的变更并且发送给下游的数据消费者&lt;/li&gt;
+  &lt;li&gt;不能等价于消息队列
+    &lt;ul&gt;
+      &lt;li&gt;只能表达和数据源有关的数据变化&lt;/li&gt;
+      &lt;li&gt;产生的是顺序事件，不能按照随意顺序消费&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;逻辑复制调研&quot;&gt;逻辑复制调研&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;调研过程&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Postgres 10 开始&lt;/li&gt;
+  &lt;li&gt;Postgres 13 开始预研
+    &lt;ul&gt;
+      &lt;li&gt;设计并实现了一个小项目，验证逻辑复制和 CDC 方案的可行性&lt;/li&gt;
+      &lt;li&gt;向 &lt;em&gt;&amp;lt;github.com/jackc/pglogrepl&amp;gt;&lt;/em&gt; 贡献 pgoutput 协议解析代码
+By @diabloneo&lt;/li&gt;
+      &lt;li&gt;性能测试
+        &lt;ul&gt;
+          &lt;li&gt;Postgres 13&lt;/li&gt;
+          &lt;li&gt;Intel(R) Xeon(R) Gold 5218R CPU @ 2.10GHz&lt;/li&gt;
+          &lt;li&gt;每分钟可以发送超过 50,000 个简单的事务&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;生产版本使用的是 Postgres 14&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;问题预判&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;逻辑事件只能包含部分的数据库操作
+    &lt;ul&gt;
+      &lt;li&gt;缺少的那些，在我们的系统里都可以通过带外的方式来解决。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;逻辑复制事件不会包含一行记录的所有内容。
+    &lt;ul&gt;
+      &lt;li&gt;我们只会依赖消息中的 id 和几个时间戳字段，整个记录的内容会使用 ORM 从数据库重新读取。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;事件丢失 
+我们一定要做好事件可能会丢失的准备，提供后备方案。&lt;/li&gt;
+  &lt;li&gt;处理阻塞导致 WAL 写满的情况&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;架构设计&quot;&gt;架构设计&lt;/h2&gt;
+
+&lt;h3 id=&quot;整体架构&quot;&gt;整体架构&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://diabloneo.github.io//assets/imgs/00039_architecture.png&quot; alt=&quot;architecture&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;API Server
+    &lt;ul&gt;
+      &lt;li&gt;负责和用户交互，并进行数据库读写&lt;/li&gt;
+      &lt;li&gt;消费  LR 消息，用于发送 websocket 消息等&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Controller
+    &lt;ul&gt;
+      &lt;li&gt;消费 LR 消息，用于实现业务逻辑&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Agent
+    &lt;ul&gt;
+      &lt;li&gt;LR 消息会触发 informer 重新载入数据&lt;/li&gt;
+      &lt;li&gt;会根据 cache 中的数据对业务做收敛&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;app-设计&quot;&gt;App 设计&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://diabloneo.github.io//assets/imgs/00040_app_1.png&quot; alt=&quot;app_1&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;代表一个业务逻辑的分组，例如虚拟机，块存储等&lt;/li&gt;
+  &lt;li&gt;App 是在另外一个维度上把 apiserver, controller 和 agent 联系在了一起&lt;/li&gt;
+  &lt;li&gt;API server 和 controller 之间使用 LR 作为联系方式&lt;/li&gt;
+  &lt;li&gt;Controller 和 agent 之间使用 informer 作为联系方式&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://diabloneo.github.io//assets/imgs/00041_app_2.png&quot; alt=&quot;app_2&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;每个 app 会注册一个独立的 publication + slot&lt;/li&gt;
+  &lt;li&gt;App 按照顺序处理自己订阅的事件&lt;/li&gt;
+  &lt;li&gt;不同的 app 会处理同一个事件
+    &lt;ul&gt;
+      &lt;li&gt;更新数据库时，需要使用 etag 这类乐观锁机制&lt;/li&gt;
+      &lt;li&gt;遇到 etag 冲突时，自动重试&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;cdc-封装与应用&quot;&gt;CDC 封装与应用&lt;/h2&gt;
+
+&lt;h3 id=&quot;cdc-event&quot;&gt;CDC Event&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://diabloneo.github.io//assets/imgs/00042_cdc_event_flow.png&quot; alt=&quot;cdc_event_flow&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Postgres 的 LR 消息过于原始，不利于应用开发&lt;/li&gt;
+  &lt;li&gt;Event and EventGroup
+    &lt;ul&gt;
+      &lt;li&gt;Event: Insert/Update 消息，Relation 用于触发一个 cache 的更新，Commit 被映射为 FlushLSN&lt;/li&gt;
+      &lt;li&gt;EventGroup: 一个事务中的所有 数据操作 Event 的集合&lt;/li&gt;
+      &lt;li&gt;CDC Manager 会将 LR 消息转化为对应的 ORM Model&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;cdc-的应用&quot;&gt;CDC 的应用&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;App
+    &lt;ul&gt;
+      &lt;li&gt;消费 event，根据 event 执行数据库的 update 操作&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;API Client Manager
+    &lt;ul&gt;
+      &lt;li&gt;监听 Node 和 Service 资源的 event，对所管理的 API Client 进行操作：创建、删除、failover 等&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Websocket 通知
+    &lt;ul&gt;
+      &lt;li&gt;监听所有资源的 event，一旦资源有变动就可以发送 websocket 通知。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Informer Monitor
+    &lt;ul&gt;
+      &lt;li&gt;监听所有资源的 event，通过 etcd 通知 agent reload 相关的缓存数据&lt;/li&gt;
+      &lt;li&gt;Agent 不直接消费 CDC event 的原因
+        &lt;ul&gt;
+          &lt;li&gt;为了实现 agent 的 scale-out，agent 不直接访问数据库&lt;/li&gt;
+          &lt;li&gt;Agent 中的 executor 需要一次载入某个时刻 (RR Transaction) 的多个表的数据&lt;/li&gt;
+          &lt;li&gt;Executor 的运行需要综合定时器触发和 CDC event 触发等多种原因&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://diabloneo.github.io//assets/imgs/00043_informer_architecture_1.png&quot; alt=&quot;informer_architecture_1&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;关键问题处理&quot;&gt;关键问题处理&lt;/h2&gt;
+
+&lt;h3 id=&quot;slot-的管理--未使用-patroni-时&quot;&gt;Slot 的管理 – 未使用 Patroni 时&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;在我们的 controller 程序中进行管理（在 controller leader 节点进行管理）。
+    &lt;ul&gt;
+      &lt;li&gt;基本的做法是在 controller 启动时，检查 app 对应的 slot 是否存在，如果不存在则创建。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;存在三个问题：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;第一次启动耗时间较长，可能会丢 CDC event&lt;/li&gt;
+  &lt;li&gt;Controller failover 时会漏掉一些 CDC event&lt;/li&gt;
+  &lt;li&gt;Patroni 会尝试 drop 掉它不认识的 slot&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;slot-的管理--使用-patroni&quot;&gt;Slot 的管理 – 使用 Patroni&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;我们将 slot 管理交给 Patroni 来做，同时解决了上面这些问题：
+    &lt;ul&gt;
+      &lt;li&gt;我们实现了一个 slot sync 命令，会在系统安装时通过 Patroni 创建好 slot。因为所有的程序都是在这个过程之后启动的，所以避免了 CDC 事件的丢失。&lt;/li&gt;
+      &lt;li&gt;Patroni 管理 slots 后，它会在 primary/replicas 之间自动同步 slot 的 restart_lsn(10s 一次)。
+        &lt;ul&gt;
+          &lt;li&gt;Failover 后会收到重复的 CDC 事件，需要做幂等处理。&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;所有 slot 受 Patroni 管控，所以 Patroni 也不会再去 drop slots。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;临时-slot-的应用&quot;&gt;临时 slot 的应用&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;临时 slot
+    &lt;ul&gt;
+      &lt;li&gt;不会将 slot 的信息持久化&lt;/li&gt;
+      &lt;li&gt;会话结束或者发生错误时，会自动销毁。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;使用场景
+    &lt;ul&gt;
+      &lt;li&gt;允许 CDC 事件丢失的场景
+        &lt;ul&gt;
+          &lt;li&gt;Websocket&lt;/li&gt;
+          &lt;li&gt;API Client Manager&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;更换为临时 slot 的原因
+    &lt;ul&gt;
+      &lt;li&gt;非 Patroni 管理的持久化 slot，会被 Patroni 尝试 drop，会产生很多 log。&lt;/li&gt;
+      &lt;li&gt;Patroni 在管理 slot 的时候，会过滤掉所有的临时 slot。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;升级&quot;&gt;升级&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://diabloneo.github.io//assets/imgs/00044_upgrade.png&quot; alt=&quot;upgrade&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Publication 必须在 slot 之前创建，否则 subscribe 时，server 会报找不到 publication (Postgres 实现导致的):&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://postgrespro.com/list/thread-id/2471266&quot;&gt;Thread: How is this possible “publication does not exist”&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;cdc-事件丢失&quot;&gt;CDC 事件丢失&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;丢失原因
+    &lt;ul&gt;
+      &lt;li&gt;WAL 满了，drop 掉老数据&lt;/li&gt;
+      &lt;li&gt;Bug&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;CDC 事件重放机制
+    &lt;ul&gt;
+      &lt;li&gt;避免线上出现数据丢失的情况时，需要手动去做数据库操作&lt;/li&gt;
+      &lt;li&gt;需要能够区分原始事件和重放的事件&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;cdc-事件重放机制---insert&quot;&gt;CDC 事件重放机制 - Insert&lt;/h4&gt;
+
+&lt;p&gt;数据库的 insert 事件只能通过插入新的记录来触发。如果我们要触发一个 insert 事件，那么就得把记录先删除，然后再插入一次。这个方案有几个问题：&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;因为重新插入记录，所以无法区分一条记录是否被重放了。&lt;/li&gt;
+  &lt;li&gt;删除记录会导致一条需要回收的记录产生，这会增大数据库的空间。虽然这个数量不会很多，但是还是尽量避免。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;方案：在 model 中统一加入一个字段 CdcInserted ，类型是 *time.Time 。重放的流程如下：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://diabloneo.github.io//assets/imgs/00045_cdc_replay_insert.png&quot; alt=&quot;cdc_replay_insert&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;cdc-事件重放机制---update&quot;&gt;CDC 事件重放机制 - Update&lt;/h4&gt;
+
+&lt;p&gt;Update event 的重放其实可以直接通过更新 UpdatedAt 字段来触发，不过这样不会保存重放的记录，也无法标记是一个重放的事件。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;方案：在 model 中统一加入一个字段 CdcUpdated ，类型是 *time.Time 。重放的流程如下：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://diabloneo.github.io//assets/imgs/00046_cdc_replay_update.png&quot; alt=&quot;cdc_replay_update&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;cdc-事件重放机制--replay-命令&quot;&gt;CDC 事件重放机制 – replay 命令&lt;/h4&gt;
+
+&lt;p&gt;为了可以在线上方便的进行操作，我们按照资源的视角开发了一个命令行工具：&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ sddc-manage cdc replay --help 
+NAME: 
+    manage cdc replay - Replay CDC events 
+USAGE: 
+    manage cdc replay [command options] [arguments...] 
+OPTIONS: 
+    --object-type value, -t value Object type to be replayed (required) 
+    --event value, -e value Replay event type (required) (insert|update) 
+    --id value Filter: ID of object to be replayed 
+    --from-id value Filter: Object id &amp;gt;= from-id will be replayed 
+    --to-id value Filter: Object id &amp;lt;= to-id will be replayed 
+    --help, -h show help
+
+$ sddc-manage cdc replay --id 1 -t VmImageSpec -e insert 
+$ sddc-manage cdc replay --id 1 -t VirtualMachineSpec -e update
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;总结&quot;&gt;总结&lt;/h2&gt;
+
+&lt;h3 id=&quot;运行数据&quot;&gt;运行数据&lt;/h3&gt;
+
+&lt;p&gt;当前版本的 slot 数量：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Persistent: 40&lt;/li&gt;
+  &lt;li&gt;Temporary: 6&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;一个内部使用的生产环境。Controller leader 运行了 18 天，接收的 LR 消息数量：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Update: 966961&lt;/li&gt;
+  &lt;li&gt;Insert: 6276&lt;/li&gt;
+  &lt;li&gt;Relation: 1149&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;总结-1&quot;&gt;总结&lt;/h3&gt;
+
+&lt;p&gt;亮点：&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Postgres 的逻辑复制很适合在分布式系统中使用
+    &lt;ul&gt;
+      &lt;li&gt;可以在很大程度上免去对消息队列的使用，简化系统架构&lt;/li&gt;
+      &lt;li&gt;性能不错&lt;/li&gt;
+      &lt;li&gt;稳定性不错&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Golang 的生态对于逻辑复制的支持已经比较不错&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;需要注意的地方：&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;需要了解逻辑复制的原理，并且能够管理 publication 和 slot&lt;/li&gt;
+  &lt;li&gt;消费 LR 消息的时候，尽可能的不阻塞，避免 WAL 被 drop&lt;/li&gt;
+  &lt;li&gt;需要理解 CDC 的思想，不能将逻辑复制当成消息队列来使用&lt;/li&gt;
+  &lt;li&gt;LR 消息的消费者，尽可能实现幂等操作&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Mon, 20 Mar 2023 00:00:00 +0800</pubDate>
+        <link>http://diabloneo.github.io//2023/03/20/PGConfChina-2023-logical-replication-and-cdc/</link>
+        <guid isPermaLink="true">http://diabloneo.github.io//2023/03/20/PGConfChina-2023-logical-replication-and-cdc/</guid>
+        
+        <category>database</category>
+        
+        <category>distributed-computing</category>
+        
+        
+      </item>
     
       <item>
         <title>Sysfs Note -- 2</title>
@@ -1315,283 +1690,6 @@ $ sudo ./cctk --PeakShiftCfg=Disabled
         <guid isPermaLink="true">http://diabloneo.github.io//2022/02/10/Dell-XPS-9500-AC-power-adapter-not-regonized/</guid>
         
         <category>linux</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>jemalloc 3.6 版本导致的性能问题</title>
-        <description>&lt;p&gt;最近我们有一个服务在测试过程中发现了性能问题，最终定位到是因为 jemalloc 使用了 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;madvise&lt;/code&gt; 的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;MADV_DONTNEED&lt;/code&gt; 导致的，这里分享一下定位过程。&lt;/p&gt;
-
-&lt;h2 id=&quot;测试环境和问题描述&quot;&gt;测试环境和问题描述&lt;/h2&gt;
-
-&lt;p&gt;测试程序通过网络接受 RPC 请求后，执行处理逻辑，程序运行环境如下：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;CentOS 7.6 + kernel 3.10&lt;/li&gt;
-  &lt;li&gt;程序运行在 docker 容器内&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Benchmark 过程很简单，就是通过客户端程序发起请求，然后看看测试过程能达到的服务带宽有多少。在获得结果后，我们发现，使用 jemalloc 的版本性能下降了差不多 20%（不过我们一开始并不知道是 jemalloc 导致的）。&lt;/p&gt;
-
-&lt;h2 id=&quot;定位过程&quot;&gt;定位过程&lt;/h2&gt;
-
-&lt;h3 id=&quot;获取-profile-数据生成火焰图&quot;&gt;获取 profile 数据，生成火焰图&lt;/h3&gt;
-
-&lt;p&gt;这里使用 bcc 的 profile 工具来生成 profile stack 文件，然后使用 Brendan Gregg 的 FlameGraph 工具将其转换成火焰图 (&lt;em&gt;&lt;a href=&quot;https://github.com/brendangregg/FlameGraph&quot;&gt;https://github.com/brendangregg/FlameGraph&lt;/a&gt;&lt;/em&gt;)。&lt;/p&gt;
-
-&lt;p&gt;Profile 命令如下：&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# /usr/share/bcc/tools/profile -F 99 -f -a -p $PID 30 &amp;gt; profile.stack
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;FlameGraph 命令如下：&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ./flamegraph.pl profile.stack &amp;gt; profile.svg
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;得到的火焰图中的关键部分如下：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://diabloneo.github.io//assets/imgs/00035_flame_graph_recvmsg_madvise.png&quot; alt=&quot;flame_graph_recvmsg_madvise&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;从上图中可以看出两个奇怪的地方：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;有很多 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;madvise&lt;/code&gt; 调用。&lt;/li&gt;
-  &lt;li&gt;收包的时候经常伴随着内存申请操作 (page_fault 的处理)。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;minor-page-fault-有多少&quot;&gt;minor page fault 有多少&lt;/h3&gt;
-
-&lt;p&gt;因为从火焰图中看到了很多 page fault，所以可以通过其他工具来看一下 page fault 的类型和产生速率。因为我们的系统上是关闭了 swap 的，所以肯定都是 minor page fault，这里主要是要查看一下速率。可以通过 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sar&lt;/code&gt; 命令来查看：&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ sar -B 1
-Linux 3.10.0-957.el7.x86_64 (node)   01/16/2022      _x86_64_        (40 CPU)
-
-11:49:13 AM  pgpgin/s pgpgout/s   fault/s  majflt/s  pgfree/s pgscank/s pgscand/s pgsteal/s    %vmeff
-11:49:14 AM      0.00    100.00 608239.00      0.00 869641.00      0.00      0.00      0.00      0.00
-11:49:15 AM      0.00   3692.00 737822.00      0.00 971933.00      0.00      0.00      0.00      0.00
-11:49:16 AM      0.00    104.00 466154.00      0.00 781245.00      0.00      0.00      0.00      0.00
-11:49:17 AM      0.00    124.00 460824.00      0.00 769351.00      0.00      0.00      0.00      0.00
-11:49:18 AM      0.00    136.00 510035.00      0.00 806849.00      0.00      0.00      0.00      0.00
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;可以发现，每秒钟产生了 50w 次以上的 minor page fault。&lt;/p&gt;
-
-&lt;h3 id=&quot;查看-socket-rmem-的使用情况&quot;&gt;查看 socket rmem 的使用情况&lt;/h3&gt;
-
-&lt;p&gt;此外，因为是在收包的过程中发生了内存申请操作，我们还可以使用 sormem.bt 这个 bpftrace 程序 (&lt;em&gt;&lt;a href=&quot;https://github.com/brendangregg/bpf-perf-tools-book/blob/master/originals/Ch10_Networking/sormem.bt&quot;&gt;https://github.com/brendangregg/bpf-perf-tools-book/blob/master/originals/Ch10_Networking/sormem.bt&lt;/a&gt;&lt;/em&gt;) 来进行查看一下进程的 socket recv buffer 的情况：&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ./sormem.bt
-Attaching 4 probes...
-Tracing socket receive buffer size. Hit Ctrl-C to end.
-^C
-
-@rmem_alloc:
-[0]                15638 |@                                                   |
-[1]                    0 |                                                    |
-[2, 4)                 0 |                                                    |
-[4, 8)                 0 |                                                    |
-[8, 16)                0 |                                                    |
-[16, 32)               0 |                                                    |
-[32, 64)               0 |                                                    |
-[64, 128)              0 |                                                    |
-[128, 256)             0 |                                                    |
-[256, 512)             0 |                                                    |
-[512, 1K)            699 |                                                    |
-[1K, 2K)            1136 |                                                    |
-[2K, 4K)          433243 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@|
-[4K, 8K)            7037 |                                                    |
-[8K, 16K)           3750 |                                                    |
-[16K, 32K)           219 |                                                    |
-[32K, 64K)            18 |                                                    |
-[64K, 128K)          191 |                                                    |
-[128K, 256K)         200 |                                                    |
-[256K, 512K)         118 |                                                    |
-[512K, 1M)            19 |                                                    |
-[1M, 2M)               2 |                                                    |
-[2M, 4M)          192207 |@@@@@@@@@@@@@@@@@@@@@@@                             |
-[4M, 8M)            8551 |@                                                   |
-
-@rmem_limit:
-[128K, 256K)        8580 |                                                    |
-[256K, 512K)        6030 |                                                    |
-[512K, 1M)             0 |                                                    |
-[1M, 2M)           33400 |@@                                                  |
-[2M, 4M)            7956 |                                                    |
-[4M, 8M)          605235 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@|
-[8M, 16M)              0 |                                                    |
-[16M, 32M)          1187 |
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;从 &lt;strong&gt;rmem_alloc&lt;/strong&gt; 的数据可以看出，服务端程序在 benchmark 过程中大量使用了小块的内存。不过，这个数据无法直接推导出一些结论，只能说这可能和内存管理的行为有关。&lt;/p&gt;
-
-&lt;h3 id=&quot;查看-madvise-调用情况&quot;&gt;查看 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;madvise&lt;/code&gt; 调用情况&lt;/h3&gt;
-
-&lt;p&gt;在查看了 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;madvise&lt;/code&gt; 的 man 手册之后，我发现 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;madvise&lt;/code&gt; 的参数选择对于程序的性能影响很大，所以我们需要知道这里执行的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;madvise&lt;/code&gt; 调用的参数是什么。这里我写了一个 bpftrace 的程序来获取程序调用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;madvise&lt;/code&gt; 时使用的参数：&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ cat trace_madvise.bt
-#!/usr/bin/bpftrace
-
-BEGIN
-{
-        printf(&quot;trace syscall madvise of pid %d\n&quot;, $1);
-}
-
-t:syscalls:sys_enter_madvise /pid == $1/
-{
-        printf(&quot;pid %d, comm %s, arg1 %lx, arg2 %ld, arg3 %ld\n&quot;, pid, comm, args-&amp;gt;start, args-&amp;gt;len_in, args-&amp;gt;behavior);
-}
-
-t:syscalls:sys_exit_madvise /pid == $1/
-{
-        printf(&quot;pid %d, comm %s, retval %d\n&quot;, pid, comm, args-&amp;gt;ret);
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;在 benchmark 的过程中执行这个脚本，得到的结果主要内容如下：&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pid 336963, comm cmdname, arg1 7fcd81dab000, arg2 1048576, arg3 4
-pid 336963, comm cmdname, retval 0
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;arg3 4&lt;/code&gt; 表示 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;madvise&lt;/code&gt; 的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;advice&lt;/code&gt; 参数，这里 &lt;strong&gt;4&lt;/strong&gt; 对应的是 &lt;strong&gt;MADV_DONTNEED&lt;/strong&gt;。另外，我还统计了一下 benchmark 过程中 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;madvise&lt;/code&gt; 调用的数量，达到了 22w 次。&lt;/p&gt;
-
-&lt;h3 id=&quot;madv_dontneed-这个坑&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;MADV_DONTNEED&lt;/code&gt; 这个坑&lt;/h3&gt;
-
-&lt;p&gt;这个参数的行为很诡异，会直接导致 Linux 立刻回收内存，然后再次访问这块内存，会触发一个内存分配操作，它的行为基本上等于 free 了。man 手册中的关键内容如下：&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;After a successful MADV_DONTNEED operation, the semantics of memory access in the specified region are changed: subsequent accesses of pages in the range will succeed, but will result in either repopulating the memory contents from the up-to-date contents of the underlying mapped file (for shared file mappings, shared anonymous mappings, and shmem-based techniques such as  System V shared memory segments) or zero-fill-on-demand pages for anonymous private mappings.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;所以我去搜下了下：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://youjiali1995.github.io/allocator/jemalloc-purge/&quot;&gt;jemalloc purge改进&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://juejin.cn/post/6844904084957315086&quot;&gt;深入理解 Linux 内核–jemalloc 引起的 TLB shootdown 及优化&lt;/a&gt;
-    &lt;ul&gt;
-      &lt;li&gt;这里要提一下，我们的这个问题并没有 TLB shotdown。&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/jemalloc/jemalloc/issues/1422&quot;&gt;madivse MADV_DONTNEED causes bad performence in KVM virtual machine&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;下面这个视频我更是强烈推荐，吐嘈之余，让你也能理解这个参数的历史： &lt;em&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=bg6-LVCHmGM&amp;amp;t=3518s&quot;&gt;https://www.youtube.com/watch?v=bg6-LVCHmGM&amp;amp;t=3518s&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;问题总结&quot;&gt;问题总结&lt;/h3&gt;
-
-&lt;p&gt;了解了程序的行为以及 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;madvise&lt;/code&gt; 这个坑之后，我们就可以得到这个性能问题的结论了： &lt;strong&gt;由于程序使用的 jemalloc 3.6 版本在运行过程中，大量调用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;madvise(MADV_DONTNEED)&lt;/code&gt;，导致内存不断被 kernel 回收。因此，在收包的过程中只好又去申请新的内存，导致收包的性能下降&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;h3 id=&quot;关闭-jemalloc-内存回收进行问题确认&quot;&gt;关闭 jemalloc 内存回收进行问题确认&lt;/h3&gt;
-
-&lt;p&gt;可以通过如下的环境变量关闭 jemalloc 的内存回收机制，&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;export MALLOC_CONF=&quot;lg_dirty_mult:-1&quot;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;这个参数在 jemalloc 的如下代码路径上发挥作用：&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// 在 src/arena.c 中找到如下函数
-static inline void
-arena_maybe_purge(arena_t *arena)
-{
-        size_t npurgeable, threshold;
-
-        /* Don&apos;t purge if the option is disabled. */
-        if (opt_lg_dirty_mult &amp;lt; 0)
-                return;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;关闭内存回收之后，我们的程序就不再出现上述的性能问题。&lt;/p&gt;
-
-&lt;h2 id=&quot;kernel-418-的对比测试&quot;&gt;Kernel 4.18 的对比测试&lt;/h2&gt;
-
-&lt;p&gt;随后，我在 &lt;strong&gt;CentOS 7.6 + kernel 4.18&lt;/strong&gt;  的环境上也进行了 benchmark，发现在 kernel 4.18 上，程序的性能下降比较少，大概是 10%。随后写了一个 &lt;em&gt;trace_tcp_recvmsg_time.bt&lt;/em&gt; 的 bpttrace 程序，对比了一下两个版本的 kernel 在 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;tcp_recvmsg&lt;/code&gt; 函数上的性能差异。&lt;/p&gt;
-
-&lt;p&gt;程序如下：&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@node tools]# cat calc_tcp_recvmsg_time.bt
-#!/usr/bin/bpftrace
-
-BEGIN
-{
-        printf(&quot;Calc tcp_recvmsg time of pid %d\n&quot;, $1);
-}
-
-kprobe:tcp_recvmsg /pid == $1/
-{
-        @start[tid] = nsecs;
-}
-
-kretprobe:tcp_recvmsg /pid == $1/
-{
-        if (@start[tid]) {
-                @pf_nsecs = hist((nsecs - @start[tid]) / 1000);
-                delete(@start[tid]);
-        }
-}
-
-END
-{
-        print(@pf_nsecs);
-        clear(@start);
-        clear(@pf_nsecs);
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;Kernel 3.10 的结果&lt;/strong&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Attaching 4 probes...
-Calc tcp_recvmsg time of pid 366959
-^C@pf_nsecs:
-[1]                  327 |                                                    |
-[2, 4)             53761 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@                      |
-[4, 8)              7840 |@@@@                                                |
-[8, 16)            39434 |@@@@@@@@@@@@@@@@@@@@@@                              |
-[16, 32)            1685 |                                                    |
-[32, 64)             223 |                                                    |
-[64, 128)            229 |                                                    |
-[128, 256)           126 |                                                    |
-[256, 512)             9 |                                                    |
-[512, 1K)          10484 |@@@@@                                               |
-[1K, 2K)           92465 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@|
-[2K, 4K)               9 |                                                    |
-[4K, 8K)               0 |                                                    |
-[8K, 16K)              0 |                                                    |
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;Kernel 4.18 的结果&lt;/strong&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Attaching 4 probes...
-Calc tcp_recvmsg time of pid 20607
-^C@pf_nsecs:
-[0]                   23 |                                                    |
-[1]                  274 |                                                    |
-[2, 4)             32551 |@@@@@@@@@@@@@@@@                                    |
-[4, 8)             52765 |@@@@@@@@@@@@@@@@@@@@@@@@@@                          |
-[8, 16)            35111 |@@@@@@@@@@@@@@@@@                                   |
-[16, 32)            1375 |                                                    |
-[32, 64)             116 |                                                    |
-[64, 128)             41 |                                                    |
-[128, 256)            15 |                                                    |
-[256, 512)            27 |                                                    |
-[512, 1K)         103847 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@|
-[1K, 2K)           17881 |@@@@@@@@                                            |
-[2K, 4K)               2 |                                                    |
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;得到的结论是，kernel 4.18 在这个路径上的性能确实比 kernel 3.10 更好。不过，因为不能对 kernel 的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;do_page_fault&lt;/code&gt; 函数进行 kprobe，所以不确定这里的性能改进是哪部分贡献的。&lt;/p&gt;
-</description>
-        <pubDate>Thu, 20 Jan 2022 00:00:00 +0800</pubDate>
-        <link>http://diabloneo.github.io//2022/01/20/Performance-problem-caused-by-jemalloc-3.6/</link>
-        <guid isPermaLink="true">http://diabloneo.github.io//2022/01/20/Performance-problem-caused-by-jemalloc-3.6/</guid>
-        
-        <category>linux</category>
-        
-        <category>kernel</category>
-        
-        <category>network</category>
         
         
       </item>
